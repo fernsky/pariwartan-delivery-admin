@@ -47,11 +47,13 @@ export default function VegetableFruitDiseaseSEO({
     // Find most problematic vegetable/fruit
     const mostProblematicVegetableFruit = mostAffectedVegetableFruit;
     const mostProblematicVegetableFruitEN = mostProblematicVegetableFruit
-      ? VEGETABLE_FRUIT_TYPES_EN[mostProblematicVegetableFruit.crop] || mostProblematicVegetableFruit.crop
+      ? VEGETABLE_FRUIT_TYPES_EN[mostProblematicVegetableFruit.crop] ||
+        mostProblematicVegetableFruit.crop
       : "";
     const mostProblematicPercentage = mostProblematicVegetableFruit
       ? (
-          (mostProblematicVegetableFruit.totalIssues / (totalPests + totalDiseases)) *
+          (mostProblematicVegetableFruit.totalIssues /
+            (totalPests + totalDiseases)) *
           100
         ).toFixed(2)
       : "0";
@@ -63,11 +65,11 @@ export default function VegetableFruitDiseaseSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Vegetable and Fruit Diseases and Pests in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Vegetable and Fruit Diseases and Pests in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Comprehensive analysis of vegetable and fruit diseases and pests affecting agriculture in Khajura Rural Municipality. The study covers ${totalVegetableFruits} different vegetable and fruit types with a total of ${totalDiseases + totalPests} identified issues: ${totalDiseases} diseases and ${totalPests} pests. The most affected vegetable/fruit is ${mostProblematicVegetableFruitEN} with ${mostProblematicVegetableFruit?.totalIssues || 0} issues (${mostProblematicPercentage}% of all problems). Disease to pest ratio is ${(diseaseRatio * 100).toFixed(1)}% to ${(pestRatio * 100).toFixed(1)}%.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Vegetable diseases",
         "Fruit diseases",
         "Agricultural pests",
@@ -81,8 +83,12 @@ export default function VegetableFruitDiseaseSEO({
         "Cabbage diseases pests",
         "Potato diseases pests",
         "Mustard diseases pests",
-        ...Object.values(VEGETABLE_FRUIT_TYPES_EN).map((name) => `${name} diseases pests`),
-        ...Object.values(VEGETABLE_FRUIT_TYPES).map((name) => `${name} रोग कीट`),
+        ...Object.values(VEGETABLE_FRUIT_TYPES_EN).map(
+          (name) => `${name} diseases pests`,
+        ),
+        ...Object.values(VEGETABLE_FRUIT_TYPES).map(
+          (name) => `${name} रोग कीट`,
+        ),
       ],
       url: "https://digital.khajuramun.gov.np/profile/economics/municipality-wide-vegetables-and-fruits-diseases",
       creator: {
@@ -148,7 +154,7 @@ export default function VegetableFruitDiseaseSEO({
         },
         {
           "@type": "Thing",
-          name: "Fruit Protection", 
+          name: "Fruit Protection",
           description:
             "Practices and methods used to protect fruits from diseases, pests, and other harmful factors",
         },

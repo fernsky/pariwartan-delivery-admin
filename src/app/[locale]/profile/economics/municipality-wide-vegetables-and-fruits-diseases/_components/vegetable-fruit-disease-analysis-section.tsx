@@ -35,7 +35,8 @@ export default function VegetableFruitDiseaseAnalysisSection({
   avgIssuesPerCrop,
 }: VegetableFruitDiseaseAnalysisSectionProps) {
   // Find least affected vegetable/fruit
-  const leastAffectedVegetableFruit = vegetableFruitSummary[vegetableFruitSummary.length - 1];
+  const leastAffectedVegetableFruit =
+    vegetableFruitSummary[vegetableFruitSummary.length - 1];
 
   // Calculate disease vs pest ratio
   const diseaseRatio = totalDiseases / (totalDiseases + totalPests);
@@ -72,7 +73,7 @@ export default function VegetableFruitDiseaseAnalysisSection({
 
   // SEO attributes
   const seoAttributes = {
-    "data-municipality": "Khajura Rural Municipality / खजुरा गाउँपालिका",
+    "data-municipality": "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
     "data-total-vegetables-fruits": totalVegetableFruits.toString(),
     "data-most-affected-vegetable-fruit":
       mostAffectedVegetableFruit &&
@@ -129,7 +130,9 @@ export default function VegetableFruitDiseaseAnalysisSection({
           <div className="bg-card p-4 rounded border">
             <h4 className="font-medium mb-2">
               सबैभन्दा प्रभावित तरकारी/फलफूल
-              <span className="sr-only">Most Affected Vegetable/Fruit in Khajura</span>
+              <span className="sr-only">
+                Most Affected Vegetable/Fruit in Khajura
+              </span>
             </h4>
             {mostAffectedVegetableFruit && (
               <div className="flex items-center gap-3">
@@ -137,7 +140,8 @@ export default function VegetableFruitDiseaseAnalysisSection({
                   className="w-4 h-16 rounded"
                   style={{
                     backgroundColor:
-                      VEGETABLE_FRUIT_COLORS[mostAffectedVegetableFruit.crop] || "#3498DB",
+                      VEGETABLE_FRUIT_COLORS[mostAffectedVegetableFruit.crop] ||
+                      "#3498DB",
                   }}
                 ></div>
                 <div>
@@ -182,7 +186,8 @@ export default function VegetableFruitDiseaseAnalysisSection({
                       className="h-full rounded-full"
                       style={{
                         width: `${Math.min((crop.totalIssues / Math.max(...vegetableFruitSummary.map((c) => c.totalIssues))) * 100, 100)}%`,
-                        backgroundColor: VEGETABLE_FRUIT_COLORS[crop.crop] || "#3498DB",
+                        backgroundColor:
+                          VEGETABLE_FRUIT_COLORS[crop.crop] || "#3498DB",
                       }}
                     ></div>
                   </div>
@@ -316,8 +321,8 @@ export default function VegetableFruitDiseaseAnalysisSection({
                   <strong>रोग बनाम कीट अनुपात:</strong> कुल समस्यामध्ये{" "}
                   {localizeNumber((diseaseRatio * 100).toFixed(1), "ne")}% रोग र{" "}
                   {localizeNumber((pestRatio * 100).toFixed(1), "ne")}% कीटपतंग
-                  रहेका छन्। यसले पालिकाको तरकारी संरक्षण रणनीति निर्धारणमा सहायता
-                  गर्छ।
+                  रहेका छन्। यसले पालिकाको तरकारी संरक्षण रणनीति निर्धारणमा
+                  सहायता गर्छ।
                 </span>
               </li>
               <li className="flex gap-2">
@@ -350,8 +355,8 @@ export default function VegetableFruitDiseaseAnalysisSection({
                 </h5>
                 <ul className="text-xs space-y-1 ml-4">
                   <li>
-                    • {mostAffectedVegetableFruit?.cropName || ""} मा विशेष ध्यान
-                    दिनुपर्ने
+                    • {mostAffectedVegetableFruit?.cropName || ""} मा विशेष
+                    ध्यान दिनुपर्ने
                   </li>
                   <li>
                     • {topDiseases[0]?.[0] || ""} को रोकथामका लागि उपाय अपनाउने

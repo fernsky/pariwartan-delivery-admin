@@ -35,11 +35,11 @@ export default function LandPossessionSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Household Land Ownership in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Household Land Ownership in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Land ownership distribution data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholdsWithLand.toLocaleString()} land-owning households.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Land ownership",
         "Household land possession",
         "Ward-wise land data",

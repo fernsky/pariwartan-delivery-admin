@@ -38,19 +38,22 @@ export default function HouseholdBaseSEO({
 
     // Find most common base type
     const mostCommonType = overallSummary.length > 0 ? overallSummary[0] : null;
-    const mostCommonTypeEN = mostCommonType ? (BASE_TYPE_NAMES_EN[mostCommonType.baseType] || mostCommonType.baseType) : "";
-    const mostCommonTypePercentage = mostCommonType && totalHouseholds > 0 
-      ? ((mostCommonType.households / totalHouseholds) * 100).toFixed(2)
-      : "0";
+    const mostCommonTypeEN = mostCommonType
+      ? BASE_TYPE_NAMES_EN[mostCommonType.baseType] || mostCommonType.baseType
+      : "";
+    const mostCommonTypePercentage =
+      mostCommonType && totalHouseholds > 0
+        ? ((mostCommonType.households / totalHouseholds) * 100).toFixed(2)
+        : "0";
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "House Foundation Types in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "House Foundation Types in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `House foundation data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. The most common type is ${mostCommonTypeEN} with ${mostCommonType?.households.toLocaleString()} households (${mostCommonTypePercentage}%).`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "House foundation",
         "Foundation distribution",
         "Ward-wise foundation data",
@@ -59,7 +62,9 @@ export default function HouseholdBaseSEO({
         ...Object.values(BASE_TYPE_NAMES_EN).map(
           (name) => `${name} households statistics`,
         ),
-        ...Object.values(BASE_TYPE_NAMES).map((name) => `${name} घरधुरी तथ्याङ्क`),
+        ...Object.values(BASE_TYPE_NAMES).map(
+          (name) => `${name} घरधुरी तथ्याङ्क`,
+        ),
       ],
       url: "https://digital.khajuramun.gov.np/profile/economics/ward-wise-household-base",
       creator: {
@@ -89,7 +94,7 @@ export default function HouseholdBaseSEO({
           name: "Total Households",
           unitText: "households",
           value: totalHouseholds,
-        }
+        },
       ],
       observation: baseTypeStats,
     };

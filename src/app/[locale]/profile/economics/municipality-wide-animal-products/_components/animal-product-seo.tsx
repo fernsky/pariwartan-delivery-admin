@@ -65,7 +65,7 @@ export default function AnimalProductSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Animal Products in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Animal Products in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Animal product production and sales statistics of Khajura Rural Municipality with a total production of ${totalProduction.toFixed(
         2,
       )} tonnes/units and sales of ${totalSales.toFixed(2)} tonnes/units (${(
@@ -78,7 +78,7 @@ export default function AnimalProductSEO({
       )} tonnes/units (${mostProducedPercentage}%). Self-consumption represents ${selfConsumptionPercentage}% of total production. Total revenue from animal product sales is NPR ${totalRevenue.toLocaleString()}.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Animal product production",
         "Animal product sales",
         "Milk production",

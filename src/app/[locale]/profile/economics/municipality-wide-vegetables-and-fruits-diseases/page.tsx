@@ -23,7 +23,7 @@ export const revalidate = 86400; // Revalidate once per day
 // Define English names for vegetable/fruit types (for SEO)
 const VEGETABLE_FRUIT_TYPES_EN: Record<string, string> = {
   TOMATO: "Tomato",
-  CAULIFLOWER: "Cauliflower", 
+  CAULIFLOWER: "Cauliflower",
   CABBAGE: "Cabbage",
   POTATO: "Potato",
   MUSTARD: "Mustard",
@@ -31,13 +31,14 @@ const VEGETABLE_FRUIT_TYPES_EN: Record<string, string> = {
 };
 
 // Define Nepali names for vegetable/fruit types
-const VEGETABLE_FRUIT_TYPES: Record<string, string> = vegetableFruitTypeOptions.reduce(
-  (acc, option) => ({
-    ...acc,
-    [option.value]: option.label,
-  }),
-  {},
-);
+const VEGETABLE_FRUIT_TYPES: Record<string, string> =
+  vegetableFruitTypeOptions.reduce(
+    (acc, option) => ({
+      ...acc,
+      [option.value]: option.label,
+    }),
+    {},
+  );
 
 // Define colors for vegetable/fruit types
 const VEGETABLE_FRUIT_COLORS: Record<string, string> = {
@@ -54,7 +55,7 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     const vegetableFruitDiseaseData =
       await api.profile.economics.municipalityWideVegetablesAndFruitsDiseases.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalVegetableFruits = vegetableFruitDiseaseData.length;
@@ -79,15 +80,15 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // Create rich keywords
     const keywordsNP = [
-      "खजुरा गाउँपालिका तरकारी फलफूल रोग कीट",
-      "खजुरा तरकारी उत्पादन समस्या",
+      "परिवर्तन गाउँपालिका तरकारी फलफूल रोग कीट",
+      "परिवर्तन तरकारी उत्पादन समस्या",
       "पालिका स्तरीय तरकारी संरक्षण",
       "गोलभेडा रोग कीट",
-      "काउली रोग कीट", 
+      "काउली रोग कीट",
       "बन्दा रोग कीट",
       "आलु रोग कीट",
       "रायो रोग कीट",
-      `खजुरा तरकारी संरक्षण ${localizeNumber(totalVegetableFruits.toString(), "ne")} प्रकार`,
+      `परिवर्तन तरकारी संरक्षण ${localizeNumber(totalVegetableFruits.toString(), "ne")} प्रकार`,
     ];
 
     const keywordsEN = [
@@ -96,14 +97,14 @@ export async function generateMetadata(): Promise<Metadata> {
       "Municipality-wide vegetable protection",
       "Tomato diseases pests",
       "Cauliflower diseases pests",
-      "Cabbage diseases pests", 
+      "Cabbage diseases pests",
       "Potato diseases pests",
       "Mustard diseases pests",
       `Khajura vegetable protection ${totalVegetableFruits} types`,
     ];
 
     // Create description
-    const descriptionNP = `खजुरा गाउँपालिकाको तरकारी र फलफूलमा देखिने रोग र कीटको विश्लेषण। ${localizeNumber(totalVegetableFruits.toString(), "ne")} प्रकारका तरकारी फलफूलमा देखिने प्रमुख रोग र कीटहरूको विस्तृत अध्ययन। सबैभन्दा प्रभावित ${VEGETABLE_FRUIT_TYPES[mostAffectedVegetableFruit] || mostAffectedVegetableFruit} रहेको छ। पालिका स्तरीय तरकारी संरक्षण योजना र रणनीतिको विश्लेषण।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको तरकारी र फलफूलमा देखिने रोग र कीटको विश्लेषण। ${localizeNumber(totalVegetableFruits.toString(), "ne")} प्रकारका तरकारी फलफूलमा देखिने प्रमुख रोग र कीटहरूको विस्तृत अध्ययन। सबैभन्दा प्रभावित ${VEGETABLE_FRUIT_TYPES[mostAffectedVegetableFruit] || mostAffectedVegetableFruit} रहेको छ। पालिका स्तरीय तरकारी संरक्षण योजना र रणनीतिको विश्लेषण।`;
 
     const descriptionEN = `Analysis of diseases and pests affecting vegetables and fruits in Khajura Rural Municipality. Detailed study of major diseases and pests affecting ${totalVegetableFruits} types of vegetables and fruits. Most affected crop is ${VEGETABLE_FRUIT_TYPES_EN[mostAffectedVegetableFruit] || mostAffectedVegetableFruit}. Municipality-wide vegetable and fruit protection planning and strategy analysis.`;
 
@@ -112,7 +113,8 @@ export async function generateMetadata(): Promise<Metadata> {
       description: descriptionNP,
       keywords: [...keywordsNP, ...keywordsEN],
       alternates: {
-        canonical: "/profile/economics/municipality-wide-vegetables-and-fruits-diseases",
+        canonical:
+          "/profile/economics/municipality-wide-vegetables-and-fruits-diseases",
         languages: {
           en: "/en/profile/economics/municipality-wide-vegetables-and-fruits-diseases",
           ne: "/ne/profile/economics/municipality-wide-vegetables-and-fruits-diseases",
@@ -134,7 +136,8 @@ export async function generateMetadata(): Promise<Metadata> {
     };
   } catch (error) {
     return {
-      title: "तरकारी र फलफूलमा रोग कीटपतंग | खजुरा गाउँपालिका डिजिटल प्रोफाइल",
+      title:
+        "तरकारी र फलफूलमा रोग कीटपतंग | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
       description: "पालिका स्तरीय तरकारी र फलफूलमा रोग कीटपतंगको विश्लेषण।",
     };
   }
@@ -145,7 +148,11 @@ const toc = [
   { level: 2, text: "प्रमुख तरकारी रोगहरू", slug: "main-vegetable-diseases" },
   { level: 2, text: "प्रमुख कीटपतंगहरू", slug: "main-pests" },
   { level: 2, text: "रोग र कीट विश्लेषण", slug: "disease-pest-analysis" },
-  { level: 2, text: "तरकारी संरक्षण रणनीति", slug: "vegetable-protection-strategy" },
+  {
+    level: 2,
+    text: "तरकारी संरक्षण रणनीति",
+    slug: "vegetable-protection-strategy",
+  },
   {
     level: 2,
     text: "निष्कर्ष र सिफारिसहरू",
@@ -169,30 +176,31 @@ export default async function MunicipalityWideVegetablesAndFruitsDiseasesPage() 
     majorDiseases: string[];
   };
 
-  const vegetableFruitSummary: VegetableFruitDiseaseSummaryType[] = vegetableFruitDiseaseData
-    .map(
-      (item: { crop: string; majorPests: string; majorDiseases: string }) => {
-        const pests = item.majorPests
-          .split(",")
-          .map((p) => p.trim())
-          .filter((p) => p.length > 0);
-        const diseases = item.majorDiseases
-          .split(",")
-          .map((d) => d.trim())
-          .filter((d) => d.length > 0);
+  const vegetableFruitSummary: VegetableFruitDiseaseSummaryType[] =
+    vegetableFruitDiseaseData
+      .map(
+        (item: { crop: string; majorPests: string; majorDiseases: string }) => {
+          const pests = item.majorPests
+            .split(",")
+            .map((p) => p.trim())
+            .filter((p) => p.length > 0);
+          const diseases = item.majorDiseases
+            .split(",")
+            .map((d) => d.trim())
+            .filter((d) => d.length > 0);
 
-        return {
-          crop: item.crop,
-          cropName: VEGETABLE_FRUIT_TYPES[item.crop] || item.crop,
-          pestsCount: pests.length,
-          diseasesCount: diseases.length,
-          totalIssues: pests.length + diseases.length,
-          majorPests: pests,
-          majorDiseases: diseases,
-        };
-      },
-    )
-    .sort((a, b) => b.totalIssues - a.totalIssues);
+          return {
+            crop: item.crop,
+            cropName: VEGETABLE_FRUIT_TYPES[item.crop] || item.crop,
+            pestsCount: pests.length,
+            diseasesCount: diseases.length,
+            totalIssues: pests.length + diseases.length,
+            majorPests: pests,
+            majorDiseases: diseases,
+          };
+        },
+      )
+      .sort((a, b) => b.totalIssues - a.totalIssues);
 
   // Calculate statistics
   const totalVegetableFruits = vegetableFruitSummary.length;
@@ -208,7 +216,8 @@ export default async function MunicipalityWideVegetablesAndFruitsDiseasesPage() 
 
   // Find most affected vegetable/fruit
   const mostAffectedVegetableFruit = vegetableFruitSummary[0];
-  const avgIssuesPerCrop = totalVegetableFruits > 0 ? totalIssues / totalVegetableFruits : 0;
+  const avgIssuesPerCrop =
+    totalVegetableFruits > 0 ? totalIssues / totalVegetableFruits : 0;
 
   return (
     <DocsLayout toc={<TableOfContents toc={toc} />}>
@@ -230,7 +239,7 @@ export default async function MunicipalityWideVegetablesAndFruitsDiseasesPage() 
               src="/images/vegetable-diseases.svg"
               width={1200}
               height={400}
-              alt="तरकारी र फलफूलमा रोग कीटपतंग - खजुरा गाउँपालिका (Vegetable and Fruit Diseases and Pests - Khajura Rural Municipality)"
+              alt="तरकारी र फलफूलमा रोग कीटपतंग - परिवर्तन गाउँपालिका (Vegetable and Fruit Diseases and Pests - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -238,23 +247,24 @@ export default async function MunicipalityWideVegetablesAndFruitsDiseasesPage() 
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा तरकारी र फलफूलमा रोग र कीटपतंग
+              परिवर्तन गाउँपालिकामा तरकारी र फलफूलमा रोग र कीटपतंग
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              तरकारी र फलफूलमा देखिने रोग र कीटपतंग खजुरा गाउँपालिकाको कृषि उत्पादनमा मुख्य चुनौती
-              हो। यस क्षेत्रमा गोलभेडा, काउली, बन्दा, आलु, रायो लगायतका विभिन्न
-              तरकारी र फलफूलहरूमा विभिन्न प्रकारका रोग र कीटपतंगहरूको समस्या देखिन्छ। यी
-              समस्याहरूले कृषकहरूको उत्पादन र आम्दानीमा प्रत्यक्ष प्रभाव
-              पारिरहेको छ।
+              तरकारी र फलफूलमा देखिने रोग र कीटपतंग परिवर्तन गाउँपालिकाको कृषि
+              उत्पादनमा मुख्य चुनौती हो। यस क्षेत्रमा गोलभेडा, काउली, बन्दा,
+              आलु, रायो लगायतका विभिन्न तरकारी र फलफूलहरूमा विभिन्न प्रकारका रोग
+              र कीटपतंगहरूको समस्या देखिन्छ। यी समस्याहरूले कृषकहरूको उत्पादन र
+              आम्दानीमा प्रत्यक्ष प्रभाव पारिरहेको छ।
             </p>
             <p>
-              खजुरा गाउँपालिकाको तरकारी र फलफूलमा रोग र कीट सम्बन्धी तथ्याङ्क अनुसार, यस
-              क्षेत्रमा कुल {localizeNumber(totalVegetableFruits.toString(), "ne")}{" "}
-              प्रकारका तरकारी र फलफूलहरूमा
+              परिवर्तन गाउँपालिकाको तरकारी र फलफूलमा रोग र कीट सम्बन्धी तथ्याङ्क
+              अनुसार, यस क्षेत्रमा कुल{" "}
+              {localizeNumber(totalVegetableFruits.toString(), "ne")} प्रकारका
+              तरकारी र फलफूलहरूमा
               {localizeNumber(totalIssues.toString(), "ne")} प्रकारका रोग र
               कीटपतंगहरू देखिएका छन्, जसमध्ये{" "}
               {localizeNumber(totalDiseases.toString(), "ne")}
@@ -262,12 +272,15 @@ export default async function MunicipalityWideVegetablesAndFruitsDiseasesPage() 
               छन्।
             </p>
 
-            <h2 id="main-vegetable-diseases" className="scroll-m-20 border-b pb-2">
+            <h2
+              id="main-vegetable-diseases"
+              className="scroll-m-20 border-b pb-2"
+            >
               प्रमुख तरकारी र फलफूल रोगहरू
             </h2>
             <p>
-              खजुरा गाउँपालिकामा देखिने प्रमुख तरकारी र फलफूल रोगहरू निम्नानुसार रहेका
-              छन्:
+              परिवर्तन गाउँपालिकामा देखिने प्रमुख तरकारी र फलफूल रोगहरू
+              निम्नानुसार रहेका छन्:
             </p>
 
             <ul>
@@ -284,7 +297,8 @@ export default async function MunicipalityWideVegetablesAndFruitsDiseasesPage() 
               प्रमुख कीटपतंगहरू
             </h2>
             <p>
-              खजुरा गाउँपालिकामा देखिने प्रमुख कीटपतंगहरू निम्नानुसार रहेका छन्:
+              परिवर्तन गाउँपालिकामा देखिने प्रमुख कीटपतंगहरू निम्नानुसार रहेका
+              छन्:
             </p>
 
             <ul>
@@ -297,13 +311,14 @@ export default async function MunicipalityWideVegetablesAndFruitsDiseasesPage() 
             </ul>
 
             <p>
-              सबैभन्दा प्रभावित तरकारी/फलफूल {mostAffectedVegetableFruit?.cropName || ""} रहेको छ,
-              जसमा कुल{" "}
+              सबैभन्दा प्रभावित तरकारी/फलफूल{" "}
+              {mostAffectedVegetableFruit?.cropName || ""} रहेको छ, जसमा कुल{" "}
               {localizeNumber(
                 mostAffectedVegetableFruit?.totalIssues.toString() || "0",
                 "ne",
               )}
-              प्रकारका रोग र कीटपतंगहरू देखिएका छन्। औसतमा प्रत्येक तरकारी/फलफूलमा
+              प्रकारका रोग र कीटपतंगहरू देखिएका छन्। औसतमा प्रत्येक
+              तरकारी/फलफूलमा
               {localizeNumber(avgIssuesPerCrop.toFixed(1), "ne")} प्रकारका
               समस्याहरू रहेका छन्।
             </p>
@@ -330,10 +345,10 @@ export default async function MunicipalityWideVegetablesAndFruitsDiseasesPage() 
               तरकारी र फलफूल संरक्षण रणनीति
             </h2>
             <p>
-              खजुरा गाउँपालिकामा तरकारी र फलफूलमा रोग र कीटपतंगको प्रभावकारी व्यवस्थापनका
-              लागि समेकित कीट व्यवस्थापन (Integrated Pest Management) को
-              अवधारणालाई अपनाउनु आवश्यक छ। यसमा जैविक, रासायनिक र कृषि पद्धतिगत
-              विधिहरूको संयोजन गरिन्छ।
+              परिवर्तन गाउँपालिकामा तरकारी र फलफूलमा रोग र कीटपतंगको प्रभावकारी
+              व्यवस्थापनका लागि समेकित कीट व्यवस्थापन (Integrated Pest
+              Management) को अवधारणालाई अपनाउनु आवश्यक छ। यसमा जैविक, रासायनिक र
+              कृषि पद्धतिगत विधिहरूको संयोजन गरिन्छ।
             </p>
 
             <VegetableFruitDiseaseAnalysisSection
@@ -356,30 +371,33 @@ export default async function MunicipalityWideVegetablesAndFruitsDiseasesPage() 
             </h2>
 
             <p>
-              खजुरा गाउँपालिकाको तरकारी र फलफूलमा रोग र कीटपतंगको अवस्थाको विश्लेषणबाट निम्न
-              निष्कर्ष र सिफारिसहरू प्रस्तुत गर्न सकिन्छ:
+              परिवर्तन गाउँपालिकाको तरकारी र फलफूलमा रोग र कीटपतंगको अवस्थाको
+              विश्लेषणबाट निम्न निष्कर्ष र सिफारिसहरू प्रस्तुत गर्न सकिन्छ:
             </p>
 
             <div className="pl-6 space-y-4">
               <div className="flex">
                 <span className="font-bold mr-2">१.</span>
                 <div>
-                  <strong>विशेष तरकारी संरक्षण:</strong> गोलभेडा, काउली र बन्दा जस्ता मुख्य तरकारीहरूमा
-                  विशेष ध्यान दिई समेकित कीट व्यवस्थापन गर्नुपर्ने।
+                  <strong>विशेष तरकारी संरक्षण:</strong> गोलभेडा, काउली र बन्दा
+                  जस्ता मुख्य तरकारीहरूमा विशेष ध्यान दिई समेकित कीट व्यवस्थापन
+                  गर्नुपर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">२.</span>
                 <div>
-                  <strong>मौसमी निगरानी:</strong> तरकारी र फलफूलको बिभिन्न मौसममा
-                  देखिने रोग र कीटको नियमित निगरानी र प्रारम्भिक पहिचान गर्नुपर्ने।
+                  <strong>मौसमी निगरानी:</strong> तरकारी र फलफूलको बिभिन्न
+                  मौसममा देखिने रोग र कीटको नियमित निगरानी र प्रारम्भिक पहिचान
+                  गर्नुपर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">३.</span>
                 <div>
-                  <strong>जैविक नियन्त्रण:</strong> रासायनिक कीटनाशकको सट्टा जैविक विधिहरू
-                  प्रयोग गरी वातावरण मैत्री तरकारी उत्पादन गर्नुपर्ने।
+                  <strong>जैविक नियन्त्रण:</strong> रासायनिक कीटनाशकको सट्टा
+                  जैविक विधिहरू प्रयोग गरी वातावरण मैत्री तरकारी उत्पादन
+                  गर्नुपर्ने।
                 </div>
               </div>
               <div className="flex">
@@ -392,17 +410,17 @@ export default async function MunicipalityWideVegetablesAndFruitsDiseasesPage() 
               <div className="flex">
                 <span className="font-bold mr-2">५.</span>
                 <div>
-                  <strong>भण्डारण व्यवस्थापन:</strong> तरकारी र फलफूलको उचित भण्डारण
-                  र ढुवानी व्यवस्थाले रोग फैलिनबाट रोक्न सकिन्छ।
+                  <strong>भण्डारण व्यवस्थापन:</strong> तरकारी र फलफूलको उचित
+                  भण्डारण र ढुवानी व्यवस्थाले रोग फैलिनबाट रोक्न सकिन्छ।
                 </div>
               </div>
             </div>
 
             <p className="mt-6">
-              खजुरा गाउँपालिकामा तरकारी र फलफूलमा रोग र कीटपतंगको प्रभावकारी व्यवस्थापन
-              मार्फत कृषि उत्पादकत्व वृद्धि र किसानको आम्दानी बढाउन सकिन्छ। यसका
-              लागि स्थानीय सरकार, कृषि ज्ञान केन्द्र र किसानहरूको सक्रिय सहकार्य
-              आवश्यक छ।
+              परिवर्तन गाउँपालिकामा तरकारी र फलफूलमा रोग र कीटपतंगको प्रभावकारी
+              व्यवस्थापन मार्फत कृषि उत्पादकत्व वृद्धि र किसानको आम्दानी बढाउन
+              सकिन्छ। यसका लागि स्थानीय सरकार, कृषि ज्ञान केन्द्र र किसानहरूको
+              सक्रिय सहकार्य आवश्यक छ।
             </p>
           </div>
         </section>

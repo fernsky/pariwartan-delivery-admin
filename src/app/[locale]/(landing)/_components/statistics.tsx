@@ -87,12 +87,12 @@ const Statistics = ({
     "@type": "Dataset",
     name: `${municipalityName} जनसांख्यिकीय तथ्याङ्क`,
     description:
-      "खजुरा गाउँपालिकाको प्रमुख जनसांख्यिकीय तथ्याङ्क, जनगणना अनुसार",
+      "परिवर्तन गाउँपालिकाको प्रमुख जनसांख्यिकीय तथ्याङ्क, जनगणना अनुसार",
     url: "https://digital.khajuramun.gov.np",
     keywords: [
-      "खजुरा गाउँपालिका जनसंख्या",
+      "परिवर्तन गाउँपालिका जनसंख्या",
       "Khajura Rural Municipality demographics",
-      "खजुरा जनगणना",
+      "परिवर्तन जनगणना",
       "बाँके जनसंख्या",
       "नेपालको जनसंख्या",
     ],
@@ -175,8 +175,6 @@ const Statistics = ({
         itemScope
         itemType="https://schema.org/Dataset"
       >
-    
-
         <div className="py-16 relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

@@ -1,9 +1,4 @@
-import {
-  ChevronRight,
-  Baby,
-  Activity,
-  Building,
-} from "lucide-react";
+import { ChevronRight, Baby, Activity, Building } from "lucide-react";
 import { api } from "@/trpc/server";
 import Image from "next/image";
 import { localizeNumber } from "@/lib/utils/localize-number";
@@ -14,11 +9,11 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "खजुरा गाउँपालिका प्रजनन् स्वास्थ्य | डिजिटल प्रोफाइल",
+  title: "परिवर्तन गाउँपालिका प्रजनन् स्वास्थ्य | डिजिटल प्रोफाइल",
   description:
-    "खजुरा गाउँपालिकाको प्रजनन् स्वास्थ्य सम्बन्धी तथ्याङ्क: सुरक्षित मातृत्वको अवस्था, संस्थागत प्रसूति, गर्भवती स्वास्थ्य सेवा र सुत्केरी स्थान सम्बन्धी विस्तृत विवरण।",
+    "परिवर्तन गाउँपालिकाको प्रजनन् स्वास्थ्य सम्बन्धी तथ्याङ्क: सुरक्षित मातृत्वको अवस्था, संस्थागत प्रसूति, गर्भवती स्वास्थ्य सेवा र सुत्केरी स्थान सम्बन्धी विस्तृत विवरण।",
   keywords: [
-    "खजुरा गाउँपालिका",
+    "परिवर्तन गाउँपालिका",
     "प्रजनन् स्वास्थ्य",
     "मातृ स्वास्थ्य",
     "सुरक्षित मातृत्व",
@@ -28,19 +23,23 @@ export const metadata: Metadata = {
     "तथ्याङ्क",
   ],
   openGraph: {
-    title: "खजुरा गाउँपालिका प्रजनन् स्वास्थ्य | डिजिटल प्रोफाइल",
+    title: "परिवर्तन गाउँपालिका प्रजनन् स्वास्थ्य | डिजिटल प्रोफाइल",
     description:
-      "खजुरा गाउँपालिकाको प्रजनन् स्वास्थ्य सम्बन्धी तथ्याङ्क: सुरक्षित मातृत्वको अवस्था, संस्थागत प्रसूति, गर्भवती स्वास्थ्य सेवा र सुत्केरी स्थान सम्बन्धी विस्तृत विवरण।",
+      "परिवर्तन गाउँपालिकाको प्रजनन् स्वास्थ्य सम्बन्धी तथ्याङ्क: सुरक्षित मातृत्वको अवस्था, संस्थागत प्रसूति, गर्भवती स्वास्थ्य सेवा र सुत्केरी स्थान सम्बन्धी विस्तृत विवरण।",
     type: "article",
     locale: "ne_NP",
-    siteName: "खजुरा गाउँपालिका डिजिटल प्रोफाइल",
+    siteName: "परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
   },
 };
 
 const toc = [
   { level: 2, text: "परिचय", slug: "introduction" },
   { level: 2, text: "प्रमुख तथ्यहरू", slug: "key-facts" },
-  { level: 2, text: "प्रजनन् स्वास्थ्य श्रेणीहरू", slug: "fertility-categories" },
+  {
+    level: 2,
+    text: "प्रजनन् स्वास्थ्य श्रेणीहरू",
+    slug: "fertility-categories",
+  },
   { level: 2, text: "सुधारका रणनीतिहरू", slug: "improvement-strategies" },
 ];
 
@@ -48,13 +47,14 @@ const fertilityCategories = [
   {
     title: "सुरक्षित मातृत्वको अवस्थाको विवरण",
     description:
-      "खजुरा गाउँपालिकामा गर्भवती जाँच, संस्थागत प्रसूति, सुत्केरी सेवा र नवजात शिशु स्वास्थ्य सम्बन्धी सूचकहरूको विस्तृत विवरण।",
+      "परिवर्तन गाउँपालिकामा गर्भवती जाँच, संस्थागत प्रसूति, सुत्केरी सेवा र नवजात शिशु स्वास्थ्य सम्बन्धी सूचकहरूको विस्तृत विवरण।",
     href: "/profile/fertility/safe-motherhood-indicators",
     icon: <Activity className="h-5 w-5" />,
   },
   {
     title: "सुत्केरी गराएको स्थान सम्बन्धी विवरण",
-    description: "खजुरा गाउँपालिकामा महिलाहरूले सुत्केरी गराउने स्थानको वडागत विवरण र विश्लेषण।",
+    description:
+      "परिवर्तन गाउँपालिकामा महिलाहरूले सुत्केरी गराउने स्थानको वडागत विवरण र विश्लेषण।",
     href: "/profile/fertility/ward-wise-delivery-place",
     icon: <Building className="h-5 w-5" />,
   },
@@ -67,38 +67,54 @@ export default async function FertilityPage() {
 
   try {
     // Try to fetch safe motherhood indicators data
-    safeMotherhoodData = await api.profile.fertility.safeMotherhoodIndicators.summary.query().catch(() => null);
-    
+    safeMotherhoodData =
+      await api.profile.fertility.safeMotherhoodIndicators.summary
+        .query()
+        .catch(() => null);
+
     // Try to fetch delivery place data
-    deliveryPlaceData = await api.profile.fertility.wardWiseDeliveryPlaces.getAll.query().catch(() => null);
+    deliveryPlaceData =
+      await api.profile.fertility.wardWiseDeliveryPlaces.getAll
+        .query()
+        .catch(() => null);
   } catch (error) {
     console.error("Error fetching fertility data:", error);
   }
 
   // Calculate summary statistics if data is available
-  const institutionalDeliveries = safeMotherhoodData 
-    ? safeMotherhoodData.delivery.find(item => item.indicator === "INSTITUTIONAL_DELIVERIES")?.value
+  const institutionalDeliveries = safeMotherhoodData
+    ? safeMotherhoodData.delivery.find(
+        (item) => item.indicator === "INSTITUTIONAL_DELIVERIES",
+      )?.value
     : null;
 
   const ancCheckups = safeMotherhoodData
-    ? safeMotherhoodData.antenatal.find(item => item.indicator === "PREGNANT_WOMEN_FOUR_ANC_CHECKUPS_PROTOCOL")?.value
+    ? safeMotherhoodData.antenatal.find(
+        (item) =>
+          item.indicator === "PREGNANT_WOMEN_FOUR_ANC_CHECKUPS_PROTOCOL",
+      )?.value
     : null;
 
   const pncVisits = safeMotherhoodData
-    ? safeMotherhoodData.postnatal.find(item => item.indicator === "POSTPARTUM_MOTHERS_TWO_PNC_HOME_VISITS")?.value
+    ? safeMotherhoodData.postnatal.find(
+        (item) => item.indicator === "POSTPARTUM_MOTHERS_TWO_PNC_HOME_VISITS",
+      )?.value
     : null;
-    
+
   // Calculate institutional delivery count from ward-wise data
-  const institutionalDeliveryCount = deliveryPlaceData 
+  const institutionalDeliveryCount = deliveryPlaceData
     ? deliveryPlaceData
-        .filter(item => item.deliveryPlace === "GOVERNMENTAL_HEALTH_INSTITUTION" || item.deliveryPlace === "PRIVATE_HEALTH_INSTITUTION")
+        .filter(
+          (item) =>
+            item.deliveryPlace === "GOVERNMENTAL_HEALTH_INSTITUTION" ||
+            item.deliveryPlace === "PRIVATE_HEALTH_INSTITUTION",
+        )
         .reduce((sum, item) => sum + (item.population || 0), 0)
     : null;
 
   // Calculate total deliveries from ward-wise data
   const totalDeliveries = deliveryPlaceData
-    ? deliveryPlaceData
-        .reduce((sum, item) => sum + (item.population || 0), 0)
+    ? deliveryPlaceData.reduce((sum, item) => sum + (item.population || 0), 0)
     : null;
 
   return (
@@ -108,7 +124,7 @@ export default async function FertilityPage() {
         <div className="relative rounded-lg overflow-hidden">
           <Image
             src="/images/fertility-hero.svg"
-            alt="खजुरा गाउँपालिका प्रजनन् स्वास्थ्य"
+            alt="परिवर्तन गाउँपालिका प्रजनन् स्वास्थ्य"
             width={1200}
             height={400}
             className="w-full h-[300px] object-cover"
@@ -117,7 +133,7 @@ export default async function FertilityPage() {
         </div>
         <div className="mt-6 px-2">
           <h1 className="text-4xl font-bold mb-3">
-            खजुरा गाउँपालिकाको प्रजनन् स्वास्थ्य
+            परिवर्तन गाउँपालिकाको प्रजनन् स्वास्थ्य
           </h1>
         </div>
 
@@ -125,11 +141,14 @@ export default async function FertilityPage() {
         <section id="introduction">
           <div className="prose prose-lg dark:prose-invert max-w-none">
             <p>
-              प्रजनन् स्वास्थ्य, विशेषगरी मातृ तथा शिशु स्वास्थ्य सम्बन्धी तथ्याङ्कहरू पालिकाको स्वास्थ्य सेवा र जनस्वास्थ्यको महत्त्वपूर्ण सूचकहरू हुन्।
-              खजुरा गाउँपालिकाको प्रजनन् स्वास्थ्य सम्बन्धी प्रोफाइलमा सुरक्षित मातृत्वको अवस्था, गर्भावस्थाको स्वास्थ्य सेवा, संस्थागत प्रसूति दर,
-              सुत्केरी पश्चातको स्याहार र सुत्केरी गराइने स्थान सम्बन्धी विस्तृत तथ्याङ्कहरू समेटिएका छन्।
-              यी तथ्याङ्कहरूले पालिकाभित्रका महिलाहरूको प्रजनन् स्वास्थ्य अवस्था बुझ्न र सेवा सुधारका लागि 
-              योजना बनाउन महत्त्वपूर्ण भूमिका खेल्छन्।
+              प्रजनन् स्वास्थ्य, विशेषगरी मातृ तथा शिशु स्वास्थ्य सम्बन्धी
+              तथ्याङ्कहरू पालिकाको स्वास्थ्य सेवा र जनस्वास्थ्यको महत्त्वपूर्ण
+              सूचकहरू हुन्। परिवर्तन गाउँपालिकाको प्रजनन् स्वास्थ्य सम्बन्धी
+              प्रोफाइलमा सुरक्षित मातृत्वको अवस्था, गर्भावस्थाको स्वास्थ्य सेवा,
+              संस्थागत प्रसूति दर, सुत्केरी पश्चातको स्याहार र सुत्केरी गराइने
+              स्थान सम्बन्धी विस्तृत तथ्याङ्कहरू समेटिएका छन्। यी तथ्याङ्कहरूले
+              पालिकाभित्रका महिलाहरूको प्रजनन् स्वास्थ्य अवस्था बुझ्न र सेवा
+              सुधारका लागि योजना बनाउन महत्त्वपूर्ण भूमिका खेल्छन्।
             </p>
           </div>
         </section>
@@ -173,10 +192,7 @@ export default async function FertilityPage() {
               </h3>
               <p className="text-3xl font-bold text-primary">
                 {pncVisits !== null
-                  ? localizeNumber(
-                      `${Number(pncVisits).toFixed(1)}%`,
-                      "ne",
-                    )
+                  ? localizeNumber(`${Number(pncVisits).toFixed(1)}%`, "ne")
                   : "लोड हुँदैछ..."}
               </p>
             </div>
@@ -187,7 +203,10 @@ export default async function FertilityPage() {
               </h3>
               <p className="text-3xl font-bold text-primary">
                 {institutionalDeliveryCount !== null && totalDeliveries !== null
-                  ? localizeNumber(institutionalDeliveryCount.toLocaleString(), "ne")
+                  ? localizeNumber(
+                      institutionalDeliveryCount.toLocaleString(),
+                      "ne",
+                    )
                   : "लोड हुँदैछ..."}
               </p>
             </div>
@@ -201,9 +220,9 @@ export default async function FertilityPage() {
               प्रजनन् स्वास्थ्य श्रेणीहरू
             </h2>
             <p>
-              खजुरा गाउँपालिकाको प्रजनन् स्वास्थ्य सम्बन्धी विस्तृत जानकारीका लागि
-              तलका श्रेणीहरू हेर्नुहोस्। प्रत्येक श्रेणीमा विस्तृत तथ्याङ्क,
-              चार्ट र विश्लेषण प्रस्तुत गरिएको छ।
+              परिवर्तन गाउँपालिकाको प्रजनन् स्वास्थ्य सम्बन्धी विस्तृत जानकारीका
+              लागि तलका श्रेणीहरू हेर्नुहोस्। प्रत्येक श्रेणीमा विस्तृत
+              तथ्याङ्क, चार्ट र विश्लेषण प्रस्तुत गरिएको छ।
             </p>
           </div>
 
@@ -246,48 +265,58 @@ export default async function FertilityPage() {
               सुधारका रणनीतिहरू
             </h2>
             <p>
-              खजुरा गाउँपालिकामा प्रजनन् स्वास्थ्यको अवस्था सुधार गर्न निम्न रणनीतिहरू अपनाउन सकिन्छ:
+              परिवर्तन गाउँपालिकामा प्रजनन् स्वास्थ्यको अवस्था सुधार गर्न निम्न
+              रणनीतिहरू अपनाउन सकिन्छ:
             </p>
-            
+
             <div className="pl-6 space-y-4 mt-4">
               <div className="flex">
                 <span className="font-bold mr-2">१.</span>
                 <div>
-                  <strong>संस्थागत प्रसूति प्रवर्द्धन:</strong> घरमा हुने प्रसूति दर घटाई संस्थागत प्रसूति बढाउन प्रोत्साहन कार्यक्रम सञ्चालन गर्ने।
+                  <strong>संस्थागत प्रसूति प्रवर्द्धन:</strong> घरमा हुने
+                  प्रसूति दर घटाई संस्थागत प्रसूति बढाउन प्रोत्साहन कार्यक्रम
+                  सञ्चालन गर्ने।
                 </div>
               </div>
-              
+
               <div className="flex">
                 <span className="font-bold mr-2">२.</span>
                 <div>
-                  <strong>गर्भवती जाँच सेवा सुदृढीकरण:</strong> नियमित चार पटक गर्भवती जाँच पुर्‍याउन स्वास्थ्य संस्थाहरूको क्षमता विकास र महिला स्वास्थ्य स्वयंसेविका परिचालन गर्ने।
+                  <strong>गर्भवती जाँच सेवा सुदृढीकरण:</strong> नियमित चार पटक
+                  गर्भवती जाँच पुर्‍याउन स्वास्थ्य संस्थाहरूको क्षमता विकास र
+                  महिला स्वास्थ्य स्वयंसेविका परिचालन गर्ने।
                 </div>
               </div>
-              
+
               <div className="flex">
                 <span className="font-bold mr-2">३.</span>
                 <div>
-                  <strong>सुत्केरी जाँच सेवा विस्तार:</strong> सुत्केरी पश्चात् नियमित घरभेट कार्यक्रम र जाँच सेवा सुनिश्चित गर्ने।
+                  <strong>सुत्केरी जाँच सेवा विस्तार:</strong> सुत्केरी पश्चात्
+                  नियमित घरभेट कार्यक्रम र जाँच सेवा सुनिश्चित गर्ने।
                 </div>
               </div>
-              
+
               <div className="flex">
                 <span className="font-bold mr-2">४.</span>
                 <div>
-                  <strong>बर्थिङ सेन्टर विस्तार:</strong> वडा स्तरमा बर्थिङ सेन्टरहरू स्थापना र सुदृढीकरण गरी सेवा पहुँच बढाउने।
+                  <strong>बर्थिङ सेन्टर विस्तार:</strong> वडा स्तरमा बर्थिङ
+                  सेन्टरहरू स्थापना र सुदृढीकरण गरी सेवा पहुँच बढाउने।
                 </div>
               </div>
-              
+
               <div className="flex">
                 <span className="font-bold mr-2">५.</span>
                 <div>
-                  <strong>जनचेतना अभिवृद्धि:</strong> प्रजनन् स्वास्थ्य, सुरक्षित मातृत्व र संस्थागत प्रसूतिको महत्व बारे समुदायमा जनचेतना बढाउने कार्यक्रम सञ्चालन गर्ने।
+                  <strong>जनचेतना अभिवृद्धि:</strong> प्रजनन् स्वास्थ्य,
+                  सुरक्षित मातृत्व र संस्थागत प्रसूतिको महत्व बारे समुदायमा
+                  जनचेतना बढाउने कार्यक्रम सञ्चालन गर्ने।
                 </div>
               </div>
             </div>
-            
+
             <p className="mt-6">
-              विस्तृत तथ्याङ्क र विश्लेषणका लागि माथि उल्लेखित विभिन्न श्रेणीहरू अन्तर्गतका पृष्ठहरू हेर्नुहोस्।
+              विस्तृत तथ्याङ्क र विश्लेषणका लागि माथि उल्लेखित विभिन्न श्रेणीहरू
+              अन्तर्गतका पृष्ठहरू हेर्नुहोस्।
             </p>
           </div>
         </section>

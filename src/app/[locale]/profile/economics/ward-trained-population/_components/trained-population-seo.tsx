@@ -34,11 +34,11 @@ export default function TrainedPopulationSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Trained Population Distribution of Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Trained Population Distribution of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Trained population distribution data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalTrainedPopulation.toLocaleString()} trained individuals.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Trained population",
         "Skills development",
         "Vocational training",

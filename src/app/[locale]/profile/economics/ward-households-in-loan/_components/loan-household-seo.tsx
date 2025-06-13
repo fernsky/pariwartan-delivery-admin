@@ -33,11 +33,11 @@ export default function LoanHouseholdSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Households with Loans in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Households with Loans in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Distribution of households with loans across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholdsOnLoan.toLocaleString()} households having loans.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Household loans",
         "Ward-wise loan data",
         "Nepal economic survey",

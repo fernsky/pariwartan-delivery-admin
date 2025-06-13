@@ -58,7 +58,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const occupationData =
       await api.profile.demographics.wardWiseMajorOccupation.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalPopulation = occupationData.reduce(
@@ -82,16 +82,16 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // Create rich keywords with actual data
     const keywordsNP = [
-      "खजुरा गाउँपालिका मुख्य पेशा",
-      "खजुरा पेशागत वितरण",
-      `खजुरा ${OCCUPATION_NAMES[topOccupations[0] as OccupationType]} जनसंख्या`,
+      "परिवर्तन गाउँपालिका मुख्य पेशा",
+      "परिवर्तन पेशागत वितरण",
+      `परिवर्तन ${OCCUPATION_NAMES[topOccupations[0] as OccupationType]} जनसंख्या`,
       ...topOccupations.map(
-        (r) => `${OCCUPATION_NAMES[r as OccupationType]} पेशा खजुरा`,
+        (r) => `${OCCUPATION_NAMES[r as OccupationType]} पेशा परिवर्तन`,
       ),
       "वडा अनुसार पेशागत वितरण",
       "आर्थिक गतिविधि तथ्याङ्क",
-      "पेशागत सर्वेक्षण खजुरा",
-      `खजुरा कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")}`,
+      "पेशागत सर्वेक्षण परिवर्तन",
+      `परिवर्तन कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")}`,
     ];
 
     const keywordsEN = [
@@ -109,7 +109,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data
-    const descriptionNP = `खजुरा गाउँपालिकाको वडा अनुसार मुख्य पेशागत वितरण, प्रवृत्ति र विश्लेषण। कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")} मध्ये ${OCCUPATION_NAMES[topOccupations[0] as OccupationType]} (${localizeNumber(occupationCounts[topOccupations[0]].toString(), "ne")}) सबैभन्दा ठूलो समूह हो, त्यसपछि ${OCCUPATION_NAMES[topOccupations[1] as OccupationType]} (${localizeNumber(occupationCounts[topOccupations[1]].toString(), "ne")}) र ${OCCUPATION_NAMES[topOccupations[2] as OccupationType]} (${localizeNumber(occupationCounts[topOccupations[2]].toString(), "ne")})। विभिन्न पेशाहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार मुख्य पेशागत वितरण, प्रवृत्ति र विश्लेषण। कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")} मध्ये ${OCCUPATION_NAMES[topOccupations[0] as OccupationType]} (${localizeNumber(occupationCounts[topOccupations[0]].toString(), "ne")}) सबैभन्दा ठूलो समूह हो, त्यसपछि ${OCCUPATION_NAMES[topOccupations[1] as OccupationType]} (${localizeNumber(occupationCounts[topOccupations[1]].toString(), "ne")}) र ${OCCUPATION_NAMES[topOccupations[2] as OccupationType]} (${localizeNumber(occupationCounts[topOccupations[2]].toString(), "ne")})। विभिन्न पेशाहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
 
     const descriptionEN = `Ward-wise main occupation distribution, trends and analysis for Khajura Rural Municipality. Out of a total population of ${totalPopulation}, ${OCCUPATION_NAMES_EN[topOccupations[0] as OccupationType]} (${occupationCounts[topOccupations[0]]}) is the largest group, followed by ${OCCUPATION_NAMES_EN[topOccupations[1] as OccupationType]} (${occupationCounts[topOccupations[1]]}) and ${OCCUPATION_NAMES_EN[topOccupations[2] as OccupationType]} (${occupationCounts[topOccupations[2]]})। Detailed statistics and visualizations of various occupational categories.`;
 
@@ -141,7 +141,7 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "मुख्य पेशागत वितरण | खजुरा गाउँपालिका डिजिटल प्रोफाइल",
+      title: "मुख्य पेशागत वितरण | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
       description:
         "वडा अनुसार मुख्य पेशागत वितरण, प्रवृत्ति र विश्लेषण। विभिन्न पेशाहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।",
     };
@@ -274,7 +274,7 @@ export default async function WardMainOccupationsPage() {
               src="/images/occupation-diversity.svg"
               width={1200}
               height={400}
-              alt="मुख्य पेशागत वितरण - खजुरा गाउँपालिका (Main Occupational Distribution - Khajura Rural Municipality)"
+              alt="मुख्य पेशागत वितरण - परिवर्तन गाउँपालिका (Main Occupational Distribution - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -282,26 +282,30 @@ export default async function WardMainOccupationsPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा मुख्य पेशागत वितरण
+              परिवर्तन गाउँपालिकामा मुख्य पेशागत वितरण
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              यस खण्डमा खजुरा गाउँपालिकाको विभिन्न वडाहरूमा बसोबास गर्ने
+              यस खण्डमा परिवर्तन गाउँपालिकाको विभिन्न वडाहरूमा बसोबास गर्ने
               नागरिकहरूको मुख्य पेशा सम्बन्धी विस्तृत तथ्याङ्क प्रस्तुत गरिएको
               छ। यो तथ्याङ्कले आर्थिक गतिविधि, रोजगारीको अवस्था र श्रम बजारको
               संरचनालाई प्रतिबिम्बित गर्दछ।
             </p>
             <p>
-              खजुरा गाउँपालिकामा विभिन्न प्रकारका पेशाहरूमा मानिसहरू संलग्न छन्।
-              कुल जनसंख्या {localizeNumber(totalPopulation.toLocaleString(), "ne")} मध्ये{" "}
+              परिवर्तन गाउँपालिकामा विभिन्न प्रकारका पेशाहरूमा मानिसहरू संलग्न
+              छन्। कुल जनसंख्या{" "}
+              {localizeNumber(totalPopulation.toLocaleString(), "ne")} मध्ये{" "}
               {overallSummary[0]?.occupationName || ""} गर्ने व्यक्तिहरू{" "}
-              {localizeNumber((
-                ((overallSummary[0]?.population || 0) / totalPopulation) *
-                100
-              ).toFixed(1), "ne")}
+              {localizeNumber(
+                (
+                  ((overallSummary[0]?.population || 0) / totalPopulation) *
+                  100
+                ).toFixed(1),
+                "ne",
+              )}
               % रहेका छन्। यस तथ्याङ्कले रोजगारी सृजना, सीप विकास र आर्थिक
               योजनामा महत्वपूर्ण भूमिका खेल्दछ।
             </p>
@@ -313,7 +317,7 @@ export default async function WardMainOccupationsPage() {
               पेशा अनुसार जनसंख्या
             </h2>
             <p>
-              खजुरा गाउँपालिकामा विभिन्न पेशामा संलग्न व्यक्तिहरूको संख्या
+              परिवर्तन गाउँपालिकामा विभिन्न पेशामा संलग्न व्यक्तिहरूको संख्या
               निम्नानुसार छ:
             </p>
           </div>
@@ -334,16 +338,19 @@ export default async function WardMainOccupationsPage() {
               प्रमुख पेशाहरूको विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा निम्न पेशाहरू प्रमुख रूपमा देखिन्छन्। यी
+              परिवर्तन गाउँपालिकामा निम्न पेशाहरू प्रमुख रूपमा देखिन्छन्। यी
               पेशाहरू मध्ये{" "}
               {OCCUPATION_NAMES[
                 overallSummary[0]?.occupation as keyof typeof OCCUPATION_NAMES
               ] || "कृषि"}{" "}
               सबैभन्दा धेरै व्यक्तिहरूले अपनाएको पेशा हो, जसमा कुल जनसंख्याको{" "}
-              {localizeNumber((
-                ((overallSummary[0]?.population || 0) / totalPopulation) *
-                100
-              ).toFixed(2), "ne")}
+              {localizeNumber(
+                (
+                  ((overallSummary[0]?.population || 0) / totalPopulation) *
+                  100
+                ).toFixed(2),
+                "ne",
+              )}
               % संलग्न छन्।
             </p>
 

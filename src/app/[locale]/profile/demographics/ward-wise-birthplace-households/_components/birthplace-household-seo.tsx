@@ -37,20 +37,25 @@ export default function BirthplaceHouseholdSEO({
     }));
 
     // Find most common birthplace
-    const mostCommonBirthplace = overallSummary.length > 0 ? overallSummary[0] : null;
-    const mostCommonBirthplaceEN = mostCommonBirthplace ? (BIRTH_PLACE_NAMES_EN[mostCommonBirthplace.birthPlace] || mostCommonBirthplace.birthPlace) : "";
-    const mostCommonBirthplacePercentage = mostCommonBirthplace && totalHouseholds > 0 
-      ? ((mostCommonBirthplace.households / totalHouseholds) * 100).toFixed(2)
-      : "0";
+    const mostCommonBirthplace =
+      overallSummary.length > 0 ? overallSummary[0] : null;
+    const mostCommonBirthplaceEN = mostCommonBirthplace
+      ? BIRTH_PLACE_NAMES_EN[mostCommonBirthplace.birthPlace] ||
+        mostCommonBirthplace.birthPlace
+      : "";
+    const mostCommonBirthplacePercentage =
+      mostCommonBirthplace && totalHouseholds > 0
+        ? ((mostCommonBirthplace.households / totalHouseholds) * 100).toFixed(2)
+        : "0";
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Household Birthplaces in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Household Birthplaces in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Household birthplace data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. The most common origin is ${mostCommonBirthplaceEN} with ${mostCommonBirthplace?.households.toLocaleString()} households (${mostCommonBirthplacePercentage}%).`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Household birthplaces",
         "Birthplace distribution",
         "Ward-wise birthplace data",
@@ -59,7 +64,9 @@ export default function BirthplaceHouseholdSEO({
         ...Object.values(BIRTH_PLACE_NAMES_EN).map(
           (name) => `${name} households statistics`,
         ),
-        ...Object.values(BIRTH_PLACE_NAMES).map((name) => `${name} घरपरिवार तथ्याङ्क`),
+        ...Object.values(BIRTH_PLACE_NAMES).map(
+          (name) => `${name} घरपरिवार तथ्याङ्क`,
+        ),
       ],
       url: "https://digital.khajuramun.gov.np/profile/demographics/ward-wise-birthplace-households",
       creator: {
@@ -89,7 +96,7 @@ export default function BirthplaceHouseholdSEO({
           name: "Total Households",
           unitText: "households",
           value: totalHouseholds,
-        }
+        },
       ],
       observation: birthplaceStats,
     };

@@ -1,9 +1,4 @@
-import {
-  ChevronRight,
-  GraduationCap,
-  BookOpen,
-  BookX,
-} from "lucide-react";
+import { ChevronRight, GraduationCap, BookOpen, BookX } from "lucide-react";
 import { api } from "@/trpc/server";
 import Image from "next/image";
 import { localizeNumber } from "@/lib/utils/localize-number";
@@ -14,11 +9,11 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "खजुरा गाउँपालिका शैक्षिक अवस्था | डिजिटल प्रोफाइल",
+  title: "परिवर्तन गाउँपालिका शैक्षिक अवस्था | डिजिटल प्रोफाइल",
   description:
-    "खजुरा गाउँपालिकाको शैक्षिक अवस्था सम्बन्धी तथ्याङ्क: शैक्षिक स्तर, साक्षरता दर र विद्यालय छाड्ने कारणहरू सम्बन्धी विस्तृत विवरण।",
+    "परिवर्तन गाउँपालिकाको शैक्षिक अवस्था सम्बन्धी तथ्याङ्क: शैक्षिक स्तर, साक्षरता दर र विद्यालय छाड्ने कारणहरू सम्बन्धी विस्तृत विवरण।",
   keywords: [
-    "खजुरा गाउँपालिका",
+    "परिवर्तन गाउँपालिका",
     "शैक्षिक अवस्था",
     "शैक्षिक स्तर",
     "साक्षरता दर",
@@ -26,12 +21,12 @@ export const metadata: Metadata = {
     "शिक्षा तथ्याङ्क",
   ],
   openGraph: {
-    title: "खजुरा गाउँपालिका शैक्षिक अवस्था | डिजिटल प्रोफाइल",
+    title: "परिवर्तन गाउँपालिका शैक्षिक अवस्था | डिजिटल प्रोफाइल",
     description:
-      "खजुरा गाउँपालिकाको शैक्षिक अवस्था सम्बन्धी तथ्याङ्क: शैक्षिक स्तर, साक्षरता दर र विद्यालय छाड्ने कारणहरू सम्बन्धी विस्तृत विवरण।",
+      "परिवर्तन गाउँपालिकाको शैक्षिक अवस्था सम्बन्धी तथ्याङ्क: शैक्षिक स्तर, साक्षरता दर र विद्यालय छाड्ने कारणहरू सम्बन्धी विस्तृत विवरण।",
     type: "article",
     locale: "ne_NP",
-    siteName: "खजुरा गाउँपालिका डिजिटल प्रोफाइल",
+    siteName: "परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
   },
 };
 
@@ -46,20 +41,21 @@ const educationCategories = [
   {
     title: "शैक्षिक स्तरको अवस्था",
     description:
-      "खजुरा गाउँपालिकामा जनसंख्याको शैक्षिक स्तरको वडागत वितरण र विश्लेषण।",
+      "परिवर्तन गाउँपालिकामा जनसंख्याको शैक्षिक स्तरको वडागत वितरण र विश्लेषण।",
     href: "/profile/education/ward-wise-educational-level",
     icon: <GraduationCap className="h-5 w-5" />,
   },
   {
     title: "साक्षरताको अवस्था",
-    description: "खजुरा गाउँपालिकामा साक्षरताको अवस्थाको वडागत वितरण र विश्लेषण।",
+    description:
+      "परिवर्तन गाउँपालिकामा साक्षरताको अवस्थाको वडागत वितरण र विश्लेषण।",
     href: "/profile/education/ward-wise-literacy-status",
     icon: <BookOpen className="h-5 w-5" />,
   },
   {
     title: "विद्यालय छाड्ने कारणहरू",
     description:
-      "खजुरा गाउँपालिकामा विद्यार्थीहरूले विद्यालय छाड्नुका कारणहरूको वडागत विश्लेषण।",
+      "परिवर्तन गाउँपालिकामा विद्यार्थीहरूले विद्यालय छाड्नुका कारणहरूको वडागत विश्लेषण।",
     href: "/profile/education/ward-wise-school-dropout",
     icon: <BookX className="h-5 w-5" />,
   },
@@ -73,35 +69,49 @@ export default async function EducationPage() {
 
   try {
     // Try to fetch educational level data
-    educationalLevelData = await api.profile.education.wardWiseEducationalLevel.getAll.query().catch(() => null);
-    
+    educationalLevelData =
+      await api.profile.education.wardWiseEducationalLevel.getAll
+        .query()
+        .catch(() => null);
+
     // Try to fetch literacy status data
-    literacyStatusData = await api.profile.education.wardWiseLiteracyStatus.getAll.query().catch(() => null);
-    
+    literacyStatusData =
+      await api.profile.education.wardWiseLiteracyStatus.getAll
+        .query()
+        .catch(() => null);
+
     // Try to fetch school dropout data
-    schoolDropoutData = await api.profile.education.wardWiseSchoolDropout.getAll.query().catch(() => null);
+    schoolDropoutData = await api.profile.education.wardWiseSchoolDropout.getAll
+      .query()
+      .catch(() => null);
   } catch (error) {
     console.error("Error fetching education data:", error);
   }
 
   // Calculate summary statistics if data is available
   // Higher education percentage
-  const higherEducationRate = educationalLevelData 
+  const higherEducationRate = educationalLevelData
     ? (() => {
         // Group education levels
-        const higherEducationLevels = ["BACHELOR_LEVEL", "MASTERS_LEVEL", "PHD_LEVEL"];
-        
+        const higherEducationLevels = [
+          "BACHELOR_LEVEL",
+          "MASTERS_LEVEL",
+          "PHD_LEVEL",
+        ];
+
         // Calculate total population and higher education population
         let totalPopulation = 0;
         let higherEducationPopulation = 0;
-        educationalLevelData.forEach(item => {
+        educationalLevelData.forEach((item) => {
           totalPopulation += item.population;
           if (higherEducationLevels.includes(item.educationalLevelType)) {
             higherEducationPopulation += item.population;
           }
         });
-        
-        return totalPopulation > 0 ? (higherEducationPopulation / totalPopulation) * 100 : null;
+
+        return totalPopulation > 0
+          ? (higherEducationPopulation / totalPopulation) * 100
+          : null;
       })()
     : null;
 
@@ -110,15 +120,20 @@ export default async function EducationPage() {
     ? (() => {
         let totalPopulation = 0;
         let literatePopulation = 0;
-        
-        literacyStatusData.forEach(item => {
+
+        literacyStatusData.forEach((item) => {
           totalPopulation += item.population;
-          if (item.literacyType === "BOTH_READING_AND_WRITING" || item.literacyType === "READING_ONLY") {
+          if (
+            item.literacyType === "BOTH_READING_AND_WRITING" ||
+            item.literacyType === "READING_ONLY"
+          ) {
             literatePopulation += item.population;
           }
         });
-        
-        return totalPopulation > 0 ? (literatePopulation / totalPopulation) * 100 : null;
+
+        return totalPopulation > 0
+          ? (literatePopulation / totalPopulation) * 100
+          : null;
       })()
     : null;
 
@@ -127,33 +142,37 @@ export default async function EducationPage() {
     ? (() => {
         let totalPopulation = 0;
         let fullyLiteratePopulation = 0;
-        
-        literacyStatusData.forEach(item => {
+
+        literacyStatusData.forEach((item) => {
           totalPopulation += item.population;
           if (item.literacyType === "BOTH_READING_AND_WRITING") {
             fullyLiteratePopulation += item.population;
           }
         });
-        
-        return totalPopulation > 0 ? (fullyLiteratePopulation / totalPopulation) * 100 : null;
+
+        return totalPopulation > 0
+          ? (fullyLiteratePopulation / totalPopulation) * 100
+          : null;
       })()
     : null;
-    
+
   // Economic dropout reason percentage
   const economicDropoutRate = schoolDropoutData
     ? (() => {
         const economicReasons = ["EXPENSIVE", "HOUSE_HELP", "EMPLOYMENT"];
         let totalDropouts = 0;
         let economicDropouts = 0;
-        
-        schoolDropoutData.forEach(item => {
+
+        schoolDropoutData.forEach((item) => {
           totalDropouts += item.population;
           if (economicReasons.includes(item.cause)) {
             economicDropouts += item.population;
           }
         });
-        
-        return totalDropouts > 0 ? (economicDropouts / totalDropouts) * 100 : null;
+
+        return totalDropouts > 0
+          ? (economicDropouts / totalDropouts) * 100
+          : null;
       })()
     : null;
 
@@ -164,7 +183,7 @@ export default async function EducationPage() {
         <div className="relative rounded-lg overflow-hidden">
           <Image
             src="/images/education-hero.svg"
-            alt="खजुरा गाउँपालिका शैक्षिक अवस्था"
+            alt="परिवर्तन गाउँपालिका शैक्षिक अवस्था"
             width={1200}
             height={400}
             className="w-full h-[300px] object-cover"
@@ -173,7 +192,7 @@ export default async function EducationPage() {
         </div>
         <div className="mt-6 px-2">
           <h1 className="text-4xl font-bold mb-3">
-            खजुरा गाउँपालिकाको शैक्षिक अवस्था
+            परिवर्तन गाउँपालिकाको शैक्षिक अवस्था
           </h1>
         </div>
 
@@ -181,11 +200,14 @@ export default async function EducationPage() {
         <section id="introduction">
           <div className="prose prose-lg dark:prose-invert max-w-none">
             <p>
-              शिक्षा एक समाजको विकास र प्रगतिको महत्वपूर्ण मापदण्ड हो। शैक्षिक अवस्थाको अध्ययन र विश्लेषणले 
-              समुदायको साक्षरता, शिक्षामा पहुँच र गुणस्तरीय शिक्षाको अवस्थाका बारेमा महत्वपूर्ण जानकारी प्रदान गर्दछ।
-              खजुरा गाउँपालिकाको शैक्षिक प्रोफाइलमा शैक्षिक स्तर, साक्षरताको अवस्था र विद्यालय छाड्ने कारणहरू सम्बन्धी 
-              विस्तृत तथ्याङ्कहरू समेटिएका छन्। यी तथ्याङ्कहरूले पालिकाभित्रको शैक्षिक स्थिति बुझ्न र सुधारका लागि 
-              नीति तथा कार्यक्रमहरू तर्जुमा गर्न महत्वपूर्ण भूमिका खेल्छन्।
+              शिक्षा एक समाजको विकास र प्रगतिको महत्वपूर्ण मापदण्ड हो। शैक्षिक
+              अवस्थाको अध्ययन र विश्लेषणले समुदायको साक्षरता, शिक्षामा पहुँच र
+              गुणस्तरीय शिक्षाको अवस्थाका बारेमा महत्वपूर्ण जानकारी प्रदान
+              गर्दछ। परिवर्तन गाउँपालिकाको शैक्षिक प्रोफाइलमा शैक्षिक स्तर,
+              साक्षरताको अवस्था र विद्यालय छाड्ने कारणहरू सम्बन्धी विस्तृत
+              तथ्याङ्कहरू समेटिएका छन्। यी तथ्याङ्कहरूले पालिकाभित्रको शैक्षिक
+              स्थिति बुझ्न र सुधारका लागि नीति तथा कार्यक्रमहरू तर्जुमा गर्न
+              महत्वपूर्ण भूमिका खेल्छन्।
             </p>
           </div>
         </section>
@@ -204,18 +226,13 @@ export default async function EducationPage() {
               <h3 className="text-lg font-medium mb-2">साक्षरता दर</h3>
               <p className="text-3xl font-bold text-primary">
                 {literacyRate !== null
-                  ? localizeNumber(
-                      `${literacyRate.toFixed(1)}%`,
-                      "ne",
-                    )
+                  ? localizeNumber(`${literacyRate.toFixed(1)}%`, "ne")
                   : "लोड हुँदैछ..."}
               </p>
             </div>
 
             <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
-              <h3 className="text-lg font-medium mb-2">
-                पूर्ण साक्षरता दर
-              </h3>
+              <h3 className="text-lg font-medium mb-2">पूर्ण साक्षरता दर</h3>
               <p className="text-3xl font-bold text-primary">
                 {fullLiteracyRate !== null
                   ? localizeNumber(`${fullLiteracyRate.toFixed(1)}%`, "ne")
@@ -229,10 +246,7 @@ export default async function EducationPage() {
               </h3>
               <p className="text-3xl font-bold text-primary">
                 {higherEducationRate !== null
-                  ? localizeNumber(
-                      `${higherEducationRate.toFixed(1)}%`,
-                      "ne",
-                    )
+                  ? localizeNumber(`${higherEducationRate.toFixed(1)}%`, "ne")
                   : "लोड हुँदैछ..."}
               </p>
             </div>
@@ -257,9 +271,9 @@ export default async function EducationPage() {
               शैक्षिक श्रेणीहरू
             </h2>
             <p>
-              खजुरा गाउँपालिकाको शैक्षिक अवस्था सम्बन्धी विस्तृत जानकारीका लागि
-              तलका श्रेणीहरू हेर्नुहोस्। प्रत्येक श्रेणीमा विस्तृत तथ्याङ्क,
-              चार्ट र विश्लेषण प्रस्तुत गरिएको छ।
+              परिवर्तन गाउँपालिकाको शैक्षिक अवस्था सम्बन्धी विस्तृत जानकारीका
+              लागि तलका श्रेणीहरू हेर्नुहोस्। प्रत्येक श्रेणीमा विस्तृत
+              तथ्याङ्क, चार्ट र विश्लेषण प्रस्तुत गरिएको छ।
             </p>
           </div>
 
@@ -302,48 +316,59 @@ export default async function EducationPage() {
               सुधारका रणनीतिहरू
             </h2>
             <p>
-              खजुरा गाउँपालिकामा शैक्षिक अवस्था सुधार गर्न निम्न रणनीतिहरू अपनाउन सकिन्छ:
+              परिवर्तन गाउँपालिकामा शैक्षिक अवस्था सुधार गर्न निम्न रणनीतिहरू
+              अपनाउन सकिन्छ:
             </p>
-            
+
             <div className="pl-6 space-y-4 mt-4">
               <div className="flex">
                 <span className="font-bold mr-2">१.</span>
                 <div>
-                  <strong>साक्षरता अभियान:</strong> पूर्ण साक्षरता प्राप्त गर्न लक्षित वडाहरूमा विशेष साक्षरता अभियान संचालन गर्ने।
+                  <strong>साक्षरता अभियान:</strong> पूर्ण साक्षरता प्राप्त गर्न
+                  लक्षित वडाहरूमा विशेष साक्षरता अभियान संचालन गर्ने।
                 </div>
               </div>
-              
+
               <div className="flex">
                 <span className="font-bold mr-2">२.</span>
                 <div>
-                  <strong>विद्यालय भर्ना कार्यक्रम:</strong> सबै बालबालिकालाई विद्यालय भर्ना अभियान संचालन गरी विद्यालय बाहिर रहेका बालबालिकालाई शिक्षामा समावेश गर्ने।
+                  <strong>विद्यालय भर्ना कार्यक्रम:</strong> सबै बालबालिकालाई
+                  विद्यालय भर्ना अभियान संचालन गरी विद्यालय बाहिर रहेका
+                  बालबालिकालाई शिक्षामा समावेश गर्ने।
                 </div>
               </div>
-              
+
               <div className="flex">
                 <span className="font-bold mr-2">३.</span>
                 <div>
-                  <strong>आर्थिक सहयोग कार्यक्रम:</strong> आर्थिक कारणले विद्यालय छाड्ने समस्यालाई सम्बोधन गर्न छात्रवृत्ति, निःशुल्क पाठ्यपुस्तक र दिवा खाजा जस्ता कार्यक्रमलाई प्रभावकारी बनाउने।
+                  <strong>आर्थिक सहयोग कार्यक्रम:</strong> आर्थिक कारणले
+                  विद्यालय छाड्ने समस्यालाई सम्बोधन गर्न छात्रवृत्ति, निःशुल्क
+                  पाठ्यपुस्तक र दिवा खाजा जस्ता कार्यक्रमलाई प्रभावकारी बनाउने।
                 </div>
               </div>
-              
+
               <div className="flex">
                 <span className="font-bold mr-2">४.</span>
                 <div>
-                  <strong>शिक्षाको गुणस्तर सुधार:</strong> शिक्षकको क्षमता विकास, पूर्वाधार सुधार र आधुनिक शिक्षण विधि अपनाई शिक्षाको गुणस्तर वृद्धि गर्ने।
+                  <strong>शिक्षाको गुणस्तर सुधार:</strong> शिक्षकको क्षमता
+                  विकास, पूर्वाधार सुधार र आधुनिक शिक्षण विधि अपनाई शिक्षाको
+                  गुणस्तर वृद्धि गर्ने।
                 </div>
               </div>
-              
+
               <div className="flex">
                 <span className="font-bold mr-2">५.</span>
                 <div>
-                  <strong>उच्च शिक्षामा प्रोत्साहन:</strong> स्थानीय स्तरमा उच्च शिक्षा र प्राविधिक शिक्षाको पहुँच बढाउन प्रोत्साहन कार्यक्रम संचालन गर्ने।
+                  <strong>उच्च शिक्षामा प्रोत्साहन:</strong> स्थानीय स्तरमा उच्च
+                  शिक्षा र प्राविधिक शिक्षाको पहुँच बढाउन प्रोत्साहन कार्यक्रम
+                  संचालन गर्ने।
                 </div>
               </div>
             </div>
-            
+
             <p className="mt-6">
-              विस्तृत तथ्याङ्क र विश्लेषणका लागि माथि उल्लेखित विभिन्न श्रेणीहरू अन्तर्गतका पृष्ठहरू हेर्नुहोस्।
+              विस्तृत तथ्याङ्क र विश्लेषणका लागि माथि उल्लेखित विभिन्न श्रेणीहरू
+              अन्तर्गतका पृष्ठहरू हेर्नुहोस्।
             </p>
           </div>
         </section>

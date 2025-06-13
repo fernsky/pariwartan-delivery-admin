@@ -37,20 +37,28 @@ export default function DisabilityCauseSEO({
     }));
 
     // Find most common disability cause
-    const mostCommonCause = overallSummary.length > 0 ? overallSummary[0] : null;
-    const mostCommonCauseEN = mostCommonCause ? (DISABILITY_CAUSE_NAMES_EN[mostCommonCause.disabilityCause] || mostCommonCause.disabilityCause) : "";
-    const mostCommonCausePercentage = mostCommonCause && totalPopulationWithDisability > 0 
-      ? ((mostCommonCause.population / totalPopulationWithDisability) * 100).toFixed(2)
-      : "0";
+    const mostCommonCause =
+      overallSummary.length > 0 ? overallSummary[0] : null;
+    const mostCommonCauseEN = mostCommonCause
+      ? DISABILITY_CAUSE_NAMES_EN[mostCommonCause.disabilityCause] ||
+        mostCommonCause.disabilityCause
+      : "";
+    const mostCommonCausePercentage =
+      mostCommonCause && totalPopulationWithDisability > 0
+        ? (
+            (mostCommonCause.population / totalPopulationWithDisability) *
+            100
+          ).toFixed(2)
+        : "0";
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Disability Causes in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Disability Causes in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Disability cause data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total population with disabilities of ${totalPopulationWithDisability.toLocaleString()} people. The most common cause is ${mostCommonCauseEN} with ${mostCommonCause?.population.toLocaleString()} people (${mostCommonCausePercentage}%).`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Disability causes",
         "Disability distribution",
         "Ward-wise disability data",
@@ -59,7 +67,9 @@ export default function DisabilityCauseSEO({
         ...Object.values(DISABILITY_CAUSE_NAMES_EN).map(
           (name) => `${name} disabilities statistics`,
         ),
-        ...Object.values(DISABILITY_CAUSE_NAMES).map((name) => `${name} अपाङ्गता तथ्याङ्क`),
+        ...Object.values(DISABILITY_CAUSE_NAMES).map(
+          (name) => `${name} अपाङ्गता तथ्याङ्क`,
+        ),
       ],
       url: "https://digital.khajuramun.gov.np/profile/demographics/ward-wise-disability-cause",
       creator: {
@@ -89,7 +99,7 @@ export default function DisabilityCauseSEO({
           name: "Total Population with Disabilities",
           unitText: "people",
           value: totalPopulationWithDisability,
-        }
+        },
       ],
       observation: disabilityCauseStats,
     };

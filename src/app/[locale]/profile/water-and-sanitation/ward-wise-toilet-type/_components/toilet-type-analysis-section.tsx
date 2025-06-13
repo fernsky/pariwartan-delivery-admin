@@ -47,36 +47,42 @@ export default function ToiletTypeAnalysisSection({
   TOILET_TYPE_COLORS,
   noToiletPercentage,
 }: ToiletTypeAnalysisSectionProps) {
-  
   // Calculate household percentage with proper toilets
   const sanitationHouseholds = overallSummary
-    .filter(item => item.toiletType !== 'NO_TOILET')
+    .filter((item) => item.toiletType !== "NO_TOILET")
     .reduce((sum, item) => sum + item.households, 0);
-  
-  const sanitationPercentage = ((sanitationHouseholds / totalHouseholds) * 100).toFixed(2);
-  
+
+  const sanitationPercentage = (
+    (sanitationHouseholds / totalHouseholds) *
+    100
+  ).toFixed(2);
+
   // Find percentage of households with modern toilets
-  const modernToiletData = overallSummary.find(item => item.toiletType === 'FLUSH_WITH_SEPTIC_TANK');
+  const modernToiletData = overallSummary.find(
+    (item) => item.toiletType === "FLUSH_WITH_SEPTIC_TANK",
+  );
   const modernToiletPercentage = modernToiletData
     ? ((modernToiletData.households / totalHouseholds) * 100).toFixed(2)
     : "0";
-  
+
   // SEO attributes to include directly in JSX
   const seoAttributes = {
-    "data-municipality": "Khajura Rural Municipality / खजुरा गाउँपालिका",
+    "data-municipality": "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
     "data-total-households": totalHouseholds.toString(),
     "data-sanitation-percentage": sanitationPercentage,
     "data-no-toilet-percentage": noToiletPercentage,
     "data-modern-toilet-percentage": modernToiletPercentage,
     "data-sanitation-index": sanitationIndex.toFixed(2),
     "data-sanitation-rating": sanitationRating,
-    "data-highest-sanitation-ward": highestSanitationWard?.wardNumber.toString() || "",
-    "data-lowest-sanitation-ward": lowestSanitationWard?.wardNumber.toString() || ""
+    "data-highest-sanitation-ward":
+      highestSanitationWard?.wardNumber.toString() || "",
+    "data-lowest-sanitation-ward":
+      lowestSanitationWard?.wardNumber.toString() || "",
   };
 
   return (
     <>
-      <div 
+      <div
         className="mt-6 flex flex-wrap gap-4 justify-center"
         {...seoAttributes}
       >
@@ -88,7 +94,10 @@ export default function ToiletTypeAnalysisSection({
           ).toFixed(2);
 
           // Determine color for toilet type
-          const color = TOILET_TYPE_COLORS[item.toiletType as keyof typeof TOILET_TYPE_COLORS] || "#888";
+          const color =
+            TOILET_TYPE_COLORS[
+              item.toiletType as keyof typeof TOILET_TYPE_COLORS
+            ] || "#888";
 
           return (
             <div
@@ -102,7 +111,9 @@ export default function ToiletTypeAnalysisSection({
                 className="absolute bottom-0 left-0 right-0"
                 style={{
                   height: `${Math.min(
-                    (item.households / Math.max(...overallSummary.map(i => i.households))) * 100,
+                    (item.households /
+                      Math.max(...overallSummary.map((i) => i.households))) *
+                      100,
                     100,
                   )}%`,
                   backgroundColor: color,
@@ -113,15 +124,14 @@ export default function ToiletTypeAnalysisSection({
               <div className="relative z-10">
                 <h3 className="text-lg font-medium mb-2">
                   {item.toiletTypeName}
-                  <span className="sr-only">
-                    {item.toiletType}
-                  </span>
+                  <span className="sr-only">{item.toiletType}</span>
                 </h3>
                 <p className="text-2xl font-bold">
                   {localizeNumber(percentage, "ne")}%
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {localizeNumber(item.households.toLocaleString(), "ne")} घरधुरी
+                  {localizeNumber(item.households.toLocaleString(), "ne")}{" "}
+                  घरधुरी
                   <span className="sr-only">
                     ({item.households.toLocaleString()} households)
                   </span>
@@ -164,9 +174,11 @@ export default function ToiletTypeAnalysisSection({
                   {localizeNumber(sanitationPercentage, "ne")}%
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">
-                  {localizeNumber(sanitationHouseholds.toLocaleString(), "ne")} घरधुरीमा शौचालय उपलब्ध
+                  {localizeNumber(sanitationHouseholds.toLocaleString(), "ne")}{" "}
+                  घरधुरीमा शौचालय उपलब्ध
                   <span className="sr-only">
-                    {sanitationHouseholds.toLocaleString()} households have toilets
+                    {sanitationHouseholds.toLocaleString()} households have
+                    toilets
                   </span>
                 </p>
               </div>
@@ -176,10 +188,14 @@ export default function ToiletTypeAnalysisSection({
               <h5 className="text-sm font-medium">शौचालयको महत्त्व</h5>
               <div className="mt-2 space-y-2">
                 <p className="text-sm">
-                  खजुरा गाउँपालिकामा {localizeNumber(sanitationPercentage, "ne")}% घरधुरीमा शौचालय उपलब्ध छ, जुन स्वच्छता र जनस्वास्थ्यका लागि महत्त्वपूर्ण छ।
+                  परिवर्तन गाउँपालिकामा{" "}
+                  {localizeNumber(sanitationPercentage, "ne")}% घरधुरीमा शौचालय
+                  उपलब्ध छ, जुन स्वच्छता र जनस्वास्थ्यका लागि महत्त्वपूर्ण छ।
                 </p>
                 <p className="text-sm">
-                  शौचालय नभएका {localizeNumber(noToiletPercentage, "ne")}% घरधुरीलाई लक्षित गरी शौचालय निर्माण अभियान सञ्चालन गर्नुपर्ने देखिन्छ।
+                  शौचालय नभएका {localizeNumber(noToiletPercentage, "ne")}%
+                  घरधुरीलाई लक्षित गरी शौचालय निर्माण अभियान सञ्चालन गर्नुपर्ने
+                  देखिन्छ।
                 </p>
               </div>
             </div>
@@ -193,7 +209,9 @@ export default function ToiletTypeAnalysisSection({
           >
             <h4 className="font-medium mb-2">
               उच्च शौचालय उपलब्धता भएको वडा
-              <span className="sr-only">Ward with Highest Sanitation Rate in Khajura</span>
+              <span className="sr-only">
+                Ward with Highest Sanitation Rate in Khajura
+              </span>
             </h4>
             {highestSanitationWard && (
               <div className="flex items-center gap-3">
@@ -205,12 +223,22 @@ export default function ToiletTypeAnalysisSection({
                 ></div>
                 <div>
                   <p className="text-2xl font-bold">
-                    वडा {localizeNumber(highestSanitationWard.wardNumber.toString(), "ne")}
+                    वडा{" "}
+                    {localizeNumber(
+                      highestSanitationWard.wardNumber.toString(),
+                      "ne",
+                    )}
                   </p>
                   <p className="text-sm text-muted-foreground mt-1">
-                    शौचालय उपलब्धता दर: {localizeNumber(highestSanitationWard.sanitationPercentage, "ne")}%
+                    शौचालय उपलब्धता दर:{" "}
+                    {localizeNumber(
+                      highestSanitationWard.sanitationPercentage,
+                      "ne",
+                    )}
+                    %
                     <span className="sr-only">
-                      {highestSanitationWard.sanitationPercentage}% toilet availability
+                      {highestSanitationWard.sanitationPercentage}% toilet
+                      availability
                     </span>
                   </p>
                 </div>
@@ -221,7 +249,16 @@ export default function ToiletTypeAnalysisSection({
               <h5 className="text-sm font-medium">सफल अभ्यासहरू</h5>
               <div className="mt-2 p-3 bg-green-50 rounded-lg border border-green-100">
                 <p className="text-sm">
-                  वडा नं. {highestSanitationWard ? localizeNumber(highestSanitationWard.wardNumber.toString(), "ne") : ""} मा सबैभन्दा बढी परिवारले शौचालयको उपयोग गर्ने गरेको देखिन्छ। यस वडाका सफल अभ्यासहरूलाई अन्य वडाहरूमा पनि प्रसारित गर्न सकिन्छ।
+                  वडा नं.{" "}
+                  {highestSanitationWard
+                    ? localizeNumber(
+                        highestSanitationWard.wardNumber.toString(),
+                        "ne",
+                      )
+                    : ""}{" "}
+                  मा सबैभन्दा बढी परिवारले शौचालयको उपयोग गर्ने गरेको देखिन्छ।
+                  यस वडाका सफल अभ्यासहरूलाई अन्य वडाहरूमा पनि प्रसारित गर्न
+                  सकिन्छ।
                 </p>
               </div>
             </div>
@@ -244,13 +281,18 @@ export default function ToiletTypeAnalysisSection({
               <p className="flex gap-2">
                 <span className="text-green-500">•</span>
                 <span>
-                  <strong>सूचकाङ्क विवरण:</strong> सरसफाई सूचकाङ्क विभिन्न प्रकारका शौचालयहरूको भारित औसतमा आधारित छ, जसमा सेप्टिक ट्यांक सहितको फ्लस शौचालयलाई उच्च भार दिइएको छ।
+                  <strong>सूचकाङ्क विवरण:</strong> सरसफाई सूचकाङ्क विभिन्न
+                  प्रकारका शौचालयहरूको भारित औसतमा आधारित छ, जसमा सेप्टिक ट्यांक
+                  सहितको फ्लस शौचालयलाई उच्च भार दिइएको छ।
                 </span>
               </p>
               <p className="flex gap-2">
                 <span className="text-green-500">•</span>
                 <span>
-                  <strong>व्याख्या:</strong> {localizeNumber(sanitationIndex.toFixed(1), "ne")} अंकले {sanitationRating} सरसफाइ स्तर दर्शाउँछ। सुधारका लागि शौचालय नभएका घरधुरी संख्या घटाई आधुनिक शौचालय प्रवर्द्धन गर्नुपर्छ।
+                  <strong>व्याख्या:</strong>{" "}
+                  {localizeNumber(sanitationIndex.toFixed(1), "ne")} अंकले{" "}
+                  {sanitationRating} सरसफाइ स्तर दर्शाउँछ। सुधारका लागि शौचालय
+                  नभएका घरधुरी संख्या घटाई आधुनिक शौचालय प्रवर्द्धन गर्नुपर्छ।
                 </span>
               </p>
             </div>
@@ -263,15 +305,19 @@ export default function ToiletTypeAnalysisSection({
               <h5 className="text-sm font-medium">प्रमुख शौचालय प्रकारहरू</h5>
               <div className="mt-2 space-y-3">
                 {overallSummary.slice(0, 3).map((item, index) => {
-                  const percentage = ((item.households / totalHouseholds) * 100).toFixed(2);
-                  const color = TOILET_TYPE_COLORS[item.toiletType as keyof typeof TOILET_TYPE_COLORS] || "#888";
-                  
+                  const percentage = (
+                    (item.households / totalHouseholds) *
+                    100
+                  ).toFixed(2);
+                  const color =
+                    TOILET_TYPE_COLORS[
+                      item.toiletType as keyof typeof TOILET_TYPE_COLORS
+                    ] || "#888";
+
                   return (
                     <div key={item.toiletType}>
                       <div className="flex justify-between text-sm">
-                        <span>
-                          {item.toiletTypeName}
-                        </span>
+                        <span>{item.toiletTypeName}</span>
                         <span className="font-medium">
                           {localizeNumber(percentage, "ne")}%
                         </span>
@@ -291,19 +337,29 @@ export default function ToiletTypeAnalysisSection({
               </div>
 
               <div className="mt-4 pt-3 border-t">
-                <h5 className="font-medium mb-2">न्यून सरसफाइ दर भएका क्षेत्रहरू</h5>
+                <h5 className="font-medium mb-2">
+                  न्यून सरसफाइ दर भएका क्षेत्रहरू
+                </h5>
                 {lowestSanitationWard && (
                   <>
                     <div className="flex justify-between text-sm">
                       <span>
-                        <span 
-                          className="inline-block w-2 h-2 rounded-full mr-2" 
+                        <span
+                          className="inline-block w-2 h-2 rounded-full mr-2"
                           style={{ backgroundColor: "#E74C3C" }}
                         ></span>
-                        वडा {localizeNumber(lowestSanitationWard.wardNumber.toString(), "ne")}
+                        वडा{" "}
+                        {localizeNumber(
+                          lowestSanitationWard.wardNumber.toString(),
+                          "ne",
+                        )}
                       </span>
                       <span className="font-medium">
-                        {localizeNumber(lowestSanitationWard.sanitationPercentage, "ne")}%
+                        {localizeNumber(
+                          lowestSanitationWard.sanitationPercentage,
+                          "ne",
+                        )}
+                        %
                       </span>
                     </div>
                     <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -316,7 +372,8 @@ export default function ToiletTypeAnalysisSection({
                       ></div>
                     </div>
                     <p className="text-xs text-muted-foreground mt-2">
-                      यस वडामा सबैभन्दा कम शौचालय उपलब्धता दर रहेकोले विशेष ध्यान दिनुपर्ने देखिन्छ।
+                      यस वडामा सबैभन्दा कम शौचालय उपलब्धता दर रहेकोले विशेष
+                      ध्यान दिनुपर्ने देखिन्छ।
                     </p>
                   </>
                 )}

@@ -11,14 +11,18 @@ interface WaterPurificationSEOProps {
   methodMap: Record<string, string>;
   wardNumbers: number[];
   safetyIndex: number;
-  highestTreatmentWard: {
-    wardNumber: number;
-    treatingPercentage: string;
-  } | undefined;
-  lowestTreatmentWard: {
-    wardNumber: number;
-    treatingPercentage: string;
-  } | undefined;
+  highestTreatmentWard:
+    | {
+        wardNumber: number;
+        treatingPercentage: string;
+      }
+    | undefined;
+  lowestTreatmentWard:
+    | {
+        wardNumber: number;
+        treatingPercentage: string;
+      }
+    | undefined;
 }
 
 export default function WaterPurificationSEO({
@@ -47,27 +51,34 @@ export default function WaterPurificationSEO({
     }));
 
     // Find most common purification method
-    const mostCommonMethod = overallSummary.length > 0 ? overallSummary[0] : null;
-    const mostCommonTypeName = mostCommonMethod ? mostCommonMethod.waterPurificationName : "";
-    const mostCommonTypePercentage = mostCommonMethod && totalHouseholds > 0 
-      ? ((mostCommonMethod.households / totalHouseholds) * 100).toFixed(2)
-      : "0";
+    const mostCommonMethod =
+      overallSummary.length > 0 ? overallSummary[0] : null;
+    const mostCommonTypeName = mostCommonMethod
+      ? mostCommonMethod.waterPurificationName
+      : "";
+    const mostCommonTypePercentage =
+      mostCommonMethod && totalHouseholds > 0
+        ? ((mostCommonMethod.households / totalHouseholds) * 100).toFixed(2)
+        : "0";
 
     // Find percentage of households treating water
     const treatingHouseholds = overallSummary
-      .filter(item => item.waterPurification !== 'NO_ANY_FILTERING')
+      .filter((item) => item.waterPurification !== "NO_ANY_FILTERING")
       .reduce((sum, item) => sum + item.households, 0);
-    
-    const treatingPercentage = ((treatingHouseholds / totalHouseholds) * 100).toFixed(2);
+
+    const treatingPercentage = (
+      (treatingHouseholds / totalHouseholds) *
+      100
+    ).toFixed(2);
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Water Purification Methods in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Water Purification Methods in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Analysis of water purification methods across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${treatingPercentage}% of households treat their water before drinking. The most common method is ${mostCommonTypeName} with ${mostCommonMethod?.households.toLocaleString()} households (${mostCommonTypePercentage}%).`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Water purification",
         "Safe drinking water",
         "Household water treatment",
@@ -119,27 +130,27 @@ export default function WaterPurificationSEO({
           name: "Water Treatment Rate",
           unitText: "percentage",
           value: treatingPercentage,
-        }
+        },
       ],
       observation: purificationTypeStats,
       about: [
         {
           "@type": "Thing",
           name: "Water and Sanitation",
-          description: "Water purification methods and practices"
+          description: "Water purification methods and practices",
         },
         {
           "@type": "Thing",
           name: "Public Health",
-          description: "Household water treatment for disease prevention"
-        }
+          description: "Household water treatment for disease prevention",
+        },
       ],
       isAccessibleForFree: true,
       isPartOf: {
         "@type": "WebSite",
         name: "Khajura Rural Municipality Digital Profile",
-        url: "https://digital.khajuramun.gov.np"
-      }
+        url: "https://digital.khajuramun.gov.np",
+      },
     };
   };
 

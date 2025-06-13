@@ -38,28 +38,35 @@ export default function HouseholdOuterWallSEO({
 
     // Find most common wall type
     const mostCommonType = overallSummary.length > 0 ? overallSummary[0] : null;
-    const mostCommonTypeEN = mostCommonType ? (WALL_TYPE_NAMES_EN[mostCommonType.wallType] || mostCommonType.wallType) : "";
-    const mostCommonTypePercentage = mostCommonType && totalHouseholds > 0 
-      ? ((mostCommonType.households / totalHouseholds) * 100).toFixed(2)
-      : "0";
+    const mostCommonTypeEN = mostCommonType
+      ? WALL_TYPE_NAMES_EN[mostCommonType.wallType] || mostCommonType.wallType
+      : "";
+    const mostCommonTypePercentage =
+      mostCommonType && totalHouseholds > 0
+        ? ((mostCommonType.households / totalHouseholds) * 100).toFixed(2)
+        : "0";
 
     // Calculate high quality walls
     const highQualityCount = overallSummary
-      .filter(item => item.wallType === "CEMENT_JOINED" || item.wallType === "PREFAB")
+      .filter(
+        (item) =>
+          item.wallType === "CEMENT_JOINED" || item.wallType === "PREFAB",
+      )
       .reduce((sum, item) => sum + item.households, 0);
-      
-    const highQualityPercentage = totalHouseholds > 0
-      ? ((highQualityCount / totalHouseholds) * 100).toFixed(2)
-      : "0";
+
+    const highQualityPercentage =
+      totalHouseholds > 0
+        ? ((highQualityCount / totalHouseholds) * 100).toFixed(2)
+        : "0";
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "House Outer Wall Types in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "House Outer Wall Types in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `House outer wall data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. The most common type is ${mostCommonTypeEN} with ${mostCommonType?.households.toLocaleString()} households (${mostCommonTypePercentage}%). High quality walls account for ${highQualityPercentage}% of all households.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "House outer wall",
         "Wall distribution",
         "Ward-wise wall data",
@@ -70,7 +77,9 @@ export default function HouseholdOuterWallSEO({
         ...Object.values(WALL_TYPE_NAMES_EN).map(
           (name) => `${name} households statistics`,
         ),
-        ...Object.values(WALL_TYPE_NAMES).map((name) => `${name} घरधुरी तथ्याङ्क`),
+        ...Object.values(WALL_TYPE_NAMES).map(
+          (name) => `${name} घरधुरी तथ्याङ्क`,
+        ),
       ],
       url: "https://digital.khajuramun.gov.np/profile/economics/ward-wise-household-outer-wall",
       creator: {
@@ -106,7 +115,7 @@ export default function HouseholdOuterWallSEO({
           name: "High Quality Wall Percentage",
           unitText: "percentage",
           value: highQualityPercentage,
-        }
+        },
       ],
       observation: wallTypeStats,
     };

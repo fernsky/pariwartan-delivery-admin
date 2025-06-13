@@ -58,7 +58,7 @@ export default function LandPossessionAnalysisSection({
     if (document && document.body) {
       document.body.setAttribute(
         "data-municipality",
-        "Khajura Rural Municipality / खजुरा गाउँपालिका",
+        "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
       );
       document.body.setAttribute(
         "data-total-landowner-households",
@@ -189,7 +189,7 @@ export default function LandPossessionAnalysisSection({
           <div className="bg-card p-4 rounded border">
             <h4 className="font-medium mb-2">जग्गाविहीन अवस्था</h4>
             <p className="mb-2">
-              खजुरा गाउँपालिकामा अनुमानित{" "}
+              परिवर्तन गाउँपालिकामा अनुमानित{" "}
               <span className="font-medium">{landlessPercentage}%</span>
               घरपरिवार जग्गाविहीन रहेको अनुमान गरिएको छ। यो अनुमानित
               <span className="font-medium">
@@ -219,7 +219,7 @@ export default function LandPossessionAnalysisSection({
           गतिविधिलाई बढावा दिन्छ।
         </p>
         <p>
-          खजुरा गाउँपालिकामा थप जानकारीको लागि{" "}
+          परिवर्तन गाउँपालिकामा थप जानकारीको लागि{" "}
           <Link href="/contact" className="text-primary hover:underline">
             हामीलाई सम्पर्क
           </Link>{" "}

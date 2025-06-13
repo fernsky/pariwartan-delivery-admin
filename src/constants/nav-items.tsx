@@ -14,7 +14,7 @@ import { NavItem } from "@/store/sidebar-nav-store";
 
 export const navItems: NavItem[] = [
   {
-    title: "खजुरा प्रोफाइल",
+    title: "परिवर्तन प्रोफाइल",
     href: "/profile",
     icon: <Layout className="w-4 h-4" />,
     items: [],
@@ -30,7 +30,7 @@ export const navItems: NavItem[] = [
       },
       {
         title: "उमेर र लिङ्ग अनुसार जनसंख्या",
-        href: "/profile/demographics/ward-age-wise-population",
+        href: "/profile/demographics/age-wise-population",
       },
       {
         title: "मातृभाषा अनुसार जनसंख्या",

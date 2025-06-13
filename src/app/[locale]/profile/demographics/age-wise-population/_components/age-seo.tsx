@@ -33,7 +33,7 @@ export default function AgeSEO({
 }: AgeSEOProps) {
   // Create structured data for SEO
   const generateStructuredData = () => {
-    // Define English names for age groups
+    // Define English names for age groups (updated)
     const AGE_GROUP_NAMES_EN: Record<string, string> = {
       AGE_0_4: "0-4 years",
       AGE_5_9: "5-9 years",
@@ -50,7 +50,11 @@ export default function AgeSEO({
       AGE_60_64: "60-64 years",
       AGE_65_69: "65-69 years",
       AGE_70_74: "70-74 years",
-      AGE_75_AND_ABOVE: "75 years and above",
+      AGE_75_79: "75-79 years",
+      AGE_80_84: "80-84 years",
+      AGE_85_89: "85-89 years",
+      AGE_90_94: "90-94 years",
+      AGE_95_ABOVE: "95 years and above",
     };
 
     // Convert age stats to structured data format
@@ -103,15 +107,15 @@ export default function AgeSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Age Demographics of Khajura Rural Municipality (खजुरा गाउँपालिका)",
-      description: `Age distribution data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total population of ${totalPopulation.toLocaleString()} people. The median age is approximately ${Math.round(
+      name: "Age Demographics of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Age distribution data of Khajura Rural Municipality with a total population of ${totalPopulation.toLocaleString()} people. The median age is approximately ${Math.round(
         demographicIndicators.medianAge,
       )} years with a dependency ratio of ${demographicIndicators.dependencyRatio.toFixed(
         1,
       )}.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Age demographics",
         "Population pyramid",
         "Dependency ratio",

@@ -83,7 +83,7 @@ export default function WardWiseCharts({
 
         <div className="border-b px-4 py-3">
           <h3 className="text-xl font-semibold" itemProp="headline">
-            खजुरा गाउँपालिकाको वडागत जनसंख्या वितरण
+            परिवर्तन गाउँपालिकाको वडागत जनसंख्या वितरण
           </h3>
           <p className="text-sm text-muted-foreground">
             कुल जनसंख्या:{" "}
@@ -154,10 +154,10 @@ export default function WardWiseCharts({
 
         <div className="border-b px-4 py-3">
           <h3 className="text-xl font-semibold" itemProp="headline">
-            खजुरा गाउँपालिकाको वडागत लिङ्ग अनुपात
+            परिवर्तन गाउँपालिकाको वडागत लिङ्ग अनुपात
           </h3>
           <p className="text-sm text-muted-foreground">
-            खजुरा गाउँपालिकाको प्रत्येक वडाको पुरुष-महिला अनुपात (प्रति १००
+            परिवर्तन गाउँपालिकाको प्रत्येक वडाको पुरुष-महिला अनुपात (प्रति १००
             पुरुषमा महिलाको संख्या)
           </p>
         </div>
@@ -217,10 +217,11 @@ export default function WardWiseCharts({
 
         <div className="border-b px-4 py-3">
           <h3 className="text-xl font-semibold" itemProp="headline">
-            खजुरा गाउँपालिकाको वडागत घरधुरी र परिवार संख्या
+            परिवर्तन गाउँपालिकाको वडागत घरधुरी र परिवार संख्या
           </h3>
           <p className="text-sm text-muted-foreground">
-            खजुरा गाउँपालिकाको प्रत्येक वडाको घरधुरी संख्या र औसत परिवार संख्या
+            परिवर्तन गाउँपालिकाको प्रत्येक वडाको घरधुरी संख्या र औसत परिवार
+            संख्या
           </p>
         </div>
 

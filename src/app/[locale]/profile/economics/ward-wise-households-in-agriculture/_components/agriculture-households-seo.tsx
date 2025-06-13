@@ -11,8 +11,8 @@ interface AgricultureHouseholdsSEOProps {
   highestInvolvementWard: any;
   lowestInvolvementWard: any;
   AGRICULTURE_STATUS: {
-    INVOLVED: { name: string; nameEn: string; color: string; };
-    NOT_INVOLVED: { name: string; nameEn: string; color: string; };
+    INVOLVED: { name: string; nameEn: string; color: string };
+    NOT_INVOLVED: { name: string; nameEn: string; color: string };
   };
   wardNumbers: number[];
 }
@@ -32,38 +32,44 @@ export default function AgricultureHouseholdsSEO({
   // Create structured data for SEO
   const generateStructuredData = () => {
     // Convert ward-wise agriculture household stats to structured data format
-    const agricultureHouseholdStats = wardNumbers.map((wardNumber) => {
-      const wardData = agricultureHouseholdsData.find((item) => item.wardNumber === wardNumber);
-      
-      if (!wardData) return null;
-      
-      const total = wardData.involvedInAgriculture + wardData.nonInvolvedInAgriculture;
-      const involvedPercentage = total > 0 
-        ? ((wardData.involvedInAgriculture / total) * 100).toFixed(2)
-        : "0";
-        
-      return {
-        "@type": "Observation",
-        name: `Agriculture Households in Ward ${wardNumber} of Khajura Rural Municipality`,
-        observationDate: new Date().toISOString().split("T")[0],
-        measuredProperty: {
-          "@type": "PropertyValue",
-          name: "Agricultural involvement rate",
-          unitText: "percentage",
-        },
-        measuredValue: parseFloat(involvedPercentage),
-        description: `In Ward ${wardNumber} of Khajura Rural Municipality, ${wardData.involvedInAgriculture.toLocaleString()} households (${involvedPercentage}%) are involved in agriculture or animal husbandry out of a total of ${total.toLocaleString()} households.`,
-      };
-    }).filter(Boolean);
+    const agricultureHouseholdStats = wardNumbers
+      .map((wardNumber) => {
+        const wardData = agricultureHouseholdsData.find(
+          (item) => item.wardNumber === wardNumber,
+        );
+
+        if (!wardData) return null;
+
+        const total =
+          wardData.involvedInAgriculture + wardData.nonInvolvedInAgriculture;
+        const involvedPercentage =
+          total > 0
+            ? ((wardData.involvedInAgriculture / total) * 100).toFixed(2)
+            : "0";
+
+        return {
+          "@type": "Observation",
+          name: `Agriculture Households in Ward ${wardNumber} of Khajura Rural Municipality`,
+          observationDate: new Date().toISOString().split("T")[0],
+          measuredProperty: {
+            "@type": "PropertyValue",
+            name: "Agricultural involvement rate",
+            unitText: "percentage",
+          },
+          measuredValue: parseFloat(involvedPercentage),
+          description: `In Ward ${wardNumber} of Khajura Rural Municipality, ${wardData.involvedInAgriculture.toLocaleString()} households (${involvedPercentage}%) are involved in agriculture or animal husbandry out of a total of ${total.toLocaleString()} households.`,
+        };
+      })
+      .filter(Boolean);
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Agricultural Households Distribution in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Agricultural Households Distribution in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Distribution of households involved in agriculture or animal husbandry across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${totalInvolved.toLocaleString()} households (${involvedPercentage.toFixed(2)}%) are involved in agriculture or animal husbandry. The highest agricultural involvement is in Ward ${highestInvolvementWard?.wardNumber || ""} with ${highestInvolvementWard?.involvedPercentage.toFixed(2) || ""}% involvement rate.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Agricultural households",
         "Farming families",
         "Animal husbandry",
@@ -115,7 +121,7 @@ export default function AgricultureHouseholdsSEO({
           name: "Agricultural Involvement Rate",
           unitText: "percentage",
           value: involvedPercentage,
-        }
+        },
       ],
       observation: agricultureHouseholdStats,
     };

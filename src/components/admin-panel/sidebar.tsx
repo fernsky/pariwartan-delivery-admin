@@ -44,7 +44,7 @@ export function Sidebar() {
                   : "translate-x-0 opacity-100",
               )}
             >
-              खजुरा प्रोफाइल
+              परिवर्तन प्रोफाइल
             </h1>
           </Link>
         </Button>

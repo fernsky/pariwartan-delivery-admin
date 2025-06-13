@@ -49,19 +49,22 @@ export default function DeceasedPopulationAnalysisSection({
     FEMALE: "#BE185D", // Pink for female
     OTHER: "#047857", // Green for other
   };
-  
+
   // Calculate gender percentages
-  const malePercentage = totalDeceasedPopulation > 0 
-    ? ((genderTotals.male / totalDeceasedPopulation) * 100).toFixed(2) 
-    : "0";
-  
-  const femalePercentage = totalDeceasedPopulation > 0 
-    ? ((genderTotals.female / totalDeceasedPopulation) * 100).toFixed(2) 
-    : "0";
-  
-  const otherPercentage = totalDeceasedPopulation > 0 
-    ? ((genderTotals.other / totalDeceasedPopulation) * 100).toFixed(2) 
-    : "0";
+  const malePercentage =
+    totalDeceasedPopulation > 0
+      ? ((genderTotals.male / totalDeceasedPopulation) * 100).toFixed(2)
+      : "0";
+
+  const femalePercentage =
+    totalDeceasedPopulation > 0
+      ? ((genderTotals.female / totalDeceasedPopulation) * 100).toFixed(2)
+      : "0";
+
+  const otherPercentage =
+    totalDeceasedPopulation > 0
+      ? ((genderTotals.other / totalDeceasedPopulation) * 100).toFixed(2)
+      : "0";
 
   // Add SEO-friendly data attributes to enhance crawler understanding
   useEffect(() => {
@@ -69,7 +72,7 @@ export default function DeceasedPopulationAnalysisSection({
     if (document && document.body) {
       document.body.setAttribute(
         "data-municipality",
-        "Khajura Rural Municipality / खजुरा गाउँपालिका",
+        "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
       );
       document.body.setAttribute(
         "data-total-deceased-population",
@@ -84,16 +87,19 @@ export default function DeceasedPopulationAnalysisSection({
         );
         document.body.setAttribute(
           "data-most-affected-age-group-percentage",
-          ((ageGroupsAnalysis.mostAffected.total / totalDeceasedPopulation) * 100).toFixed(2),
+          (
+            (ageGroupsAnalysis.mostAffected.total / totalDeceasedPopulation) *
+            100
+          ).toFixed(2),
         );
       }
-      
+
       // Add ward data
       document.body.setAttribute(
         "data-most-affected-ward",
         mostAffectedWard?.wardNumber.toString() || "",
       );
-      
+
       // Add gender data
       document.body.setAttribute(
         "data-male-deceased-percentage",
@@ -133,9 +139,7 @@ export default function DeceasedPopulationAnalysisSection({
           <div className="relative z-10">
             <h3 className="text-lg font-medium mb-2">
               {GENDER_NAMES.MALE}
-              <span className="sr-only">
-                {GENDER_NAMES_EN.MALE}
-              </span>
+              <span className="sr-only">{GENDER_NAMES_EN.MALE}</span>
             </h3>
             <p className="text-2xl font-bold">
               {localizeNumber(malePercentage, "ne")}%
@@ -166,15 +170,14 @@ export default function DeceasedPopulationAnalysisSection({
           <div className="relative z-10">
             <h3 className="text-lg font-medium mb-2">
               {GENDER_NAMES.FEMALE}
-              <span className="sr-only">
-                {GENDER_NAMES_EN.FEMALE}
-              </span>
+              <span className="sr-only">{GENDER_NAMES_EN.FEMALE}</span>
             </h3>
             <p className="text-2xl font-bold">
               {localizeNumber(femalePercentage, "ne")}%
             </p>
             <p className="text-sm text-muted-foreground">
-              {localizeNumber(genderTotals.female.toLocaleString(), "ne")} व्यक्ति
+              {localizeNumber(genderTotals.female.toLocaleString(), "ne")}{" "}
+              व्यक्ति
               <span className="sr-only">
                 ({genderTotals.female.toLocaleString()} people)
               </span>
@@ -200,15 +203,14 @@ export default function DeceasedPopulationAnalysisSection({
             <div className="relative z-10">
               <h3 className="text-lg font-medium mb-2">
                 {GENDER_NAMES.OTHER}
-                <span className="sr-only">
-                  {GENDER_NAMES_EN.OTHER}
-                </span>
+                <span className="sr-only">{GENDER_NAMES_EN.OTHER}</span>
               </h3>
               <p className="text-2xl font-bold">
                 {localizeNumber(otherPercentage, "ne")}%
               </p>
               <p className="text-sm text-muted-foreground">
-                {localizeNumber(genderTotals.other.toLocaleString(), "ne")} व्यक्ति
+                {localizeNumber(genderTotals.other.toLocaleString(), "ne")}{" "}
+                व्यक्ति
                 <span className="sr-only">
                   ({genderTotals.other.toLocaleString()} people)
                 </span>
@@ -227,8 +229,15 @@ export default function DeceasedPopulationAnalysisSection({
           <div
             className="bg-card p-4 rounded border"
             data-analysis-type="most-affected-age-group"
-            data-percentage={ageGroupsAnalysis.mostAffected ? 
-              ((ageGroupsAnalysis.mostAffected.total / totalDeceasedPopulation) * 100).toFixed(2) : "0"}
+            data-percentage={
+              ageGroupsAnalysis.mostAffected
+                ? (
+                    (ageGroupsAnalysis.mostAffected.total /
+                      totalDeceasedPopulation) *
+                    100
+                  ).toFixed(2)
+                : "0"
+            }
           >
             <h4 className="font-medium mb-2">
               सबैभन्दा बढी मृत्यु भएको उमेर समूह
@@ -242,14 +251,29 @@ export default function DeceasedPopulationAnalysisSection({
             <p className="text-sm text-muted-foreground mt-2">
               {localizeNumber(
                 totalDeceasedPopulation > 0 && ageGroupsAnalysis.mostAffected
-                  ? ((ageGroupsAnalysis.mostAffected.total / totalDeceasedPopulation) * 100).toFixed(2)
-                  : "0", 
-                "ne"
-              )}% ({localizeNumber(ageGroupsAnalysis.mostAffected?.total.toString() || "0", "ne")} व्यक्ति)
+                  ? (
+                      (ageGroupsAnalysis.mostAffected.total /
+                        totalDeceasedPopulation) *
+                      100
+                    ).toFixed(2)
+                  : "0",
+                "ne",
+              )}
+              % (
+              {localizeNumber(
+                ageGroupsAnalysis.mostAffected?.total.toString() || "0",
+                "ne",
+              )}{" "}
+              व्यक्ति)
               <span className="sr-only">
                 {totalDeceasedPopulation > 0 && ageGroupsAnalysis.mostAffected
-                  ? ((ageGroupsAnalysis.mostAffected.total / totalDeceasedPopulation) * 100).toFixed(2)
-                  : "0"}% ({ageGroupsAnalysis.mostAffected?.total || 0} people)
+                  ? (
+                      (ageGroupsAnalysis.mostAffected.total /
+                        totalDeceasedPopulation) *
+                      100
+                    ).toFixed(2)
+                  : "0"}
+                % ({ageGroupsAnalysis.mostAffected?.total || 0} people)
               </span>
             </p>
           </div>
@@ -260,13 +284,16 @@ export default function DeceasedPopulationAnalysisSection({
           >
             <h4 className="font-medium mb-2">
               सबैभन्दा बढी मृत्यु भएको वडा
-              <span className="sr-only">Ward with Highest Mortality in Khajura</span>
+              <span className="sr-only">
+                Ward with Highest Mortality in Khajura
+              </span>
             </h4>
             <p className="text-3xl font-bold">
               {localizeNumber(mostAffectedWard?.ward || "", "ne")}
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              {localizeNumber(mostAffectedWard?.total.toString() || "0", "ne")} व्यक्ति
+              {localizeNumber(mostAffectedWard?.total.toString() || "0", "ne")}{" "}
+              व्यक्ति
               <span className="sr-only">
                 {mostAffectedWard?.total || 0} deceased people
               </span>
@@ -281,9 +308,12 @@ export default function DeceasedPopulationAnalysisSection({
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <h5 className="text-sm font-medium">जेष्ठ नागरिक (६० वर्ष माथि) मृत्यु दर</h5>
+              <h5 className="text-sm font-medium">
+                जेष्ठ नागरिक (६० वर्ष माथि) मृत्यु दर
+              </h5>
               <p className="text-sm text-muted-foreground">
-                कुल मृत्युको {localizeNumber(ageGroupsAnalysis.elderlyPercentage, "ne")}%
+                कुल मृत्युको{" "}
+                {localizeNumber(ageGroupsAnalysis.elderlyPercentage, "ne")}%
               </p>
               <div className="w-full bg-muted h-2 rounded-full mt-2 overflow-hidden">
                 <div
@@ -294,11 +324,14 @@ export default function DeceasedPopulationAnalysisSection({
                 ></div>
               </div>
             </div>
-            
+
             <div>
-              <h5 className="text-sm font-medium">बालबालिका (१५ वर्ष मुनि) मृत्यु दर</h5>
+              <h5 className="text-sm font-medium">
+                बालबालिका (१५ वर्ष मुनि) मृत्यु दर
+              </h5>
               <p className="text-sm text-muted-foreground">
-                कुल मृत्युको {localizeNumber(ageGroupsAnalysis.childrenPercentage, "ne")}%
+                कुल मृत्युको{" "}
+                {localizeNumber(ageGroupsAnalysis.childrenPercentage, "ne")}%
               </p>
               <div className="w-full bg-muted h-2 rounded-full mt-2 overflow-hidden">
                 <div
@@ -310,38 +343,44 @@ export default function DeceasedPopulationAnalysisSection({
               </div>
             </div>
           </div>
-          
+
           <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <h5 className="text-sm font-medium">लिङ्ग अनुसार मृत्यु दर तुलना</h5>
+              <h5 className="text-sm font-medium">
+                लिङ्ग अनुसार मृत्यु दर तुलना
+              </h5>
               <ul className="mt-2 text-sm space-y-1">
                 <li className="flex justify-between">
-                  <span>{GENDER_NAMES.MALE} बनाम {GENDER_NAMES.FEMALE}:</span>
+                  <span>
+                    {GENDER_NAMES.MALE} बनाम {GENDER_NAMES.FEMALE}:
+                  </span>
                   <span className="font-medium">
-                    {genderTotals.male > genderTotals.female ? 
-                      `${GENDER_NAMES.MALE} ${localizeNumber((genderTotals.male / Math.max(genderTotals.female, 1)).toFixed(1), "ne")} गुणा बढी` : 
-                      genderTotals.female > genderTotals.male ?
-                      `${GENDER_NAMES.FEMALE} ${localizeNumber((genderTotals.female / Math.max(genderTotals.male, 1)).toFixed(1), "ne")} गुणा बढी` :
-                      "बराबर"}
+                    {genderTotals.male > genderTotals.female
+                      ? `${GENDER_NAMES.MALE} ${localizeNumber((genderTotals.male / Math.max(genderTotals.female, 1)).toFixed(1), "ne")} गुणा बढी`
+                      : genderTotals.female > genderTotals.male
+                        ? `${GENDER_NAMES.FEMALE} ${localizeNumber((genderTotals.female / Math.max(genderTotals.male, 1)).toFixed(1), "ne")} गुणा बढी`
+                        : "बराबर"}
                   </span>
                 </li>
               </ul>
             </div>
             <div>
-              <h5 className="text-sm font-medium">मृत्युको कारण र रोकथाम सम्बन्धी सुझाव</h5>
+              <h5 className="text-sm font-medium">
+                मृत्युको कारण र रोकथाम सम्बन्धी सुझाव
+              </h5>
               <p className="mt-2 text-sm text-muted-foreground">
-                {ageGroupsAnalysis.elderlyPercentage && parseFloat(ageGroupsAnalysis.elderlyPercentage) > 50 
+                {ageGroupsAnalysis.elderlyPercentage &&
+                parseFloat(ageGroupsAnalysis.elderlyPercentage) > 50
                   ? "ज्येष्ठ नागरिकहरूको स्वास्थ्य सेवामा पहुँच बढाउन आवश्यक छ।"
-                  : ageGroupsAnalysis.childrenPercentage && parseFloat(ageGroupsAnalysis.childrenPercentage) > 20
-                  ? "बालबालिकाको मृत्युदर कम गर्न खोप र पोषण कार्यक्रममा ध्यान दिनु आवश्यक छ।"
-                  : "सबै उमेर समूहमा स्वास्थ्य सचेतना र सेवामा पहुँच बढाउन आवश्यक छ।"}
+                  : ageGroupsAnalysis.childrenPercentage &&
+                      parseFloat(ageGroupsAnalysis.childrenPercentage) > 20
+                    ? "बालबालिकाको मृत्युदर कम गर्न खोप र पोषण कार्यक्रममा ध्यान दिनु आवश्यक छ।"
+                    : "सबै उमेर समूहमा स्वास्थ्य सचेतना र सेवामा पहुँच बढाउन आवश्यक छ।"}
               </p>
             </div>
           </div>
         </div>
       </div>
-
-    
     </>
   );
 }

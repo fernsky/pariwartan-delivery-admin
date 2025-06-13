@@ -39,11 +39,11 @@ export default function DeathCauseSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Causes of Death in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Causes of Death in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Death cause distribution data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalDeaths.toLocaleString()} recorded deaths.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Death causes",
         "Mortality statistics",
         "Ward-wise death cause data",
@@ -51,7 +51,9 @@ export default function DeathCauseSEO({
         ...Object.values(DEATH_CAUSE_NAMES_EN).map(
           (name) => `${name} mortality statistics`,
         ),
-        ...Object.values(deathCauseLabels).map((name) => `${name} मृत्यु तथ्याङ्क`),
+        ...Object.values(deathCauseLabels).map(
+          (name) => `${name} मृत्यु तथ्याङ्क`,
+        ),
       ],
       url: "https://digital.khajuramun.gov.np/profile/demographics/ward-death-causes",
       creator: {

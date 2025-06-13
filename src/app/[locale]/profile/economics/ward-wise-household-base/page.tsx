@@ -43,13 +43,14 @@ const BASE_TYPE_NAMES_EN: Record<string, string> = {
 export async function generateMetadata(): Promise<Metadata> {
   try {
     // Fetch data for SEO using tRPC
-    const baseData = await api.profile.economics.wardWiseHouseholdBase.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const baseData =
+      await api.profile.economics.wardWiseHouseholdBase.getAll.query();
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalHouseholds = baseData.reduce(
       (sum, item) => sum + (item.households || 0),
-      0
+      0,
     );
 
     // Group by base type and calculate totals
@@ -69,19 +70,20 @@ export async function generateMetadata(): Promise<Metadata> {
       }
     });
 
-    const mostCommonPercentage = totalHouseholds > 0
-      ? ((mostCommonCount / totalHouseholds) * 100).toFixed(2)
-      : "0";
+    const mostCommonPercentage =
+      totalHouseholds > 0
+        ? ((mostCommonCount / totalHouseholds) * 100).toFixed(2)
+        : "0";
 
     // Create rich keywords with actual data
     const keywordsNP = [
-      "खजुरा गाउँपालिका घरको जग",
-      "खजुरा घरको जग वितरण",
+      "परिवर्तन गाउँपालिका घरको जग",
+      "परिवर्तन घरको जग वितरण",
       "वडा अनुसार घरको जग",
       "घरको जग विवरण",
       "ढलान पिल्लरसहितको घर",
       "माटोको जोडाइ भएको घरहरू",
-      `खजुरा घरको जग संख्या ${localizeNumber(totalHouseholds.toString(), "ne")}`,
+      `परिवर्तन घरको जग संख्या ${localizeNumber(totalHouseholds.toString(), "ne")}`,
     ];
 
     const keywordsEN = [
@@ -95,7 +97,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data
-    const descriptionNP = `खजुरा गाउँपालिकाको वडा अनुसार घरको जगको वितरण र विश्लेषण। कुल घरधुरी संख्या ${localizeNumber(totalHouseholds.toString(), "ne")} मध्ये ${localizeNumber(mostCommonPercentage, "ne")}% (${localizeNumber(mostCommonCount.toString(), "ne")}) ${BASE_TYPE_NAMES[mostCommonType] || mostCommonType} प्रकारको जग भएका घरहरू रहेका छन्। विभिन्न वडाहरूमा घरको जगको विस्तृत विश्लेषण।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार घरको जगको वितरण र विश्लेषण। कुल घरधुरी संख्या ${localizeNumber(totalHouseholds.toString(), "ne")} मध्ये ${localizeNumber(mostCommonPercentage, "ne")}% (${localizeNumber(mostCommonCount.toString(), "ne")}) ${BASE_TYPE_NAMES[mostCommonType] || mostCommonType} प्रकारको जग भएका घरहरू रहेका छन्। विभिन्न वडाहरूमा घरको जगको विस्तृत विश्लेषण।`;
 
     const descriptionEN = `Ward-wise distribution and analysis of house foundation types in Khajura Rural Municipality. Out of a total of ${totalHouseholds} households, ${mostCommonPercentage}% (${mostCommonCount}) have ${BASE_TYPE_NAMES_EN[mostCommonType] || mostCommonType} foundation. Detailed analysis of house foundation types across various wards.`;
 
@@ -127,7 +129,7 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "घरको जगको वितरण | खजुरा गाउँपालिका डिजिटल प्रोफाइल",
+      title: "घरको जगको वितरण | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
       description: "वडा अनुसार घरको जगको वितरण र विश्लेषण।",
     };
   }
@@ -142,12 +144,14 @@ const toc = [
 
 export default async function WardWiseHouseholdBasePage() {
   // Fetch all household base data using tRPC
-  const baseData = await api.profile.economics.wardWiseHouseholdBase.getAll.query();
+  const baseData =
+    await api.profile.economics.wardWiseHouseholdBase.getAll.query();
 
   // Try to fetch summary data
   let summaryData = null;
   try {
-    summaryData = await api.profile.economics.wardWiseHouseholdBase.summary.query();
+    summaryData =
+      await api.profile.economics.wardWiseHouseholdBase.summary.query();
   } catch (error) {
     console.error("Could not fetch summary data", error);
   }
@@ -158,13 +162,12 @@ export default async function WardWiseHouseholdBasePage() {
       if (!acc[item.baseType]) acc[item.baseType] = 0;
       acc[item.baseType] += item.households || 0;
       return acc;
-    }, {})
+    }, {}),
   )
     .map(([baseType, households]) => ({
       baseType,
       baseTypeName:
-        BASE_TYPE_NAMES[baseType as keyof typeof BASE_TYPE_NAMES] ||
-        baseType,
+        BASE_TYPE_NAMES[baseType as keyof typeof BASE_TYPE_NAMES] || baseType,
       households,
     }))
     .sort((a, b) => b.households - a.households); // Sort by households descending
@@ -172,10 +175,10 @@ export default async function WardWiseHouseholdBasePage() {
   // Calculate total households for percentages
   const totalHouseholds = overallSummary.reduce(
     (sum, item) => sum + item.households,
-    0
+    0,
   );
 
-  // Create data for pie chart 
+  // Create data for pie chart
   const pieChartData = overallSummary.map((item) => ({
     name: item.baseTypeName,
     value: item.households,
@@ -184,14 +187,12 @@ export default async function WardWiseHouseholdBasePage() {
 
   // Get unique ward numbers
   const wardNumbers = Array.from(
-    new Set(baseData.map((item) => item.wardNumber))
+    new Set(baseData.map((item) => item.wardNumber)),
   ).sort((a, b) => a - b); // Sort numerically
 
   // Process data for ward-wise visualization
   const wardWiseData = wardNumbers.map((wardNumber) => {
-    const wardData = baseData.filter(
-      (item) => item.wardNumber === wardNumber
-    );
+    const wardData = baseData.filter((item) => item.wardNumber === wardNumber);
 
     const result: Record<string, any> = { ward: `वडा ${wardNumber}` };
 
@@ -199,7 +200,7 @@ export default async function WardWiseHouseholdBasePage() {
     wardData.forEach((item) => {
       result[
         BASE_TYPE_NAMES[item.baseType as keyof typeof BASE_TYPE_NAMES] ||
-        item.baseType
+          item.baseType
       ] = item.households;
     });
 
@@ -208,32 +209,45 @@ export default async function WardWiseHouseholdBasePage() {
 
   // Calculate ward-wise base type rates
   const wardWiseAnalysis = wardNumbers.map((wardNumber) => {
-    const wardData = baseData.filter(
-      (item) => item.wardNumber === wardNumber
-    );
-    
+    const wardData = baseData.filter((item) => item.wardNumber === wardNumber);
+
     const wardTotalHouseholds = wardData.reduce(
-      (sum, item) => sum + (item.households || 0), 
-      0
+      (sum, item) => sum + (item.households || 0),
+      0,
     );
-    
-    const mostCommonType = wardData.reduce((prev, current) => {
-      return (prev.households || 0) > (current.households || 0) ? prev : current;
-    }, { baseType: "", households: 0 });
-    
-    const concretePillar = wardData.find(item => item.baseType === "CONCRETE_PILLAR");
-    const concretePercentage = wardTotalHouseholds > 0 && concretePillar 
-      ? ((concretePillar.households || 0) / wardTotalHouseholds * 100).toFixed(2)
-      : "0";
-    
+
+    const mostCommonType = wardData.reduce(
+      (prev, current) => {
+        return (prev.households || 0) > (current.households || 0)
+          ? prev
+          : current;
+      },
+      { baseType: "", households: 0 },
+    );
+
+    const concretePillar = wardData.find(
+      (item) => item.baseType === "CONCRETE_PILLAR",
+    );
+    const concretePercentage =
+      wardTotalHouseholds > 0 && concretePillar
+        ? (
+            ((concretePillar.households || 0) / wardTotalHouseholds) *
+            100
+          ).toFixed(2)
+        : "0";
+
     return {
       wardNumber,
       totalHouseholds: wardTotalHouseholds,
       mostCommonType: mostCommonType.baseType,
       mostCommonTypeHouseholds: mostCommonType.households || 0,
-      mostCommonTypePercentage: wardTotalHouseholds > 0 
-        ? ((mostCommonType.households || 0) / wardTotalHouseholds * 100).toFixed(2)
-        : "0",
+      mostCommonTypePercentage:
+        wardTotalHouseholds > 0
+          ? (
+              ((mostCommonType.households || 0) / wardTotalHouseholds) *
+              100
+            ).toFixed(2)
+          : "0",
       concreteHouseholds: concretePillar?.households || 0,
       concretePercentage,
     };
@@ -266,7 +280,7 @@ export default async function WardWiseHouseholdBasePage() {
               src="/images/house-foundation.svg"
               width={1200}
               height={400}
-              alt="घरको जगको वितरण - खजुरा गाउँपालिका (House Foundation Distribution - Khajura Rural Municipality)"
+              alt="घरको जगको वितरण - परिवर्तन गाउँपालिका (House Foundation Distribution - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -274,34 +288,39 @@ export default async function WardWiseHouseholdBasePage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा घरको जगको वितरण
+              परिवर्तन गाउँपालिकामा घरको जगको वितरण
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              घरको जगको प्रकारले घरको संरचना, भौतिक गुणस्तर र विपद् जोखिम न्यूनीकरणको स्थिति देखाउँछ। यस खण्डमा खजुरा
-              गाउँपालिकामा घरको जगका प्रमुख प्रकारहरू र तिनको वडागत वितरणको विश्लेषण
-              प्रस्तुत गरिएको छ।
+              घरको जगको प्रकारले घरको संरचना, भौतिक गुणस्तर र विपद् जोखिम
+              न्यूनीकरणको स्थिति देखाउँछ। यस खण्डमा परिवर्तन गाउँपालिकामा घरको
+              जगका प्रमुख प्रकारहरू र तिनको वडागत वितरणको विश्लेषण प्रस्तुत
+              गरिएको छ।
             </p>
             <p>
-              खजुरा गाउँपालिकामा घरको जगको
-              तथ्याङ्क हेर्दा, कुल घरधुरी {localizeNumber(totalHouseholds.toLocaleString(), "ne")} 
-              मध्ये सबैभन्दा बढी {overallSummary[0]?.baseTypeName || ""} 
-              जग भएका घरहरू {localizeNumber(((overallSummary[0]?.households || 0) / totalHouseholds * 100).toFixed(1), "ne")}% 
-              रहेका देखिन्छन्।
+              परिवर्तन गाउँपालिकामा घरको जगको तथ्याङ्क हेर्दा, कुल घरधुरी{" "}
+              {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
+              मध्ये सबैभन्दा बढी {overallSummary[0]?.baseTypeName || ""}
+              जग भएका घरहरू{" "}
+              {localizeNumber(
+                (
+                  ((overallSummary[0]?.households || 0) / totalHouseholds) *
+                  100
+                ).toFixed(1),
+                "ne",
+              )}
+              % रहेका देखिन्छन्।
             </p>
 
-            <h2
-              id="household-base-types"
-              className="scroll-m-20 border-b pb-2"
-            >
+            <h2 id="household-base-types" className="scroll-m-20 border-b pb-2">
               घरको जगका प्रकारहरू
             </h2>
             <p>
-              खजुरा गाउँपालिकामा घरको जगका प्रमुख प्रकारहरू र तिनको वितरण निम्नानुसार
-              रहेको छ:
+              परिवर्तन गाउँपालिकामा घरको जगका प्रमुख प्रकारहरू र तिनको वितरण
+              निम्नानुसार रहेको छ:
             </p>
           </div>
 
@@ -319,15 +338,25 @@ export default async function WardWiseHouseholdBasePage() {
           />
 
           <div className="prose prose-slate dark:prose-invert max-w-none mt-8">
-            <h2 id="household-base-analysis" className="scroll-m-20 border-b pb-2">
+            <h2
+              id="household-base-analysis"
+              className="scroll-m-20 border-b pb-2"
+            >
               घरको जग विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा घरको जगको विश्लेषण गर्दा, 
-              {BASE_TYPE_NAMES[overallSummary[0]?.baseType || ''] || overallSummary[0]?.baseType} 
-              जग भएका घरहरू सबैभन्दा बढी 
-              {localizeNumber(((overallSummary[0]?.households || 0) / totalHouseholds * 100).toFixed(2), "ne")}% 
-              रहेको पाइन्छ।
+              परिवर्तन गाउँपालिकामा घरको जगको विश्लेषण गर्दा,
+              {BASE_TYPE_NAMES[overallSummary[0]?.baseType || ""] ||
+                overallSummary[0]?.baseType}
+              जग भएका घरहरू सबैभन्दा बढी
+              {localizeNumber(
+                (
+                  ((overallSummary[0]?.households || 0) / totalHouseholds) *
+                  100
+                ).toFixed(2),
+                "ne",
+              )}
+              % रहेको पाइन्छ।
             </p>
 
             <HouseholdBaseAnalysisSection

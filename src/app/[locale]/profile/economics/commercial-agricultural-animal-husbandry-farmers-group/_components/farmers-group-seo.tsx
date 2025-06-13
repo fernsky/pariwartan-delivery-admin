@@ -50,7 +50,13 @@ export default function FarmersGroupSEO({
       "@type": "Dataset",
       name: `${BUSINESS_TYPES_EN[item.type] || item.type} Groups in Khajura Rural Municipality`,
       description: `There are ${item.count} ${BUSINESS_TYPES_EN[item.type] || item.type} groups operating in Khajura Rural Municipality, representing ${item.percentage.toFixed(2)}% of total agricultural groups.`,
-      keywords: [item.type, BUSINESS_TYPES_EN[item.type], "agriculture", "farming", "Khajura"],
+      keywords: [
+        item.type,
+        BUSINESS_TYPES_EN[item.type],
+        "agriculture",
+        "farming",
+        "Khajura",
+      ],
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
@@ -67,15 +73,18 @@ export default function FarmersGroupSEO({
           name: "Percentage of Total",
           unitText: "percentage",
           value: item.percentage,
-        }
-      ]
+        },
+      ],
     }));
 
     // Ward distribution data
-    const wardDistributionData = farmsByWard.map(ward => ({
+    const wardDistributionData = farmsByWard.map((ward) => ({
       "@type": "Dataset",
       name: `Ward ${ward.wardNumber} Agricultural Groups`,
-      description: `Ward ${ward.wardNumber} has ${ward.farmCount} agricultural and livestock groups, with farms such as ${ward.farms.slice(0, 3).map(farm => farm.name).join(", ")}${ward.farms.length > 3 ? " and others" : ""}.`,
+      description: `Ward ${ward.wardNumber} has ${ward.farmCount} agricultural and livestock groups, with farms such as ${ward.farms
+        .slice(0, 3)
+        .map((farm) => farm.name)
+        .join(", ")}${ward.farms.length > 3 ? " and others" : ""}.`,
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
@@ -85,12 +94,13 @@ export default function FarmersGroupSEO({
         name: "Number of Groups in Ward",
         unitText: "count",
         value: ward.farmCount,
-      }
+      },
     }));
 
     // Find most common business type
     const mostCommonBusinessType = statistics.mostPopularBusinessType;
-    const mostCommonBusinessTypeEN = BUSINESS_TYPES_EN[mostCommonBusinessType] || mostCommonBusinessType;
+    const mostCommonBusinessTypeEN =
+      BUSINESS_TYPES_EN[mostCommonBusinessType] || mostCommonBusinessType;
 
     return {
       "@context": "https://schema.org",
@@ -99,7 +109,7 @@ export default function FarmersGroupSEO({
       description: `Comprehensive analysis of ${totalGroups} commercial agricultural and animal husbandry farmers groups in Khajura Rural Municipality. The most common type is ${mostCommonBusinessTypeEN} (${statistics.mostPopularBusinessTypePercentage.toFixed(1)}%), and Ward ${statistics.wardWithMostGroups} has the highest concentration with ${statistics.maximumGroupsInAWard} groups. This dataset covers all 9 wards of the municipality.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Commercial Agriculture",
         "Animal Husbandry",
         "Farmers Groups",
@@ -107,7 +117,9 @@ export default function FarmersGroupSEO({
         "Rural Development",
         "Nepal Agriculture",
         "Commercial Farming",
-        ...businessSummary.map(item => BUSINESS_TYPES_EN[item.type] || item.type),
+        ...businessSummary.map(
+          (item) => BUSINESS_TYPES_EN[item.type] || item.type,
+        ),
       ],
       url: "https://digital.khajuramun.gov.np/profile/economics/commercial-agricultural-animal-husbandry-farmers-group",
       creator: {
@@ -148,7 +160,7 @@ export default function FarmersGroupSEO({
           name: "Most Common Business Type Percentage",
           unitText: "percentage",
           value: statistics.mostPopularBusinessTypePercentage,
-        }
+        },
       ],
       distribution: businessTypeStats,
       hasPart: wardDistributionData,
@@ -156,24 +168,26 @@ export default function FarmersGroupSEO({
         {
           "@type": "Thing",
           name: "Agricultural Economics",
-          description: "The study of agricultural production, distribution, and resource allocation"
+          description:
+            "The study of agricultural production, distribution, and resource allocation",
         },
         {
           "@type": "Thing",
           name: "Rural Development",
-          description: "Economic and social development focused on rural areas"
+          description: "Economic and social development focused on rural areas",
         },
         {
           "@type": "Thing",
           name: "Cooperative Farming",
-          description: "Agricultural production carried out by farming groups or cooperatives"
-        }
+          description:
+            "Agricultural production carried out by farming groups or cooperatives",
+        },
       ],
       isPartOf: {
         "@type": "Dataset",
         name: "Khajura Rural Municipality Digital Profile",
-        url: "https://digital.khajuramun.gov.np"
-      }
+        url: "https://digital.khajuramun.gov.np",
+      },
     };
   };
 

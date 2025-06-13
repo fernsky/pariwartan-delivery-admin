@@ -38,17 +38,17 @@ export default function GenderSEO({
         unitText: "people",
       },
       measuredValue: item.population,
-      description: `${localizeNumber(item.population.toLocaleString(), "ne")} ${item.genderName} घरमूली खजुरा गाउँपालिकामा रहेका छन् (कुल घरमूलीको ${localizeNumber(((item.population / totalPopulation) * 100).toFixed(2), "ne")}%)`,
+      description: `${localizeNumber(item.population.toLocaleString(), "ne")} ${item.genderName} घरमूली परिवर्तन गाउँपालिकामा रहेका छन् (कुल घरमूलीको ${localizeNumber(((item.population / totalPopulation) * 100).toFixed(2), "ne")}%)`,
     }));
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Household Head Gender Distribution in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Household Head Gender Distribution in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Ward-wise gender distribution of household heads across ${localizeNumber(wardNumbers.length.toString(), "ne")} wards of Khajura Rural Municipality with a total of ${localizeNumber(totalPopulation.toLocaleString(), "ne")} household heads.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Household head gender",
         "Ward-wise househead data",
         "Nepal demographics",

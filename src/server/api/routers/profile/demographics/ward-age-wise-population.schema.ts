@@ -20,13 +20,16 @@ export const ageGroupEnum = z.enum([
   "AGE_60_64",
   "AGE_65_69",
   "AGE_70_74",
-  "AGE_75_AND_ABOVE",
+  "AGE_75_79",
+  "AGE_80_84",
+  "AGE_85_89",
+  "AGE_90_94",
+  "AGE_95_ABOVE",
 ]);
 export type AgeGroup = z.infer<typeof ageGroupEnum>;
 
-export const wardAgeWisePopulationSchema = z.object({
+export const ageWisePopulationSchema = z.object({
   id: z.string().optional(),
-  wardNumber: z.number().int().min(1, "वडा नम्बर आवश्यक छ"),
   ageGroup: ageGroupEnum,
   gender: genderEnum,
   population: z
@@ -35,18 +38,13 @@ export const wardAgeWisePopulationSchema = z.object({
     .nonnegative("जनसंख्या शून्य वा त्यो भन्दा बढी हुनुपर्छ"),
 });
 
-export const wardAgeWisePopulationFilterSchema = z.object({
-  wardNumber: z.number().int().min(1).optional(),
+export const ageWisePopulationFilterSchema = z.object({
   ageGroup: ageGroupEnum.optional(),
   gender: genderEnum.optional(),
 });
 
-export const updateWardAgeWisePopulationSchema = wardAgeWisePopulationSchema;
+export const updateAgeWisePopulationSchema = ageWisePopulationSchema;
 
-export type WardAgeWisePopulationData = z.infer<
-  typeof wardAgeWisePopulationSchema
->;
-export type UpdateWardAgeWisePopulationData = WardAgeWisePopulationData;
-export type WardAgeWisePopulationFilter = z.infer<
-  typeof wardAgeWisePopulationFilterSchema
->;
+export type AgeWisePopulationData = z.infer<typeof ageWisePopulationSchema>;
+export type UpdateAgeWisePopulationData = AgeWisePopulationData;
+export type AgeWisePopulationFilter = z.infer<typeof ageWisePopulationFilterSchema>;

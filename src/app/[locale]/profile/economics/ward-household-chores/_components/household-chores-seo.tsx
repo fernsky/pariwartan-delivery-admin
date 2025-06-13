@@ -46,11 +46,11 @@ export default function HouseholdChoresSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Household Chores Time Distribution in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Household Chores Time Distribution in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Time spent on household chores distribution data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalPopulation.toLocaleString()} people surveyed.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Household chores",
         "Time spent on household work",
         "Ward-wise household chores data",

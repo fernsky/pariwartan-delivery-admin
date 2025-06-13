@@ -24,20 +24,20 @@ export const revalidate = 86400; // Revalidate once per day (in seconds)
 export async function generateMetadata(): Promise<Metadata> {
   try {
     // Fetch data for SEO using tRPC
-    const casteData = await api.profile.demographics.wardWiseCastePopulation.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const casteData =
+      await api.profile.demographics.wardWiseCastePopulation.getAll.query();
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalPopulation = casteData.reduce(
       (sum, item) => sum + (item.population || 0),
       0,
     );
-    
+
     // Group by caste type and calculate totals
     const casteCounts: Record<string, number> = {};
     casteData.forEach((item) => {
-      if (!casteCounts[item.casteType])
-        casteCounts[item.casteType] = 0;
+      if (!casteCounts[item.casteType]) casteCounts[item.casteType] = 0;
       casteCounts[item.casteType] += item.population || 0;
     });
 
@@ -118,23 +118,21 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // Create rich keywords with actual data using localized numbers
     const keywordsNP = [
-      "खजुरा गाउँपालिका जातिगत जनसंख्या",
-      "खजुरा जातिगत विविधता",
-      `खजुरा ${CASTE_NAMES_NP[topCastes[0]]} जनसंख्या`,
-      ...topCastes.map((c) => `${CASTE_NAMES_NP[c]} जातिगत विवरण खजुरा`),
+      "परिवर्तन गाउँपालिका जातिगत जनसंख्या",
+      "परिवर्तन जातिगत विविधता",
+      `परिवर्तन ${CASTE_NAMES_NP[topCastes[0]]} जनसंख्या`,
+      ...topCastes.map((c) => `${CASTE_NAMES_NP[c]} जातिगत विवरण परिवर्तन`),
       "वडा अनुसार जातिगत जनसंख्या",
       "जातिगत विविधता तथ्याङ्क",
-      "जातिगत जनगणना खजुरा",
-      `खजुरा कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")}`,
+      "जातिगत जनगणना परिवर्तन",
+      `परिवर्तन कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")}`,
     ];
 
     const keywordsEN = [
       "Khajura Rural Municipality caste population",
       "Khajura caste diversity",
       `Khajura ${CASTE_NAMES_EN[topCastes[0]]} population`,
-      ...topCastes.map(
-        (c) => `${CASTE_NAMES_EN[c]} population in Khajura`,
-      ),
+      ...topCastes.map((c) => `${CASTE_NAMES_EN[c]} population in Khajura`),
       "Ward-wise caste demographics",
       "Caste diversity statistics",
       "Caste census Khajura",
@@ -142,12 +140,12 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data using localized numbers
-    const descriptionNP = `खजुरा गाउँपालिकाको वडा अनुसार जातिगत जनसंख्या वितरण, प्रवृत्ति र विश्लेषण। कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")} मध्ये ${CASTE_NAMES_NP[topCastes[0]]} (${localizeNumber(casteCounts[topCastes[0]].toString(), "ne")}) सबैभन्दा ठूलो जातिगत समूह हो, त्यसपछि ${CASTE_NAMES_NP[topCastes[1]]} (${localizeNumber(casteCounts[topCastes[1]].toString(), "ne")}) र ${CASTE_NAMES_NP[topCastes[2]]} (${localizeNumber(casteCounts[topCastes[2]].toString(), "ne")})। विभिन्न जातिहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार जातिगत जनसंख्या वितरण, प्रवृत्ति र विश्लेषण। कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")} मध्ये ${CASTE_NAMES_NP[topCastes[0]]} (${localizeNumber(casteCounts[topCastes[0]].toString(), "ne")}) सबैभन्दा ठूलो जातिगत समूह हो, त्यसपछि ${CASTE_NAMES_NP[topCastes[1]]} (${localizeNumber(casteCounts[topCastes[1]].toString(), "ne")}) र ${CASTE_NAMES_NP[topCastes[2]]} (${localizeNumber(casteCounts[topCastes[2]].toString(), "ne")})। विभिन्न जातिहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
 
     const descriptionEN = `Ward-wise caste population distribution, trends and analysis for Khajura Rural Municipality. Out of a total population of ${totalPopulation}, ${CASTE_NAMES_EN[topCastes[0]]} (${casteCounts[topCastes[0]]}) is the largest caste group, followed by ${CASTE_NAMES_EN[topCastes[1]]} (${casteCounts[topCastes[1]]}) and ${CASTE_NAMES_EN[topCastes[2]]} (${casteCounts[topCastes[2]]})। Detailed statistics and visualizations of various castes.`;
 
     return {
-      title: "खजुरा गाउँपालिका | जाति अनुसार जनसंख्या | डिजिटल प्रोफाइल",
+      title: "परिवर्तन गाउँपालिका | जाति अनुसार जनसंख्या | डिजिटल प्रोफाइल",
       description: descriptionNP,
       keywords: [...keywordsNP, ...keywordsEN],
       alternates: {
@@ -158,29 +156,28 @@ export async function generateMetadata(): Promise<Metadata> {
         },
       },
       openGraph: {
-        title: `खजुरा गाउँपालिका | जाति अनुसार जनसंख्या`,
+        title: `परिवर्तन गाउँपालिका | जाति अनुसार जनसंख्या`,
         description: descriptionNP,
         type: "article",
         locale: "ne_NP",
         alternateLocale: "en_US",
-        siteName: `खजुरा गाउँपालिका डिजिटल प्रोफाइल`,
+        siteName: `परिवर्तन गाउँपालिका डिजिटल प्रोफाइल`,
       },
       twitter: {
         card: "summary_large_image",
-        title: `खजुरा गाउँपालिका | जाति अनुसार जनसंख्या`,
+        title: `परिवर्तन गाउँपालिका | जाति अनुसार जनसंख्या`,
         description: descriptionNP,
       },
     };
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "खजुरा गाउँपालिका | जाति अनुसार जनसंख्या | डिजिटल प्रोफाइल",
+      title: "परिवर्तन गाउँपालिका | जाति अनुसार जनसंख्या | डिजिटल प्रोफाइल",
       description:
-        "खजुरा गाउँपालिकाको प्रत्येक वडाको जातिगत विवरण, जातिहरूको संख्या र जातिगत विविधताको विश्लेषण।",
+        "परिवर्तन गाउँपालिकाको प्रत्येक वडाको जातिगत विवरण, जातिहरूको संख्या र जातिगत विविधताको विश्लेषण।",
     };
   }
 }
-
 
 const toc = [
   { level: 2, text: "परिचय", slug: "introduction" },
@@ -305,7 +302,9 @@ export default async function WardWiseCastePopulationPage() {
       0,
     );
 
-    const result: Record<string, any> = { ward: `वडा ${localizeNumber(wardNumber.toString(), "ne")}` };
+    const result: Record<string, any> = {
+      ward: `वडा ${localizeNumber(wardNumber.toString(), "ne")}`,
+    };
 
     // Add top castes
     topWardCastes.forEach((item) => {
@@ -329,7 +328,7 @@ export default async function WardWiseCastePopulationPage() {
         CASTE_NAMES={CASTE_NAMES}
         wardNumbers={wardNumbers}
       />
-      
+
       <div className="flex flex-col gap-8">
         <section>
           <div className="relative rounded-lg overflow-hidden mb-8">
@@ -337,7 +336,7 @@ export default async function WardWiseCastePopulationPage() {
               src="/images/caste-diversity.svg"
               width={1200}
               height={400}
-              alt="जातिगत विविधता - खजुरा गाउँपालिका (Caste Diversity - Khajura Rural Municipality)"
+              alt="जातिगत विविधता - परिवर्तन गाउँपालिका (Caste Diversity - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -345,21 +344,23 @@ export default async function WardWiseCastePopulationPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              <span className="font-bold">खजुरा गाउँपालिका</span> | जाति अनुसार जनसंख्या विश्लेषण
+              <span className="font-bold">परिवर्तन गाउँपालिका</span> | जाति
+              अनुसार जनसंख्या विश्लेषण
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              यस खण्डमा <strong>खजुरा गाउँपालिका</strong>को विभिन्न वडाहरूमा बसोबास गर्ने विभिन्न जातिहरूको
-              जनसंख्या सम्बन्धी विस्तृत तथ्याङ्क प्रस्तुत गरिएको छ। यो
-              तथ्याङ्कले जातिगत विविधता, सामाजिक संरचना र स्थानीय समुदायको
-              जातिगत स्वरूपलाई प्रतिबिम्बित गर्दछ।
+              यस खण्डमा <strong>परिवर्तन गाउँपालिका</strong>को विभिन्न वडाहरूमा
+              बसोबास गर्ने विभिन्न जातिहरूको जनसंख्या सम्बन्धी विस्तृत तथ्याङ्क
+              प्रस्तुत गरिएको छ। यो तथ्याङ्कले जातिगत विविधता, सामाजिक संरचना र
+              स्थानीय समुदायको जातिगत स्वरूपलाई प्रतिबिम्बित गर्दछ।
             </p>
             <p>
               नेपाल विभिन्न जातजाति र समुदायहरूको सद्भाव र सहिष्णुताको देश हो, र
-              <strong>खजुरा गाउँपालिका</strong>मा पनि विभिन्न जातजातिहरूको बसोबास रहेको छ। कुल जनसंख्या{" "}
+              <strong>परिवर्तन गाउँपालिका</strong>मा पनि विभिन्न जातजातिहरूको
+              बसोबास रहेको छ। कुल जनसंख्या{" "}
               {localizeNumber(totalPopulation.toLocaleString(), "ne")} मध्ये{" "}
               {overallSummary[0]?.casteTypeDisplay || ""} जाति{" "}
               {localizeNumber(
@@ -367,16 +368,19 @@ export default async function WardWiseCastePopulationPage() {
                   ((overallSummary[0]?.population || 0) / totalPopulation) *
                   100
                 ).toFixed(1),
-                "ne"
+                "ne",
               )}
-              % रहेको छ। यस तथ्याङ्कले सामाजिक समावेशिता, विविधता व्यवस्थापन र विकासका योजनाहरूमा सहयोग
-              पुर्‍याउँछ।
+              % रहेको छ। यस तथ्याङ्कले सामाजिक समावेशिता, विविधता व्यवस्थापन र
+              विकासका योजनाहरूमा सहयोग पुर्‍याउँछ।
             </p>
 
             <h2 id="caste-distribution" className="scroll-m-20 border-b pb-2">
               जाति अनुसार जनसंख्या
             </h2>
-            <p><strong>खजुरा गाउँपालिका</strong>मा विभिन्न जातिहरूको कुल जनसंख्या वितरण निम्नानुसार छ:</p>
+            <p>
+              <strong>परिवर्तन गाउँपालिका</strong>मा विभिन्न जातिहरूको कुल
+              जनसंख्या वितरण निम्नानुसार छ:
+            </p>
           </div>
 
           {/* Client component for charts */}
@@ -396,13 +400,16 @@ export default async function WardWiseCastePopulationPage() {
               प्रमुख जातिहरूको विश्लेषण
             </h2>
             <p>
-              <strong>खजुरा गाउँपालिका</strong>मा निम्न जातिहरू प्रमुख रूपमा बसोबास गर्छन्। यी जातिहरूमध्ये{" "}
+              <strong>परिवर्तन गाउँपालिका</strong>मा निम्न जातिहरू प्रमुख रूपमा
+              बसोबास गर्छन्। यी जातिहरूमध्ये{" "}
               {overallSummary[0]?.casteTypeDisplay || ""}
               सबैभन्दा धेरै व्यक्तिहरू भएको जाति हो, जसमा कुल जनसंख्याको{" "}
               {localizeNumber(
-                (((overallSummary[0]?.population || 0) / totalPopulation) *
-                100).toFixed(2), "ne"
-               
+                (
+                  ((overallSummary[0]?.population || 0) / totalPopulation) *
+                  100
+                ).toFixed(2),
+                "ne",
               )}
               % जनसंख्या रहेको छ।
             </p>

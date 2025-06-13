@@ -38,11 +38,11 @@ export default function RemittanceExpensesSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Remittance Expense Patterns of Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Remittance Expense Patterns of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Remittance expense distribution data across ${wardNumbers.length} wards of Khajura Rural Municipality with ${totalHouseholds.toLocaleString()} households receiving remittances.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Remittance expenses",
         "Remittance utilization",
         "Ward-wise remittance data",

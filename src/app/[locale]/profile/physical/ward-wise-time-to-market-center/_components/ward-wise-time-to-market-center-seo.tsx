@@ -14,11 +14,14 @@ interface WardWiseTimeToMarketCenterSEOProps {
     wardNumber: number;
     percentage: number;
   };
-  TIME_CATEGORIES: Record<string, {
-    name: string;
-    nameEn: string;
-    color: string;
-  }>;
+  TIME_CATEGORIES: Record<
+    string,
+    {
+      name: string;
+      nameEn: string;
+      color: string;
+    }
+  >;
   wardNumbers: number[];
   accessibilityIndex: number;
 }
@@ -37,49 +40,63 @@ export default function WardWiseTimeToMarketCenterSEO({
   // Create structured data for SEO
   const generateStructuredData = () => {
     // Convert ward-wise time to market center to structured data format
-    const accessStats = wardNumbers.map((wardNumber) => {
-      const wardData = timeToMarketCenterData.filter((item) => item.wardNumber === wardNumber);
-      
-      if (!wardData?.length) return null;
-      
-      const totalWardHouseholds = wardData.reduce((sum, item) => sum + item.households, 0);
-      
-      // Calculate quick access (under 30 min) percentage for this ward
-      const quickAccessCategories = ["UNDER_15_MIN", "UNDER_30_MIN"];
-      const quickAccessHouseholds = wardData
-        .filter((item) => quickAccessCategories.includes(item.timeToMarketCenter))
-        .reduce((sum, item) => sum + item.households, 0);
-      
-      const quickAccessPercent = totalWardHouseholds > 0 
-        ? ((quickAccessHouseholds / totalWardHouseholds) * 100).toFixed(2)
-        : "0";
-        
-      return {
-        "@type": "Observation",
-        name: `Market Center Access Statistics in Ward ${wardNumber} of Khajura Rural Municipality`,
-        observationDate: new Date().toISOString().split("T")[0],
-        measuredProperty: {
-          "@type": "PropertyValue",
-          name: "Quick access rate (under 30 minutes)",
-          unitText: "percentage",
-        },
-        measuredValue: parseFloat(quickAccessPercent),
-        description: `In Ward ${wardNumber} of Khajura Rural Municipality, ${quickAccessHouseholds.toLocaleString()} households (${quickAccessPercent}%) can access market centers within 30 minutes out of a total of ${totalWardHouseholds.toLocaleString()} households.`,
-      };
-    }).filter(Boolean);
+    const accessStats = wardNumbers
+      .map((wardNumber) => {
+        const wardData = timeToMarketCenterData.filter(
+          (item) => item.wardNumber === wardNumber,
+        );
+
+        if (!wardData?.length) return null;
+
+        const totalWardHouseholds = wardData.reduce(
+          (sum, item) => sum + item.households,
+          0,
+        );
+
+        // Calculate quick access (under 30 min) percentage for this ward
+        const quickAccessCategories = ["UNDER_15_MIN", "UNDER_30_MIN"];
+        const quickAccessHouseholds = wardData
+          .filter((item) =>
+            quickAccessCategories.includes(item.timeToMarketCenter),
+          )
+          .reduce((sum, item) => sum + item.households, 0);
+
+        const quickAccessPercent =
+          totalWardHouseholds > 0
+            ? ((quickAccessHouseholds / totalWardHouseholds) * 100).toFixed(2)
+            : "0";
+
+        return {
+          "@type": "Observation",
+          name: `Market Center Access Statistics in Ward ${wardNumber} of Khajura Rural Municipality`,
+          observationDate: new Date().toISOString().split("T")[0],
+          measuredProperty: {
+            "@type": "PropertyValue",
+            name: "Quick access rate (under 30 minutes)",
+            unitText: "percentage",
+          },
+          measuredValue: parseFloat(quickAccessPercent),
+          description: `In Ward ${wardNumber} of Khajura Rural Municipality, ${quickAccessHouseholds.toLocaleString()} households (${quickAccessPercent}%) can access market centers within 30 minutes out of a total of ${totalWardHouseholds.toLocaleString()} households.`,
+        };
+      })
+      .filter(Boolean);
 
     // Calculate quick access percentage (under 30 min)
-    const quickAccessTotal = timeCategoryTotals.UNDER_15_MIN + timeCategoryTotals.UNDER_30_MIN;
-    const quickAccessPercentage = ((quickAccessTotal / totalHouseholds) * 100).toFixed(2);
+    const quickAccessTotal =
+      timeCategoryTotals.UNDER_15_MIN + timeCategoryTotals.UNDER_30_MIN;
+    const quickAccessPercentage = (
+      (quickAccessTotal / totalHouseholds) *
+      100
+    ).toFixed(2);
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Time to Market Center in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Time to Market Center in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Analysis of time taken to reach market centers across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${quickAccessTotal.toLocaleString()} households (${quickAccessPercentage}%) can reach market centers within 30 minutes. The best accessibility is in Ward ${bestAccessWard?.wardNumber || ""} with ${bestAccessWard?.percentage.toFixed(2) || ""}% quick access rate.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Market center access",
         "Market accessibility",
         "Ward-wise market access",
@@ -143,20 +160,20 @@ export default function WardWiseTimeToMarketCenterSEO({
           name: "Market Accessibility Index",
           unitText: "index",
           value: accessibilityIndex.toFixed(2),
-        }
+        },
       ],
       observation: accessStats,
       about: [
         {
           "@type": "Thing",
           name: "Market Access",
-          description: "Time to reach market centers analysis"
+          description: "Time to reach market centers analysis",
         },
         {
           "@type": "Thing",
           name: "Commercial Access",
-          description: "Time it takes for households to reach market centers"
-        }
+          description: "Time it takes for households to reach market centers",
+        },
       ],
       isBasedOn: {
         "@type": "GovernmentService",

@@ -83,7 +83,7 @@ export default function OccupationAnalysisSection({
     if (document && document.body) {
       document.body.setAttribute(
         "data-municipality",
-        "Khajura Rural Municipality / खजुरा गाउँपालिका",
+        "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
       );
       document.body.setAttribute(
         "data-total-population",
@@ -178,7 +178,8 @@ export default function OccupationAnalysisSection({
                   {localizeNumber(percentage, "ne")}%
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {localizeNumber(item.population.toLocaleString(), "ne")} व्यक्ति
+                  {localizeNumber(item.population.toLocaleString(), "ne")}{" "}
+                  व्यक्ति
                   <span className="sr-only">
                     ({item.population.toLocaleString()} people)
                   </span>
@@ -210,8 +211,8 @@ export default function OccupationAnalysisSection({
               {localizeNumber(employmentRate, "ne")}%
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              {localizeNumber(employedPopulation.toLocaleString(), "ne")} व्यक्ति कुनै न कुनै पेशामा
-              संलग्न
+              {localizeNumber(employedPopulation.toLocaleString(), "ne")}{" "}
+              व्यक्ति कुनै न कुनै पेशामा संलग्न
               <span className="sr-only">
                 {employedPopulation.toLocaleString()} people are engaged in some
                 form of employment
@@ -241,7 +242,8 @@ export default function OccupationAnalysisSection({
               </span>
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              {localizeNumber(overallSummary.length.toString(), "ne")} विभिन्न पेशाहरू अभिलेख गरिएको
+              {localizeNumber(overallSummary.length.toString(), "ne")} विभिन्न
+              पेशाहरू अभिलेख गरिएको
             </p>
           </div>
         </div>
@@ -255,75 +257,99 @@ export default function OccupationAnalysisSection({
             <div>
               <h5 className="text-sm font-medium">सरकारी/निजी क्षेत्र</h5>
               <p className="text-sm text-muted-foreground">
-                {localizeNumber(((overallSummary.find(
-                  (item) => item.occupation === "GOVERNMENT_SERVICE",
-                )?.population || 0) +
-                  (overallSummary.find(
-                    (item) => item.occupation === "NON_GOVERNMENT_SERVICE",
-                  )?.population || 0)).toLocaleString(), "ne")}{" "}
-                (
-                {localizeNumber((
-                  (((overallSummary.find(
-                    (item) => item.occupation === "GOVERNMENT_SERVICE",
-                  )?.population || 0) +
+                {localizeNumber(
+                  (
+                    (overallSummary.find(
+                      (item) => item.occupation === "GOVERNMENT_SERVICE",
+                    )?.population || 0) +
                     (overallSummary.find(
                       (item) => item.occupation === "NON_GOVERNMENT_SERVICE",
-                    )?.population || 0)) /
-                    totalPopulation) *
-                  100
-                ).toFixed(1), "ne")}
+                    )?.population || 0)
+                  ).toLocaleString(),
+                  "ne",
+                )}{" "}
+                (
+                {localizeNumber(
+                  (
+                    (((overallSummary.find(
+                      (item) => item.occupation === "GOVERNMENT_SERVICE",
+                    )?.population || 0) +
+                      (overallSummary.find(
+                        (item) => item.occupation === "NON_GOVERNMENT_SERVICE",
+                      )?.population || 0)) /
+                      totalPopulation) *
+                    100
+                  ).toFixed(1),
+                  "ne",
+                )}
                 %)
               </p>
             </div>
             <div>
               <h5 className="text-sm font-medium">स्वरोजगार</h5>
               <p className="text-sm text-muted-foreground">
-                {localizeNumber(((overallSummary.find((item) => item.occupation === "BUSINESS")
-                  ?.population || 0) +
-                  (overallSummary.find((item) => item.occupation === "INDUSTRY_WORK")
-                    ?.population || 0) +
-                  (overallSummary.find(
-                    (item) => item.occupation === "SELF_EMPLOYED",
-                  )?.population || 0)).toLocaleString(), "ne")}{" "}
-                (
-                {localizeNumber((
-                  (((overallSummary.find(
-                    (item) => item.occupation === "BUSINESS",
-                  )?.population || 0) +
+                {localizeNumber(
+                  (
+                    (overallSummary.find(
+                      (item) => item.occupation === "BUSINESS",
+                    )?.population || 0) +
                     (overallSummary.find(
                       (item) => item.occupation === "INDUSTRY_WORK",
                     )?.population || 0) +
                     (overallSummary.find(
                       (item) => item.occupation === "SELF_EMPLOYED",
-                    )?.population || 0)) /
-                    totalPopulation) *
-                  100
-                ).toFixed(1), "ne")}
+                    )?.population || 0)
+                  ).toLocaleString(),
+                  "ne",
+                )}{" "}
+                (
+                {localizeNumber(
+                  (
+                    (((overallSummary.find(
+                      (item) => item.occupation === "BUSINESS",
+                    )?.population || 0) +
+                      (overallSummary.find(
+                        (item) => item.occupation === "INDUSTRY_WORK",
+                      )?.population || 0) +
+                      (overallSummary.find(
+                        (item) => item.occupation === "SELF_EMPLOYED",
+                      )?.population || 0)) /
+                      totalPopulation) *
+                    100
+                  ).toFixed(1),
+                  "ne",
+                )}
                 %)
               </p>
             </div>
             <div>
               <h5 className="text-sm font-medium">कृषि तथा पशुपालन</h5>
               <p className="text-sm text-muted-foreground">
-                {localizeNumber((overallSummary.find(
-                  (item) => item.occupation === "ANIMAL_HUSBANDRY",
-                )?.population || 0).toLocaleString(), "ne")}{" "}
+                {localizeNumber(
+                  (
+                    overallSummary.find(
+                      (item) => item.occupation === "ANIMAL_HUSBANDRY",
+                    )?.population || 0
+                  ).toLocaleString(),
+                  "ne",
+                )}{" "}
                 (
-                {localizeNumber((
-                  ((overallSummary.find(
-                    (item) => item.occupation === "ANIMAL_HUSBANDRY",
-                  )?.population || 0) /
-                    totalPopulation) *
-                  100
-                ).toFixed(1), "ne")}
+                {localizeNumber(
+                  (
+                    ((overallSummary.find(
+                      (item) => item.occupation === "ANIMAL_HUSBANDRY",
+                    )?.population || 0) /
+                      totalPopulation) *
+                    100
+                  ).toFixed(1),
+                  "ne",
+                )}
                 %)
               </p>
             </div>
           </div>
         </div>
       </div>
-
-     
     </>
   );
 }

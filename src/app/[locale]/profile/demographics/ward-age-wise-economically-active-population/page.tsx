@@ -40,7 +40,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const populationData =
       await api.profile.demographics.wardAgeWiseEconomicallyActivePopulation.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalPopulation = populationData.reduce(
@@ -51,27 +51,27 @@ export async function generateMetadata(): Promise<Metadata> {
     // Group by age group and calculate totals
     const ageGroupCounts: Record<string, number> = {};
     populationData.forEach((item) => {
-      if (!ageGroupCounts[item.ageGroup])
-        ageGroupCounts[item.ageGroup] = 0;
+      if (!ageGroupCounts[item.ageGroup]) ageGroupCounts[item.ageGroup] = 0;
       ageGroupCounts[item.ageGroup] += item.population || 0;
     });
 
     // Calculate economically active population (15-59 age group)
     const economicallyActivePopulation = ageGroupCounts["AGE_15_TO_59"] || 0;
-    const economicallyActivePercentage = totalPopulation > 0 
-      ? ((economicallyActivePopulation / totalPopulation) * 100).toFixed(2)
-      : "0";
+    const economicallyActivePercentage =
+      totalPopulation > 0
+        ? ((economicallyActivePopulation / totalPopulation) * 100).toFixed(2)
+        : "0";
 
     // Create rich keywords with actual data
     const keywordsNP = [
-      "खजुरा गाउँपालिका आर्थिक रूपमा सक्रिय जनसंख्या",
-      "खजुरा उमेर अनुसार जनसंख्या वितरण",
+      "परिवर्तन गाउँपालिका आर्थिक रूपमा सक्रिय जनसंख्या",
+      "परिवर्तन उमेर अनुसार जनसंख्या वितरण",
       "वडा अनुसार आर्थिक रूपमा सक्रिय जनसंख्या",
       "आर्थिक सक्रिय उमेर समूह विवरण",
       "१५-५९ वर्षका आर्थिक सक्रिय जनसंख्या",
-      "वृद्ध जनसंख्या खजुरा",
-      "बाल जनसंख्या खजुरा",
-      `खजुरा कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")}`,
+      "वृद्ध जनसंख्या परिवर्तन",
+      "बाल जनसंख्या परिवर्तन",
+      `परिवर्तन कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")}`,
     ];
 
     const keywordsEN = [
@@ -86,7 +86,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data
-    const descriptionNP = `खजुरा गाउँपालिकाको वडा अनुसार उमेर समूहको आर्थिक रूपमा सक्रिय जनसंख्याको वितरण र विश्लेषण। कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")} मध्ये ${localizeNumber(economicallyActivePercentage, "ne")}% (${localizeNumber(economicallyActivePopulation.toString(), "ne")}) आर्थिक रूपमा सक्रिय उमेर समूह (१५-५९ वर्ष) मा पर्दछन्। विभिन्न वडाहरूमा आर्थिक सक्रियता र कार्य उमेरको जनसंख्याको विस्तृत विश्लेषण।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार उमेर समूहको आर्थिक रूपमा सक्रिय जनसंख्याको वितरण र विश्लेषण। कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")} मध्ये ${localizeNumber(economicallyActivePercentage, "ne")}% (${localizeNumber(economicallyActivePopulation.toString(), "ne")}) आर्थिक रूपमा सक्रिय उमेर समूह (१५-५९ वर्ष) मा पर्दछन्। विभिन्न वडाहरूमा आर्थिक सक्रियता र कार्य उमेरको जनसंख्याको विस्तृत विश्लेषण।`;
 
     const descriptionEN = `Ward-wise distribution and analysis of economically active population by age groups in Khajura Rural Municipality. Out of a total population of ${totalPopulation}, ${economicallyActivePercentage}% (${economicallyActivePopulation}) are in the economically active age group (15-59 years). Detailed analysis of economic activity and working-age population across various wards.`;
 
@@ -95,7 +95,8 @@ export async function generateMetadata(): Promise<Metadata> {
       description: descriptionNP,
       keywords: [...keywordsNP, ...keywordsEN],
       alternates: {
-        canonical: "/profile/demographics/ward-age-wise-economically-active-population",
+        canonical:
+          "/profile/demographics/ward-age-wise-economically-active-population",
         languages: {
           en: "/en/profile/demographics/ward-age-wise-economically-active-population",
           ne: "/ne/profile/demographics/ward-age-wise-economically-active-population",
@@ -118,7 +119,8 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "आर्थिक रूपमा सक्रिय जनसंख्या | खजुरा गाउँपालिका डिजिटल प्रोफाइल",
+      title:
+        "आर्थिक रूपमा सक्रिय जनसंख्या | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
       description:
         "वडा अनुसार उमेर समूहको आर्थिक रूपमा सक्रिय जनसंख्याको वितरण र विश्लेषण।",
     };
@@ -127,9 +129,21 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const toc = [
   { level: 2, text: "परिचय", slug: "introduction" },
-  { level: 2, text: "उमेर अनुसार आर्थिक सक्रियता", slug: "age-wise-economic-activity" },
-  { level: 2, text: "वडा अनुसार आर्थिक सक्रियता", slug: "ward-wise-economic-activity" },
-  { level: 2, text: "आर्थिक सक्रिय जनसंख्या विश्लेषण", slug: "active-population-analysis" },
+  {
+    level: 2,
+    text: "उमेर अनुसार आर्थिक सक्रियता",
+    slug: "age-wise-economic-activity",
+  },
+  {
+    level: 2,
+    text: "वडा अनुसार आर्थिक सक्रियता",
+    slug: "ward-wise-economic-activity",
+  },
+  {
+    level: 2,
+    text: "आर्थिक सक्रिय जनसंख्या विश्लेषण",
+    slug: "active-population-analysis",
+  },
 ];
 
 export default async function WardAgeWiseEconomicallyActivePopulationPage() {
@@ -157,14 +171,16 @@ export default async function WardAgeWiseEconomicallyActivePopulationPage() {
     .map(([ageGroup, population]) => ({
       ageGroup,
       ageGroupName:
-        AGE_GROUP_NAMES[ageGroup as keyof typeof AGE_GROUP_NAMES] ||
-        ageGroup,
+        AGE_GROUP_NAMES[ageGroup as keyof typeof AGE_GROUP_NAMES] || ageGroup,
       population,
     }))
     .sort((a, b) => {
       // Custom sort to ensure age groups are in chronological order
-      const order = { "AGE_0_TO_14": 1, "AGE_15_TO_59": 2, "AGE_60_PLUS": 3 };
-      return order[a.ageGroup as keyof typeof order] - order[b.ageGroup as keyof typeof order];
+      const order = { AGE_0_TO_14: 1, AGE_15_TO_59: 2, AGE_60_PLUS: 3 };
+      return (
+        order[a.ageGroup as keyof typeof order] -
+        order[b.ageGroup as keyof typeof order]
+      );
     });
 
   // Calculate total population for percentages
@@ -173,7 +189,7 @@ export default async function WardAgeWiseEconomicallyActivePopulationPage() {
     0,
   );
 
-  // Create data for pie chart 
+  // Create data for pie chart
   const pieChartData = overallSummary.map((item) => ({
     name: item.ageGroupName,
     value: item.population,
@@ -209,22 +225,23 @@ export default async function WardAgeWiseEconomicallyActivePopulationPage() {
     const wardData = populationData.filter(
       (item) => item.wardNumber === wardNumber,
     );
-    
+
     const dependentPopulation = wardData.reduce((sum, item) => {
       if (item.ageGroup === "AGE_0_TO_14" || item.ageGroup === "AGE_60_PLUS") {
         return sum + item.population;
       }
       return sum;
     }, 0);
-    
-    const workingAgePopulation = wardData.find(
-      (item) => item.ageGroup === "AGE_15_TO_59"
-    )?.population || 0;
-    
-    const ratio = workingAgePopulation > 0 
-      ? (dependentPopulation / workingAgePopulation) * 100
-      : 0;
-    
+
+    const workingAgePopulation =
+      wardData.find((item) => item.ageGroup === "AGE_15_TO_59")?.population ||
+      0;
+
+    const ratio =
+      workingAgePopulation > 0
+        ? (dependentPopulation / workingAgePopulation) * 100
+        : 0;
+
     return {
       wardNumber,
       dependentPopulation,
@@ -251,7 +268,7 @@ export default async function WardAgeWiseEconomicallyActivePopulationPage() {
               src="/images/economically-active-population.svg"
               width={1200}
               height={400}
-              alt="आर्थिक रूपमा सक्रिय जनसंख्या - खजुरा गाउँपालिका (Economically Active Population - Khajura Rural Municipality)"
+              alt="आर्थिक रूपमा सक्रिय जनसंख्या - परिवर्तन गाउँपालिका (Economically Active Population - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -259,7 +276,7 @@ export default async function WardAgeWiseEconomicallyActivePopulationPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा आर्थिक रूपमा सक्रिय जनसंख्या
+              परिवर्तन गाउँपालिकामा आर्थिक रूपमा सक्रिय जनसंख्या
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
@@ -267,16 +284,29 @@ export default async function WardAgeWiseEconomicallyActivePopulationPage() {
             </h2>
             <p>
               आर्थिक रूपमा सक्रिय जनसंख्याले कुनै पनि समुदायको उत्पादकता, आर्थिक
-              विकास र सामाजिक संरचनामा महत्वपूर्ण भूमिका खेल्छ। यस खण्डमा खजुरा
-              गाउँपालिकामा विभिन्न उमेर समूहका आर्थिक रूपमा सक्रिय जनसंख्याको
-              वडागत वितरण र विश्लेषण प्रस्तुत गरिएको छ।
+              विकास र सामाजिक संरचनामा महत्वपूर्ण भूमिका खेल्छ। यस खण्डमा
+              परिवर्तन गाउँपालिकामा विभिन्न उमेर समूहका आर्थिक रूपमा सक्रिय
+              जनसंख्याको वडागत वितरण र विश्लेषण प्रस्तुत गरिएको छ।
             </p>
             <p>
-              खजुरा गाउँपालिकामा उमेर समूह अनुसार आर्थिक सक्रिय जनसंख्याको
-              तथ्याङ्क हेर्दा, कुल जनसंख्या {localizeNumber(totalPopulation.toLocaleString(), "ne")} 
-              मध्ये {overallSummary.find(item => item.ageGroup === "AGE_15_TO_59")?.ageGroupName || ""} 
-              {localizeNumber(((overallSummary.find(item => item.ageGroup === "AGE_15_TO_59")?.population || 0) / totalPopulation * 100).toFixed(1), "ne")}% 
-              रहेको देखिन्छ। यस समूहलाई आर्थिक रूपमा सक्रिय जनसंख्याको रूपमा हेरिएको छ।
+              परिवर्तन गाउँपालिकामा उमेर समूह अनुसार आर्थिक सक्रिय जनसंख्याको
+              तथ्याङ्क हेर्दा, कुल जनसंख्या{" "}
+              {localizeNumber(totalPopulation.toLocaleString(), "ne")}
+              मध्ये{" "}
+              {overallSummary.find((item) => item.ageGroup === "AGE_15_TO_59")
+                ?.ageGroupName || ""}
+              {localizeNumber(
+                (
+                  ((overallSummary.find(
+                    (item) => item.ageGroup === "AGE_15_TO_59",
+                  )?.population || 0) /
+                    totalPopulation) *
+                  100
+                ).toFixed(1),
+                "ne",
+              )}
+              % रहेको देखिन्छ। यस समूहलाई आर्थिक रूपमा सक्रिय जनसंख्याको रूपमा
+              हेरिएको छ।
             </p>
 
             <h2
@@ -286,8 +316,8 @@ export default async function WardAgeWiseEconomicallyActivePopulationPage() {
               उमेर अनुसार आर्थिक सक्रियता
             </h2>
             <p>
-              खजुरा गाउँपालिकामा उमेर समूह अनुसार जनसंख्याको वितरण निम्नानुसार
-              रहेको छ:
+              परिवर्तन गाउँपालिकामा उमेर समूह अनुसार जनसंख्याको वितरण
+              निम्नानुसार रहेको छ:
             </p>
           </div>
 
@@ -304,13 +334,27 @@ export default async function WardAgeWiseEconomicallyActivePopulationPage() {
           />
 
           <div className="prose prose-slate dark:prose-invert max-w-none mt-8">
-            <h2 id="active-population-analysis" className="scroll-m-20 border-b pb-2">
+            <h2
+              id="active-population-analysis"
+              className="scroll-m-20 border-b pb-2"
+            >
               आर्थिक सक्रिय जनसंख्या विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा आर्थिक रूपमा सक्रिय जनसंख्या (१५-५९ वर्ष) समग्र जनसंख्याको 
-              {localizeNumber(((overallSummary.find(item => item.ageGroup === "AGE_15_TO_59")?.population || 0) / totalPopulation * 100).toFixed(2), "ne")}% 
-              रहेको छ। यी व्यक्तिहरू आर्थिक गतिविधिमा संलग्न हुन सक्ने उमेर समूहमा पर्दछन्।
+              परिवर्तन गाउँपालिकामा आर्थिक रूपमा सक्रिय जनसंख्या (१५-५९ वर्ष)
+              समग्र जनसंख्याको
+              {localizeNumber(
+                (
+                  ((overallSummary.find(
+                    (item) => item.ageGroup === "AGE_15_TO_59",
+                  )?.population || 0) /
+                    totalPopulation) *
+                  100
+                ).toFixed(2),
+                "ne",
+              )}
+              % रहेको छ। यी व्यक्तिहरू आर्थिक गतिविधिमा संलग्न हुन सक्ने उमेर
+              समूहमा पर्दछन्।
             </p>
 
             {/* Client component for population analysis section */}

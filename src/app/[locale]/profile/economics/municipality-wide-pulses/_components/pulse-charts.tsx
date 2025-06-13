@@ -3,10 +3,7 @@ import PulseBarChart from "./charts/pulse-bar-chart";
 import ProductionSalesDistributionChart from "./charts/production-sales-distribution-chart";
 import CommercializationChart from "./charts/commercialization-chart";
 import { localizeNumber } from "@/lib/utils/localize-number";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Bean,
   TrendingUp,
@@ -144,9 +141,7 @@ export default function PulseCharts({
     name: item.typeName,
     value: item.sales,
     percentage:
-      totalSales > 0
-        ? ((item.sales / totalSales) * 100).toFixed(2)
-        : "0",
+      totalSales > 0 ? ((item.sales / totalSales) * 100).toFixed(2) : "0",
   }));
 
   return (
@@ -192,9 +187,7 @@ export default function PulseCharts({
                   <li className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
                     <BarChart3 className="w-5 h-5 text-blue-600 mt-0.5" />
                     <div>
-                      <span className="font-medium">
-                        कुल दालबाली उत्पादन
-                      </span>
+                      <span className="font-medium">कुल दालबाली उत्पादन</span>
                       <div className="text-xl font-bold text-blue-600">
                         {localizeNumber(totalProduction.toFixed(2), "ne")}{" "}
                         मेट्रिक टन
@@ -407,9 +400,8 @@ export default function PulseCharts({
               </h4>
               <div className="prose prose-sm">
                 <p>
-                  माथिको चार्टमा हरेक दालबालीको उत्पादन र बिक्री अनुपात
-                  देखाइएको छ। हरियो भाग आन्तरिक उपभोग र निलो भाग बिक्री परिमाण
-                  हो。
+                  माथिको चार्टमा हरेक दालबालीको उत्पादन र बिक्री अनुपात देखाइएको
+                  छ। हरियो भाग आन्तरिक उपभोग र निलो भाग बिक्री परिमाण हो。
                 </p>
                 <p className="mt-2">
                   सबैभन्दा बढी बिक्री अनुपात{" "}
@@ -495,9 +487,9 @@ export default function PulseCharts({
                 मसुरो, चना र केराउ उत्पादनमा निरन्तर वृद्धि भएको छ。
               </p>
               <p className="mt-2">
-                यो तथ्याङ्कले खजुरा गाउँपालिकामा दालबालीको क्षेत्रमा
-                सकारात्मक विकास भइरहेको संकेत गर्दछ। किसानहरूले परम्परागत
-                बालीका साथै नयाँ किसिमका दालबालीको खेती गर्न थालेका छन्。
+                यो तथ्याङ्कले परिवर्तन गाउँपालिकामा दालबालीको क्षेत्रमा
+                सकारात्मक विकास भइरहेको संकेत गर्दछ। किसानहरूले परम्परागत बालीका
+                साथै नयाँ किसिमका दालबालीको खेती गर्न थालेका छन्。
               </p>
             </div>
           </CardContent>

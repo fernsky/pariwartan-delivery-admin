@@ -63,7 +63,7 @@ export default function FruitSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Fruit Types in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Fruit Types in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Fruit production and sales statistics of Khajura Rural Municipality with a total production of ${totalProduction.toFixed(
         2,
       )} tonnes and sales of ${totalSales.toFixed(2)} tonnes (${(
@@ -76,7 +76,7 @@ export default function FruitSEO({
       )} tonnes (${mostProducedPercentage}%). Self-consumption represents ${selfConsumptionPercentage}% of total production. Total revenue from fruit sales is NPR ${totalRevenue.toLocaleString()}.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Fruit production",
         "Fruit sales",
         "Mango production",

@@ -50,7 +50,6 @@ interface AgeWiseChartsProps {
   wardNumbers: number[];
   ageData: Array<{
     id: string;
-    wardNumber: number;
     ageGroup: string;
     gender: string;
     population: number;
@@ -94,7 +93,8 @@ export default function AgeWiseCharts({
             उमेर समूह अनुसार जनसंख्या वितरण
           </h3>
           <p className="text-sm text-muted-foreground">
-            कुल जनसंख्या: {localizeNumber(totalPopulation.toLocaleString(), "ne")} व्यक्ति
+            कुल जनसंख्या:{" "}
+            {localizeNumber(totalPopulation.toLocaleString(), "ne")} व्यक्ति
           </p>
         </div>
 
@@ -148,7 +148,9 @@ export default function AgeWiseCharts({
                 <div className="h-[420px]">
                   <AgeCategoryPieChart
                     totalPopulation={totalPopulation}
-                    calculateAgeDistributionPercentage={calculateAgeDistributionPercentage}
+                    calculateAgeDistributionPercentage={
+                      calculateAgeDistributionPercentage
+                    }
                     AGE_CATEGORY_COLORS={AGE_CATEGORY_COLORS}
                   />
                 </div>
@@ -200,7 +202,11 @@ export default function AgeWiseCharts({
                         {localizeNumber(item.total.toLocaleString(), "ne")}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(((item.total / totalPopulation) * 100).toFixed(2), "ne")}%
+                        {localizeNumber(
+                          ((item.total / totalPopulation) * 100).toFixed(2),
+                          "ne",
+                        )}
+                        %
                       </td>
                     </tr>
                   ))}
@@ -211,7 +217,7 @@ export default function AgeWiseCharts({
                         overallSummaryByAge
                           .reduce((sum, item) => sum + item.male, 0)
                           .toLocaleString(),
-                        "ne"
+                        "ne",
                       )}
                     </td>
                     <td className="border p-2 text-right">
@@ -219,7 +225,7 @@ export default function AgeWiseCharts({
                         overallSummaryByAge
                           .reduce((sum, item) => sum + item.female, 0)
                           .toLocaleString(),
-                        "ne"
+                        "ne",
                       )}
                     </td>
                     <td className="border p-2 text-right">
@@ -227,13 +233,15 @@ export default function AgeWiseCharts({
                         overallSummaryByAge
                           .reduce((sum, item) => sum + item.other, 0)
                           .toLocaleString(),
-                        "ne"
+                        "ne",
                       )}
                     </td>
                     <td className="border p-2 text-right">
                       {localizeNumber(totalPopulation.toLocaleString(), "ne")}
                     </td>
-                    <td className="border p-2 text-right">{localizeNumber("100.00", "ne")}%</td>
+                    <td className="border p-2 text-right">
+                      {localizeNumber("100.00", "ne")}%
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -264,139 +272,184 @@ export default function AgeWiseCharts({
         </div>
       </div>
 
-      {/* Ward-wise age distribution */}
-      <div
-        className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
-        id="ward-wise-age"
-      >
-        <div className="border-b px-4 py-3">
-          <h3 className="text-xl font-semibold">वडा अनुसार उमेर समूह वितरण</h3>
-          <p className="text-sm text-muted-foreground">
-            वडा र उमेर समूह अनुसार जनसंख्या वितरण
-          </p>
-        </div>
+      {/* Remove or conditionally render ward-wise sections since we don't have ward data */}
+      {wardNumbers.length > 0 && (
+        <>
+          {/* Ward-wise age distribution - only show if ward data exists */}
+          <div
+            className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
+            id="ward-wise-age"
+          >
+            <div className="border-b px-4 py-3">
+              <h3 className="text-xl font-semibold">
+                वडा अनुसार उमेर समूह वितरण
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                वडा र उमेर समूह अनुसार जनसंख्या वितरण
+              </p>
+            </div>
 
-        <div className="p-6">
-          <div className="h-[500px]">
-            <WardAgeBarChart
-              wardWiseData={wardWiseData}
-              AGE_CATEGORY_COLORS={AGE_CATEGORY_COLORS}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Detailed ward analysis */}
-      <div className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card">
-        <div className="border-b px-4 py-3">
-          <h3 className="text-xl font-semibold">वडागत उमेर संरचना विश्लेषण</h3>
-          <p className="text-sm text-muted-foreground">
-            प्रत्येक वडाको विस्तृत उमेरगत संरचना
-          </p>
-        </div>
-
-        <Tabs defaultValue="table" className="w-full">
-          <div className="border-b bg-muted/40">
-            <div className="container">
-              <TabsList className="h-10 bg-transparent">
-                <TabsTrigger
-                  value="table"
-                  className="data-[state=active]:bg-background"
-                >
-                  तालिका
-                </TabsTrigger>
-                <TabsTrigger
-                  value="chart"
-                  className="data-[state=active]:bg-background"
-                >
-                  वडागत वितरण
-                </TabsTrigger>
-              </TabsList>
+            <div className="p-6">
+              <div className="h-[500px]">
+                <WardAgeBarChart
+                  wardWiseData={wardWiseData}
+                  AGE_CATEGORY_COLORS={AGE_CATEGORY_COLORS}
+                />
+              </div>
             </div>
           </div>
 
-          <TabsContent value="table" className="p-6">
-            <div className="overflow-auto max-h-[600px]">
-              <table className="w-full border-collapse min-w-[800px]">
-                <thead className="sticky top-0 z-10">
-                  <tr className="bg-muted">
-                    <th className="border p-2">वडा नं.</th>
-                    <th className="border p-2">बाल (०-१४)</th>
-                    <th className="border p-2 text-right">संख्या</th>
-                    <th className="border p-2 text-right">वडाको %</th>
-                    <th className="border p-2">युवा (१५-२९)</th>
-                    <th className="border p-2 text-right">संख्या</th>
-                    <th className="border p-2 text-right">वडाको %</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {wardNumbers.map((wardNumber, i) => {
-                    const wardItems = ageData.filter(
-                      (item) => item.wardNumber === wardNumber,
-                    );
-                    const wardTotal = wardItems.reduce(
-                      (sum, item) => sum + item.population,
-                      0,
-                    );
+          {/* Detailed ward analysis */}
+          <div className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card">
+            <div className="border-b px-4 py-3">
+              <h3 className="text-xl font-semibold">
+                वडागत उमेर संरचना विश्लेषण
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                प्रत्येक वडाको विस्तृत उमेरगत संरचना
+              </p>
+            </div>
 
-                    // Calculate children population
-                    const childPopulation = wardItems
-                      .filter((item) =>
-                        ["AGE_0_4", "AGE_5_9", "AGE_10_14"].includes(
-                          item.ageGroup,
-                        ),
-                      )
-                      .reduce((sum, item) => sum + item.population, 0);
+            <Tabs defaultValue="table" className="w-full">
+              <div className="border-b bg-muted/40">
+                <div className="container">
+                  <TabsList className="h-10 bg-transparent">
+                    <TabsTrigger
+                      value="table"
+                      className="data-[state=active]:bg-background"
+                    >
+                      तालिका
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="chart"
+                      className="data-[state=active]:bg-background"
+                    >
+                      वडागत वितरण
+                    </TabsTrigger>
+                  </TabsList>
+                </div>
+              </div>
 
-                    // Calculate youth population
-                    const youthPopulation = wardItems
-                      .filter((item) =>
-                        ["AGE_15_19", "AGE_20_24", "AGE_25_29"].includes(
-                          item.ageGroup,
-                        ),
-                      )
-                      .reduce((sum, item) => sum + item.population, 0);
-
-                    return (
-                      <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
-                        <td className="border p-2">वडा {localizeNumber(wardNumber.toString(), "ne")}</td>
-                        <td className="border p-2">बाल जनसंख्या</td>
-                        <td className="border p-2 text-right">
-                          {localizeNumber(childPopulation.toLocaleString(), "ne")}
-                        </td>
-                        <td className="border p-2 text-right">
-                          {wardTotal > 0
-                            ? localizeNumber(((childPopulation / wardTotal) * 100).toFixed(2), "ne") +
-                              "%"
-                            : localizeNumber("0", "ne") + "%"}
-                        </td>
-                        <td className="border p-2">युवा जनसंख्या</td>
-                        <td className="border p-2 text-right">
-                          {localizeNumber(youthPopulation.toLocaleString(), "ne")}
-                        </td>
-                        <td className="border p-2 text-right">
-                          {wardTotal > 0
-                            ? localizeNumber(((youthPopulation / wardTotal) * 100).toFixed(2), "ne") +
-                              "%"
-                            : localizeNumber("0", "ne") + "%"}
-                        </td>
+              <TabsContent value="table" className="p-6">
+                <div className="overflow-auto max-h-[600px]">
+                  <table className="w-full border-collapse min-w-[800px]">
+                    <thead className="sticky top-0 z-10">
+                      <tr className="bg-muted">
+                        <th className="border p-2">वडा नं.</th>
+                        <th className="border p-2">बाल (०-१४)</th>
+                        <th className="border p-2 text-right">संख्या</th>
+                        <th className="border p-2 text-right">वडाको %</th>
+                        <th className="border p-2">युवा (१५-२९)</th>
+                        <th className="border p-2 text-right">संख्या</th>
+                        <th className="border p-2 text-right">वडाको %</th>
                       </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </TabsContent>
+                    </thead>
+                    <tbody>
+                      {wardNumbers.map((wardNumber, i) => {
+                        const wardItems = ageData.filter(
+                          (item) => item.wardNumber === wardNumber,
+                        );
+                        const wardTotal = wardItems.reduce(
+                          (sum, item) => sum + item.population,
+                          0,
+                        );
 
-          <TabsContent value="chart" className="p-6">
-            <WardDetailedAgePieCharts
-              wardNumbers={wardNumbers}
-              ageData={ageData}
-              AGE_CATEGORY_COLORS={AGE_CATEGORY_COLORS}
-            />
-          </TabsContent>
-        </Tabs>
-      </div>
+                        // Calculate children population
+                        const childPopulation = wardItems
+                          .filter((item) =>
+                            ["AGE_0_4", "AGE_5_9", "AGE_10_14"].includes(
+                              item.ageGroup,
+                            ),
+                          )
+                          .reduce((sum, item) => sum + item.population, 0);
+
+                        // Calculate youth population
+                        const youthPopulation = wardItems
+                          .filter((item) =>
+                            ["AGE_15_19", "AGE_20_24", "AGE_25_29"].includes(
+                              item.ageGroup,
+                            ),
+                          )
+                          .reduce((sum, item) => sum + item.population, 0);
+
+                        return (
+                          <tr
+                            key={i}
+                            className={i % 2 === 0 ? "bg-muted/50" : ""}
+                          >
+                            <td className="border p-2">
+                              वडा {localizeNumber(wardNumber.toString(), "ne")}
+                            </td>
+                            <td className="border p-2">बाल जनसंख्या</td>
+                            <td className="border p-2 text-right">
+                              {localizeNumber(
+                                childPopulation.toLocaleString(),
+                                "ne",
+                              )}
+                            </td>
+                            <td className="border p-2 text-right">
+                              {wardTotal > 0
+                                ? localizeNumber(
+                                    (
+                                      (childPopulation / wardTotal) *
+                                      100
+                                    ).toFixed(2),
+                                    "ne",
+                                  ) + "%"
+                                : localizeNumber("0", "ne") + "%"}
+                            </td>
+                            <td className="border p-2">युवा जनसंख्या</td>
+                            <td className="border p-2 text-right">
+                              {localizeNumber(
+                                youthPopulation.toLocaleString(),
+                                "ne",
+                              )}
+                            </td>
+                            <td className="border p-2 text-right">
+                              {wardTotal > 0
+                                ? localizeNumber(
+                                    (
+                                      (youthPopulation / wardTotal) *
+                                      100
+                                    ).toFixed(2),
+                                    "ne",
+                                  ) + "%"
+                                : localizeNumber("0", "ne") + "%"}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="chart" className="p-6">
+                <WardDetailedAgePieCharts
+                  wardNumbers={wardNumbers}
+                  ageData={ageData}
+                  AGE_CATEGORY_COLORS={AGE_CATEGORY_COLORS}
+                />
+              </TabsContent>
+            </Tabs>
+          </div>
+        </>
+      )}
+
+      {/* Show message if no ward data */}
+      {wardNumbers.length === 0 && (
+        <div className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card">
+          <div className="border-b px-4 py-3">
+            <h3 className="text-xl font-semibold">वडागत तथ्याङ्क</h3>
+          </div>
+          <div className="p-6 text-center text-muted-foreground">
+            <p>वडागत उमेर वितरणको तथ्याङ्क उपलब्ध छैन।</p>
+            <p className="text-sm mt-2">
+              केवल समग्र उमेर वितरणको तथ्याङ्क प्रदर्शन गरिएको छ।
+            </p>
+          </div>
+        </div>
+      )}
     </>
   );
 }

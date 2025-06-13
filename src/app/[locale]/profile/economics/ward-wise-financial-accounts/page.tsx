@@ -36,7 +36,6 @@ const FINANCIAL_ACCOUNT_TYPES = {
   },
 };
 
-
 // Force dynamic rendering since we're using tRPC which relies on headers
 export const dynamic = "force-dynamic";
 
@@ -53,14 +52,17 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     const wardWiseFinancialAccountsData =
       await api.profile.economics.wardWiseFinancialAccounts.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Group by ward number
-    const wardGroups = wardWiseFinancialAccountsData.reduce((acc: any, curr: any) => {
-      acc[curr.wardNumber] = acc[curr.wardNumber] || [];
-      acc[curr.wardNumber].push(curr);
-      return acc;
-    }, {});
+    const wardGroups = wardWiseFinancialAccountsData.reduce(
+      (acc: any, curr: any) => {
+        acc[curr.wardNumber] = acc[curr.wardNumber] || [];
+        acc[curr.wardNumber].push(curr);
+        return acc;
+      },
+      {},
+    );
 
     // Calculate ward totals and grand total
     let totalHouseholds = 0;
@@ -73,15 +75,15 @@ export async function generateMetadata(): Promise<Metadata> {
     Object.values(wardGroups).forEach((wardData: any) => {
       wardData.forEach((item: any) => {
         totalHouseholds += item.households;
-        if (item.financialAccountType === 'BANK') {
+        if (item.financialAccountType === "BANK") {
           bankTotal += item.households;
-        } else if (item.financialAccountType === 'FINANCE') {
+        } else if (item.financialAccountType === "FINANCE") {
           financeTotal += item.households;
-        } else if (item.financialAccountType === 'MICRO_FINANCE') {
+        } else if (item.financialAccountType === "MICRO_FINANCE") {
           microfinanceTotal += item.households;
-        } else if (item.financialAccountType === 'COOPERATIVE') {
+        } else if (item.financialAccountType === "COOPERATIVE") {
           cooperativeTotal += item.households;
-        } else if (item.financialAccountType === 'NONE') {
+        } else if (item.financialAccountType === "NONE") {
           noAccountTotal += item.households;
         }
       });
@@ -89,23 +91,33 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // Calculate percentages for SEO description
     const bankPercentage = ((bankTotal / totalHouseholds) * 100).toFixed(2);
-    const noAccountPercentage = ((noAccountTotal / totalHouseholds) * 100).toFixed(2);
+    const noAccountPercentage = (
+      (noAccountTotal / totalHouseholds) *
+      100
+    ).toFixed(2);
 
     // Find ward with best financial access
-    let bestAccessWard = '1';
+    let bestAccessWard = "1";
     let bestAccessPercentage = 0;
-    let worstAccessWard = '1';
+    let worstAccessWard = "1";
     let worstAccessPercentage = 0;
 
     Object.entries(wardGroups).forEach(([ward, data]: [string, any]) => {
-      const wardTotalHouseholds = data.reduce((sum: number, item: any) => sum + item.households, 0);
-      const bankHouseholds = data.find((item: any) => 
-        item.financialAccountType === 'BANK')?.households || 0;
-      const noAccountHouseholds = data.find((item: any) => 
-        item.financialAccountType === 'NONE')?.households || 0;
-      
-      const quickAccessPercentage = (bankHouseholds / wardTotalHouseholds) * 100;
-      const slowAccessPercentage = (noAccountHouseholds / wardTotalHouseholds) * 100;
+      const wardTotalHouseholds = data.reduce(
+        (sum: number, item: any) => sum + item.households,
+        0,
+      );
+      const bankHouseholds =
+        data.find((item: any) => item.financialAccountType === "BANK")
+          ?.households || 0;
+      const noAccountHouseholds =
+        data.find((item: any) => item.financialAccountType === "NONE")
+          ?.households || 0;
+
+      const quickAccessPercentage =
+        (bankHouseholds / wardTotalHouseholds) * 100;
+      const slowAccessPercentage =
+        (noAccountHouseholds / wardTotalHouseholds) * 100;
 
       if (quickAccessPercentage > bestAccessPercentage) {
         bestAccessPercentage = quickAccessPercentage;
@@ -120,7 +132,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // Create rich keywords
     const keywordsNP = [
-      "खजुरा गाउँपालिका वित्तीय पहुँच",
+      "परिवर्तन गाउँपालिका वित्तीय पहुँच",
       "वित्तीय खाताको वितरण",
       "वडागत वित्तीय पहुँच",
       "बैंकमा पहुँच",
@@ -140,7 +152,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create description
-    const descriptionNP = `खजुरा गाउँपालिकामा वित्तीय खाताहरूको वितरणको विश्लेषण। कुल ${localizeNumber(totalHouseholds.toLocaleString(), "ne")} घरधुरी मध्ये ${localizeNumber(bankPercentage, "ne")}% (${localizeNumber(bankTotal.toLocaleString(), "ne")}) घरधुरीले बैंकमा पहुँच राख्छन्। वडा ${localizeNumber(bestAccessWard, "ne")} मा सबैभन्दा राम्रो पहुँच छ, जहाँ ${localizeNumber(bestAccessPercentage.toFixed(2), "ne")}% घरधुरीले १५ मिनेट भित्र वित्तीय संस्था पुग्न सक्छन्।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकामा वित्तीय खाताहरूको वितरणको विश्लेषण। कुल ${localizeNumber(totalHouseholds.toLocaleString(), "ne")} घरधुरी मध्ये ${localizeNumber(bankPercentage, "ne")}% (${localizeNumber(bankTotal.toLocaleString(), "ne")}) घरधुरीले बैंकमा पहुँच राख्छन्। वडा ${localizeNumber(bestAccessWard, "ne")} मा सबैभन्दा राम्रो पहुँच छ, जहाँ ${localizeNumber(bestAccessPercentage.toFixed(2), "ne")}% घरधुरीले १५ मिनेट भित्र वित्तीय संस्था पुग्न सक्छन्।`;
 
     const descriptionEN = `Analysis of the distribution of financial accounts in Khajura Rural Municipality. Out of a total of ${totalHouseholds.toLocaleString()} households, ${bankPercentage}% (${bankTotal.toLocaleString()}) households have access to a bank. Ward ${bestAccessWard} has the best access, where ${bestAccessPercentage.toFixed(2)}% of households can reach a financial institution within 15 minutes.`;
 
@@ -172,7 +184,7 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "वित्तीय खाताको वितरण | खजुरा गाउँपालिका डिजिटल प्रोफाइल",
+      title: "वित्तीय खाताको वितरण | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
       description: "वडा अनुसार वित्तीय खाताहरूको वितरण र विश्लेषण।",
     };
   }
@@ -180,10 +192,26 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const toc = [
   { level: 2, text: "परिचय", slug: "introduction" },
-  { level: 2, text: "वित्तीय खाताको वितरण", slug: "distribution-of-financial-accounts" },
-  { level: 2, text: "वडा अनुसार वित्तीय पहुँच", slug: "ward-wise-financial-access" },
-  { level: 2, text: "वित्तीय पहुँच विश्लेषण", slug: "financial-access-analysis" },
-  { level: 2, text: "वित्तीय समावेशिता रणनीति", slug: "financial-inclusion-strategy" },
+  {
+    level: 2,
+    text: "वित्तीय खाताको वितरण",
+    slug: "distribution-of-financial-accounts",
+  },
+  {
+    level: 2,
+    text: "वडा अनुसार वित्तीय पहुँच",
+    slug: "ward-wise-financial-access",
+  },
+  {
+    level: 2,
+    text: "वित्तीय पहुँच विश्लेषण",
+    slug: "financial-access-analysis",
+  },
+  {
+    level: 2,
+    text: "वित्तीय समावेशिता रणनीति",
+    slug: "financial-inclusion-strategy",
+  },
 ];
 
 export default async function WardWiseFinancialAccountsPage() {
@@ -201,11 +229,14 @@ export default async function WardWiseFinancialAccountsPage() {
   }
 
   // Group by ward number
-  const wardGroups = wardWiseFinancialAccountsData.reduce((acc: any, curr: any) => {
-    acc[curr.wardNumber] = acc[curr.wardNumber] || [];
-    acc[curr.wardNumber].push(curr);
-    return acc;
-  }, {});
+  const wardGroups = wardWiseFinancialAccountsData.reduce(
+    (acc: any, curr: any) => {
+      acc[curr.wardNumber] = acc[curr.wardNumber] || [];
+      acc[curr.wardNumber].push(curr);
+      return acc;
+    },
+    {},
+  );
 
   // Calculate ward totals and grand total
   let totalHouseholds = 0;
@@ -218,15 +249,15 @@ export default async function WardWiseFinancialAccountsPage() {
   Object.values(wardGroups).forEach((wardData: any) => {
     wardData.forEach((item: any) => {
       totalHouseholds += item.households;
-      if (item.financialAccountType === 'BANK') {
+      if (item.financialAccountType === "BANK") {
         bankTotal += item.households;
-      } else if (item.financialAccountType === 'FINANCE') {
+      } else if (item.financialAccountType === "FINANCE") {
         financeTotal += item.households;
-      } else if (item.financialAccountType === 'MICRO_FINANCE') {
+      } else if (item.financialAccountType === "MICRO_FINANCE") {
         microfinanceTotal += item.households;
-      } else if (item.financialAccountType === 'COOPERATIVE') {
+      } else if (item.financialAccountType === "COOPERATIVE") {
         cooperativeTotal += item.households;
-      } else if (item.financialAccountType === 'NONE') {
+      } else if (item.financialAccountType === "NONE") {
         noAccountTotal += item.households;
       }
     });
@@ -235,14 +266,25 @@ export default async function WardWiseFinancialAccountsPage() {
   // Calculate percentages
   const bankPercentage = ((bankTotal / totalHouseholds) * 100).toFixed(2);
   const financePercentage = ((financeTotal / totalHouseholds) * 100).toFixed(2);
-  const microfinancePercentage = ((microfinanceTotal / totalHouseholds) * 100).toFixed(2);
-  const cooperativePercentage = ((cooperativeTotal / totalHouseholds) * 100).toFixed(2);
-  const noAccountPercentage = ((noAccountTotal / totalHouseholds) * 100).toFixed(2);
+  const microfinancePercentage = (
+    (microfinanceTotal / totalHouseholds) *
+    100
+  ).toFixed(2);
+  const cooperativePercentage = (
+    (cooperativeTotal / totalHouseholds) *
+    100
+  ).toFixed(2);
+  const noAccountPercentage = (
+    (noAccountTotal / totalHouseholds) *
+    100
+  ).toFixed(2);
 
   // Get unique ward numbers
-  const wardNumbers = Object.keys(wardGroups).map(Number).sort((a, b) => a - b);
+  const wardNumbers = Object.keys(wardGroups)
+    .map(Number)
+    .sort((a, b) => a - b);
 
-  // Process data for pie chart 
+  // Process data for pie chart
   const pieChartData = [
     {
       name: FINANCIAL_ACCOUNT_TYPES.BANK.name,
@@ -273,62 +315,96 @@ export default async function WardWiseFinancialAccountsPage() {
       value: noAccountTotal,
       percentage: noAccountPercentage,
       color: FINANCIAL_ACCOUNT_TYPES.NONE.color,
-    }
+    },
   ];
 
   // Process data for ward-wise visualization
-  const wardWiseData = wardNumbers.map((wardNumber) => {
-    const wardData = wardGroups[wardNumber];
-    
-    if (!wardData) return null;
-    
-    const totalWardHouseholds = wardData.reduce((sum: number, item: any) => sum + item.households, 0);
-    const bank = wardData.find((item: any) => item.financialAccountType === 'BANK')?.households || 0;
-    const finance = wardData.find((item: any) => item.financialAccountType === 'FINANCE')?.households || 0;
-    const microfinance = wardData.find((item: any) => item.financialAccountType === 'MICRO_FINANCE')?.households || 0;
-    const cooperative = wardData.find((item: any) => item.financialAccountType === 'COOPERATIVE')?.households || 0;
-    const noAccount = wardData.find((item: any) => item.financialAccountType === 'NONE')?.households || 0;
-    
-    return {
-      ward: `वडा ${wardNumber}`,
-      wardNumber,
-      [FINANCIAL_ACCOUNT_TYPES.BANK.name]: bank,
-      [FINANCIAL_ACCOUNT_TYPES.FINANCE.name]: finance,
-      [FINANCIAL_ACCOUNT_TYPES.MICRO_FINANCE.name]: microfinance,
-      [FINANCIAL_ACCOUNT_TYPES.COOPERATIVE.name]: cooperative,
-      [FINANCIAL_ACCOUNT_TYPES.NONE.name]: noAccount,
-      total: totalWardHouseholds,
-      bankPercent: totalWardHouseholds > 0 ? (bank / totalWardHouseholds) * 100 : 0,
-      financePercent: totalWardHouseholds > 0 ? (finance / totalWardHouseholds) * 100 : 0,
-      microfinancePercent: totalWardHouseholds > 0 ? (microfinance / totalWardHouseholds) * 100 : 0,
-      cooperativePercent: totalWardHouseholds > 0 ? (cooperative / totalWardHouseholds) * 100 : 0,
-      noAccountPercent: totalWardHouseholds > 0 ? (noAccount / totalWardHouseholds) * 100 : 0,
-    };
-  }).filter(Boolean);
+  const wardWiseData = wardNumbers
+    .map((wardNumber) => {
+      const wardData = wardGroups[wardNumber];
+
+      if (!wardData) return null;
+
+      const totalWardHouseholds = wardData.reduce(
+        (sum: number, item: any) => sum + item.households,
+        0,
+      );
+      const bank =
+        wardData.find((item: any) => item.financialAccountType === "BANK")
+          ?.households || 0;
+      const finance =
+        wardData.find((item: any) => item.financialAccountType === "FINANCE")
+          ?.households || 0;
+      const microfinance =
+        wardData.find(
+          (item: any) => item.financialAccountType === "MICRO_FINANCE",
+        )?.households || 0;
+      const cooperative =
+        wardData.find(
+          (item: any) => item.financialAccountType === "COOPERATIVE",
+        )?.households || 0;
+      const noAccount =
+        wardData.find((item: any) => item.financialAccountType === "NONE")
+          ?.households || 0;
+
+      return {
+        ward: `वडा ${wardNumber}`,
+        wardNumber,
+        [FINANCIAL_ACCOUNT_TYPES.BANK.name]: bank,
+        [FINANCIAL_ACCOUNT_TYPES.FINANCE.name]: finance,
+        [FINANCIAL_ACCOUNT_TYPES.MICRO_FINANCE.name]: microfinance,
+        [FINANCIAL_ACCOUNT_TYPES.COOPERATIVE.name]: cooperative,
+        [FINANCIAL_ACCOUNT_TYPES.NONE.name]: noAccount,
+        total: totalWardHouseholds,
+        bankPercent:
+          totalWardHouseholds > 0 ? (bank / totalWardHouseholds) * 100 : 0,
+        financePercent:
+          totalWardHouseholds > 0 ? (finance / totalWardHouseholds) * 100 : 0,
+        microfinancePercent:
+          totalWardHouseholds > 0
+            ? (microfinance / totalWardHouseholds) * 100
+            : 0,
+        cooperativePercent:
+          totalWardHouseholds > 0
+            ? (cooperative / totalWardHouseholds) * 100
+            : 0,
+        noAccountPercent:
+          totalWardHouseholds > 0 ? (noAccount / totalWardHouseholds) * 100 : 0,
+      };
+    })
+    .filter(Boolean);
 
   // Calculate ward-wise financial access analysis
-  const wardWiseAnalysis = wardWiseData.map((ward: any) => {
-    return {
-      wardNumber: ward?.wardNumber || 0,
-      totalHouseholds: ward?.total || 0,
-      bankHouseholds: ward?.[FINANCIAL_ACCOUNT_TYPES.BANK.name] || 0,
-      financeHouseholds: ward?.[FINANCIAL_ACCOUNT_TYPES.FINANCE.name] || 0,
-      microfinanceHouseholds: ward?.[FINANCIAL_ACCOUNT_TYPES.MICRO_FINANCE.name] || 0,
-      cooperativeHouseholds: ward?.[FINANCIAL_ACCOUNT_TYPES.COOPERATIVE.name] || 0,
-      noAccountHouseholds: ward?.[FINANCIAL_ACCOUNT_TYPES.NONE.name] || 0,
-      bankPercent: ward?.bankPercent || 0,
-      financePercent: ward?.financePercent || 0, 
-      microfinancePercent: ward?.microfinancePercent || 0,
-      cooperativePercent: ward?.cooperativePercent || 0,
-      noAccountPercent: ward?.noAccountPercent || 0,
-      accountPercent: ward?.bankPercent + ward?.financePercent + ward?.microfinancePercent + ward?.cooperativePercent,
-    };
-  }).sort((a, b) => b.accountPercent - a.accountPercent);
+  const wardWiseAnalysis = wardWiseData
+    .map((ward: any) => {
+      return {
+        wardNumber: ward?.wardNumber || 0,
+        totalHouseholds: ward?.total || 0,
+        bankHouseholds: ward?.[FINANCIAL_ACCOUNT_TYPES.BANK.name] || 0,
+        financeHouseholds: ward?.[FINANCIAL_ACCOUNT_TYPES.FINANCE.name] || 0,
+        microfinanceHouseholds:
+          ward?.[FINANCIAL_ACCOUNT_TYPES.MICRO_FINANCE.name] || 0,
+        cooperativeHouseholds:
+          ward?.[FINANCIAL_ACCOUNT_TYPES.COOPERATIVE.name] || 0,
+        noAccountHouseholds: ward?.[FINANCIAL_ACCOUNT_TYPES.NONE.name] || 0,
+        bankPercent: ward?.bankPercent || 0,
+        financePercent: ward?.financePercent || 0,
+        microfinancePercent: ward?.microfinancePercent || 0,
+        cooperativePercent: ward?.cooperativePercent || 0,
+        noAccountPercent: ward?.noAccountPercent || 0,
+        accountPercent:
+          ward?.bankPercent +
+          ward?.financePercent +
+          ward?.microfinancePercent +
+          ward?.cooperativePercent,
+      };
+    })
+    .sort((a, b) => b.accountPercent - a.accountPercent);
 
   // Find wards with best and worst financial access
   const bestInclusionWard = wardWiseAnalysis[0];
   const worstInclusionWard = [...wardWiseAnalysis].sort(
-    (a, b) => b.noAccountPercent - a.noAccountPercent
+    (a, b) => b.noAccountPercent - a.noAccountPercent,
   )[0];
 
   return (
@@ -360,7 +436,7 @@ export default async function WardWiseFinancialAccountsPage() {
               src="/images/financial-access.svg"
               width={1200}
               height={400}
-              alt="वित्तीय खाताको वितरण - खजुरा गाउँपालिका (Distribution of Financial Accounts - Khajura Rural Municipality)"
+              alt="वित्तीय खाताको वितरण - परिवर्तन गाउँपालिका (Distribution of Financial Accounts - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -368,7 +444,7 @@ export default async function WardWiseFinancialAccountsPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा वित्तीय खाताहरूको वितरण
+              परिवर्तन गाउँपालिकामा वित्तीय खाताहरूको वितरण
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
@@ -377,12 +453,12 @@ export default async function WardWiseFinancialAccountsPage() {
             <p>
               वित्तीय खाताहरूको वितरण आर्थिक विकासको महत्वपूर्ण सूचक हो र यसले
               नागरिकको वित्तीय समावेशीता र सशक्तिकरणमा प्रत्यक्ष प्रभाव पार्दछ।
-              यस खण्डमा खजुरा गाउँपालिकाको विभिन्न वडाहरूमा नागरिकले वित्तीय
+              यस खण्डमा परिवर्तन गाउँपालिकाको विभिन्न वडाहरूमा नागरिकले वित्तीय
               खातामा पहुँच बनाउन लाग्ने समयको विश्लेषण प्रस्तुत गरिएको छ, जसले
               भविष्यको वित्तीय नीति निर्माणमा सहयोग पुर्याउने छ।
             </p>
             <p>
-              खजुरा गाउँपालिकामा कुल{" "}
+              परिवर्तन गाउँपालिकामा कुल{" "}
               {localizeNumber(totalHouseholds.toLocaleString(), "ne")}{" "}
               घरधुरीमध्ये
               {localizeNumber(bankPercentage, "ne")}% अर्थात{" "}
@@ -399,7 +475,9 @@ export default async function WardWiseFinancialAccountsPage() {
             >
               वित्तीय खाताको वितरण
             </h2>
-            <p>खजुरा गाउँपालिकामा वित्तीय खाताको वितरण निम्नानुसार रहेको छ:</p>
+            <p>
+              परिवर्तन गाउँपालिकामा वित्तीय खाताको वितरण निम्नानुसार रहेको छ:
+            </p>
           </div>
 
           {/* Client component for charts */}
@@ -431,7 +509,7 @@ export default async function WardWiseFinancialAccountsPage() {
               वित्तीय पहुँच विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा वित्तीय खाताहरूको विश्लेषण गर्दा, समग्रमा
+              परिवर्तन गाउँपालिकामा वित्तीय खाताहरूको विश्लेषण गर्दा, समग्रमा
               {localizeNumber(bankPercentage, "ne")}% घरधुरीहरू बैंकमा पहुँच
               राख्छन् र{localizeNumber(financePercentage, "ne")}% घरधुरीहरू
               वित्तीय संस्थामा पहुँच राख्छन्। वडागत रूपमा हेर्दा वडा नं.{" "}
@@ -467,8 +545,8 @@ export default async function WardWiseFinancialAccountsPage() {
             </h2>
 
             <p>
-              खजुरा गाउँपालिकामा वित्तीय खाताहरूको वितरणको तथ्याङ्क विश्लेषणबाट
-              निम्न रणनीतिहरू अवलम्बन गर्न सकिन्छ:
+              परिवर्तन गाउँपालिकामा वित्तीय खाताहरूको वितरणको तथ्याङ्क
+              विश्लेषणबाट निम्न रणनीतिहरू अवलम्बन गर्न सकिन्छ:
             </p>
 
             <div className="pl-6 space-y-4">
@@ -493,7 +571,10 @@ export default async function WardWiseFinancialAccountsPage() {
                 <span className="font-bold mr-2">३.</span>
                 <div>
                   <strong>वित्तीय साक्षरता कार्यक्रम:</strong> विशेष गरी वडा नं.{" "}
-                  {localizeNumber(worstInclusionWard.wardNumber.toString(), "ne")}
+                  {localizeNumber(
+                    worstInclusionWard.wardNumber.toString(),
+                    "ne",
+                  )}
                   जस्ता न्यून पहुँच भएका क्षेत्रमा वित्तीय साक्षरता कार्यक्रम
                   सञ्चालन गर्ने।
                 </div>
@@ -517,7 +598,7 @@ export default async function WardWiseFinancialAccountsPage() {
             </div>
 
             <p className="mt-6">
-              यसरी खजुरा गाउँपालिकामा वित्तीय खाताहरूको वितरणको विश्लेषणले
+              यसरी परिवर्तन गाउँपालिकामा वित्तीय खाताहरूको वितरणको विश्लेषणले
               पालिकामा वित्तीय समावेशीकरणको अवस्था र भविष्यको रणनीति निर्माणमा
               महत्वपूर्ण भूमिका खेल्दछ। यसका लागि वडागत विशेषताहरूलाई ध्यानमा
               राखी वित्तीय सेवा विस्तारका कार्यक्रमहरू तर्जुमा गर्नु आवश्यक

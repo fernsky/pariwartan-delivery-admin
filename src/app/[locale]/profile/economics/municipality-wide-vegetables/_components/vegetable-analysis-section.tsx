@@ -56,7 +56,7 @@ export default function VegetableAnalysisSection({
 
   // SEO attributes to include directly in JSX
   const seoAttributes = {
-    "data-municipality": "Khajura Rural Municipality / खजुरा गाउँपालिका",
+    "data-municipality": "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
     "data-total-production": totalProduction.toString(),
     "data-most-common-vegetable":
       overallSummary.length > 0

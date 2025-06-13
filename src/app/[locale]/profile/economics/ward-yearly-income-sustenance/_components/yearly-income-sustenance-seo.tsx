@@ -45,11 +45,11 @@ export default function YearlyIncomeSustenanceSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Yearly Income Sustenance in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Yearly Income Sustenance in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Yearly income sufficiency distribution data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Yearly income sustenance",
         "Income sufficiency",
         "Food security",

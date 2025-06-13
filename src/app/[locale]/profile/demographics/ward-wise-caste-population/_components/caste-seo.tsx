@@ -51,7 +51,7 @@ export default function CasteSEO({
       MARWADI: "Marwadi",
       BANGALI: "Bengali",
       OTHER: "Other",
-      KAMI: "Kami"
+      KAMI: "Kami",
     };
 
     // Get top 3 castes for description
@@ -64,7 +64,7 @@ export default function CasteSEO({
           }): ${caste.population} people (${(
             (caste.population / totalPopulation) *
             100
-          ).toFixed(2)}%)`
+          ).toFixed(2)}%)`,
       )
       .join(", ");
 
@@ -87,11 +87,11 @@ export default function CasteSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Caste Demographics of Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Caste Demographics of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Caste distribution data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total population of ${totalPopulation.toLocaleString()} people. Main castes include ${topCastesDescription}.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Caste demographics",
         "Ethnicity statistics",
         "Ward-wise caste data",

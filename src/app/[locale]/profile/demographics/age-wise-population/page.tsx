@@ -25,15 +25,15 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     // Fetch data for SEO using tRPC
     const ageData =
-      await api.profile.demographics.wardAgeWisePopulation.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+      await api.profile.demographics.ageWisePopulation.getAll.query();
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalPopulation = ageData.reduce(
-      (sum, item) => sum + item.population,
-      0
+      (sum: number, item: { population: number }) => sum + item.population,
+      0,
     );
-    
+
     // Group by age group
     const ageGroups: Record<string, number> = {};
     ageData.forEach((item) => {
@@ -42,16 +42,18 @@ export async function generateMetadata(): Promise<Metadata> {
     });
 
     // Calculate children, youth, adult and elderly percentages
-    const childrenTotal = (ageGroups["AGE_0_4"] || 0) + 
-                          (ageGroups["AGE_5_9"] || 0) + 
-                          (ageGroups["AGE_10_14"] || 0);
+    const childrenTotal =
+      (ageGroups["AGE_0_4"] || 0) +
+      (ageGroups["AGE_5_9"] || 0) +
+      (ageGroups["AGE_10_14"] || 0);
     const childrenPct = ((childrenTotal / totalPopulation) * 100).toFixed(1);
-    
-    const youthTotal = (ageGroups["AGE_15_19"] || 0) + 
-                       (ageGroups["AGE_20_24"] || 0) + 
-                       (ageGroups["AGE_25_29"] || 0);
+
+    const youthTotal =
+      (ageGroups["AGE_15_19"] || 0) +
+      (ageGroups["AGE_20_24"] || 0) +
+      (ageGroups["AGE_25_29"] || 0);
     const youthPct = ((youthTotal / totalPopulation) * 100).toFixed(1);
-    
+
     // Define Nepali names for age groups for keywords
     const AGE_GROUP_NAMES_NP: Record<string, string> = {
       AGE_0_4: "०-४ वर्ष",
@@ -64,15 +66,15 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // Create rich keywords with actual data
     const keywordsNP = [
-      "खजुरा गाउँपालिका उमेर जनसंख्या",
-      "खजुरा उमेरगत विविधता",
-      `खजुरा बाल जनसंख्या ${localizeNumber(childrenPct, "ne")}%`,
-      `खजुरा युवा जनसंख्या ${localizeNumber(youthPct, "ne")}%`,
+      "परिवर्तन गाउँपालिका उमेर जनसंख्या",
+      "परिवर्तन उमेरगत विविधता",
+      `परिवर्तन बाल जनसंख्या ${localizeNumber(childrenPct, "ne")}%`,
+      `परिवर्तन युवा जनसंख्या ${localizeNumber(youthPct, "ne")}%`,
       "वडा अनुसार उमेर वितरण",
       "जनसांख्यिकीय पिरामिड",
       "जनसांख्यिक लाभांश",
       "निर्भरता अनुपात",
-      `खजुरा कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")}`,
+      `परिवर्तन कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")}`,
     ];
 
     const keywordsEN = [
@@ -88,12 +90,12 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data
-    const descriptionNP = `खजुरा गाउँपालिकाको वडा अनुसार उमेर समूहको जनसंख्या वितरण, प्रवृत्ति र विश्लेषण। कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")} मध्ये बाल जनसंख्या ${localizeNumber(childrenPct, "ne")}%, युवा जनसंख्या ${localizeNumber(youthPct, "ne")}% रहेको छ। उमेर समूह अनुसार विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार उमेर समूहको जनसंख्या वितरण, प्रवृत्ति र विश्लेषण। कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")} मध्ये बाल जनसंख्या ${localizeNumber(childrenPct, "ne")}%, युवा जनसंख्या ${localizeNumber(youthPct, "ne")}% रहेको छ। उमेर समूह अनुसार विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
 
     const descriptionEN = `Ward-wise age group population distribution, trends and analysis for Khajura Rural Municipality. Out of a total population of ${totalPopulation}, children make up ${childrenPct}% and youth make up ${youthPct}%. Detailed statistics and visualizations of various age groups.`;
 
     return {
-      title: `उमेर अनुसार जनसंख्या | खजुरा गाउँपालिका | डिजिटल प्रोफाइल`,
+      title: `उमेर अनुसार जनसंख्या | परिवर्तन गाउँपालिका | डिजिटल प्रोफाइल`,
       description: descriptionNP,
       keywords: [...keywordsNP, ...keywordsEN],
       alternates: {
@@ -104,23 +106,23 @@ export async function generateMetadata(): Promise<Metadata> {
         },
       },
       openGraph: {
-        title: `उमेर अनुसार जनसंख्या | खजुरा गाउँपालिका`,
+        title: `उमेर अनुसार जनसंख्या | परिवर्तन गाउँपालिका`,
         description: descriptionNP,
         type: "article",
         locale: "ne_NP",
         alternateLocale: "en_US",
-        siteName: `खजुरा गाउँपालिका डिजिटल प्रोफाइल`,
+        siteName: `परिवर्तन गाउँपालिका डिजिटल प्रोफाइल`,
       },
       twitter: {
         card: "summary_large_image",
-        title: `उमेर अनुसार जनसंख्या | खजुरा गाउँपालिका`,
+        title: `उमेर अनुसार जनसंख्या | परिवर्तन गाउँपालिका`,
         description: descriptionNP,
       },
     };
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "उमेर अनुसार जनसंख्या | खजुरा गाउँपालिका | डिजिटल प्रोफाइल",
+      title: "उमेर अनुसार जनसंख्या | परिवर्तन गाउँपालिका | डिजिटल प्रोफाइल",
       description:
         "वडा अनुसार उमेर समूहको जनसंख्या वितरण, प्रवृत्ति र विश्लेषण। विस्तृत तथ्याङ्क र विजुअलाइजेसन।",
     };
@@ -135,7 +137,7 @@ const toc = [
   { level: 2, text: "जनसांख्यिकीय विश्लेषण", slug: "demographic-analysis" },
 ];
 
-// Define Nepali names for age groups
+// Define Nepali names for age groups (updated)
 const AGE_GROUP_NAMES: Record<string, string> = {
   AGE_0_4: "०-४ वर्ष",
   AGE_5_9: "५-९ वर्ष",
@@ -152,7 +154,11 @@ const AGE_GROUP_NAMES: Record<string, string> = {
   AGE_60_64: "६०-६४ वर्ष",
   AGE_65_69: "६५-६९ वर्ष",
   AGE_70_74: "७०-७४ वर्ष",
-  AGE_75_AND_ABOVE: "७५ वर्ष र माथि",
+  AGE_75_79: "७५-७९ वर्ष",
+  AGE_80_84: "८०-८४ वर्ष",
+  AGE_85_89: "८५-८९ वर्ष",
+  AGE_90_94: "९०-९४ वर्ष",
+  AGE_95_ABOVE: "९५ वर्ष र माथि",
 };
 
 // Define Nepali names for gender
@@ -178,15 +184,15 @@ const AGE_CATEGORIES = {
 };
 
 export default async function WardAgeWisePopulationPage() {
-  // Fetch all age-wise population data from tRPC route
+  // Fetch all age-wise population data from tRPC route (updated path)
   const ageData =
-    await api.profile.demographics.wardAgeWisePopulation.getAll.query();
+    await api.profile.demographics.ageWisePopulation.getAll.query();
 
   // Fetch summary statistics if available
   let summaryData;
   try {
     summaryData =
-      await api.profile.demographics.wardAgeWisePopulation.summary.query();
+      await api.profile.demographics.ageWisePopulation.summary.query();
   } catch (error) {
     console.error("Could not fetch summary data", error);
     summaryData = null;
@@ -277,45 +283,15 @@ export default async function WardAgeWisePopulationPage() {
     })
     .sort((a, b) => {
       // Sort in reverse to have the oldest age group at the top
+      const ageGroupOrder = Object.keys(AGE_GROUP_NAMES);
       return (
         ageGroupOrder.indexOf(b.ageGroup) - ageGroupOrder.indexOf(a.ageGroup)
       );
     });
 
-  // Get unique ward numbers
-  const wardNumbers = Array.from(
-    new Set(ageData.map((item) => item.wardNumber)),
-  ).sort((a, b) => a - b); // Sort numerically
-
-  // Process data by ward for charts
-  const wardWiseData = wardNumbers.map((wardNumber) => {
-    const wardItems = ageData.filter((item) => item.wardNumber === wardNumber);
-
-    // Aggregate by broader age categories for ward-wise comparison
-    const childrenCount = wardItems
-      .filter((item) => AGE_CATEGORIES.CHILDREN.includes(item.ageGroup))
-      .reduce((sum, item) => sum + item.population, 0);
-
-    const youthCount = wardItems
-      .filter((item) => AGE_CATEGORIES.YOUTH.includes(item.ageGroup))
-      .reduce((sum, item) => sum + item.population, 0);
-
-    const adultCount = wardItems
-      .filter((item) => AGE_CATEGORIES.ADULT.includes(item.ageGroup))
-      .reduce((sum, item) => sum + item.population, 0);
-
-    const elderlyCount = wardItems
-      .filter((item) => AGE_CATEGORIES.ELDERLY.includes(item.ageGroup))
-      .reduce((sum, item) => sum + item.population, 0);
-
-    return {
-      ward: `वडा ${localizeNumber(wardNumber.toString(), "ne")}`,
-      "बाल (०-१४)": childrenCount,
-      "युवा (१५-२९)": youthCount,
-      "वयस्क (३०-५९)": adultCount,
-      "वृद्ध (६० माथि)": elderlyCount,
-    };
-  });
+  // Since we don't have ward data, create empty arrays for ward-related data
+  const wardNumbers: number[] = [];
+  const wardWiseData: Array<Record<string, any>> = [];
 
   // Calculate demographic indicators on the server side
   const childrenPopulation = overallSummaryByAge
@@ -371,23 +347,40 @@ export default async function WardAgeWisePopulationPage() {
   // Helper function to estimate median age from age group
   const getMedianAgeEstimate = (ageGroup: string): number => {
     switch (ageGroup) {
-      case "AGE_0_4": return 2.5;
-      case "AGE_5_9": return 7.5;
-      case "AGE_10_14": return 12.5;
-      case "AGE_15_19": return 17.5;
-      case "AGE_20_24": return 22.5;
-      case "AGE_25_29": return 27.5;
-      case "AGE_30_34": return 32.5;
-      case "AGE_35_39": return 37.5;
-      case "AGE_40_44": return 42.5;
-      case "AGE_45_49": return 47.5;
-      case "AGE_50_54": return 52.5;
-      case "AGE_55_59": return 57.5;
-      case "AGE_60_64": return 62.5;
-      case "AGE_65_69": return 67.5;
-      case "AGE_70_74": return 72.5;
-      case "AGE_75_AND_ABOVE": return 80;
-      default: return 30;
+      case "AGE_0_4":
+        return 2.5;
+      case "AGE_5_9":
+        return 7.5;
+      case "AGE_10_14":
+        return 12.5;
+      case "AGE_15_19":
+        return 17.5;
+      case "AGE_20_24":
+        return 22.5;
+      case "AGE_25_29":
+        return 27.5;
+      case "AGE_30_34":
+        return 32.5;
+      case "AGE_35_39":
+        return 37.5;
+      case "AGE_40_44":
+        return 42.5;
+      case "AGE_45_49":
+        return 47.5;
+      case "AGE_50_54":
+        return 52.5;
+      case "AGE_55_59":
+        return 57.5;
+      case "AGE_60_64":
+        return 62.5;
+      case "AGE_65_69":
+        return 67.5;
+      case "AGE_70_74":
+        return 72.5;
+      case "AGE_75_AND_ABOVE":
+        return 80;
+      default:
+        return 30;
     }
   };
 
@@ -431,31 +424,32 @@ export default async function WardAgeWisePopulationPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा उमेर अनुसार जनसंख्या
+              परिवर्तन गाउँपालिकामा उमेर अनुसार जनसंख्या
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              यस खण्डमा खजुरा गाउँपालिकाको विभिन्न वडाहरूमा उमेर समूह अनुसारको जनसंख्या
-              सम्बन्धी विस्तृत तथ्याङ्क प्रस्तुत गरिएको छ। उमेर वितरण एक
-              महत्त्वपूर्ण जनसांख्यिकी सूचक हो जसले समाजको संरचना, शिक्षा,
-              स्वास्थ्य, रोजगारी र सामाजिक सुरक्षा सम्बन्धी नीतिहरू निर्धारण
-              गर्न सहयोग गर्दछ।
+              यस खण्डमा परिवर्तन गाउँपालिकाको विभिन्न वडाहरूमा उमेर समूह
+              अनुसारको जनसंख्या सम्बन्धी विस्तृत तथ्याङ्क प्रस्तुत गरिएको छ।
+              उमेर वितरण एक महत्त्वपूर्ण जनसांख्यिकी सूचक हो जसले समाजको संरचना,
+              शिक्षा, स्वास्थ्य, रोजगारी र सामाजिक सुरक्षा सम्बन्धी नीतिहरू
+              निर्धारण गर्न सहयोग गर्दछ।
             </p>
             <p>
-              यो तथ्याङ्कले खजुरा गाउँपालिकाको जनसांख्यिकीय लाभांश, निर्भरता अनुपात र
-              भविष्यको जनसंख्या वृद्धिको प्रक्षेपण गर्न महत्त्वपूर्ण आधार प्रदान
-              गर्दछ। विभिन्न उमेर समूहको आवश्यकता अनुसार विकास योजना तर्जुमा
-              गर्न यस तथ्याङ्कको विश्लेषण अत्यन्त महत्त्वपूर्ण हुन्छ।
+              यो तथ्याङ्कले परिवर्तन गाउँपालिकाको जनसांख्यिकीय लाभांश, निर्भरता
+              अनुपात र भविष्यको जनसंख्या वृद्धिको प्रक्षेपण गर्न महत्त्वपूर्ण
+              आधार प्रदान गर्दछ। विभिन्न उमेर समूहको आवश्यकता अनुसार विकास योजना
+              तर्जुमा गर्न यस तथ्याङ्कको विश्लेषण अत्यन्त महत्त्वपूर्ण हुन्छ।
             </p>
 
             <h2 id="age-distribution" className="scroll-m-20 border-b pb-2">
               उमेर समूह अनुसार जनसंख्या
             </h2>
             <p>
-              खजुरा गाउँपालिकामा विभिन्न उमेर समूहका व्यक्तिहरूको वितरण निम्नानुसार छ:
+              परिवर्तन गाउँपालिकामा विभिन्न उमेर समूहका व्यक्तिहरूको वितरण
+              निम्नानुसार छ:
             </p>
 
             {/* Server-rendered summary of age distribution */}
@@ -478,7 +472,11 @@ export default async function WardAgeWisePopulationPage() {
                         {localizeNumber(item.total.toLocaleString(), "ne")}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(((item.total / totalPopulation) * 100).toFixed(2), "ne")}%
+                        {localizeNumber(
+                          ((item.total / totalPopulation) * 100).toFixed(2),
+                          "ne",
+                        )}
+                        %
                       </td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.male.toLocaleString(), "ne")}
@@ -490,8 +488,9 @@ export default async function WardAgeWisePopulationPage() {
                   ))}
                   <tr className="font-semibold">
                     <td className="border p-2" colSpan={5}>
-                    सबै उमेर समूहहरू गरेर कुल जनसंख्या{" "}
-                      {localizeNumber(totalPopulation.toLocaleString(), "ne")} रहेको छ
+                      सबै उमेर समूहहरू गरेर कुल जनसंख्या{" "}
+                      {localizeNumber(totalPopulation.toLocaleString(), "ne")}{" "}
+                      रहेको छ
                     </td>
                   </tr>
                 </tbody>
@@ -505,10 +504,15 @@ export default async function WardAgeWisePopulationPage() {
                   बाल जनसंख्या (०-१४)
                 </div>
                 <div className="text-2xl font-bold text-indigo-500">
-                  {localizeNumber(demographicIndicators.childrenPercentage.toFixed(1), "ne")}%
+                  {localizeNumber(
+                    demographicIndicators.childrenPercentage.toFixed(1),
+                    "ne",
+                  )}
+                  %
                 </div>
                 <div className="text-sm text-muted-foreground">
-                  ({localizeNumber(childrenPopulation.toLocaleString(), "ne")} व्यक्ति)
+                  ({localizeNumber(childrenPopulation.toLocaleString(), "ne")}{" "}
+                  व्यक्ति)
                 </div>
               </div>
               <div className="bg-muted/50 p-4 rounded-lg text-center">
@@ -516,10 +520,15 @@ export default async function WardAgeWisePopulationPage() {
                   युवा जनसंख्या (१५-२९)
                 </div>
                 <div className="text-2xl font-bold text-emerald-500">
-                  {localizeNumber(demographicIndicators.youthPercentage.toFixed(1), "ne")}%
+                  {localizeNumber(
+                    demographicIndicators.youthPercentage.toFixed(1),
+                    "ne",
+                  )}
+                  %
                 </div>
                 <div className="text-sm text-muted-foreground">
-                  ({localizeNumber(youthPopulation.toLocaleString(), "ne")} व्यक्ति)
+                  ({localizeNumber(youthPopulation.toLocaleString(), "ne")}{" "}
+                  व्यक्ति)
                 </div>
               </div>
               <div className="bg-muted/50 p-4 rounded-lg text-center">
@@ -527,10 +536,15 @@ export default async function WardAgeWisePopulationPage() {
                   वयस्क जनसंख्या (३०-५९)
                 </div>
                 <div className="text-2xl font-bold text-violet-500">
-                  {localizeNumber(demographicIndicators.adultPercentage.toFixed(1), "ne")}%
+                  {localizeNumber(
+                    demographicIndicators.adultPercentage.toFixed(1),
+                    "ne",
+                  )}
+                  %
                 </div>
                 <div className="text-sm text-muted-foreground">
-                  ({localizeNumber(adultPopulation.toLocaleString(), "ne")} व्यक्ति)
+                  ({localizeNumber(adultPopulation.toLocaleString(), "ne")}{" "}
+                  व्यक्ति)
                 </div>
               </div>
               <div className="bg-muted/50 p-4 rounded-lg text-center">
@@ -538,16 +552,21 @@ export default async function WardAgeWisePopulationPage() {
                   वृद्ध जनसंख्या (६० माथि)
                 </div>
                 <div className="text-2xl font-bold text-amber-500">
-                  {localizeNumber(demographicIndicators.elderlyPercentage.toFixed(1), "ne")}%
+                  {localizeNumber(
+                    demographicIndicators.elderlyPercentage.toFixed(1),
+                    "ne",
+                  )}
+                  %
                 </div>
                 <div className="text-sm text-muted-foreground">
-                  ({localizeNumber(elderlyPopulation.toLocaleString(), "ne")} व्यक्ति)
+                  ({localizeNumber(elderlyPopulation.toLocaleString(), "ne")}{" "}
+                  व्यक्ति)
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Client component for charts */}
+          {/* Client component for charts (remove ward-specific props) */}
           <AgeWiseCharts
             overallSummaryByAge={overallSummaryByAge}
             overallSummaryByGender={overallSummaryByGender}
@@ -565,8 +584,8 @@ export default async function WardAgeWisePopulationPage() {
               जनसांख्यिकीय विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकाको जनसंख्याको उमेर संरचनाले निम्न जनसांख्यिकीय सूचकहरू
-              प्रदान गर्दछ:
+              परिवर्तन गाउँपालिकाको जनसंख्याको उमेर संरचनाले निम्न जनसांख्यिकीय
+              सूचकहरू प्रदान गर्दछ:
             </p>
 
             {/* Client component for age analysis section */}

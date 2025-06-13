@@ -46,7 +46,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const disabilityData =
       await api.profile.demographics.wardWiseDisabilityCause.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalPopulationWithDisability = disabilityData.reduce(
@@ -72,19 +72,20 @@ export async function generateMetadata(): Promise<Metadata> {
       }
     });
 
-    const mostCommonPercentage = totalPopulationWithDisability > 0
-      ? ((mostCommonCount / totalPopulationWithDisability) * 100).toFixed(2)
-      : "0";
+    const mostCommonPercentage =
+      totalPopulationWithDisability > 0
+        ? ((mostCommonCount / totalPopulationWithDisability) * 100).toFixed(2)
+        : "0";
 
     // Create rich keywords with actual data
     const keywordsNP = [
-      "खजुरा गाउँपालिका अपाङ्गताको कारण",
-      "खजुरा अपाङ्गता वितरण",
+      "परिवर्तन गाउँपालिका अपाङ्गताको कारण",
+      "परिवर्तन अपाङ्गता वितरण",
       "वडा अनुसार अपाङ्गताको कारण",
       "अपाङ्गताको कारण विवरण",
-      "जन्मजात अपाङ्गता खजुरा",
+      "जन्मजात अपाङ्गता परिवर्तन",
       "दुर्घटनाको कारण अपाङ्गता",
-      `खजुरा अपाङ्गता जनसंख्या ${localizeNumber(totalPopulationWithDisability.toString(), "ne")}`,
+      `परिवर्तन अपाङ्गता जनसंख्या ${localizeNumber(totalPopulationWithDisability.toString(), "ne")}`,
     ];
 
     const keywordsEN = [
@@ -98,7 +99,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data
-    const descriptionNP = `खजुरा गाउँपालिकाको वडा अनुसार अपाङ्गताको कारणको वितरण र विश्लेषण। कुल अपाङ्गता भएका जनसंख्या ${localizeNumber(totalPopulationWithDisability.toString(), "ne")} मध्ये ${localizeNumber(mostCommonPercentage, "ne")}% (${localizeNumber(mostCommonCount.toString(), "ne")}) ${DISABILITY_CAUSE_NAMES[mostCommonCause] || mostCommonCause} कारणबाट हुने देखिन्छ। विभिन्न वडाहरूमा अपाङ्गताको कारणहरूको विस्तृत विश्लेषण।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार अपाङ्गताको कारणको वितरण र विश्लेषण। कुल अपाङ्गता भएका जनसंख्या ${localizeNumber(totalPopulationWithDisability.toString(), "ne")} मध्ये ${localizeNumber(mostCommonPercentage, "ne")}% (${localizeNumber(mostCommonCount.toString(), "ne")}) ${DISABILITY_CAUSE_NAMES[mostCommonCause] || mostCommonCause} कारणबाट हुने देखिन्छ। विभिन्न वडाहरूमा अपाङ्गताको कारणहरूको विस्तृत विश्लेषण।`;
 
     const descriptionEN = `Ward-wise distribution and analysis of disability causes in Khajura Rural Municipality. Out of a total population with disabilities of ${totalPopulationWithDisability}, ${mostCommonPercentage}% (${mostCommonCount}) are due to ${DISABILITY_CAUSE_NAMES_EN[mostCommonCause] || mostCommonCause}. Detailed analysis of disability causes across various wards.`;
 
@@ -130,9 +131,8 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "अपाङ्गताको कारणहरू | खजुरा गाउँपालिका डिजिटल प्रोफाइल",
-      description:
-        "वडा अनुसार अपाङ्गताका कारणहरूको वितरण र विश्लेषण।",
+      title: "अपाङ्गताको कारणहरू | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
+      description: "वडा अनुसार अपाङ्गताका कारणहरूको वितरण र विश्लेषण।",
     };
   }
 }
@@ -140,7 +140,11 @@ export async function generateMetadata(): Promise<Metadata> {
 const toc = [
   { level: 2, text: "परिचय", slug: "introduction" },
   { level: 2, text: "अपाङ्गताका कारणहरू", slug: "disability-causes" },
-  { level: 2, text: "वडा अनुसार अपाङ्गताका कारणहरू", slug: "ward-wise-disability-causes" },
+  {
+    level: 2,
+    text: "वडा अनुसार अपाङ्गताका कारणहरू",
+    slug: "ward-wise-disability-causes",
+  },
   { level: 2, text: "अपाङ्गता विश्लेषण", slug: "disability-analysis" },
 ];
 
@@ -169,8 +173,9 @@ export default async function WardWiseDisabilityCausePage() {
     .map(([disabilityCause, population]) => ({
       disabilityCause,
       disabilityCauseName:
-        DISABILITY_CAUSE_NAMES[disabilityCause as keyof typeof DISABILITY_CAUSE_NAMES] ||
-        disabilityCause,
+        DISABILITY_CAUSE_NAMES[
+          disabilityCause as keyof typeof DISABILITY_CAUSE_NAMES
+        ] || disabilityCause,
       population,
     }))
     .sort((a, b) => b.population - a.population); // Sort by population descending
@@ -181,11 +186,14 @@ export default async function WardWiseDisabilityCausePage() {
     0,
   );
 
-  // Create data for pie chart 
+  // Create data for pie chart
   const pieChartData = overallSummary.map((item) => ({
     name: item.disabilityCauseName,
     value: item.population,
-    percentage: ((item.population / totalPopulationWithDisability) * 100).toFixed(2),
+    percentage: (
+      (item.population / totalPopulationWithDisability) *
+      100
+    ).toFixed(2),
   }));
 
   // Get unique ward numbers
@@ -204,8 +212,9 @@ export default async function WardWiseDisabilityCausePage() {
     // Add disability causes
     wardData.forEach((item) => {
       result[
-        DISABILITY_CAUSE_NAMES[item.disabilityCause as keyof typeof DISABILITY_CAUSE_NAMES] ||
-          item.disabilityCause
+        DISABILITY_CAUSE_NAMES[
+          item.disabilityCause as keyof typeof DISABILITY_CAUSE_NAMES
+        ] || item.disabilityCause
       ] = item.population;
     });
 
@@ -217,24 +226,33 @@ export default async function WardWiseDisabilityCausePage() {
     const wardData = disabilityData.filter(
       (item) => item.wardNumber === wardNumber,
     );
-    
+
     const wardTotalPopulation = wardData.reduce(
-      (sum, item) => sum + (item.population || 0), 
-      0
+      (sum, item) => sum + (item.population || 0),
+      0,
     );
-    
-    const mostCommonCause = wardData.reduce((prev, current) => {
-      return (prev.population || 0) > (current.population || 0) ? prev : current;
-    }, { disabilityCause: "", population: 0 });
-    
+
+    const mostCommonCause = wardData.reduce(
+      (prev, current) => {
+        return (prev.population || 0) > (current.population || 0)
+          ? prev
+          : current;
+      },
+      { disabilityCause: "", population: 0 },
+    );
+
     return {
       wardNumber,
       totalDisabilityPopulation: wardTotalPopulation,
       mostCommonCause: mostCommonCause.disabilityCause,
       mostCommonCausePopulation: mostCommonCause.population || 0,
-      mostCommonCausePercentage: wardTotalPopulation > 0 
-        ? ((mostCommonCause.population || 0) / wardTotalPopulation * 100).toFixed(2)
-        : "0",
+      mostCommonCausePercentage:
+        wardTotalPopulation > 0
+          ? (
+              ((mostCommonCause.population || 0) / wardTotalPopulation) *
+              100
+            ).toFixed(2)
+          : "0",
     };
   });
 
@@ -256,7 +274,7 @@ export default async function WardWiseDisabilityCausePage() {
               src="/images/disability-causes.svg"
               width={1200}
               height={400}
-              alt="अपाङ्गताका कारणहरू - खजुरा गाउँपालिका (Disability Causes - Khajura Rural Municipality)"
+              alt="अपाङ्गताका कारणहरू - परिवर्तन गाउँपालिका (Disability Causes - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -264,35 +282,45 @@ export default async function WardWiseDisabilityCausePage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा अपाङ्गताका कारणहरू
+              परिवर्तन गाउँपालिकामा अपाङ्गताका कारणहरू
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              अपाङ्गता भएका व्यक्तिहरूको जीवनस्तर सुधार तथा समाजमा पूर्ण समावेशीकरणका लागि
-              अपाङ्गताका कारणहरूको अध्ययन र विश्लेषण महत्त्वपूर्ण छ। यस खण्डमा खजुरा
-              गाउँपालिकामा अपाङ्गताका प्रमुख कारणहरू र तिनको वडागत वितरणको विश्लेषण
-              प्रस्तुत गरिएको छ।
+              अपाङ्गता भएका व्यक्तिहरूको जीवनस्तर सुधार तथा समाजमा पूर्ण
+              समावेशीकरणका लागि अपाङ्गताका कारणहरूको अध्ययन र विश्लेषण
+              महत्त्वपूर्ण छ। यस खण्डमा परिवर्तन गाउँपालिकामा अपाङ्गताका प्रमुख
+              कारणहरू र तिनको वडागत वितरणको विश्लेषण प्रस्तुत गरिएको छ।
             </p>
             <p>
-              खजुरा गाउँपालिकामा अपाङ्गताका कारणहरूको
-              तथ्याङ्क हेर्दा, कुल अपाङ्गता भएका {localizeNumber(totalPopulationWithDisability.toLocaleString(), "ne")} 
-              जनसंख्या मध्ये सबैभन्दा बढी {overallSummary[0]?.disabilityCauseName || ""} 
-              कारणले {localizeNumber(((overallSummary[0]?.population || 0) / totalPopulationWithDisability * 100).toFixed(1), "ne")}% 
-              अपाङ्गता भएको देखिन्छ।
+              परिवर्तन गाउँपालिकामा अपाङ्गताका कारणहरूको तथ्याङ्क हेर्दा, कुल
+              अपाङ्गता भएका{" "}
+              {localizeNumber(
+                totalPopulationWithDisability.toLocaleString(),
+                "ne",
+              )}
+              जनसंख्या मध्ये सबैभन्दा बढी{" "}
+              {overallSummary[0]?.disabilityCauseName || ""}
+              कारणले{" "}
+              {localizeNumber(
+                (
+                  ((overallSummary[0]?.population || 0) /
+                    totalPopulationWithDisability) *
+                  100
+                ).toFixed(1),
+                "ne",
+              )}
+              % अपाङ्गता भएको देखिन्छ।
             </p>
 
-            <h2
-              id="disability-causes"
-              className="scroll-m-20 border-b pb-2"
-            >
+            <h2 id="disability-causes" className="scroll-m-20 border-b pb-2">
               अपाङ्गताका कारणहरू
             </h2>
             <p>
-              खजुरा गाउँपालिकामा अपाङ्गताका प्रमुख कारणहरू र तिनको वितरण निम्नानुसार
-              रहेको छ:
+              परिवर्तन गाउँपालिकामा अपाङ्गताका प्रमुख कारणहरू र तिनको वितरण
+              निम्नानुसार रहेको छ:
             </p>
           </div>
 
@@ -313,11 +341,20 @@ export default async function WardWiseDisabilityCausePage() {
               अपाङ्गता विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा अपाङ्गताका कारणहरूको विश्लेषण गर्दा, 
-              {DISABILITY_CAUSE_NAMES[overallSummary[0]?.disabilityCause || ''] || overallSummary[0]?.disabilityCause} 
-              कारणले हुने अपाङ्गता सबैभन्दा बढी 
-              {localizeNumber(((overallSummary[0]?.population || 0) / totalPopulationWithDisability * 100).toFixed(2), "ne")}% 
-              रहेको पाइन्छ।
+              परिवर्तन गाउँपालिकामा अपाङ्गताका कारणहरूको विश्लेषण गर्दा,
+              {DISABILITY_CAUSE_NAMES[
+                overallSummary[0]?.disabilityCause || ""
+              ] || overallSummary[0]?.disabilityCause}
+              कारणले हुने अपाङ्गता सबैभन्दा बढी
+              {localizeNumber(
+                (
+                  ((overallSummary[0]?.population || 0) /
+                    totalPopulationWithDisability) *
+                  100
+                ).toFixed(2),
+                "ne",
+              )}
+              % रहेको पाइन्छ।
             </p>
 
             <DisabilityCauseAnalysisSection

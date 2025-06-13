@@ -37,24 +37,27 @@ export default function EconomicallyActivePopulationSEO({
     }));
 
     // Calculate economically active population (15-59 age group)
-    const economicallyActivePopulation = overallSummary.find(
-      (item) => item.ageGroup === "AGE_15_TO_59"
-    )?.population || 0;
+    const economicallyActivePopulation =
+      overallSummary.find((item) => item.ageGroup === "AGE_15_TO_59")
+        ?.population || 0;
 
     // Calculate dependency ratio
     const dependentPopulation = totalPopulation - economicallyActivePopulation;
-    const dependencyRatio = economicallyActivePopulation > 0
-      ? ((dependentPopulation / economicallyActivePopulation) * 100).toFixed(2)
-      : "0";
+    const dependencyRatio =
+      economicallyActivePopulation > 0
+        ? ((dependentPopulation / economicallyActivePopulation) * 100).toFixed(
+            2,
+          )
+        : "0";
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Economically Active Population of Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Economically Active Population of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Age-wise economically active population data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total population of ${totalPopulation.toLocaleString()} people. The working age population (15-59 years) is ${economicallyActivePopulation.toLocaleString()} people (${((economicallyActivePopulation / totalPopulation) * 100).toFixed(2)}%).`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Economically active population",
         "Age distribution",
         "Ward-wise population data",
@@ -94,7 +97,7 @@ export default function EconomicallyActivePopulationSEO({
           name: "Dependency Ratio",
           unitText: "percentage",
           value: dependencyRatio,
-        }
+        },
       ],
       observation: ageGroupStats,
     };

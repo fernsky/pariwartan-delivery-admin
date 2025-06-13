@@ -105,7 +105,9 @@ export default function HouseheadGenderCharts({
           </div>
           <div className="flex justify-between gap-4">
             <span className="text-sm">प्रतिशत:</span>
-            <span className="font-medium">{localizeNumber(percentage, "ne")}%</span>
+            <span className="font-medium">
+              {localizeNumber(percentage, "ne")}%
+            </span>
           </div>
         </div>
       );
@@ -132,10 +134,11 @@ export default function HouseheadGenderCharts({
 
         <div className="border-b px-4 py-3">
           <h3 className="text-xl font-semibold" itemProp="headline">
-            <strong>खजुरा गाउँपालिका</strong>मा घरमूली लिङ्ग अनुसार वितरण
+            <strong>परिवर्तन गाउँपालिका</strong>मा घरमूली लिङ्ग अनुसार वितरण
           </h3>
           <p className="text-sm text-muted-foreground">
-            कुल घरमूली संख्या: {localizeNumber(totalPopulation.toLocaleString(), "ne")}
+            कुल घरमूली संख्या:{" "}
+            {localizeNumber(totalPopulation.toLocaleString(), "ne")}
           </p>
         </div>
 
@@ -174,7 +177,6 @@ export default function HouseheadGenderCharts({
                         cx="50%"
                         cy="50%"
                         labelLine={true}
-                       
                         outerRadius={140}
                         fill="#8884d8"
                         dataKey="value"
@@ -183,13 +185,17 @@ export default function HouseheadGenderCharts({
                           // Find the original gender key for color mapping
                           const genderKey =
                             Object.keys(GENDER_NAMES).find(
-                              (key) => GENDER_NAMES[key] === entry.name
+                              (key) => GENDER_NAMES[key] === entry.name,
                             ) || "OTHER";
 
                           return (
                             <Cell
                               key={`cell-${index}`}
-                              fill={GENDER_COLORS[genderKey as keyof typeof GENDER_COLORS] || "#94a3b8"}
+                              fill={
+                                GENDER_COLORS[
+                                  genderKey as keyof typeof GENDER_COLORS
+                                ] || "#94a3b8"
+                              }
                             />
                           );
                         })}
@@ -203,7 +209,9 @@ export default function HouseheadGenderCharts({
 
               <div className="lg:col-span-1">
                 <div className="space-y-4">
-                  <h4 className="text-lg font-medium mb-4">घरमूली लिङ्ग अनुपात</h4>
+                  <h4 className="text-lg font-medium mb-4">
+                    घरमूली लिङ्ग अनुपात
+                  </h4>
                   <div className="space-y-3">
                     {overallSummary.map((item, i) => (
                       <div key={i} className="flex items-center gap-4">
@@ -220,7 +228,14 @@ export default function HouseheadGenderCharts({
                           <div className="flex justify-between items-center">
                             <span>{item.genderName}</span>
                             <span className="font-medium">
-                              {localizeNumber(((item.population / totalPopulation) * 100).toFixed(1), "ne")}%
+                              {localizeNumber(
+                                (
+                                  (item.population / totalPopulation) *
+                                  100
+                                ).toFixed(1),
+                                "ne",
+                              )}
+                              %
                             </span>
                           </div>
                           <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -258,13 +273,21 @@ export default function HouseheadGenderCharts({
                 <tbody>
                   {overallSummary.map((item, i) => (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/40" : ""}>
-                      <td className="border p-2">{localizeNumber((i + 1).toString(), "ne")}</td>
+                      <td className="border p-2">
+                        {localizeNumber((i + 1).toString(), "ne")}
+                      </td>
                       <td className="border p-2">{item.genderName}</td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.population.toLocaleString(), "ne")}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(((item.population / totalPopulation) * 100).toFixed(2), "ne")}%
+                        {localizeNumber(
+                          ((item.population / totalPopulation) * 100).toFixed(
+                            2,
+                          ),
+                          "ne",
+                        )}
+                        %
                       </td>
                     </tr>
                   ))}
@@ -305,7 +328,7 @@ export default function HouseheadGenderCharts({
 
         <div className="border-b px-4 py-3">
           <h3 className="text-xl font-semibold" itemProp="headline">
-            <strong>खजुरा गाउँपालिका</strong>को वडा अनुसार घरमूली लिङ्ग वितरण
+            <strong>परिवर्तन गाउँपालिका</strong>को वडा अनुसार घरमूली लिङ्ग वितरण
           </h3>
           <p className="text-sm text-muted-foreground">
             वडा र लिङ्ग अनुसार घरमूली वितरण
@@ -327,7 +350,11 @@ export default function HouseheadGenderCharts({
                   padding={{ left: 10, right: 10 }}
                   tick={{ fontSize: 12 }}
                 />
-                <YAxis tickFormatter={(value) => localizeNumber(value.toString(), "ne")} />
+                <YAxis
+                  tickFormatter={(value) =>
+                    localizeNumber(value.toString(), "ne")
+                  }
+                />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend
                   wrapperStyle={{ paddingTop: 20 }}
@@ -341,7 +368,10 @@ export default function HouseheadGenderCharts({
                     dataKey={GENDER_NAMES[gender]}
                     stackId="a"
                     name={GENDER_NAMES[gender]}
-                    fill={GENDER_COLORS[gender as keyof typeof GENDER_COLORS] || "#94a3b8"}
+                    fill={
+                      GENDER_COLORS[gender as keyof typeof GENDER_COLORS] ||
+                      "#94a3b8"
+                    }
                   />
                 ))}
               </BarChart>
@@ -350,7 +380,9 @@ export default function HouseheadGenderCharts({
         </div>
 
         <div className="p-6 border-t">
-          <h4 className="text-lg font-medium mb-4">वडागत घरमूली लिङ्ग तालिका</h4>
+          <h4 className="text-lg font-medium mb-4">
+            वडागत घरमूली लिङ्ग तालिका
+          </h4>
           <div className="overflow-auto max-h-[600px]">
             <table className="w-full border-collapse min-w-[800px]">
               <thead className="sticky top-0 z-10">
@@ -368,11 +400,11 @@ export default function HouseheadGenderCharts({
               <tbody>
                 {wardNumbers.map((wardNumber, i) => {
                   const wardItems = genderData.filter(
-                    (item) => item.wardNumber === wardNumber
+                    (item) => item.wardNumber === wardNumber,
                   );
                   const wardTotal = wardItems.reduce(
                     (sum, item) => sum + (item.population || 0),
-                    0
+                    0,
                   );
 
                   return (
@@ -380,27 +412,36 @@ export default function HouseheadGenderCharts({
                       <td className="border p-2">
                         वडा {localizeNumber(wardNumber.toString(), "ne")}
                       </td>
-                      {Object.entries(GENDER_NAMES).map(([genderKey, genderName]) => {
-                        const genderItem = wardItems.find(
-                          (item) => item.gender === genderKey
-                        );
-                        const genderPopulation = genderItem?.population || 0;
-                        const genderPercentage =
-                          wardTotal > 0
-                            ? (genderPopulation / wardTotal) * 100
-                            : 0;
+                      {Object.entries(GENDER_NAMES).map(
+                        ([genderKey, genderName]) => {
+                          const genderItem = wardItems.find(
+                            (item) => item.gender === genderKey,
+                          );
+                          const genderPopulation = genderItem?.population || 0;
+                          const genderPercentage =
+                            wardTotal > 0
+                              ? (genderPopulation / wardTotal) * 100
+                              : 0;
 
-                        return (
-                          <React.Fragment key={genderKey}>
-                            <td className="border p-2 text-right">
-                              {localizeNumber(genderPopulation.toLocaleString(), "ne")}
-                            </td>
-                            <td className="border p-2 text-right">
-                              {localizeNumber(genderPercentage.toFixed(2), "ne")}%
-                            </td>
-                          </React.Fragment>
-                        );
-                      })}
+                          return (
+                            <React.Fragment key={genderKey}>
+                              <td className="border p-2 text-right">
+                                {localizeNumber(
+                                  genderPopulation.toLocaleString(),
+                                  "ne",
+                                )}
+                              </td>
+                              <td className="border p-2 text-right">
+                                {localizeNumber(
+                                  genderPercentage.toFixed(2),
+                                  "ne",
+                                )}
+                                %
+                              </td>
+                            </React.Fragment>
+                          );
+                        },
+                      )}
                       <td className="border p-2 text-right font-medium">
                         {localizeNumber(wardTotal.toLocaleString(), "ne")}
                       </td>
@@ -411,26 +452,28 @@ export default function HouseheadGenderCharts({
               <tfoot>
                 <tr className="font-semibold bg-muted/70">
                   <td className="border p-2">कुल</td>
-                  {Object.entries(GENDER_NAMES).map(([genderKey, genderName]) => {
-                    const genderTotal = overallSummary.find(
-                      (item) => item.gender === genderKey
-                    )?.population || 0;
-                    const genderPercentage =
-                      totalPopulation > 0
-                        ? (genderTotal / totalPopulation) * 100
-                        : 0;
+                  {Object.entries(GENDER_NAMES).map(
+                    ([genderKey, genderName]) => {
+                      const genderTotal =
+                        overallSummary.find((item) => item.gender === genderKey)
+                          ?.population || 0;
+                      const genderPercentage =
+                        totalPopulation > 0
+                          ? (genderTotal / totalPopulation) * 100
+                          : 0;
 
-                    return (
-                      <React.Fragment key={genderKey}>
-                        <td className="border p-2 text-right">
-                          {localizeNumber(genderTotal.toLocaleString(), "ne")}
-                        </td>
-                        <td className="border p-2 text-right">
-                          {localizeNumber(genderPercentage.toFixed(2), "ne")}%
-                        </td>
-                      </React.Fragment>
-                    );
-                  })}
+                      return (
+                        <React.Fragment key={genderKey}>
+                          <td className="border p-2 text-right">
+                            {localizeNumber(genderTotal.toLocaleString(), "ne")}
+                          </td>
+                          <td className="border p-2 text-right">
+                            {localizeNumber(genderPercentage.toFixed(2), "ne")}%
+                          </td>
+                        </React.Fragment>
+                      );
+                    },
+                  )}
                   <td className="border p-2 text-right">
                     {localizeNumber(totalPopulation.toLocaleString(), "ne")}
                   </td>
@@ -438,7 +481,6 @@ export default function HouseheadGenderCharts({
               </tfoot>
             </table>
           </div>
-         
         </div>
       </div>
     </>

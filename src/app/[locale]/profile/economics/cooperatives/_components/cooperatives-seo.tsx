@@ -53,7 +53,12 @@ export default function CooperativesSEO({
       "@type": "Dataset",
       name: `${COOPERATIVE_TYPES_EN[item.type] || item.type} Cooperatives in Khajura Rural Municipality`,
       description: `There are ${item.count} ${COOPERATIVE_TYPES_EN[item.type] || item.type} cooperatives operating in Khajura Rural Municipality, representing ${item.percentage.toFixed(2)}% of total cooperatives.`,
-      keywords: [item.type, COOPERATIVE_TYPES_EN[item.type], "cooperative", "Khajura"],
+      keywords: [
+        item.type,
+        COOPERATIVE_TYPES_EN[item.type],
+        "cooperative",
+        "Khajura",
+      ],
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
@@ -70,15 +75,18 @@ export default function CooperativesSEO({
           name: "Percentage of Total",
           unitText: "percentage",
           value: item.percentage,
-        }
-      ]
+        },
+      ],
     }));
 
     // Ward distribution data
-    const wardDistributionData = cooperativesByWard.map(ward => ({
+    const wardDistributionData = cooperativesByWard.map((ward) => ({
       "@type": "Dataset",
       name: `Ward ${ward.wardNumber} Cooperatives`,
-      description: `Ward ${ward.wardNumber} has ${ward.cooperativeCount} cooperatives, including ${ward.cooperatives.slice(0, 3).map(coop => coop.cooperativeName).join(", ")}${ward.cooperatives.length > 3 ? " and others" : ""}.`,
+      description: `Ward ${ward.wardNumber} has ${ward.cooperativeCount} cooperatives, including ${ward.cooperatives
+        .slice(0, 3)
+        .map((coop) => coop.cooperativeName)
+        .join(", ")}${ward.cooperatives.length > 3 ? " and others" : ""}.`,
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
@@ -88,12 +96,14 @@ export default function CooperativesSEO({
         name: "Number of Cooperatives in Ward",
         unitText: "count",
         value: ward.cooperativeCount,
-      }
+      },
     }));
 
     // Find most common cooperative type
     const mostCommonCooperativeType = statistics.mostPopularCooperativeType;
-    const mostCommonCooperativeTypeEN = COOPERATIVE_TYPES_EN[mostCommonCooperativeType] || mostCommonCooperativeType;
+    const mostCommonCooperativeTypeEN =
+      COOPERATIVE_TYPES_EN[mostCommonCooperativeType] ||
+      mostCommonCooperativeType;
 
     return {
       "@context": "https://schema.org",
@@ -102,7 +112,7 @@ export default function CooperativesSEO({
       description: `Comprehensive analysis of ${totalCooperatives} cooperatives in Khajura Rural Municipality. The most common type is ${mostCommonCooperativeTypeEN} (${statistics.mostPopularCooperativeTypePercentage.toFixed(1)}%), and Ward ${statistics.wardWithMostCooperatives} has the highest concentration with ${statistics.maximumCooperativesInAWard} cooperatives. This dataset includes ${statistics.provinceLevelCooperatives} province-level cooperatives and covers all 9 wards of the municipality.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Cooperatives",
         "सहकारी संस्था",
         "Savings and Credit",
@@ -114,7 +124,9 @@ export default function CooperativesSEO({
         "Rural Finance",
         "Nepal Cooperatives",
         "Lumbini Province",
-        ...cooperativeSummary.map(item => COOPERATIVE_TYPES_EN[item.type] || item.type),
+        ...cooperativeSummary.map(
+          (item) => COOPERATIVE_TYPES_EN[item.type] || item.type,
+        ),
       ],
       url: "https://digital.khajuramun.gov.np/profile/economics/cooperatives",
       creator: {
@@ -161,7 +173,7 @@ export default function CooperativesSEO({
           name: "Most Common Cooperative Type Percentage",
           unitText: "percentage",
           value: statistics.mostPopularCooperativeTypePercentage,
-        }
+        },
       ],
       distribution: cooperativeTypeStats,
       hasPart: wardDistributionData,
@@ -169,24 +181,27 @@ export default function CooperativesSEO({
         {
           "@type": "Thing",
           name: "Cooperative Movement",
-          description: "Organizations owned and operated by their members for mutual benefit"
+          description:
+            "Organizations owned and operated by their members for mutual benefit",
         },
         {
           "@type": "Thing",
           name: "Rural Finance",
-          description: "Financial services provided in rural areas including savings, loans, and investments"
+          description:
+            "Financial services provided in rural areas including savings, loans, and investments",
         },
         {
           "@type": "Thing",
           name: "Economic Development",
-          description: "Process of improving economic well-being and quality of life through cooperative institutions"
-        }
+          description:
+            "Process of improving economic well-being and quality of life through cooperative institutions",
+        },
       ],
       isPartOf: {
         "@type": "Dataset",
         name: "Khajura Rural Municipality Digital Profile",
-        url: "https://digital.khajuramun.gov.np"
-      }
+        url: "https://digital.khajuramun.gov.np",
+      },
     };
   };
 

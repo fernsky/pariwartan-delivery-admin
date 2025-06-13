@@ -43,35 +43,41 @@ export default function WaterPurificationAnalysisSection({
   waterSafetyRating,
   WATER_PURIFICATION_COLORS,
 }: WaterPurificationAnalysisSectionProps) {
-  
   // Calculate household percentage using any purification method
   const treatingHouseholds = overallSummary
-    .filter(item => item.waterPurification !== 'NO_ANY_FILTERING')
+    .filter((item) => item.waterPurification !== "NO_ANY_FILTERING")
     .reduce((sum, item) => sum + item.households, 0);
-  
-  const treatingPercentage = ((treatingHouseholds / totalHouseholds) * 100).toFixed(2);
-  
+
+  const treatingPercentage = (
+    (treatingHouseholds / totalHouseholds) *
+    100
+  ).toFixed(2);
+
   // Find percentage not treating water
-  const noTreatmentData = overallSummary.find(item => item.waterPurification === 'NO_ANY_FILTERING');
+  const noTreatmentData = overallSummary.find(
+    (item) => item.waterPurification === "NO_ANY_FILTERING",
+  );
   const noTreatmentPercentage = noTreatmentData
     ? ((noTreatmentData.households / totalHouseholds) * 100).toFixed(2)
     : "0";
-  
+
   // SEO attributes to include directly in JSX
   const seoAttributes = {
-    "data-municipality": "Khajura Rural Municipality / खजुरा गाउँपालिका",
+    "data-municipality": "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
     "data-total-households": totalHouseholds.toString(),
     "data-treating-percentage": treatingPercentage,
     "data-no-treatment-percentage": noTreatmentPercentage,
     "data-water-safety-index": safetyIndex.toFixed(2),
     "data-water-safety-rating": waterSafetyRating,
-    "data-highest-treatment-ward": highestTreatmentWard?.wardNumber.toString() || "",
-    "data-lowest-treatment-ward": lowestTreatmentWard?.wardNumber.toString() || ""
+    "data-highest-treatment-ward":
+      highestTreatmentWard?.wardNumber.toString() || "",
+    "data-lowest-treatment-ward":
+      lowestTreatmentWard?.wardNumber.toString() || "",
   };
 
   return (
     <>
-      <div 
+      <div
         className="mt-6 flex flex-wrap gap-4 justify-center"
         {...seoAttributes}
       >
@@ -83,7 +89,10 @@ export default function WaterPurificationAnalysisSection({
           ).toFixed(2);
 
           // Determine color for treatment type
-          const color = WATER_PURIFICATION_COLORS[item.waterPurification as keyof typeof WATER_PURIFICATION_COLORS] || "#888";
+          const color =
+            WATER_PURIFICATION_COLORS[
+              item.waterPurification as keyof typeof WATER_PURIFICATION_COLORS
+            ] || "#888";
 
           return (
             <div
@@ -97,7 +106,9 @@ export default function WaterPurificationAnalysisSection({
                 className="absolute bottom-0 left-0 right-0"
                 style={{
                   height: `${Math.min(
-                    (item.households / Math.max(...overallSummary.map(i => i.households))) * 100,
+                    (item.households /
+                      Math.max(...overallSummary.map((i) => i.households))) *
+                      100,
                     100,
                   )}%`,
                   backgroundColor: color,
@@ -108,15 +119,14 @@ export default function WaterPurificationAnalysisSection({
               <div className="relative z-10">
                 <h3 className="text-lg font-medium mb-2">
                   {item.waterPurificationName}
-                  <span className="sr-only">
-                    {item.waterPurification}
-                  </span>
+                  <span className="sr-only">{item.waterPurification}</span>
                 </h3>
                 <p className="text-2xl font-bold">
                   {localizeNumber(percentage, "ne")}%
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {localizeNumber(item.households.toLocaleString(), "ne")} घरधुरी
+                  {localizeNumber(item.households.toLocaleString(), "ne")}{" "}
+                  घरधुरी
                   <span className="sr-only">
                     ({item.households.toLocaleString()} households)
                   </span>
@@ -159,9 +169,11 @@ export default function WaterPurificationAnalysisSection({
                   {localizeNumber(treatingPercentage, "ne")}%
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">
-                  {localizeNumber(treatingHouseholds.toLocaleString(), "ne")} घरधुरीले पानी शुद्धिकरण गर्छन्
+                  {localizeNumber(treatingHouseholds.toLocaleString(), "ne")}{" "}
+                  घरधुरीले पानी शुद्धिकरण गर्छन्
                   <span className="sr-only">
-                    {treatingHouseholds.toLocaleString()} households treat their water
+                    {treatingHouseholds.toLocaleString()} households treat their
+                    water
                   </span>
                 </p>
               </div>
@@ -171,10 +183,15 @@ export default function WaterPurificationAnalysisSection({
               <h5 className="text-sm font-medium">पानी शुद्धिकरणको महत्त्व</h5>
               <div className="mt-2 space-y-2">
                 <p className="text-sm">
-                  खजुरा गाउँपालिकामा {localizeNumber(treatingPercentage, "ne")}% घरधुरीले मात्र पानी शुद्धिकरण गर्ने गरेको पाइएको छ, जुन जनस्वास्थ्यका दृष्टिकोणले अपर्याप्त देखिन्छ।
+                  परिवर्तन गाउँपालिकामा{" "}
+                  {localizeNumber(treatingPercentage, "ne")}% घरधुरीले मात्र
+                  पानी शुद्धिकरण गर्ने गरेको पाइएको छ, जुन जनस्वास्थ्यका
+                  दृष्टिकोणले अपर्याप्त देखिन्छ।
                 </p>
                 <p className="text-sm">
-                  अशुद्ध पानी पिउँदा झाडापखाला, हैजा, टाइफाइड जस्ता जलजन्य रोगहरू लाग्ने जोखिम बढ्छ, जसले विशेष गरी बालबालिकाहरूमा गम्भीर स्वास्थ्य समस्याहरू निम्त्याउन सक्छ।
+                  अशुद्ध पानी पिउँदा झाडापखाला, हैजा, टाइफाइड जस्ता जलजन्य
+                  रोगहरू लाग्ने जोखिम बढ्छ, जसले विशेष गरी बालबालिकाहरूमा गम्भीर
+                  स्वास्थ्य समस्याहरू निम्त्याउन सक्छ।
                 </p>
               </div>
             </div>
@@ -188,7 +205,9 @@ export default function WaterPurificationAnalysisSection({
           >
             <h4 className="font-medium mb-2">
               उच्च पानी उपचार दर भएको वडा
-              <span className="sr-only">Ward with Highest Water Treatment Rate in Khajura</span>
+              <span className="sr-only">
+                Ward with Highest Water Treatment Rate in Khajura
+              </span>
             </h4>
             {highestTreatmentWard && (
               <div className="flex items-center gap-3">
@@ -200,12 +219,22 @@ export default function WaterPurificationAnalysisSection({
                 ></div>
                 <div>
                   <p className="text-2xl font-bold">
-                    वडा {localizeNumber(highestTreatmentWard.wardNumber.toString(), "ne")}
+                    वडा{" "}
+                    {localizeNumber(
+                      highestTreatmentWard.wardNumber.toString(),
+                      "ne",
+                    )}
                   </p>
                   <p className="text-sm text-muted-foreground mt-1">
-                    पानी उपचार दर: {localizeNumber(highestTreatmentWard.treatingPercentage, "ne")}%
+                    पानी उपचार दर:{" "}
+                    {localizeNumber(
+                      highestTreatmentWard.treatingPercentage,
+                      "ne",
+                    )}
+                    %
                     <span className="sr-only">
-                      {highestTreatmentWard.treatingPercentage}% water treatment rate
+                      {highestTreatmentWard.treatingPercentage}% water treatment
+                      rate
                     </span>
                   </p>
                 </div>
@@ -216,7 +245,16 @@ export default function WaterPurificationAnalysisSection({
               <h5 className="text-sm font-medium">सफल अभ्यासहरू</h5>
               <div className="mt-2 p-3 bg-green-50 rounded-lg border border-green-100">
                 <p className="text-sm">
-                  वडा नं. {highestTreatmentWard ? localizeNumber(highestTreatmentWard.wardNumber.toString(), "ne") : ""} मा सबैभन्दा बढी परिवारले पानी शुद्धिकरण गर्ने गरेको देखिन्छ। यस वडाका सफल अभ्यासहरूलाई अन्य वडाहरूमा पनि प्रसारित गर्न सकिन्छ।
+                  वडा नं.{" "}
+                  {highestTreatmentWard
+                    ? localizeNumber(
+                        highestTreatmentWard.wardNumber.toString(),
+                        "ne",
+                      )
+                    : ""}{" "}
+                  मा सबैभन्दा बढी परिवारले पानी शुद्धिकरण गर्ने गरेको देखिन्छ।
+                  यस वडाका सफल अभ्यासहरूलाई अन्य वडाहरूमा पनि प्रसारित गर्न
+                  सकिन्छ।
                 </p>
               </div>
             </div>
@@ -239,13 +277,19 @@ export default function WaterPurificationAnalysisSection({
               <p className="flex gap-2">
                 <span className="text-blue-500">•</span>
                 <span>
-                  <strong>सूचकाङ्क विवरण:</strong> खानेपानी सुरक्षा सूचकाङ्क विभिन्न शुद्धिकरण विधिहरूको भारित औसतमा आधारित छ, जसमा फिल्टरिङ र उमाल्ने विधिलाई उच्च भार दिइएको छ।
+                  <strong>सूचकाङ्क विवरण:</strong> खानेपानी सुरक्षा सूचकाङ्क
+                  विभिन्न शुद्धिकरण विधिहरूको भारित औसतमा आधारित छ, जसमा
+                  फिल्टरिङ र उमाल्ने विधिलाई उच्च भार दिइएको छ।
                 </span>
               </p>
               <p className="flex gap-2">
                 <span className="text-blue-500">•</span>
                 <span>
-                  <strong>व्याख्या:</strong> {localizeNumber(safetyIndex.toFixed(1), "ne")} अंकले {waterSafetyRating} खानेपानी सुरक्षा स्तर दर्शाउँछ। सुधारका लागि पानी शुद्धिकरण नगर्ने घरधुरी संख्या घटाई उपयुक्त शुद्धिकरण विधि प्रवर्द्धन गर्नुपर्छ।
+                  <strong>व्याख्या:</strong>{" "}
+                  {localizeNumber(safetyIndex.toFixed(1), "ne")} अंकले{" "}
+                  {waterSafetyRating} खानेपानी सुरक्षा स्तर दर्शाउँछ। सुधारका
+                  लागि पानी शुद्धिकरण नगर्ने घरधुरी संख्या घटाई उपयुक्त
+                  शुद्धिकरण विधि प्रवर्द्धन गर्नुपर्छ।
                 </span>
               </p>
             </div>
@@ -255,18 +299,24 @@ export default function WaterPurificationAnalysisSection({
             <h4 className="font-medium mb-4">शुद्धिकरण विधिहरूको विश्लेषण</h4>
 
             <div>
-              <h5 className="text-sm font-medium">सबैभन्दा बढी प्रयोग हुने विधिहरू</h5>
+              <h5 className="text-sm font-medium">
+                सबैभन्दा बढी प्रयोग हुने विधिहरू
+              </h5>
               <div className="mt-2 space-y-3">
                 {overallSummary.slice(0, 3).map((item, index) => {
-                  const percentage = ((item.households / totalHouseholds) * 100).toFixed(2);
-                  const color = WATER_PURIFICATION_COLORS[item.waterPurification as keyof typeof WATER_PURIFICATION_COLORS] || "#888";
-                  
+                  const percentage = (
+                    (item.households / totalHouseholds) *
+                    100
+                  ).toFixed(2);
+                  const color =
+                    WATER_PURIFICATION_COLORS[
+                      item.waterPurification as keyof typeof WATER_PURIFICATION_COLORS
+                    ] || "#888";
+
                   return (
                     <div key={item.waterPurification}>
                       <div className="flex justify-between text-sm">
-                        <span>
-                          {item.waterPurificationName}
-                        </span>
+                        <span>{item.waterPurificationName}</span>
                         <span className="font-medium">
                           {localizeNumber(percentage, "ne")}%
                         </span>
@@ -286,19 +336,29 @@ export default function WaterPurificationAnalysisSection({
               </div>
 
               <div className="mt-4 pt-3 border-t">
-                <h5 className="font-medium mb-2">न्यून पानी शुद्धिकरण भएका क्षेत्रहरू</h5>
+                <h5 className="font-medium mb-2">
+                  न्यून पानी शुद्धिकरण भएका क्षेत्रहरू
+                </h5>
                 {lowestTreatmentWard && (
                   <>
                     <div className="flex justify-between text-sm">
                       <span>
-                        <span 
-                          className="inline-block w-2 h-2 rounded-full mr-2" 
+                        <span
+                          className="inline-block w-2 h-2 rounded-full mr-2"
                           style={{ backgroundColor: "#E74C3C" }}
                         ></span>
-                        वडा {localizeNumber(lowestTreatmentWard.wardNumber.toString(), "ne")}
+                        वडा{" "}
+                        {localizeNumber(
+                          lowestTreatmentWard.wardNumber.toString(),
+                          "ne",
+                        )}
                       </span>
                       <span className="font-medium">
-                        {localizeNumber(lowestTreatmentWard.treatingPercentage, "ne")}%
+                        {localizeNumber(
+                          lowestTreatmentWard.treatingPercentage,
+                          "ne",
+                        )}
+                        %
                       </span>
                     </div>
                     <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -311,7 +371,8 @@ export default function WaterPurificationAnalysisSection({
                       ></div>
                     </div>
                     <p className="text-xs text-muted-foreground mt-2">
-                      यस वडामा सबैभन्दा कम पानी शुद्धिकरण दर रहेकोले विशेष ध्यान दिनुपर्ने देखिन्छ।
+                      यस वडामा सबैभन्दा कम पानी शुद्धिकरण दर रहेकोले विशेष ध्यान
+                      दिनुपर्ने देखिन्छ।
                     </p>
                   </>
                 )}

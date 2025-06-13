@@ -11,14 +11,18 @@ interface ToiletTypeSEOProps {
   typeMap: Record<string, string>;
   wardNumbers: number[];
   sanitationIndex: number;
-  highestSanitationWard: {
-    wardNumber: number;
-    sanitationPercentage: string;
-  } | undefined;
-  lowestSanitationWard: {
-    wardNumber: number;
-    sanitationPercentage: string;
-  } | undefined;
+  highestSanitationWard:
+    | {
+        wardNumber: number;
+        sanitationPercentage: string;
+      }
+    | undefined;
+  lowestSanitationWard:
+    | {
+        wardNumber: number;
+        sanitationPercentage: string;
+      }
+    | undefined;
   noToiletPercentage: string;
 }
 
@@ -50,26 +54,32 @@ export default function ToiletTypeSEO({
 
     // Find most common toilet type
     const mostCommonType = overallSummary.length > 0 ? overallSummary[0] : null;
-    const mostCommonTypeName = mostCommonType ? mostCommonType.toiletTypeName : "";
-    const mostCommonTypePercentage = mostCommonType && totalHouseholds > 0 
-      ? ((mostCommonType.households / totalHouseholds) * 100).toFixed(2)
-      : "0";
+    const mostCommonTypeName = mostCommonType
+      ? mostCommonType.toiletTypeName
+      : "";
+    const mostCommonTypePercentage =
+      mostCommonType && totalHouseholds > 0
+        ? ((mostCommonType.households / totalHouseholds) * 100).toFixed(2)
+        : "0";
 
     // Find percentage of households with proper sanitation
     const sanitizedHouseholds = overallSummary
-      .filter(item => item.toiletType !== 'NO_TOILET')
+      .filter((item) => item.toiletType !== "NO_TOILET")
       .reduce((sum, item) => sum + item.households, 0);
-    
-    const sanitizedPercentage = ((sanitizedHouseholds / totalHouseholds) * 100).toFixed(2);
+
+    const sanitizedPercentage = (
+      (sanitizedHouseholds / totalHouseholds) *
+      100
+    ).toFixed(2);
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Toilet Types in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Toilet Types in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Analysis of toilet types across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${sanitizedPercentage}% of households have proper toilet facilities. The most common toilet type is ${mostCommonTypeName} with ${mostCommonType?.households.toLocaleString()} households (${mostCommonTypePercentage}%).`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Toilet types",
         "Sanitation facilities",
         "Flush toilets",
@@ -121,27 +131,27 @@ export default function ToiletTypeSEO({
           name: "No Toilet Percentage",
           unitText: "percentage",
           value: noToiletPercentage,
-        }
+        },
       ],
       observation: toiletTypeStats,
       about: [
         {
           "@type": "Thing",
           name: "Water and Sanitation",
-          description: "Toilet types and sanitation practices"
+          description: "Toilet types and sanitation practices",
         },
         {
           "@type": "Thing",
           name: "Public Health",
-          description: "Sanitation facilities for disease prevention"
-        }
+          description: "Sanitation facilities for disease prevention",
+        },
       ],
       isAccessibleForFree: true,
       isPartOf: {
         "@type": "WebSite",
         name: "Khajura Rural Municipality Digital Profile",
-        url: "https://digital.khajuramun.gov.np"
-      }
+        url: "https://digital.khajuramun.gov.np",
+      },
     };
   };
 

@@ -56,7 +56,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const animalProductData =
       await api.profile.economics.municipalityWideAnimalProducts.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalProduction = animalProductData.reduce(
@@ -96,14 +96,14 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // Create rich keywords with actual data
     const keywordsNP = [
-      "खजुरा गाउँपालिका पशुपन्छीजन्य उत्पादन",
-      "खजुरा दुध उत्पादन",
+      "परिवर्तन गाउँपालिका पशुपन्छीजन्य उत्पादन",
+      "परिवर्तन दुध उत्पादन",
       "पालिका स्तरीय पशुजन्य उत्पादन तथ्याङ्क",
-      "दुध उत्पादन खजुरा",
+      "दुध उत्पादन परिवर्तन",
       "मासु उत्पादन तथ्याङ्क",
       "अण्डा उत्पादन",
-      `खजुरा पशुजन्य उत्पादन बिक्री ${localizeNumber(totalSales.toFixed(2), "ne")} टन`,
-      `खजुरा पशुजन्य उत्पादन आय ${localizeNumber(
+      `परिवर्तन पशुजन्य उत्पादन बिक्री ${localizeNumber(totalSales.toFixed(2), "ne")} टन`,
+      `परिवर्तन पशुजन्य उत्पादन आय ${localizeNumber(
         (totalRevenue / 1000).toFixed(2),
         "ne",
       )} हजार`,
@@ -121,7 +121,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data
-    const descriptionNP = `खजुरा गाउँपालिकाको पशुपन्छीजन्य उत्पादन र बिक्री विश्लेषण। कुल ${localizeNumber(totalProduction.toFixed(2), "ne")} मेट्रिक टन पशुजन्य उत्पादन मध्ये ${localizeNumber(mostProducedPercentage, "ne")}% (${localizeNumber(mostProducedAmount.toFixed(2), "ne")} टन) ${ANIMAL_PRODUCT_TYPES[mostProducedProduct] || mostProducedProduct} रहेको छ। पालिका स्तरीय पशुपन्छीजन्य उत्पादन र बिक्रीको विस्तृत विश्लेषण।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको पशुपन्छीजन्य उत्पादन र बिक्री विश्लेषण। कुल ${localizeNumber(totalProduction.toFixed(2), "ne")} मेट्रिक टन पशुजन्य उत्पादन मध्ये ${localizeNumber(mostProducedPercentage, "ne")}% (${localizeNumber(mostProducedAmount.toFixed(2), "ne")} टन) ${ANIMAL_PRODUCT_TYPES[mostProducedProduct] || mostProducedProduct} रहेको छ। पालिका स्तरीय पशुपन्छीजन्य उत्पादन र बिक्रीको विस्तृत विश्लेषण।`;
 
     const descriptionEN = `Analysis of animal product production and sales in Khajura Rural Municipality. Out of total ${totalProduction.toFixed(2)} metric tonnes of animal products, ${mostProducedPercentage}% (${mostProducedAmount.toFixed(2)} tonnes) is ${ANIMAL_PRODUCT_TYPES_EN[mostProducedProduct] || mostProducedProduct}. Detailed analysis of municipality-wide animal product patterns.`;
 
@@ -154,7 +154,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fallback metadata if data fetching fails
     return {
       title:
-        "पशुपन्छीजन्य वस्तुको प्रकार अनुसार उत्पादन र बिक्री | खजुरा गाउँपालिका डिजिटल प्रोफाइल",
+        "पशुपन्छीजन्य वस्तुको प्रकार अनुसार उत्पादन र बिक्री | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
       description:
         "पालिका स्तरीय पशुपन्छीजन्य वस्तुको प्रकार अनुसारको उत्पादन, बिक्री र आम्दानीको विश्लेषण।",
     };
@@ -350,7 +350,7 @@ export default async function MunicipalityWideAnimalProductsPage() {
               src="/images/animal-products.svg"
               width={1200}
               height={400}
-              alt="पशुपन्छीजन्य वस्तुको प्रकार अनुसार उत्पादन र बिक्री - खजुरा गाउँपालिका (Animal Products by Production and Sales - Khajura Rural Municipality)"
+              alt="पशुपन्छीजन्य वस्तुको प्रकार अनुसार उत्पादन र बिक्री - परिवर्तन गाउँपालिका (Animal Products by Production and Sales - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -358,7 +358,7 @@ export default async function MunicipalityWideAnimalProductsPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा पशुपन्छीजन्य वस्तुको प्रकार अनुसार उत्पादन र
+              परिवर्तन गाउँपालिकामा पशुपन्छीजन्य वस्तुको प्रकार अनुसार उत्पादन र
               बिक्री
             </h1>
 
@@ -366,15 +366,15 @@ export default async function MunicipalityWideAnimalProductsPage() {
               परिचय
             </h2>
             <p>
-              पशुपन्छीजन्य वस्तुहरू खजुरा गाउँपालिकाको महत्त्वपूर्ण कृषि उत्पादन
-              हो। यस क्षेत्रमा दुध, दुधजन्य वस्तु, मासु, अण्डा लगायतका विभिन्न
-              प्रकारका पशुपन्छीजन्य वस्तुहरू उत्पादन गरिन्छ। यी उत्पादनहरूले
-              पालिकाको पोषण सुरक्षा र आर्थिक स्थितिमा उल्लेखनीय योगदान
-              पुर्‍याउँछन्।
+              पशुपन्छीजन्य वस्तुहरू परिवर्तन गाउँपालिकाको महत्त्वपूर्ण कृषि
+              उत्पादन हो। यस क्षेत्रमा दुध, दुधजन्य वस्तु, मासु, अण्डा लगायतका
+              विभिन्न प्रकारका पशुपन्छीजन्य वस्तुहरू उत्पादन गरिन्छ। यी
+              उत्पादनहरूले पालिकाको पोषण सुरक्षा र आर्थिक स्थितिमा उल्लेखनीय
+              योगदान पुर्‍याउँछन्।
             </p>
             <p>
-              खजुरा गाउँपालिकाको पशुपन्छीजन्य वस्तु सम्बन्धी तथ्याङ्क अनुसार, यस
-              क्षेत्रमा वार्षिक कुल{" "}
+              परिवर्तन गाउँपालिकाको पशुपन्छीजन्य वस्तु सम्बन्धी तथ्याङ्क अनुसार,
+              यस क्षेत्रमा वार्षिक कुल{" "}
               {localizeNumber(totalProduction.toFixed(2), "ne")} मेट्रिक टन
               पशुपन्छीजन्य वस्तु उत्पादन हुन्छ, जसमध्ये सबैभन्दा बढी{" "}
               {overallSummary[0]?.typeName || ""}
@@ -400,8 +400,8 @@ export default async function MunicipalityWideAnimalProductsPage() {
               प्रमुख पशुपन्छीजन्य वस्तुहरू
             </h2>
             <p>
-              खजुरा गाउँपालिकामा उत्पादित प्रमुख पशुपन्छीजन्य वस्तुहरू र तिनको
-              उत्पादन परिमाण निम्नानुसार रहेको छ:
+              परिवर्तन गाउँपालिकामा उत्पादित प्रमुख पशुपन्छीजन्य वस्तुहरू र
+              तिनको उत्पादन परिमाण निम्नानुसार रहेको छ:
             </p>
 
             <ul>
@@ -428,7 +428,7 @@ export default async function MunicipalityWideAnimalProductsPage() {
             </ul>
 
             <p>
-              पशुपन्छीजन्य वस्तु उत्पादनको विश्लेषण गर्दा, खजुरा गाउँपालिकामा
+              पशुपन्छीजन्य वस्तु उत्पादनको विश्लेषण गर्दा, परिवर्तन गाउँपालिकामा
               उत्पादित कुल पशुपन्छीजन्य वस्तु मध्ये{" "}
               {localizeNumber(soldPercentage, "ne")}% बिक्रीका लागि बजारमा
               जान्छ, जबकि {localizeNumber(selfConsumptionPercentage, "ne")}%
@@ -474,7 +474,7 @@ export default async function MunicipalityWideAnimalProductsPage() {
               पशुपन्छीजन्य वस्तु र स्थानीय अर्थतन्त्र
             </h2>
             <p>
-              खजुरा गाउँपालिकामा पशुपन्छीजन्य वस्तु उत्पादनले स्थानीय
+              परिवर्तन गाउँपालिकामा पशुपन्छीजन्य वस्तु उत्पादनले स्थानीय
               अर्थतन्त्रमा महत्त्वपूर्ण भूमिका खेल्दछ। कुल{" "}
               {localizeNumber(totalProduction.toFixed(2), "ne")} मेट्रिक टन
               पशुपन्छीजन्य वस्तु उत्पादन मध्ये{" "}
@@ -485,7 +485,7 @@ export default async function MunicipalityWideAnimalProductsPage() {
             </p>
 
             <p>
-              खजुरा गाउँपालिकाको प्रमुख पशुपन्छीजन्य वस्तु उत्पादनको विश्लेषण
+              परिवर्तन गाउँपालिकाको प्रमुख पशुपन्छीजन्य वस्तु उत्पादनको विश्लेषण
               गर्दा {overallSummary[0]?.typeName || ""} सबैभन्दा प्रभावकारी
               पशुजन्य उत्पादन रहेको देखिन्छ, जसले कुल पशुपन्छीजन्य वस्तु
               उत्पादनको{" "}
@@ -525,7 +525,7 @@ export default async function MunicipalityWideAnimalProductsPage() {
             </h2>
 
             <p>
-              खजुरा गाउँपालिकाको पशुपन्छीजन्य वस्तु उत्पादनको अवस्थाको
+              परिवर्तन गाउँपालिकाको पशुपन्छीजन्य वस्तु उत्पादनको अवस्थाको
               विश्लेषणबाट निम्न निष्कर्ष र सिफारिसहरू प्रस्तुत गर्न सकिन्छ:
             </p>
 
@@ -575,10 +575,10 @@ export default async function MunicipalityWideAnimalProductsPage() {
             </div>
 
             <p className="mt-6">
-              खजुरा गाउँपालिकामा पशुपन्छीजन्य वस्तु उत्पादनको वर्तमान अवस्थाले
-              अझै विकासको प्रचुर सम्भावना देखाउँछ। उत्पादकत्व वृद्धि, प्रशोधन
-              प्रविधिमा आधुनिकीकरण र व्यावसायीकरण मार्फत पशुपन्छीजन्य वस्तु
-              उत्पादनलाई प्रोत्साहन गरी किसानको आय-आर्जनमा वृद्धि र खाद्य
+              परिवर्तन गाउँपालिकामा पशुपन्छीजन्य वस्तु उत्पादनको वर्तमान
+              अवस्थाले अझै विकासको प्रचुर सम्भावना देखाउँछ। उत्पादकत्व वृद्धि,
+              प्रशोधन प्रविधिमा आधुनिकीकरण र व्यावसायीकरण मार्फत पशुपन्छीजन्य
+              वस्तु उत्पादनलाई प्रोत्साहन गरी किसानको आय-आर्जनमा वृद्धि र खाद्य
               सुरक्षामा योगदान पुर्‍याउन सकिन्छ। यसका लागि स्थानीय सरकारले
               सक्रिय नीति निर्माण र प्रोत्साहन कार्यक्रम लागू गर्नु आवश्यक छ।
             </p>

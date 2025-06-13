@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const incomeSourceData =
       await api.profile.economics.wardWiseHouseholdIncomeSource.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalHouseholds = incomeSourceData.reduce(
@@ -54,17 +54,17 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // Create rich keywords with actual data
     const keywordsNP = [
-      "खजुरा गाउँपालिका घरपरिवार आय स्रोत",
-      "खजुरा आर्थिक गतिविधि",
-      `खजुरा ${incomeSourceLabels[topIncomeSources[0] as keyof typeof incomeSourceLabels]}`,
+      "परिवर्तन गाउँपालिका घरपरिवार आय स्रोत",
+      "परिवर्तन आर्थिक गतिविधि",
+      `परिवर्तन ${incomeSourceLabels[topIncomeSources[0] as keyof typeof incomeSourceLabels]}`,
       ...topIncomeSources.map(
         (r) =>
-          `${incomeSourceLabels[r as keyof typeof incomeSourceLabels]} खजुरा`,
+          `${incomeSourceLabels[r as keyof typeof incomeSourceLabels]} परिवर्तन`,
       ),
       "वडा अनुसार आय स्रोत",
       "आर्थिक गतिविधि तथ्याङ्क",
-      "आय स्रोत सर्वेक्षण खजुरा",
-      `खजुरा कुल घरपरिवार संख्या ${localizeNumber(totalHouseholds.toString(), "ne")}`,
+      "आय स्रोत सर्वेक्षण परिवर्तन",
+      `परिवर्तन कुल घरपरिवार संख्या ${localizeNumber(totalHouseholds.toString(), "ne")}`,
     ];
     const keywordsEN = [
       "Khajura Rural Municipality household income sources",
@@ -81,24 +81,24 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data
-    const descriptionNP = `खजुरा गाउँपालिकाको वडा अनुसार घरपरिवारको आय स्रोत वितरण, प्रवृत्ति र विश्लेषण। कुल घरपरिवार संख्या ${localizeNumber(
-      totalHouseholds.toString(), 
-      "ne"
+    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार घरपरिवारको आय स्रोत वितरण, प्रवृत्ति र विश्लेषण। कुल घरपरिवार संख्या ${localizeNumber(
+      totalHouseholds.toString(),
+      "ne",
     )} मध्ये ${
       incomeSourceLabels[topIncomeSources[0] as keyof typeof incomeSourceLabels]
     } (${localizeNumber(
       incomeSourceCounts[topIncomeSources[0]].toString(),
-      "ne"
+      "ne",
     )}) सबैभन्दा ठूलो समूह हो, त्यसपछि ${
       incomeSourceLabels[topIncomeSources[1] as keyof typeof incomeSourceLabels]
     } (${localizeNumber(
       incomeSourceCounts[topIncomeSources[1]].toString(),
-      "ne"
+      "ne",
     )}) र ${
       incomeSourceLabels[topIncomeSources[2] as keyof typeof incomeSourceLabels]
     } (${localizeNumber(
       incomeSourceCounts[topIncomeSources[2]].toString(),
-      "ne"
+      "ne",
     )})। विभिन्न आय स्रोतहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
 
     const descriptionEN = `Ward-wise household income source distribution, trends and analysis for Khajura Rural Municipality. Out of a total of ${totalHouseholds} households, ${
@@ -138,7 +138,7 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "घरपरिवारको आय स्रोत | खजुरा गाउँपालिका प्रोफाइल",
+      title: "घरपरिवारको आय स्रोत | परिवर्तन गाउँपालिका प्रोफाइल",
       description:
         "वडा अनुसार घरपरिवारको आय स्रोत वितरण, प्रवृत्ति र विश्लेषण। विभिन्न आय स्रोतहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।",
     };
@@ -283,7 +283,7 @@ export default async function WardWiseHouseholdIncomeSourcePage() {
               src="/images/income-sources.svg"
               width={1200}
               height={400}
-              alt="घरपरिवारको आय स्रोत - खजुरा गाउँपालिका (Household Income Sources - Khajura Rural Municipality)"
+              alt="घरपरिवारको आय स्रोत - परिवर्तन गाउँपालिका (Household Income Sources - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -291,28 +291,30 @@ export default async function WardWiseHouseholdIncomeSourcePage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा घरपरिवारको आय स्रोत
+              परिवर्तन गाउँपालिकामा घरपरिवारको आय स्रोत
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              यस खण्डमा खजुरा गाउँपालिकाको विभिन्न वडाहरूमा रहेका घरपरिवारहरूको
-              प्रमुख आय स्रोत सम्बन्धी विस्तृत तथ्याङ्क प्रस्तुत गरिएको छ। यो
-              तथ्याङ्कले आर्थिक गतिविधि, रोजगारी र जीविकोपार्जनको स्वरूपलाई
-              प्रतिबिम्बित गर्दछ।
+              यस खण्डमा परिवर्तन गाउँपालिकाको विभिन्न वडाहरूमा रहेका
+              घरपरिवारहरूको प्रमुख आय स्रोत सम्बन्धी विस्तृत तथ्याङ्क प्रस्तुत
+              गरिएको छ। यो तथ्याङ्कले आर्थिक गतिविधि, रोजगारी र जीविकोपार्जनको
+              स्वरूपलाई प्रतिबिम्बित गर्दछ।
             </p>
             <p>
-              खजुरा गाउँपालिकामा विभिन्न आय स्रोतहरू मार्फत घरपरिवारहरू आफ्नो
+              परिवर्तन गाउँपालिकामा विभिन्न आय स्रोतहरू मार्फत घरपरिवारहरू आफ्नो
               जीविकोपार्जन गर्दछन्। कुल घरपरिवार संख्या{" "}
               {localizeNumber(totalHouseholds.toLocaleString(), "ne")} मध्ये{" "}
               {overallSummary[0]?.incomeSourceName || ""} प्रमुख आय स्रोत भएका
               घरपरिवारहरू{" "}
               {localizeNumber(
-                (((overallSummary[0]?.households || 0) / totalHouseholds) *
-                100).toFixed(1),
-                "ne"
+                (
+                  ((overallSummary[0]?.households || 0) / totalHouseholds) *
+                  100
+                ).toFixed(1),
+                "ne",
               )}
               % रहेका छन्। यस तथ्याङ्कले स्थानीय अर्थतन्त्रको बुझाई, रोजगारी
               सृजना र आर्थिक विकासमा सहयोग पुर्‍याउँछ।
@@ -325,7 +327,7 @@ export default async function WardWiseHouseholdIncomeSourcePage() {
               आय स्रोत अनुसार घरपरिवार
             </h2>
             <p>
-              खजुरा गाउँपालिकामा विभिन्न आय स्रोत भएका घरपरिवारहरूको संख्या
+              परिवर्तन गाउँपालिकामा विभिन्न आय स्रोत भएका घरपरिवारहरूको संख्या
               निम्नानुसार छ:
             </p>
           </div>
@@ -346,16 +348,18 @@ export default async function WardWiseHouseholdIncomeSourcePage() {
               प्रमुख आय स्रोतहरूको विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा निम्न आय स्रोतहरू प्रमुख रूपमा देखिन्छन्। यी आय
-              स्रोतहरू मध्ये{" "}
+              परिवर्तन गाउँपालिकामा निम्न आय स्रोतहरू प्रमुख रूपमा देखिन्छन्। यी
+              आय स्रोतहरू मध्ये{" "}
               {incomeSourceLabels[
                 overallSummary[0]
                   ?.incomeSource as keyof typeof incomeSourceLabels
               ] || "कृषि"}{" "}
               {localizeNumber(
-                (((overallSummary[0]?.households || 0) / totalHouseholds) *
-                100).toFixed(2),
-                "ne"
+                (
+                  ((overallSummary[0]?.households || 0) / totalHouseholds) *
+                  100
+                ).toFixed(2),
+                "ne",
               )}
               % मा देखिन्छ।
             </p>

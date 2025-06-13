@@ -141,10 +141,12 @@ const Hero: React.FC<HeroProps> = ({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              बाँके जिल्ला, लुम्बिनी प्रदेश
-              <div className="text-sm block"> हामी आफैँ बनाउँ हाम्रो खजुरा, आत्मनिर्भर र समृद्ध खजुरा</div>
+              रोल्पा जिल्ला, लुम्बिनी प्रदेश
+              <div className="text-sm block">
+                {" "}
+                हामी आफैँ बनाउँ हाम्रो परिवर्तन, आत्मनिर्भर र समृद्ध परिवर्तन
+              </div>
             </motion.div>
-          
 
             {/* Key Metrics Cards with enhanced contrast */}
             <motion.div

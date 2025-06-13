@@ -6,18 +6,18 @@ import CooperativeTypePieChart from "./charts/cooperative-type-pie-chart";
 import WardDistributionBarChart from "./charts/ward-distribution-bar-chart";
 import PopularCooperativeByWardChart from "./charts/popular-cooperative-by-ward-chart";
 import CooperativeTrendChart from "./charts/cooperative-trend-chart";
-import { 
-  BarChart3, 
-  PieChart, 
-  TrendingUp, 
-  Users, 
-  Home, 
-  Building, 
-  Target, 
+import {
+  BarChart3,
+  PieChart,
+  TrendingUp,
+  Users,
+  Home,
+  Building,
+  Target,
   Award,
   Map,
   BarChart,
-  LineChart 
+  LineChart,
 } from "lucide-react";
 
 interface CooperativesChartsProps {
@@ -75,7 +75,7 @@ export default function CooperativesCharts({
 }: CooperativesChartsProps) {
   // Format data for pie chart (cooperative type distribution)
   const cooperativePieChartData = cooperativeSummary
-    .filter(item => item.count > 0)
+    .filter((item) => item.count > 0)
     .map((item) => ({
       name: item.typeName,
       value: item.count,
@@ -84,36 +84,43 @@ export default function CooperativesCharts({
 
   // Format data for bar chart (ward distribution)
   const wardBarChartData = cooperativesByWard
-    .filter(ward => ward.cooperativeCount > 0)
+    .filter((ward) => ward.cooperativeCount > 0)
     .map((ward) => ({
       name: `वडा ${localizeNumber(ward.wardNumber.toString(), "ne")}`,
       value: ward.cooperativeCount,
-      percentage: ((ward.cooperativeCount / totalCooperatives) * 100).toFixed(1),
+      percentage: ((ward.cooperativeCount / totalCooperatives) * 100).toFixed(
+        1,
+      ),
     }))
     .sort((a, b) => parseInt(b.percentage) - parseInt(a.percentage)); // Sort by percentage descending
 
   // Simulate historical trend data (for demonstration)
   const generateHistoricalData = () => {
     // Get top 4 cooperative types
-    const topCooperativeTypes = cooperativeSummary.slice(0, 4).map(b => b.type);
-    
+    const topCooperativeTypes = cooperativeSummary
+      .slice(0, 4)
+      .map((b) => b.type);
+
     // Years (2075-2080)
     const years = ["२०७५", "२०७६", "२०७७", "२०७८", "२०७९", "२०८०"];
-    
+
     // Generate trend data
     return years.map((year, index) => {
       // Base data point
       const dataPoint: any = { year };
-      
+
       // Add counts for each cooperative type
       // This simulates growth over the years
-      topCooperativeTypes.forEach(type => {
-        const currentCount = cooperativeSummary.find(b => b.type === type)?.count || 0;
+      topCooperativeTypes.forEach((type) => {
+        const currentCount =
+          cooperativeSummary.find((b) => b.type === type)?.count || 0;
         // Create a growth pattern (fewer in past years)
-        const growthFactor = 0.7 + (0.3 * (index / (years.length - 1)));
-        dataPoint[type] = Math.round(currentCount * growthFactor * (0.9 + Math.random() * 0.2));
+        const growthFactor = 0.7 + 0.3 * (index / (years.length - 1));
+        dataPoint[type] = Math.round(
+          currentCount * growthFactor * (0.9 + Math.random() * 0.2),
+        );
       });
-      
+
       return dataPoint;
     });
   };
@@ -161,9 +168,7 @@ export default function CooperativesCharts({
                   <li className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
                     <Users className="w-5 h-5 text-blue-600 mt-0.5" />
                     <div>
-                      <span className="font-medium">
-                        कुल सहकारी संस्थाहरू
-                      </span>
+                      <span className="font-medium">कुल सहकारी संस्थाहरू</span>
                       <div className="text-xl font-bold text-blue-600">
                         {localizeNumber(totalCooperatives.toString(), "ne")}
                       </div>
@@ -176,7 +181,11 @@ export default function CooperativesCharts({
                         प्रदेश स्तरीय सहकारीहरू
                       </span>
                       <div className="text-lg font-bold text-green-600">
-                        {localizeNumber(statistics.provinceLevelCooperatives.toString(), "ne")} संस्था
+                        {localizeNumber(
+                          statistics.provinceLevelCooperatives.toString(),
+                          "ne",
+                        )}{" "}
+                        संस्था
                       </div>
                     </div>
                   </li>
@@ -188,10 +197,11 @@ export default function CooperativesCharts({
                           सबैभन्दा धेरै प्रकार
                         </span>
                         <div className="text-lg font-bold text-amber-600">
-                          {cooperativeSummary[0].typeName} {cooperativeSummary[0].icon} (
+                          {cooperativeSummary[0].typeName}{" "}
+                          {cooperativeSummary[0].icon} (
                           {localizeNumber(
                             cooperativeSummary[0].percentage.toFixed(1),
-                            "ne"
+                            "ne",
                           )}
                           %)
                         </div>
@@ -203,7 +213,8 @@ export default function CooperativesCharts({
                     <div>
                       <span className="font-medium">वडागत वितरण</span>
                       <div className="text-lg font-bold text-purple-600">
-                        {localizeNumber(statistics.totalWards.toString(), "ne")}/९ वडा
+                        {localizeNumber(statistics.totalWards.toString(), "ne")}
+                        /९ वडा
                       </div>
                     </div>
                   </li>
@@ -221,7 +232,8 @@ export default function CooperativesCharts({
             वडागत वितरण विश्लेषण
           </h2>
           <p className="text-muted-foreground">
-            वडा अनुसार सहकारी संस्थाहरूको वितरण र प्रमुख सहकारी प्रकारको विश्लेषण
+            वडा अनुसार सहकारी संस्थाहरूको वितरण र प्रमुख सहकारी प्रकारको
+            विश्लेषण
           </p>
         </div>
 
@@ -233,9 +245,7 @@ export default function CooperativesCharts({
                 वडा अनुसार सहकारी संस्थाहरूको वितरण
               </h3>
               <div className="h-[350px]">
-                <WardDistributionBarChart
-                  data={wardBarChartData}
-                />
+                <WardDistributionBarChart data={wardBarChartData} />
               </div>
             </CardContent>
           </Card>
@@ -248,7 +258,9 @@ export default function CooperativesCharts({
               </h3>
               <div className="h-[350px]">
                 <PopularCooperativeByWardChart
-                  data={popularCooperativeByWard.filter(item => item.count > 0)}
+                  data={popularCooperativeByWard.filter(
+                    (item) => item.count > 0,
+                  )}
                   COOPERATIVE_COLORS={COOPERATIVE_COLORS}
                 />
               </div>
@@ -265,10 +277,18 @@ export default function CooperativesCharts({
                   सबैभन्दा बढी सहकारी भएको वडा
                 </h3>
                 <p className="text-3xl font-bold text-blue-600">
-                  वडा नं. {localizeNumber(statistics.wardWithMostCooperatives.toString(), "ne")}
+                  वडा नं.{" "}
+                  {localizeNumber(
+                    statistics.wardWithMostCooperatives.toString(),
+                    "ne",
+                  )}
                 </p>
                 <p className="text-sm mt-2">
-                  {localizeNumber(statistics.maximumCooperativesInAWard.toString(), "ne")} सहकारी संस्था
+                  {localizeNumber(
+                    statistics.maximumCooperativesInAWard.toString(),
+                    "ne",
+                  )}{" "}
+                  सहकारी संस्था
                 </p>
               </div>
             </CardContent>
@@ -282,8 +302,19 @@ export default function CooperativesCharts({
                   वडा १-९ सहकारी अनुपात
                 </h3>
                 <p className="text-3xl font-bold text-green-600">
-                  {localizeNumber(cooperativesByWard.filter(ward => ward.cooperativeCount > 0).length, "ne")}:
-                  {localizeNumber(cooperativesByWard.filter(ward => ward.cooperativeCount === 0).length, "ne")}
+                  {localizeNumber(
+                    cooperativesByWard.filter(
+                      (ward) => ward.cooperativeCount > 0,
+                    ).length,
+                    "ne",
+                  )}
+                  :
+                  {localizeNumber(
+                    cooperativesByWard.filter(
+                      (ward) => ward.cooperativeCount === 0,
+                    ).length,
+                    "ne",
+                  )}
                 </p>
                 <p className="text-sm mt-2">सक्रिय:निष्क्रिय वडा अनुपात</p>
               </div>
@@ -300,10 +331,12 @@ export default function CooperativesCharts({
                 <p className="text-3xl font-bold text-purple-600">
                   {localizeNumber(
                     (
-                      (statistics.maximumCooperativesInAWard / statistics.avgCooperativesPerWard).toFixed(1)
-                    ),
-                    "ne"
-                  )}x
+                      statistics.maximumCooperativesInAWard /
+                      statistics.avgCooperativesPerWard
+                    ).toFixed(1),
+                    "ne",
+                  )}
+                  x
                 </p>
                 <p className="text-sm mt-2">अधिकतम/औसत अनुपात</p>
               </div>
@@ -332,7 +365,9 @@ export default function CooperativesCharts({
             <div className="h-[400px]">
               <CooperativeTrendChart
                 data={trendData}
-                cooperativeTypes={cooperativeSummary.slice(0, 4).map(b => b.type)}
+                cooperativeTypes={cooperativeSummary
+                  .slice(0, 4)
+                  .map((b) => b.type)}
                 COOPERATIVE_TYPES={COOPERATIVE_TYPES}
                 COOPERATIVE_COLORS={COOPERATIVE_COLORS}
               />
@@ -348,17 +383,17 @@ export default function CooperativesCharts({
             </h4>
             <div className="prose prose-sm">
               <p>
-                पछिल्ला वर्षहरूमा खजुरा गाउँपालिकामा सहकारी संस्थाहरूको
+                पछिल्ला वर्षहरूमा परिवर्तन गाउँपालिकामा सहकारी संस्थाहरूको
                 संख्यामा क्रमिक वृद्धि भएको देखिन्छ। विशेषगरी{" "}
                 {cooperativeSummary[0]?.typeName || ""} र{" "}
-                {cooperativeSummary[1]?.typeName || ""} जस्ता सहकारी संस्थाहरूमा उल्लेखनीय
-                वृद्धि देखिएको छ।
+                {cooperativeSummary[1]?.typeName || ""} जस्ता सहकारी संस्थाहरूमा
+                उल्लेखनीय वृद्धि देखिएको छ।
               </p>
               <p className="mt-2">
-                यो प्रवृत्तिले स्थानीय समुदायको सहकारी प्रतिको बढ्दो
-                आकर्षण र पालिकाले लिएको सहकारी प्रवर्द्धन नीतिको सफलता दर्शाउँछ।
-                सहकारी क्षेत्रमा थप प्रविधि नवीनता र क्षमता विकास गरी
-                सहकारी क्षेत्रको योगदान थप बढाउन सकिने सम्भावना देखिन्छ।
+                यो प्रवृत्तिले स्थानीय समुदायको सहकारी प्रतिको बढ्दो आकर्षण र
+                पालिकाले लिएको सहकारी प्रवर्द्धन नीतिको सफलता दर्शाउँछ। सहकारी
+                क्षेत्रमा थप प्रविधि नवीनता र क्षमता विकास गरी सहकारी क्षेत्रको
+                योगदान थप बढाउन सकिने सम्भावना देखिन्छ।
               </p>
             </div>
           </CardContent>

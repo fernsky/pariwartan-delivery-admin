@@ -40,7 +40,7 @@ const COOPERATIVE_TYPES: Record<string, string> = cooperativeTypeOptions.reduce(
     ...acc,
     [option.value]: option.label,
   }),
-  {}
+  {},
 );
 
 // Define colors for cooperative types
@@ -75,7 +75,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const cooperativesData =
       await api.profile.economics.cooperatives.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalCooperatives = cooperativesData.length;
@@ -84,7 +84,7 @@ export async function generateMetadata(): Promise<Metadata> {
         acc[item.cooperativeType] = (acc[item.cooperativeType] || 0) + 1;
         return acc;
       },
-      {} as Record<string, number>
+      {} as Record<string, number>,
     );
 
     // Find most common cooperative type
@@ -107,7 +107,7 @@ export async function generateMetadata(): Promise<Metadata> {
         acc[item.wardNumber] = (acc[item.wardNumber] || 0) + 1;
         return acc;
       },
-      {}
+      {},
     );
 
     // Find ward with most cooperatives
@@ -122,13 +122,13 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // Create rich keywords with actual data
     const keywordsNP = [
-      "खजुरा गाउँपालिका सहकारी",
-      "खजुरा सहकारी संस्था",
+      "परिवर्तन गाउँपालिका सहकारी",
+      "परिवर्तन सहकारी संस्था",
       "पालिका स्तरीय सहकारी",
-      "खजुरा बचत तथा ऋण सहकारी",
-      `खजुरा ${COOPERATIVE_TYPES[mostCommonCooperativeType] || "सहकारी संस्था"}`,
+      "परिवर्तन बचत तथा ऋण सहकारी",
+      `परिवर्तन ${COOPERATIVE_TYPES[mostCommonCooperativeType] || "सहकारी संस्था"}`,
       `वडा ${localizeNumber(wardWithMostCooperatives.toString(), "ne")} सहकारी`,
-      `खजुरा ${localizeNumber(totalCooperatives.toString(), "ne")} सहकारी संस्था`,
+      `परिवर्तन ${localizeNumber(totalCooperatives.toString(), "ne")} सहकारी संस्था`,
       "महिला सहकारी संस्था",
     ];
 
@@ -144,7 +144,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data
-    const descriptionNP = `खजुरा गाउँपालिकामा संचालित ${localizeNumber(totalCooperatives.toString(), "ne")} सहकारी संस्थाहरूको विस्तृत विश्लेषण। सबैभन्दा बढी ${COOPERATIVE_TYPES[mostCommonCooperativeType] || ""} संस्थाहरू (${localizeNumber(mostCommonCooperativeTypePercentage.toFixed(1), "ne")}%) रहेका छन्। वडा नं ${localizeNumber(wardWithMostCooperatives.toString(), "ne")} मा सबैभन्दा बढी ${localizeNumber(wardMaxCount.toString(), "ne")} सहकारी संस्थाहरू क्रियाशील छन्। पालिका स्तरीय सहकारी संस्थाहरूको विस्तृत जानकारी।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकामा संचालित ${localizeNumber(totalCooperatives.toString(), "ne")} सहकारी संस्थाहरूको विस्तृत विश्लेषण। सबैभन्दा बढी ${COOPERATIVE_TYPES[mostCommonCooperativeType] || ""} संस्थाहरू (${localizeNumber(mostCommonCooperativeTypePercentage.toFixed(1), "ne")}%) रहेका छन्। वडा नं ${localizeNumber(wardWithMostCooperatives.toString(), "ne")} मा सबैभन्दा बढी ${localizeNumber(wardMaxCount.toString(), "ne")} सहकारी संस्थाहरू क्रियाशील छन्। पालिका स्तरीय सहकारी संस्थाहरूको विस्तृत जानकारी।`;
 
     const descriptionEN = `Detailed analysis of ${totalCooperatives} cooperative institutions operating in Khajura Rural Municipality. ${COOPERATIVE_TYPES_EN[mostCommonCooperativeType] || "Cooperatives"} are most common (${mostCommonCooperativeTypePercentage.toFixed(1)}%). Ward ${wardWithMostCooperatives} has the highest concentration with ${wardMaxCount} active cooperatives. Comprehensive information on municipality-wide cooperatives.`;
 
@@ -176,10 +176,8 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title:
-        "सहकारी संस्थाहरू | खजुरा गाउँपालिका डिजिटल प्रोफाइल",
-      description:
-        "पालिका स्तरीय सहकारी संस्थाहरूको विवरण र विश्लेषण।",
+      title: "सहकारी संस्थाहरू | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
+      description: "पालिका स्तरीय सहकारी संस्थाहरूको विवरण र विश्लेषण।",
     };
   }
 }
@@ -226,13 +224,15 @@ export default async function CooperativesPage() {
       acc[item.cooperativeType] = (acc[item.cooperativeType] || 0) + 1;
       return acc;
     },
-    {} as Record<string, number>
+    {} as Record<string, number>,
   );
 
   const totalCooperatives = cooperativesData.length;
 
   // Create cooperative summary
-  const cooperativeSummary: CooperativeSummaryType[] = Object.entries(cooperativeTypeCount)
+  const cooperativeSummary: CooperativeSummaryType[] = Object.entries(
+    cooperativeTypeCount,
+  )
     .map(([type, count]) => {
       return {
         type,
@@ -250,7 +250,7 @@ export default async function CooperativesPage() {
       acc[item.wardNumber] = (acc[item.wardNumber] || 0) + 1;
       return acc;
     },
-    {}
+    {},
   );
 
   // Organize cooperatives by ward
@@ -269,21 +269,30 @@ export default async function CooperativesPage() {
   };
 
   const cooperativesByWard: WardCooperativesType[] = [];
-  
+
   // Process all 9 wards (whether they have cooperatives or not)
   for (let ward = 1; ward <= 9; ward++) {
     const wardCooperatives = cooperativesData
       .filter((coop: { wardNumber: number }) => coop.wardNumber === ward)
-      .map((coop: { id: string; cooperativeName: string; cooperativeType: string; phoneNumber?: string; remarks?: string }) => ({
-        id: coop.id,
-        cooperativeName: coop.cooperativeName,
-        cooperativeType: coop.cooperativeType,
-        typeName: COOPERATIVE_TYPES[coop.cooperativeType] || coop.cooperativeType,
-        phoneNumber: coop.phoneNumber || "",
-        remarks: coop.remarks || "",
-        icon: COOPERATIVE_ICONS[coop.cooperativeType] || "🏢",
-      }));
-    
+      .map(
+        (coop: {
+          id: string;
+          cooperativeName: string;
+          cooperativeType: string;
+          phoneNumber?: string;
+          remarks?: string;
+        }) => ({
+          id: coop.id,
+          cooperativeName: coop.cooperativeName,
+          cooperativeType: coop.cooperativeType,
+          typeName:
+            COOPERATIVE_TYPES[coop.cooperativeType] || coop.cooperativeType,
+          phoneNumber: coop.phoneNumber || "",
+          remarks: coop.remarks || "",
+          icon: COOPERATIVE_ICONS[coop.cooperativeType] || "🏢",
+        }),
+      );
+
     cooperativesByWard.push({
       wardNumber: ward,
       cooperativeCount: wardCooperatives.length,
@@ -295,11 +304,14 @@ export default async function CooperativesPage() {
   cooperativesByWard.sort((a, b) => b.cooperativeCount - a.cooperativeCount);
 
   // Find popular cooperative types by ward
-  const popularCooperativeByWard = cooperativesByWard.map(ward => {
-    const cooperativeTypes = ward.cooperatives.reduce((acc: Record<string, number>, coop) => {
-      acc[coop.cooperativeType] = (acc[coop.cooperativeType] || 0) + 1;
-      return acc;
-    }, {});
+  const popularCooperativeByWard = cooperativesByWard.map((ward) => {
+    const cooperativeTypes = ward.cooperatives.reduce(
+      (acc: Record<string, number>, coop) => {
+        acc[coop.cooperativeType] = (acc[coop.cooperativeType] || 0) + 1;
+        return acc;
+      },
+      {},
+    );
 
     // Find most common cooperative type in this ward
     let mostCommonType = "";
@@ -326,13 +338,20 @@ export default async function CooperativesPage() {
     totalCooperatives,
     totalWards: Object.keys(wardDistribution).length,
     avgCooperativesPerWard: totalCooperatives / 9, // Khajura has 9 wards
-    mostPopularCooperativeType: cooperativeSummary.length > 0 ? cooperativeSummary[0].type : "",
-    mostPopularCooperativeTypeName: cooperativeSummary.length > 0 ? cooperativeSummary[0].typeName : "",
-    mostPopularCooperativeTypePercentage: cooperativeSummary.length > 0 ? cooperativeSummary[0].percentage : 0,
-    wardWithMostCooperatives: cooperativesByWard.length > 0 ? cooperativesByWard[0].wardNumber : 0,
-    maximumCooperativesInAWard: cooperativesByWard.length > 0 ? cooperativesByWard[0].cooperativeCount : 0,
-    provinceLevelCooperatives: cooperativesData.filter((coop: { remarks?: string }) => 
-      coop.remarks?.includes("प्रदेश स्तरीय")
+    mostPopularCooperativeType:
+      cooperativeSummary.length > 0 ? cooperativeSummary[0].type : "",
+    mostPopularCooperativeTypeName:
+      cooperativeSummary.length > 0 ? cooperativeSummary[0].typeName : "",
+    mostPopularCooperativeTypePercentage:
+      cooperativeSummary.length > 0 ? cooperativeSummary[0].percentage : 0,
+    wardWithMostCooperatives:
+      cooperativesByWard.length > 0 ? cooperativesByWard[0].wardNumber : 0,
+    maximumCooperativesInAWard:
+      cooperativesByWard.length > 0
+        ? cooperativesByWard[0].cooperativeCount
+        : 0,
+    provinceLevelCooperatives: cooperativesData.filter(
+      (coop: { remarks?: string }) => coop.remarks?.includes("प्रदेश स्तरीय"),
     ).length,
   };
 
@@ -355,7 +374,7 @@ export default async function CooperativesPage() {
               src="/images/cooperatives.svg"
               width={1200}
               height={400}
-              alt="सहकारी संस्थाहरू - खजुरा गाउँपालिका (Cooperative Institutions - Khajura Rural Municipality)"
+              alt="सहकारी संस्थाहरू - परिवर्तन गाउँपालिका (Cooperative Institutions - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -363,47 +382,59 @@ export default async function CooperativesPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा सहकारी संस्थाहरू
+              परिवर्तन गाउँपालिकामा सहकारी संस्थाहरू
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              सहकारी संस्थाहरू खजुरा गाउँपालिकाको आर्थिक विकासमा
-              महत्त्वपूर्ण भूमिका निर्वाह गरिरहेका छन्। बचत तथा ऋण, 
-              बहुउद्देश्यीय, कृषि, महिला, समुदायिक लगायतका विभिन्न प्रकारका 
-              सहकारी संस्थाहरू पालिका भरि क्रियाशील छन्।
+              सहकारी संस्थाहरू परिवर्तन गाउँपालिकाको आर्थिक विकासमा महत्त्वपूर्ण
+              भूमिका निर्वाह गरिरहेका छन्। बचत तथा ऋण, बहुउद्देश्यीय, कृषि,
+              महिला, समुदायिक लगायतका विभिन्न प्रकारका सहकारी संस्थाहरू पालिका
+              भरि क्रियाशील छन्।
             </p>
             <p>
-              यी सहकारी संस्थाहरूले सदस्यहरूको आर्थिक र सामाजिक उन्नति गर्न, 
-              व्यवसायिक प्रवर्द्धन गर्न र स्थानीय अर्थतन्त्रलाई सबलीकरण गर्न 
-              महत्त्वपूर्ण भूमिका खेलेका छन्। यस पृष्ठमा गाउँपालिकामा 
-              संचालित विभिन्न प्रकारका सहकारी संस्थाहरूको विस्तृत विवरण र 
-              विश्लेषण प्रस्तुत गरिएको छ।
+              यी सहकारी संस्थाहरूले सदस्यहरूको आर्थिक र सामाजिक उन्नति गर्न,
+              व्यवसायिक प्रवर्द्धन गर्न र स्थानीय अर्थतन्त्रलाई सबलीकरण गर्न
+              महत्त्वपूर्ण भूमिका खेलेका छन्। यस पृष्ठमा गाउँपालिकामा संचालित
+              विभिन्न प्रकारका सहकारी संस्थाहरूको विस्तृत विवरण र विश्लेषण
+              प्रस्तुत गरिएको छ।
             </p>
 
             <p>
-              खजुरा गाउँपालिकामा कुल {localizeNumber(totalCooperatives.toString(), "ne")}{" "}
-              सहकारी संस्थाहरू रहेका छन्। सबैभन्दा बढी{" "}
-              {cooperativeSummary[0]?.typeName || ""}
-              ({cooperativeSummary[0]?.icon || ""}) संस्थाहरू रहेका छन्, जसको संख्या{" "}
-              {localizeNumber(cooperativeSummary[0]?.count.toString() || "0", "ne")} (
+              परिवर्तन गाउँपालिकामा कुल{" "}
+              {localizeNumber(totalCooperatives.toString(), "ne")} सहकारी
+              संस्थाहरू रहेका छन्। सबैभन्दा बढी{" "}
+              {cooperativeSummary[0]?.typeName || ""}(
+              {cooperativeSummary[0]?.icon || ""}) संस्थाहरू रहेका छन्, जसको
+              संख्या{" "}
+              {localizeNumber(
+                cooperativeSummary[0]?.count.toString() || "0",
+                "ne",
+              )}{" "}
+              (
               {localizeNumber(
                 cooperativeSummary[0]?.percentage.toFixed(1) || "0",
-                "ne"
+                "ne",
               )}
               %) रहेको छ। यसमध्ये{" "}
-              {localizeNumber(statistics.provinceLevelCooperatives.toString(), "ne")} संस्थाहरू 
-              प्रदेश स्तरीय रहेका छन्।
+              {localizeNumber(
+                statistics.provinceLevelCooperatives.toString(),
+                "ne",
+              )}{" "}
+              संस्थाहरू प्रदेश स्तरीय रहेका छन्।
             </p>
 
-            <h2 id="cooperative-types-and-distribution" className="scroll-m-20 border-b pb-2">
+            <h2
+              id="cooperative-types-and-distribution"
+              className="scroll-m-20 border-b pb-2"
+            >
               सहकारीको प्रकार र वितरण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा विभिन्न प्रकारका सहकारी संस्थाहरू संचालनमा छन्।
-              मुख्य सहकारी प्रकार र तिनको वितरण निम्न अनुसार रहेको छ:
+              परिवर्तन गाउँपालिकामा विभिन्न प्रकारका सहकारी संस्थाहरू संचालनमा
+              छन्। मुख्य सहकारी प्रकार र तिनको वितरण निम्न अनुसार रहेको छ:
             </p>
 
             <ul>
@@ -412,8 +443,8 @@ export default async function CooperativesPage() {
                   <strong>
                     {cooperative.icon} {cooperative.typeName}
                   </strong>
-                  : {localizeNumber(cooperative.count.toString(), "ne")} संस्था (
-                  {localizeNumber(cooperative.percentage.toFixed(1), "ne")}%)
+                  : {localizeNumber(cooperative.count.toString(), "ne")} संस्था
+                  ({localizeNumber(cooperative.percentage.toFixed(1), "ne")}%)
                 </li>
               ))}
               {cooperativeSummary.length > 8 && (
@@ -426,7 +457,7 @@ export default async function CooperativesPage() {
                         .slice(0, 8)
                         .reduce((sum, item) => sum + item.count, 0)
                     ).toString(),
-                    "ne"
+                    "ne",
                   )}{" "}
                   संस्था
                 </li>
@@ -450,31 +481,38 @@ export default async function CooperativesPage() {
               वडागत वितरण
             </h2>
             <p>
-              खजुरा गाउँपालिकाका विभिन्न वडाहरूमा सहकारी संस्थाहरूको वितरण 
+              परिवर्तन गाउँपालिकाका विभिन्न वडाहरूमा सहकारी संस्थाहरूको वितरण
               असमान रहेको छ। वडा नं.{" "}
-              {localizeNumber(statistics.wardWithMostCooperatives.toString(), "ne")} मा
-              सबैभन्दा बढी{" "}
+              {localizeNumber(
+                statistics.wardWithMostCooperatives.toString(),
+                "ne",
+              )}{" "}
+              मा सबैभन्दा बढी{" "}
               {localizeNumber(
                 statistics.maximumCooperativesInAWard.toString(),
-                "ne"
+                "ne",
               )}{" "}
               सहकारी संस्थाहरू रहेका छन्, जहाँ मुख्यतया{" "}
               {popularCooperativeByWard.find(
-                (item) => item.wardNumber === statistics.wardWithMostCooperatives
+                (item) =>
+                  item.wardNumber === statistics.wardWithMostCooperatives,
               )?.mostCommonTypeName || ""}{" "}
               प्रकारका सहकारीहरू संचालित छन्।
             </p>
 
             <p>
               गाउँपालिकाको औसतमा प्रत्येक वडामा{" "}
-              {localizeNumber(statistics.avgCooperativesPerWard.toFixed(1), "ne")}{" "}
-              सहकारी संस्थाहरू क्रियाशील छन्। वडागत वितरण र तिनका प्रकारहरूको 
+              {localizeNumber(
+                statistics.avgCooperativesPerWard.toFixed(1),
+                "ne",
+              )}{" "}
+              सहकारी संस्थाहरू क्रियाशील छन्। वडागत वितरण र तिनका प्रकारहरूको
               विस्तृत विवरण तल प्रस्तुत गरिएको छ।
             </p>
           </div>
 
           {/* Ward-based cooperatives list component */}
-          <WardBasedCooperativesList 
+          <WardBasedCooperativesList
             cooperativesByWard={cooperativesByWard}
             COOPERATIVE_TYPES={COOPERATIVE_TYPES}
             COOPERATIVE_COLORS={COOPERATIVE_COLORS}
@@ -509,63 +547,63 @@ export default async function CooperativesPage() {
                   <li className="flex gap-2">
                     <span className="text-red-500">•</span>
                     <span>
-                      <strong>कमजोर व्यवस्थापन:</strong> केही सहकारी संस्थाहरूमा 
+                      <strong>कमजोर व्यवस्थापन:</strong> केही सहकारी संस्थाहरूमा
                       व्यवस्थापकीय क्षमताको कमी र अपर्याप्त सुशासन
                     </span>
                   </li>
                   <li className="flex gap-2">
                     <span className="text-red-500">•</span>
                     <span>
-                      <strong>पूँजीको अभाव:</strong> सहकारी संस्थाहरूमा 
-                      पर्याप्त पूँजीको अभाव र लगानी क्षमता कम हुनु
+                      <strong>पूँजीको अभाव:</strong> सहकारी संस्थाहरूमा पर्याप्त
+                      पूँजीको अभाव र लगानी क्षमता कम हुनु
                     </span>
                   </li>
                   <li className="flex gap-2">
                     <span className="text-red-500">•</span>
                     <span>
-                      <strong>प्रविधिको प्रयोग:</strong> आधुनिक प्रविधिको 
+                      <strong>प्रविधिको प्रयोग:</strong> आधुनिक प्रविधिको
                       प्रयोगमा न्यूनता र डिजिटल साक्षरताको कमी
                     </span>
                   </li>
                   <li className="flex gap-2">
                     <span className="text-red-500">•</span>
                     <span>
-                      <strong>नियमन र अनुगमन:</strong> सहकारी संस्थाहरूको 
+                      <strong>नियमन र अनुगमन:</strong> सहकारी संस्थाहरूको
                       प्रभावकारी नियमन र अनुगमनको कमी
                     </span>
                   </li>
                 </ul>
               </div>
-              
+
               <div>
                 <h3 className="text-xl font-semibold">अवसरहरू</h3>
                 <ul className="space-y-2 mt-4">
                   <li className="flex gap-2">
                     <span className="text-green-500">•</span>
                     <span>
-                      <strong>डिजिटल सेवा विस्तार:</strong> प्रविधिमा आधारित 
+                      <strong>डिजिटल सेवा विस्तार:</strong> प्रविधिमा आधारित
                       सहकारी सेवाहरूको विस्तार र डिजिटल कारोबार प्रवर्द्धन
                     </span>
                   </li>
                   <li className="flex gap-2">
                     <span className="text-green-500">•</span>
                     <span>
-                      <strong>उत्पादन क्षेत्रमा लगानी:</strong> कृषि र 
+                      <strong>उत्पादन क्षेत्रमा लगानी:</strong> कृषि र
                       उत्पादनमूलक क्षेत्रमा सहकारीको लगानी विस्तार
                     </span>
                   </li>
                   <li className="flex gap-2">
                     <span className="text-green-500">•</span>
                     <span>
-                      <strong>क्षमता विकास:</strong> सहकारी संस्थाका 
-                      पदाधिकारी र कर्मचारीहरूको क्षमता विकास
+                      <strong>क्षमता विकास:</strong> सहकारी संस्थाका पदाधिकारी र
+                      कर्मचारीहरूको क्षमता विकास
                     </span>
                   </li>
                   <li className="flex gap-2">
                     <span className="text-green-500">•</span>
                     <span>
-                      <strong>एकीकृत सञ्जाल:</strong> सहकारीहरू बीचको 
-                      सहकार्य र एकीकृत सञ्जाल निर्माण
+                      <strong>एकीकृत सञ्जाल:</strong> सहकारीहरू बीचको सहकार्य र
+                      एकीकृत सञ्जाल निर्माण
                     </span>
                   </li>
                 </ul>
@@ -580,7 +618,7 @@ export default async function CooperativesPage() {
             </h2>
 
             <p>
-              खजुरा गाउँपालिकामा सहकारी संस्थाहरूको अवस्थाको विश्लेषणबाट
+              परिवर्तन गाउँपालिकामा सहकारी संस्थाहरूको अवस्थाको विश्लेषणबाट
               निम्न निष्कर्ष र सिफारिसहरू प्रस्तुत गरिएका छन्:
             </p>
 
@@ -588,48 +626,48 @@ export default async function CooperativesPage() {
               <div className="flex">
                 <span className="font-bold mr-2">१.</span>
                 <div>
-                  <strong>क्षमता अभिवृद्धि:</strong> सहकारी संस्थाहरूको 
-                  व्यवस्थापकीय र प्राविधिक क्षमता अभिवृद्धिका लागि नियमित 
-                  तालिम र प्राविधिक सहयोगको व्यवस्था गर्नुपर्ने।
+                  <strong>क्षमता अभिवृद्धि:</strong> सहकारी संस्थाहरूको
+                  व्यवस्थापकीय र प्राविधिक क्षमता अभिवृद्धिका लागि नियमित तालिम
+                  र प्राविधिक सहयोगको व्यवस्था गर्नुपर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">२.</span>
                 <div>
-                  <strong>प्रविधि प्रयोग:</strong> सहकारी संस्थाहरूमा आधुनिक 
-                  प्रविधिको प्रयोग र डिजिटल सेवाको विस्तार गरी सेवा प्रभावकारिता 
+                  <strong>प्रविधि प्रयोग:</strong> सहकारी संस्थाहरूमा आधुनिक
+                  प्रविधिको प्रयोग र डिजिटल सेवाको विस्तार गरी सेवा प्रभावकारिता
                   बढाउनुपर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">३.</span>
                 <div>
-                  <strong>उत्पादनशील लगानी:</strong> सहकारी संस्थाहरूलाई 
-                  उत्पादनशील क्षेत्रमा लगानी गर्न प्रोत्साहन गर्ने नीति तथा 
+                  <strong>उत्पादनशील लगानी:</strong> सहकारी संस्थाहरूलाई
+                  उत्पादनशील क्षेत्रमा लगानी गर्न प्रोत्साहन गर्ने नीति तथा
                   कार्यक्रमहरू ल्याउनुपर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">४.</span>
                 <div>
-                  <strong>समन्वय र एकीकरण:</strong> समान प्रकृतिका सहकारीहरू 
-                  बीच समन्वय र आवश्यकता अनुसार एकीकरणलाई प्रोत्साहन गर्नुपर्ने।
+                  <strong>समन्वय र एकीकरण:</strong> समान प्रकृतिका सहकारीहरू बीच
+                  समन्वय र आवश्यकता अनुसार एकीकरणलाई प्रोत्साहन गर्नुपर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">५.</span>
                 <div>
-                  <strong>वडागत वितरण सन्तुलन:</strong> सहकारी संस्थाहरू कम 
-                  भएका वडाहरूमा सहकारी प्रवर्द्धन कार्यक्रमहरू संचालन गर्नुपर्ने।
+                  <strong>वडागत वितरण सन्तुलन:</strong> सहकारी संस्थाहरू कम भएका
+                  वडाहरूमा सहकारी प्रवर्द्धन कार्यक्रमहरू संचालन गर्नुपर्ने।
                 </div>
               </div>
             </div>
 
             <p className="mt-6">
-              खजुरा गाउँपालिकामा सहकारी संस्थाहरूको प्रभावकारी परिचालनले 
-              स्थानीय अर्थतन्त्रलाई बलियो बनाउन, वित्तीय सेवाको पहुँच बढाउन र 
-              स्थानीय उद्यमशीलता प्रवर्द्धन गर्न महत्त्वपूर्ण योगदान पुर्‍याउने 
-              निश्चित छ। यसका लागि स्थानीय सरकार, नियामक निकाय र सहकारी 
+              परिवर्तन गाउँपालिकामा सहकारी संस्थाहरूको प्रभावकारी परिचालनले
+              स्थानीय अर्थतन्त्रलाई बलियो बनाउन, वित्तीय सेवाको पहुँच बढाउन र
+              स्थानीय उद्यमशीलता प्रवर्द्धन गर्न महत्त्वपूर्ण योगदान पुर्‍याउने
+              निश्चित छ। यसका लागि स्थानीय सरकार, नियामक निकाय र सहकारी
               संस्थाहरू बीचको समन्वय र सहकार्यलाई थप प्रभावकारी बनाउन आवश्यक छ।
             </p>
           </div>

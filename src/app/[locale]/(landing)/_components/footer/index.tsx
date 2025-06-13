@@ -18,10 +18,7 @@ interface FooterProps {
 }
 
 const Footer: React.FC<FooterProps> = ({ lng }) => {
-  const resources = [
-    { label: "प्रोफाइल", icon: FileText, href: "/profile" },
-    
-  ];
+  const resources = [{ label: "प्रोफाइल", icon: FileText, href: "/profile" }];
 
   const socials = [
     {
@@ -48,9 +45,9 @@ const Footer: React.FC<FooterProps> = ({ lng }) => {
         <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* About Column */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900">खजुरा</h3>
+            <h3 className="text-lg font-semibold text-gray-900">परिवर्तन</h3>
             <p className="text-sm text-gray-600 leading-relaxed">
-              हामी आफैँ बनाउँ हाम्रो खजुरा, आत्मनिर्भर र समृद्ध खजुरा
+              हामी आफैँ बनाउँ हाम्रो परिवर्तन, आत्मनिर्भर र समृद्ध परिवर्तन
             </p>
             <div className="pt-2">
               <Link
@@ -84,7 +81,7 @@ const Footer: React.FC<FooterProps> = ({ lng }) => {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-gray-900">सम्पर्क</h3>
             <div className="space-y-3 text-sm text-gray-600">
-              <p>खजुरा, बाँके</p>
+              <p>परिवर्तन, बाँके</p>
               <p>नेपाल</p>
             </div>
           </div>
@@ -115,8 +112,8 @@ const Footer: React.FC<FooterProps> = ({ lng }) => {
             <div className="flex items-center gap-2">
               <Copyright className="w-4 h-4" />
               <span>
-                {localizeNumber(new Date().getFullYear(), "ne")} खजुरा गाउँपालिका । सर्वाधिकार
-                सुरक्षित
+                {localizeNumber(new Date().getFullYear(), "ne")} परिवर्तन
+                गाउँपालिका । सर्वाधिकार सुरक्षित
               </span>
             </div>
             <div className="flex items-center gap-6">

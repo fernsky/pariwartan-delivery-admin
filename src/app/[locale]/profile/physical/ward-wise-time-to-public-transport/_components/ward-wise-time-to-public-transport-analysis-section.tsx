@@ -17,11 +17,14 @@ interface WardWiseTimeToPublicTransportAnalysisSectionProps {
     wardNumber: number;
     percentage: number;
   };
-  TIME_CATEGORIES: Record<string, {
-    name: string;
-    nameEn: string;
-    color: string;
-  }>;
+  TIME_CATEGORIES: Record<
+    string,
+    {
+      name: string;
+      nameEn: string;
+      color: string;
+    }
+  >;
   accessibilityIndex: number;
 }
 
@@ -36,23 +39,33 @@ export default function WardWiseTimeToPublicTransportAnalysisSection({
   accessibilityIndex,
 }: WardWiseTimeToPublicTransportAnalysisSectionProps) {
   // Determine accessibility level based on index score
-  const accessibilityLevel = 
-    accessibilityIndex >= 75 ? "उत्तम" :
-    accessibilityIndex >= 60 ? "राम्रो" :
-    accessibilityIndex >= 40 ? "मध्यम" :
-    "निम्न";
+  const accessibilityLevel =
+    accessibilityIndex >= 75
+      ? "उत्तम"
+      : accessibilityIndex >= 60
+        ? "राम्रो"
+        : accessibilityIndex >= 40
+          ? "मध्यम"
+          : "निम्न";
 
   // Calculate how many households have quick access (under 30 min)
-  const quickAccessTotal = timeCategoryTotals.UNDER_15_MIN + timeCategoryTotals.UNDER_30_MIN;
-  const quickAccessPercentage = ((quickAccessTotal / totalHouseholds) * 100).toFixed(2);
+  const quickAccessTotal =
+    timeCategoryTotals.UNDER_15_MIN + timeCategoryTotals.UNDER_30_MIN;
+  const quickAccessPercentage = (
+    (quickAccessTotal / totalHouseholds) *
+    100
+  ).toFixed(2);
 
   // Calculate how many households have poor access (1 hour or more)
   const poorAccessTotal = timeCategoryTotals["1_HOUR_OR_MORE"];
-  const poorAccessPercentage = ((poorAccessTotal / totalHouseholds) * 100).toFixed(2);
+  const poorAccessPercentage = (
+    (poorAccessTotal / totalHouseholds) *
+    100
+  ).toFixed(2);
 
   // SEO attributes to include directly in JSX
   const seoAttributes = {
-    "data-municipality": "Khajura Rural Municipality / खजुरा गाउँपालिका",
+    "data-municipality": "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
     "data-total-households": totalHouseholds.toString(),
     "data-quick-access-rate": quickAccessPercentage,
     "data-best-access-ward": bestAccessWard?.wardNumber.toString() || "",
@@ -62,17 +75,18 @@ export default function WardWiseTimeToPublicTransportAnalysisSection({
 
   return (
     <>
-      <div 
+      <div
         className="mt-6 flex flex-wrap gap-4 justify-center"
         {...seoAttributes}
       >
         {Object.keys(TIME_CATEGORIES).map((categoryKey) => {
-          const category = TIME_CATEGORIES[categoryKey as keyof typeof TIME_CATEGORIES];
+          const category =
+            TIME_CATEGORIES[categoryKey as keyof typeof TIME_CATEGORIES];
           const percentage = timeCategoryPercentages[categoryKey];
           const total = timeCategoryTotals[categoryKey];
-          
+
           return (
-            <div 
+            <div
               key={categoryKey}
               className="bg-muted/50 rounded-lg p-4 text-center min-w-[180px] relative overflow-hidden"
             >
@@ -88,9 +102,7 @@ export default function WardWiseTimeToPublicTransportAnalysisSection({
               <div className="relative z-10">
                 <h3 className="text-lg font-medium mb-2">
                   {category.name}
-                  <span className="sr-only">
-                    {category.nameEn}
-                  </span>
+                  <span className="sr-only">{category.nameEn}</span>
                 </h3>
                 <p className="text-2xl font-bold">
                   {localizeNumber(percentage.toFixed(2), "ne")}%
@@ -125,7 +137,8 @@ export default function WardWiseTimeToPublicTransportAnalysisSection({
             <h4 className="font-medium mb-2">
               उत्तम यातायात पहुँच भएको वडा
               <span className="sr-only">
-                Ward with Best Public Transport Access in Khajura Rural Municipality
+                Ward with Best Public Transport Access in Khajura Rural
+                Municipality
               </span>
             </h4>
             {bestAccessWard && (
@@ -138,10 +151,13 @@ export default function WardWiseTimeToPublicTransportAnalysisSection({
                 ></div>
                 <div>
                   <p className="text-2xl font-bold">
-                    वडा {localizeNumber(bestAccessWard.wardNumber.toString(), "ne")}
+                    वडा{" "}
+                    {localizeNumber(bestAccessWard.wardNumber.toString(), "ne")}
                   </p>
                   <p className="text-sm text-muted-foreground mt-1">
-                    छिटो पहुँच दर: {localizeNumber(bestAccessWard.percentage.toFixed(2), "ne")}%
+                    छिटो पहुँच दर:{" "}
+                    {localizeNumber(bestAccessWard.percentage.toFixed(2), "ne")}
+                    %
                     <span className="sr-only">
                       {bestAccessWard.percentage.toFixed(2)}% quick access rate
                     </span>
@@ -154,10 +170,21 @@ export default function WardWiseTimeToPublicTransportAnalysisSection({
               <h5 className="text-sm font-medium">विशेषताहरू</h5>
               <div className="mt-2 space-y-2">
                 <p className="text-sm">
-                  यस वडामा अधिकांश घरधुरीले छिटो सार्वजनिक यातायात सेवा पाउने सुविधा रहेको छ, जुन पालिकाको औसतभन्दा {localizeNumber((bestAccessWard.percentage - parseFloat(quickAccessPercentage)).toFixed(2), "ne")}% ले उच्च छ।
+                  यस वडामा अधिकांश घरधुरीले छिटो सार्वजनिक यातायात सेवा पाउने
+                  सुविधा रहेको छ, जुन पालिकाको औसतभन्दा{" "}
+                  {localizeNumber(
+                    (
+                      bestAccessWard.percentage -
+                      parseFloat(quickAccessPercentage)
+                    ).toFixed(2),
+                    "ne",
+                  )}
+                  % ले उच्च छ।
                 </p>
                 <p className="text-sm">
-                  यसले यस वडामा सडक संजाल र यातायात सेवाको उच्च विकास भएको संकेत गर्दछ, जसले स्थानीय जनताको गतिशीलता र आर्थिक अवसरहरूमा पहुँच बढाउँछ।
+                  यसले यस वडामा सडक संजाल र यातायात सेवाको उच्च विकास भएको संकेत
+                  गर्दछ, जसले स्थानीय जनताको गतिशीलता र आर्थिक अवसरहरूमा पहुँच
+                  बढाउँछ।
                 </p>
               </div>
             </div>
@@ -171,7 +198,9 @@ export default function WardWiseTimeToPublicTransportAnalysisSection({
           >
             <h4 className="font-medium mb-2">
               कमजोर यातायात पहुँच भएको वडा
-              <span className="sr-only">Ward with Poor Public Transport Access in Khajura</span>
+              <span className="sr-only">
+                Ward with Poor Public Transport Access in Khajura
+              </span>
             </h4>
             {worstAccessWard && (
               <div className="flex items-center gap-3">
@@ -183,10 +212,19 @@ export default function WardWiseTimeToPublicTransportAnalysisSection({
                 ></div>
                 <div>
                   <p className="text-2xl font-bold">
-                    वडा {localizeNumber(worstAccessWard.wardNumber.toString(), "ne")}
+                    वडा{" "}
+                    {localizeNumber(
+                      worstAccessWard.wardNumber.toString(),
+                      "ne",
+                    )}
                   </p>
                   <p className="text-sm text-muted-foreground mt-1">
-                    छिटो पहुँच दर: {localizeNumber(worstAccessWard.percentage.toFixed(2), "ne")}%
+                    छिटो पहुँच दर:{" "}
+                    {localizeNumber(
+                      worstAccessWard.percentage.toFixed(2),
+                      "ne",
+                    )}
+                    %
                     <span className="sr-only">
                       {worstAccessWard.percentage.toFixed(2)}% quick access rate
                     </span>
@@ -199,7 +237,10 @@ export default function WardWiseTimeToPublicTransportAnalysisSection({
               <h5 className="text-sm font-medium">सुधार आवश्यक</h5>
               <div className="mt-2 p-3 bg-red-50 rounded-lg border border-red-100">
                 <p className="text-sm">
-                  यस वडामा सार्वजनिक यातायात पहुँचको स्थिति कमजोर रहेको देखिन्छ। अधिकांश घरधुरीहरूले सार्वजनिक यातायात सेवा लिन धेरै समय लगाउनु पर्ने अवस्था छ। भौगोलिक विकटता र सडक पूर्वाधारको कमीका कारण यस वडामा यातायात सेवाको विस्तार र सुधार आवश्यक छ।
+                  यस वडामा सार्वजनिक यातायात पहुँचको स्थिति कमजोर रहेको देखिन्छ।
+                  अधिकांश घरधुरीहरूले सार्वजनिक यातायात सेवा लिन धेरै समय लगाउनु
+                  पर्ने अवस्था छ। भौगोलिक विकटता र सडक पूर्वाधारको कमीका कारण यस
+                  वडामा यातायात सेवाको विस्तार र सुधार आवश्यक छ।
                 </p>
               </div>
             </div>
@@ -212,23 +253,31 @@ export default function WardWiseTimeToPublicTransportAnalysisSection({
             <div className="text-center mb-4">
               <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-r from-blue-100 to-purple-50 border-4 border-blue-200">
                 <span className="text-2xl font-bold text-blue-600">
-                  {localizeNumber((accessibilityIndex).toFixed(1), "ne")}
+                  {localizeNumber(accessibilityIndex.toFixed(1), "ne")}
                 </span>
               </div>
-              <p className="mt-2 text-sm font-medium">{accessibilityLevel} स्तर</p>
+              <p className="mt-2 text-sm font-medium">
+                {accessibilityLevel} स्तर
+              </p>
             </div>
 
             <div className="space-y-3 text-sm">
               <p className="flex gap-2">
                 <span className="text-blue-500">•</span>
                 <span>
-                  <strong>सूचकाङ्क विवरण:</strong> यातायात पहुँच सूचकाङ्क विभिन्न समय श्रेणीहरूको भारित औसतमा आधारित छ, जसमा छिटो पहुँचलाई बढी भार दिइएको छ।
+                  <strong>सूचकाङ्क विवरण:</strong> यातायात पहुँच सूचकाङ्क
+                  विभिन्न समय श्रेणीहरूको भारित औसतमा आधारित छ, जसमा छिटो
+                  पहुँचलाई बढी भार दिइएको छ।
                 </span>
               </p>
               <p className="flex gap-2">
                 <span className="text-blue-500">•</span>
                 <span>
-                  <strong>व्याख्या:</strong> {localizeNumber((accessibilityIndex).toFixed(1), "ne")} अंकले {accessibilityLevel} यातायात पहुँच दर्शाउँछ। यसमा सुधारका लागि दूरदराजका क्षेत्रहरूमा सार्वजनिक यातायात सेवा विस्तार गर्नुपर्ने देखिन्छ।
+                  <strong>व्याख्या:</strong>{" "}
+                  {localizeNumber(accessibilityIndex.toFixed(1), "ne")} अंकले{" "}
+                  {accessibilityLevel} यातायात पहुँच दर्शाउँछ। यसमा सुधारका लागि
+                  दूरदराजका क्षेत्रहरूमा सार्वजनिक यातायात सेवा विस्तार
+                  गर्नुपर्ने देखिन्छ।
                 </span>
               </p>
             </div>
@@ -238,19 +287,27 @@ export default function WardWiseTimeToPublicTransportAnalysisSection({
             <h4 className="font-medium mb-4">पहुँच विश्लेषण</h4>
 
             <div>
-              <h5 className="text-sm font-medium">छिटो पहुँच (३० मिनेटभित्र)</h5>
+              <h5 className="text-sm font-medium">
+                छिटो पहुँच (३० मिनेटभित्र)
+              </h5>
               <div className="mt-2 space-y-3">
                 <div>
                   <div className="flex justify-between text-sm">
                     <span>
-                      <span 
-                        className="inline-block w-2 h-2 rounded-full mr-2" 
-                        style={{ backgroundColor: TIME_CATEGORIES.UNDER_15_MIN.color }}
+                      <span
+                        className="inline-block w-2 h-2 rounded-full mr-2"
+                        style={{
+                          backgroundColor: TIME_CATEGORIES.UNDER_15_MIN.color,
+                        }}
                       ></span>
                       {TIME_CATEGORIES.UNDER_15_MIN.name}
                     </span>
                     <span className="font-medium">
-                      {localizeNumber(timeCategoryPercentages.UNDER_15_MIN.toFixed(2), "ne")}%
+                      {localizeNumber(
+                        timeCategoryPercentages.UNDER_15_MIN.toFixed(2),
+                        "ne",
+                      )}
+                      %
                     </span>
                   </div>
                   <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -263,18 +320,24 @@ export default function WardWiseTimeToPublicTransportAnalysisSection({
                     ></div>
                   </div>
                 </div>
-                
+
                 <div>
                   <div className="flex justify-between text-sm">
                     <span>
-                      <span 
-                        className="inline-block w-2 h-2 rounded-full mr-2" 
-                        style={{ backgroundColor: TIME_CATEGORIES.UNDER_30_MIN.color }}
+                      <span
+                        className="inline-block w-2 h-2 rounded-full mr-2"
+                        style={{
+                          backgroundColor: TIME_CATEGORIES.UNDER_30_MIN.color,
+                        }}
                       ></span>
                       {TIME_CATEGORIES.UNDER_30_MIN.name}
                     </span>
                     <span className="font-medium">
-                      {localizeNumber(timeCategoryPercentages.UNDER_30_MIN.toFixed(2), "ne")}%
+                      {localizeNumber(
+                        timeCategoryPercentages.UNDER_30_MIN.toFixed(2),
+                        "ne",
+                      )}
+                      %
                     </span>
                   </div>
                   <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -287,22 +350,22 @@ export default function WardWiseTimeToPublicTransportAnalysisSection({
                     ></div>
                   </div>
                 </div>
-                
+
                 <div className="pt-2 mt-2 border-t">
                   <div className="flex justify-between text-sm font-medium">
                     <span>
-                      <span 
-                        className="inline-block w-2 h-2 rounded-full mr-2" 
+                      <span
+                        className="inline-block w-2 h-2 rounded-full mr-2"
                         style={{ backgroundColor: "#34A853" }}
                       ></span>
                       छिटो पहुँचको जम्मा
                     </span>
-                    <span>
-                      {localizeNumber(quickAccessPercentage, "ne")}%
-                    </span>
+                    <span>{localizeNumber(quickAccessPercentage, "ne")}%</span>
                   </div>
                   <p className="text-sm mt-2 text-muted-foreground">
-                    कुल {localizeNumber(quickAccessTotal.toLocaleString(), "ne")} घरधुरीले ३० मिनेटभित्र सार्वजनिक यातायात पुग्न सक्छन्
+                    कुल{" "}
+                    {localizeNumber(quickAccessTotal.toLocaleString(), "ne")}{" "}
+                    घरधुरीले ३० मिनेटभित्र सार्वजनिक यातायात पुग्न सक्छन्
                   </p>
                 </div>
               </div>

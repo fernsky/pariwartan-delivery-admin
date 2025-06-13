@@ -38,19 +38,23 @@ export default function HouseOwnershipSEO({
 
     // Find most common ownership type
     const mostCommonType = overallSummary.length > 0 ? overallSummary[0] : null;
-    const mostCommonTypeEN = mostCommonType ? (OWNERSHIP_TYPE_NAMES_EN[mostCommonType.ownershipType] || mostCommonType.ownershipType) : "";
-    const mostCommonTypePercentage = mostCommonType && totalHouseholds > 0 
-      ? ((mostCommonType.households / totalHouseholds) * 100).toFixed(2)
-      : "0";
+    const mostCommonTypeEN = mostCommonType
+      ? OWNERSHIP_TYPE_NAMES_EN[mostCommonType.ownershipType] ||
+        mostCommonType.ownershipType
+      : "";
+    const mostCommonTypePercentage =
+      mostCommonType && totalHouseholds > 0
+        ? ((mostCommonType.households / totalHouseholds) * 100).toFixed(2)
+        : "0";
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "House Ownership Types in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "House Ownership Types in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `House ownership data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. The most common type is ${mostCommonTypeEN} with ${mostCommonType?.households.toLocaleString()} households (${mostCommonTypePercentage}%).`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "House ownership",
         "Ownership distribution",
         "Ward-wise ownership data",
@@ -59,7 +63,9 @@ export default function HouseOwnershipSEO({
         ...Object.values(OWNERSHIP_TYPE_NAMES_EN).map(
           (name) => `${name} households statistics`,
         ),
-        ...Object.values(OWNERSHIP_TYPE_NAMES).map((name) => `${name} घरधुरी तथ्याङ्क`),
+        ...Object.values(OWNERSHIP_TYPE_NAMES).map(
+          (name) => `${name} घरधुरी तथ्याङ्क`,
+        ),
       ],
       url: "https://digital.khajuramun.gov.np/profile/economics/ward-wise-house-ownership",
       creator: {
@@ -89,7 +95,7 @@ export default function HouseOwnershipSEO({
           name: "Total Households",
           unitText: "households",
           value: totalHouseholds,
-        }
+        },
       ],
       observation: ownershipTypeStats,
     };

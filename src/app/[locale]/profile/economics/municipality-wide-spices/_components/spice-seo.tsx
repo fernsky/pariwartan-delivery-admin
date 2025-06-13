@@ -63,7 +63,7 @@ export default function SpiceSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Spice Types in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Spice Types in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Spice production and sales statistics of Khajura Rural Municipality with a total production of ${totalProduction.toFixed(
         2,
       )} tonnes and sales of ${totalSales.toFixed(2)} tonnes (${(
@@ -76,7 +76,7 @@ export default function SpiceSEO({
       )} tonnes (${mostProducedPercentage}%). Self-consumption represents ${selfConsumptionPercentage}% of total production. Total revenue from spice sales is NPR ${totalRevenue.toLocaleString()}.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Spice production",
         "Spice sales",
         "Garlic production",

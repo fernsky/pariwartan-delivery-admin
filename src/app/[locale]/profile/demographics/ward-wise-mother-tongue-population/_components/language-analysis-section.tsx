@@ -76,7 +76,7 @@ export default function LanguageAnalysisSection({
     if (document && document.body) {
       document.body.setAttribute(
         "data-municipality",
-        "Khajura Rural Municipality / खजुरा गाउँपालिका",
+        "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
       );
       document.body.setAttribute(
         "data-total-population",

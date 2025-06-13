@@ -3,12 +3,12 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "@/server/api/trpc";
-import { wardAgeWisePopulation } from "@/server/db/schema/profile/demographics/ward-age-wise-population";
+import { ageWisePopulation } from "@/server/db/schema/profile/demographics/ward-age-wise-population";
 import { eq, and, desc, sql } from "drizzle-orm";
 import {
-  wardAgeWisePopulationSchema,
-  wardAgeWisePopulationFilterSchema,
-  updateWardAgeWisePopulationSchema,
+  ageWisePopulationSchema,
+  ageWisePopulationFilterSchema,
+  updateAgeWisePopulationSchema,
   AgeGroup,
   Gender,
 } from "./ward-age-wise-population.schema";
@@ -16,45 +16,40 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 
-// Get all ward age-wise population data with optional filtering
-export const getAllWardAgeWisePopulation = publicProcedure
-  .input(wardAgeWisePopulationFilterSchema.optional())
+// Get all age-wise population data with optional filtering
+export const getAllAgeWisePopulation = publicProcedure
+  .input(ageWisePopulationFilterSchema.optional())
   .query(async ({ ctx, input }) => {
     try {
       // Set UTF-8 encoding explicitly before running query
       await ctx.db.execute(sql`SET client_encoding = 'UTF8'`);
 
       // Build query with conditions
-      const baseQuery = ctx.db.select().from(wardAgeWisePopulation);
+      const baseQuery = ctx.db.select().from(ageWisePopulation);
 
       let conditions = [];
 
-      if (input?.wardNumber) {
-        conditions.push(eq(wardAgeWisePopulation.wardNumber, input.wardNumber));
-      }
-
       if (input?.ageGroup) {
-        conditions.push(eq(wardAgeWisePopulation.ageGroup, input.ageGroup));
+        conditions.push(eq(ageWisePopulation.ageGroup, input.ageGroup));
       }
 
       if (input?.gender) {
-        conditions.push(eq(wardAgeWisePopulation.gender, input.gender));
+        conditions.push(eq(ageWisePopulation.gender, input.gender));
       }
 
       const queryWithFilters = conditions.length
         ? baseQuery.where(and(...conditions))
         : baseQuery;
 
-      // Sort by ward number, age group, and gender
+      // Sort by age group and gender
       const data = await queryWithFilters.orderBy(
-        wardAgeWisePopulation.wardNumber,
-        wardAgeWisePopulation.ageGroup,
-        wardAgeWisePopulation.gender,
+        ageWisePopulation.ageGroup,
+        ageWisePopulation.gender,
       );
 
       return data;
     } catch (error) {
-      console.error("Error fetching ward age-wise population data:", error);
+      console.error("Error fetching age-wise population data:", error);
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Failed to retrieve data",
@@ -62,40 +57,26 @@ export const getAllWardAgeWisePopulation = publicProcedure
     }
   });
 
-// Get data for a specific ward
-export const getWardAgeWisePopulationByWard = publicProcedure
-  .input(z.object({ wardNumber: z.number().int().min(1) }))
-  .query(async ({ ctx, input }) => {
-    const data = await ctx.db
-      .select()
-      .from(wardAgeWisePopulation)
-      .where(eq(wardAgeWisePopulation.wardNumber, input.wardNumber))
-      .orderBy(wardAgeWisePopulation.ageGroup, wardAgeWisePopulation.gender);
-
-    return data;
-  });
-
-// Create a new ward age-wise population entry
-export const createWardAgeWisePopulation = protectedProcedure
-  .input(wardAgeWisePopulationSchema)
+// Create a new age-wise population entry
+export const createAgeWisePopulation = protectedProcedure
+  .input(ageWisePopulationSchema)
   .mutation(async ({ ctx, input }) => {
     // Check if user has appropriate permissions
     if (ctx.user.role !== "superadmin") {
       throw new TRPCError({
         code: "UNAUTHORIZED",
-        message: "Only administrators can create ward age-wise population data",
+        message: "Only administrators can create age-wise population data",
       });
     }
 
-    // Check if entry already exists for this ward, age group, and gender
+    // Check if entry already exists for this age group and gender
     const existing = await ctx.db
-      .select({ id: wardAgeWisePopulation.id })
-      .from(wardAgeWisePopulation)
+      .select({ id: ageWisePopulation.id })
+      .from(ageWisePopulation)
       .where(
         and(
-          eq(wardAgeWisePopulation.wardNumber, input.wardNumber),
-          eq(wardAgeWisePopulation.ageGroup, input.ageGroup as AgeGroup),
-          eq(wardAgeWisePopulation.gender, input.gender as Gender),
+          eq(ageWisePopulation.ageGroup, input.ageGroup as AgeGroup),
+          eq(ageWisePopulation.gender, input.gender as Gender),
         ),
       )
       .limit(1);
@@ -103,14 +84,13 @@ export const createWardAgeWisePopulation = protectedProcedure
     if (existing.length > 0) {
       throw new TRPCError({
         code: "CONFLICT",
-        message: `Data for Ward ${input.wardNumber}, age group ${input.ageGroup}, and gender ${input.gender} already exists`,
+        message: `Data for age group ${input.ageGroup} and gender ${input.gender} already exists`,
       });
     }
 
     // Create new record
-    await ctx.db.insert(wardAgeWisePopulation).values({
+    await ctx.db.insert(ageWisePopulation).values({
       id: input.id || uuidv4(),
-      wardNumber: input.wardNumber,
       ageGroup: input.ageGroup as AgeGroup,
       gender: input.gender as Gender,
       population: input.population,
@@ -119,15 +99,15 @@ export const createWardAgeWisePopulation = protectedProcedure
     return { success: true };
   });
 
-// Update an existing ward age-wise population entry
-export const updateWardAgeWisePopulation = protectedProcedure
-  .input(updateWardAgeWisePopulationSchema)
+// Update an existing age-wise population entry
+export const updateAgeWisePopulation = protectedProcedure
+  .input(updateAgeWisePopulationSchema)
   .mutation(async ({ ctx, input }) => {
     // Check if user has appropriate permissions
     if (ctx.user.role !== "superadmin") {
       throw new TRPCError({
         code: "UNAUTHORIZED",
-        message: "Only administrators can update ward age-wise population data",
+        message: "Only administrators can update age-wise population data",
       });
     }
 
@@ -140,9 +120,9 @@ export const updateWardAgeWisePopulation = protectedProcedure
 
     // Check if the record exists
     const existing = await ctx.db
-      .select({ id: wardAgeWisePopulation.id })
-      .from(wardAgeWisePopulation)
-      .where(eq(wardAgeWisePopulation.id, input.id))
+      .select({ id: ageWisePopulation.id })
+      .from(ageWisePopulation)
+      .where(eq(ageWisePopulation.id, input.id))
       .limit(1);
 
     if (existing.length === 0) {
@@ -154,40 +134,39 @@ export const updateWardAgeWisePopulation = protectedProcedure
 
     // Update the record
     await ctx.db
-      .update(wardAgeWisePopulation)
+      .update(ageWisePopulation)
       .set({
-        wardNumber: input.wardNumber,
         ageGroup: input.ageGroup as AgeGroup,
         gender: input.gender as Gender,
         population: input.population,
       })
-      .where(eq(wardAgeWisePopulation.id, input.id));
+      .where(eq(ageWisePopulation.id, input.id));
 
     return { success: true };
   });
 
-// Delete a ward age-wise population entry
-export const deleteWardAgeWisePopulation = protectedProcedure
+// Delete an age-wise population entry
+export const deleteAgeWisePopulation = protectedProcedure
   .input(z.object({ id: z.string() }))
   .mutation(async ({ ctx, input }) => {
     // Check if user has appropriate permissions
     if (ctx.user.role !== "superadmin") {
       throw new TRPCError({
         code: "UNAUTHORIZED",
-        message: "Only administrators can delete ward age-wise population data",
+        message: "Only administrators can delete age-wise population data",
       });
     }
 
     // Delete the record
     await ctx.db
-      .delete(wardAgeWisePopulation)
-      .where(eq(wardAgeWisePopulation.id, input.id));
+      .delete(ageWisePopulation)
+      .where(eq(ageWisePopulation.id, input.id));
 
     return { success: true };
   });
 
 // Get summary statistics
-export const getWardAgeWisePopulationSummary = publicProcedure.query(
+export const getAgeWisePopulationSummary = publicProcedure.query(
   async ({ ctx }) => {
     try {
       // Get totals by age group and gender
@@ -197,7 +176,7 @@ export const getWardAgeWisePopulationSummary = publicProcedure.query(
           gender, 
           SUM(population) as total_population
         FROM 
-          acme_ward_age_wise_population
+          acme_age_wise_population
         GROUP BY 
           age_group, gender
         ORDER BY 
@@ -206,42 +185,40 @@ export const getWardAgeWisePopulationSummary = publicProcedure.query(
 
       const summaryData = await ctx.db.execute(summarySql);
 
-      // Get total by ward
-      const wardSummarySql = sql`
+      // Get total by gender
+      const genderSummarySql = sql`
         SELECT 
-          ward_number,
           gender, 
           SUM(population) as total_population
         FROM 
-          acme_ward_age_wise_population
+          acme_age_wise_population
         GROUP BY 
-          ward_number, gender
+          gender
         ORDER BY 
-          ward_number, gender
+          gender
       `;
 
-      const wardSummaryData = await ctx.db.execute(wardSummarySql);
+      const genderSummaryData = await ctx.db.execute(genderSummarySql);
 
       return {
         byAgeAndGender: summaryData,
-        byWardAndGender: wardSummaryData,
+        byGender: genderSummaryData,
       };
     } catch (error) {
-      console.error("Error in getWardAgeWisePopulationSummary:", error);
+      console.error("Error in getAgeWisePopulationSummary:", error);
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to retrieve ward age-wise population summary",
+        message: "Failed to retrieve age-wise population summary",
       });
     }
   },
 );
 
 // Export the router with all procedures
-export const wardAgeWisePopulationRouter = createTRPCRouter({
-  getAll: getAllWardAgeWisePopulation,
-  getByWard: getWardAgeWisePopulationByWard,
-  create: createWardAgeWisePopulation,
-  update: updateWardAgeWisePopulation,
-  delete: deleteWardAgeWisePopulation,
-  summary: getWardAgeWisePopulationSummary,
+export const ageWisePopulationRouter = createTRPCRouter({
+  getAll: getAllAgeWisePopulation,
+  create: createAgeWisePopulation,
+  update: updateAgeWisePopulation,
+  delete: deleteAgeWisePopulation,
+  summary: getAgeWisePopulationSummary,
 });

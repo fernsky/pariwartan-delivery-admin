@@ -37,30 +37,45 @@ export default function GenderAnalysisSection({
   };
 
   // Calculate male-female ratio
-  const maleHouseheads = overallSummary.find((item) => item.gender === "MALE")?.population || 0;
-  const femaleHouseheads = overallSummary.find((item) => item.gender === "FEMALE")?.population || 0;
+  const maleHouseheads =
+    overallSummary.find((item) => item.gender === "MALE")?.population || 0;
+  const femaleHouseheads =
+    overallSummary.find((item) => item.gender === "FEMALE")?.population || 0;
 
-  const maleFemaleRatio = femaleHouseheads > 0 ? (maleHouseheads / femaleHouseheads).toFixed(2) : "N/A";
+  const maleFemaleRatio =
+    femaleHouseheads > 0
+      ? (maleHouseheads / femaleHouseheads).toFixed(2)
+      : "N/A";
 
   // Find ward with highest female household head percentage
   const wardGenderData = wardNumbers.map((wardNumber) => {
-    const wardItems = genderData.filter((item) => item.wardNumber === wardNumber);
-    const wardTotal = wardItems.reduce((sum, item) => sum + (item.population || 0), 0);
-    
+    const wardItems = genderData.filter(
+      (item) => item.wardNumber === wardNumber,
+    );
+    const wardTotal = wardItems.reduce(
+      (sum, item) => sum + (item.population || 0),
+      0,
+    );
+
     const femaleItem = wardItems.find((item) => item.gender === "FEMALE");
     const femalePopulation = femaleItem?.population || 0;
-    const femalePercentage = wardTotal > 0 ? (femalePopulation / wardTotal) * 100 : 0;
-    
+    const femalePercentage =
+      wardTotal > 0 ? (femalePopulation / wardTotal) * 100 : 0;
+
     return {
       wardNumber,
       femalePercentage,
       femalePopulation,
-      totalHouseheads: wardTotal
+      totalHouseheads: wardTotal,
     };
   });
 
-  const highestFemaleWard = [...wardGenderData].sort((a, b) => b.femalePercentage - a.femalePercentage)[0];
-  const lowestFemaleWard = [...wardGenderData].sort((a, b) => a.femalePercentage - b.femalePercentage)[0];
+  const highestFemaleWard = [...wardGenderData].sort(
+    (a, b) => b.femalePercentage - a.femalePercentage,
+  )[0];
+  const lowestFemaleWard = [...wardGenderData].sort(
+    (a, b) => a.femalePercentage - b.femalePercentage,
+  )[0];
 
   // Add SEO-friendly data attributes to enhance crawler understanding
   useEffect(() => {
@@ -75,7 +90,7 @@ export default function GenderAnalysisSection({
     if (document && document.body) {
       document.body.setAttribute(
         "data-municipality",
-        "Khajura Rural Municipality / खजुरा गाउँपालिका",
+        "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
       );
       document.body.setAttribute(
         "data-total-househeads",
@@ -83,7 +98,7 @@ export default function GenderAnalysisSection({
       );
 
       // Add gender proportions
-      overallSummary.forEach(item => {
+      overallSummary.forEach((item) => {
         const genderNameEN = GENDER_NAMES_EN[item.gender] || item.gender;
         document.body.setAttribute(
           `data-${genderNameEN.toLowerCase()}-househeads`,
@@ -91,7 +106,10 @@ export default function GenderAnalysisSection({
         );
         document.body.setAttribute(
           `data-${genderNameEN.toLowerCase()}-percentage`,
-          localizeNumber(((item.population / totalPopulation) * 100).toFixed(2), "ne"),
+          localizeNumber(
+            ((item.population / totalPopulation) * 100).toFixed(2),
+            "ne",
+          ),
         );
       });
 
@@ -180,7 +198,7 @@ export default function GenderAnalysisSection({
 
       <div className="bg-muted/50 p-4 rounded-lg mt-8">
         <h3 className="text-xl font-medium mb-4">
-          <strong>खजुरा गाउँपालिका</strong>को घरमूली लिङ्ग विश्लेषण
+          <strong>परिवर्तन गाउँपालिका</strong>को घरमूली लिङ्ग विश्लेषण
           <span className="sr-only">
             Household Head Gender Analysis of Khajura
           </span>
@@ -247,15 +265,15 @@ export default function GenderAnalysisSection({
 
       <div className="bg-muted/50 p-4 rounded-lg mt-6">
         <h3 className="text-xl font-medium mb-2">
-          <strong>खजुरा गाउँपालिका</strong>को वडागत घरमूली लिङ्ग विविधता
+          <strong>परिवर्तन गाउँपालिका</strong>को वडागत घरमूली लिङ्ग विविधता
           <span className="sr-only">
             Ward-wise Household Head Gender Diversity in Khajura
           </span>
         </h3>
         <div className="prose prose-slate dark:prose-invert max-w-none">
           <p>
-            <strong>खजुरा गाउँपालिका</strong>को वडागत घरमूली लिङ्ग विश्लेषणबाट
-            निम्न निष्कर्षहरू निकाल्न सकिन्छ:
+            <strong>परिवर्तन गाउँपालिका</strong>को वडागत घरमूली लिङ्ग
+            विश्लेषणबाट निम्न निष्कर्षहरू निकाल्न सकिन्छ:
           </p>
 
           <ul itemScope itemType="https://schema.org/ItemList">
@@ -266,7 +284,8 @@ export default function GenderAnalysisSection({
             >
               <meta itemProp="position" content="1" />
               <div itemProp="item">
-                <strong>पुरुष घरमूली:</strong> <strong>खजुरा गाउँपालिका</strong>
+                <strong>पुरुष घरमूली:</strong>{" "}
+                <strong>परिवर्तन गाउँपालिका</strong>
                 मा कुल घरमूलीको{" "}
                 {localizeNumber(
                   ((maleHouseheads / totalPopulation) * 100).toFixed(2),
@@ -284,7 +303,8 @@ export default function GenderAnalysisSection({
             >
               <meta itemProp="position" content="2" />
               <div itemProp="item">
-                <strong>महिला घरमूली:</strong> <strong>खजुरा गाउँपालिका</strong>
+                <strong>महिला घरमूली:</strong>{" "}
+                <strong>परिवर्तन गाउँपालिका</strong>
                 मा{" "}
                 {localizeNumber(
                   ((femaleHouseheads / totalPopulation) * 100).toFixed(2),
@@ -315,7 +335,7 @@ export default function GenderAnalysisSection({
               <meta itemProp="position" content="3" />
               <div itemProp="item">
                 <strong>वडागत भिन्नता:</strong>{" "}
-                <strong>खजुरा गाउँपालिका</strong>का विभिन्न वडाहरूमा महिला
+                <strong>परिवर्तन गाउँपालिका</strong>का विभिन्न वडाहरूमा महिला
                 घरमूलीको प्रतिशत{" "}
                 {localizeNumber(
                   lowestFemaleWard.femalePercentage.toFixed(2),
@@ -337,7 +357,8 @@ export default function GenderAnalysisSection({
             >
               <meta itemProp="position" content="4" />
               <div itemProp="item">
-                <strong>समग्र अवस्था:</strong> <strong>खजुरा गाउँपालिका</strong>
+                <strong>समग्र अवस्था:</strong>{" "}
+                <strong>परिवर्तन गाउँपालिका</strong>
                 मा हरेक {localizeNumber(maleFemaleRatio, "ne")} पुरुष घरमूलीका
                 लागि १ महिला घरमूली रहेको अवस्थाले महिला नेतृत्वमा सुधार गर्ने
                 आवश्यकता देखाउँछ।
@@ -354,26 +375,28 @@ export default function GenderAnalysisSection({
         </h3>
         <div className="prose prose-slate dark:prose-invert max-w-none">
           <p>
-            <strong>खजुरा गाउँपालिका</strong>को घरमूली लिङ्ग विश्लेषणका आधारमा
-            निम्न नीतिगत सुझावहरू प्रस्तुत गरिएका छन्:
+            <strong>परिवर्तन गाउँपालिका</strong>को घरमूली लिङ्ग विश्लेषणका
+            आधारमा निम्न नीतिगत सुझावहरू प्रस्तुत गरिएका छन्:
           </p>
 
           <ul>
             <li>
               <strong>महिला सशक्तिकरण:</strong>{" "}
-              <strong>खजुरा गाउँपालिका</strong>मा महिला घरमूली प्रतिशत बढाउन
+              <strong>परिवर्तन गाउँपालिका</strong>मा महिला घरमूली प्रतिशत बढाउन
               विशेष आर्थिक सशक्तिकरण र नेतृत्व विकास कार्यक्रमहरू संचालन गर्ने।
             </li>
             <li>
-              <strong>लैङ्गिक बजेट:</strong> <strong>खजुरा गाउँपालिका</strong>को
-              न्यून महिला घरमूली प्रतिशत भएका वडाहरूमा (विशेष गरी वडा{" "}
+              <strong>लैङ्गिक बजेट:</strong>{" "}
+              <strong>परिवर्तन गाउँपालिका</strong>को न्यून महिला घरमूली प्रतिशत
+              भएका वडाहरूमा (विशेष गरी वडा{" "}
               {localizeNumber(lowestFemaleWard.wardNumber.toString(), "ne")})
               लैङ्गिक समानताका लागि लक्षित बजेट विनियोजन गर्ने।
             </li>
             <li>
               <strong>प्रोत्साहन प्रणाली:</strong>{" "}
-              <strong>खजुरा गाउँपालिका</strong>मा महिला नेतृत्वका परिवारहरूलाई
-              विशेष प्रोत्साहन, सहुलियत र अवसरहरू प्रदान गर्ने नीति लागू गर्ने।
+              <strong>परिवर्तन गाउँपालिका</strong>मा महिला नेतृत्वका
+              परिवारहरूलाई विशेष प्रोत्साहन, सहुलियत र अवसरहरू प्रदान गर्ने नीति
+              लागू गर्ने।
             </li>
             <li>
               <strong>सफल अभ्यास प्रसार:</strong> वडा{" "}

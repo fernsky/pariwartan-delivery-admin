@@ -140,7 +140,7 @@ export default function GenderRatioCharts({
                 stroke="#D5D0E5"
                 strokeDasharray="3 3"
                 label={{
-                  value: `खजुरा गाउँपालिका औसत: ${localizeNumber(municipalityAverages.sexRatio.toFixed(1), "ne")}`,
+                  value: `परिवर्तन गाउँपालिका औसत: ${localizeNumber(municipalityAverages.sexRatio.toFixed(1), "ne")}`,
                   position: "insideBottomRight",
                   fill: "#6c6684",
                   fontSize: 12,
@@ -271,7 +271,6 @@ export default function GenderRatioCharts({
             </tbody>
           </table>
         </div>
-      
       </TabsContent>
     </>
   );

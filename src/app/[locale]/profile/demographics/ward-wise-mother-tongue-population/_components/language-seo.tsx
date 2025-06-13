@@ -57,11 +57,11 @@ export default function LanguageSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Linguistic Demographics of Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Linguistic Demographics of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Mother tongue distribution data across ${wardIds.length} wards of Khajura Rural Municipality with a total population of ${totalPopulation.toLocaleString()} people.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Linguistic demographics",
         "Mother tongue statistics",
         "Ward-wise language data",

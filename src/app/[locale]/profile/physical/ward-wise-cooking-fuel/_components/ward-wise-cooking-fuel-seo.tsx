@@ -16,11 +16,14 @@ interface WardWiseCookingFuelSEOProps {
     percentage: number;
     households: number;
   };
-  COOKING_FUEL_CATEGORIES: Record<string, {
-    name: string;
-    nameEn: string;
-    color: string;
-  }>;
+  COOKING_FUEL_CATEGORIES: Record<
+    string,
+    {
+      name: string;
+      nameEn: string;
+      color: string;
+    }
+  >;
   wardNumbers: number[];
   cleanFuelIndex: number;
   cleanFuelPercentage: number;
@@ -41,50 +44,64 @@ export default function WardWiseCookingFuelSEO({
   // Create structured data for SEO
   const generateStructuredData = () => {
     // Convert ward-wise cooking fuel to structured data format
-    const fuelStats = wardNumbers.map((wardNumber) => {
-      const wardData = cookingFuelData.filter((item) => item.wardNumber === wardNumber);
-      
-      if (!wardData?.length) return null;
-      
-      const totalWardHouseholds = wardData.reduce((sum, item) => sum + item.households, 0);
-      
-      // Calculate clean fuel (LP Gas, Electricity, Biogas) percentage for this ward
-      const cleanFuelTypes = ["LP_GAS", "ELECTRICITY", "BIOGAS"];
-      const cleanFuelHouseholds = wardData
-        .filter((item) => cleanFuelTypes.includes(item.cookingFuel))
-        .reduce((sum, item) => sum + item.households, 0);
-      
-      const cleanFuelPercent = totalWardHouseholds > 0 
-        ? ((cleanFuelHouseholds / totalWardHouseholds) * 100).toFixed(2)
-        : "0";
-        
-      return {
-        "@type": "Observation",
-        name: `Cooking Fuel Usage Statistics in Ward ${wardNumber} of Khajura Rural Municipality`,
-        observationDate: new Date().toISOString().split("T")[0],
-        measuredProperty: {
-          "@type": "PropertyValue",
-          name: "Clean fuel usage rate",
-          unitText: "percentage",
-        },
-        measuredValue: parseFloat(cleanFuelPercent),
-        description: `In Ward ${wardNumber} of Khajura Rural Municipality, ${cleanFuelHouseholds.toLocaleString()} households (${cleanFuelPercent}%) use clean cooking fuels (LP Gas, Electricity, Biogas) out of a total of ${totalWardHouseholds.toLocaleString()} households.`,
-      };
-    }).filter(Boolean);
+    const fuelStats = wardNumbers
+      .map((wardNumber) => {
+        const wardData = cookingFuelData.filter(
+          (item) => item.wardNumber === wardNumber,
+        );
+
+        if (!wardData?.length) return null;
+
+        const totalWardHouseholds = wardData.reduce(
+          (sum, item) => sum + item.households,
+          0,
+        );
+
+        // Calculate clean fuel (LP Gas, Electricity, Biogas) percentage for this ward
+        const cleanFuelTypes = ["LP_GAS", "ELECTRICITY", "BIOGAS"];
+        const cleanFuelHouseholds = wardData
+          .filter((item) => cleanFuelTypes.includes(item.cookingFuel))
+          .reduce((sum, item) => sum + item.households, 0);
+
+        const cleanFuelPercent =
+          totalWardHouseholds > 0
+            ? ((cleanFuelHouseholds / totalWardHouseholds) * 100).toFixed(2)
+            : "0";
+
+        return {
+          "@type": "Observation",
+          name: `Cooking Fuel Usage Statistics in Ward ${wardNumber} of Khajura Rural Municipality`,
+          observationDate: new Date().toISOString().split("T")[0],
+          measuredProperty: {
+            "@type": "PropertyValue",
+            name: "Clean fuel usage rate",
+            unitText: "percentage",
+          },
+          measuredValue: parseFloat(cleanFuelPercent),
+          description: `In Ward ${wardNumber} of Khajura Rural Municipality, ${cleanFuelHouseholds.toLocaleString()} households (${cleanFuelPercent}%) use clean cooking fuels (LP Gas, Electricity, Biogas) out of a total of ${totalWardHouseholds.toLocaleString()} households.`,
+        };
+      })
+      .filter(Boolean);
 
     // Calculate clean fuel percentage
     const cleanFuels = ["LP_GAS", "ELECTRICITY", "BIOGAS"];
-    const cleanFuelTotal = cleanFuels.reduce((sum, fuel) => sum + (fuelTypeTotals[fuel] || 0), 0);
-    const cleanFuelPercentageValue = ((cleanFuelTotal / totalHouseholds) * 100).toFixed(2);
+    const cleanFuelTotal = cleanFuels.reduce(
+      (sum, fuel) => sum + (fuelTypeTotals[fuel] || 0),
+      0,
+    );
+    const cleanFuelPercentageValue = (
+      (cleanFuelTotal / totalHouseholds) *
+      100
+    ).toFixed(2);
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Cooking Fuel Usage in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Cooking Fuel Usage in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Analysis of cooking fuel usage across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${cleanFuelTotal.toLocaleString()} households (${cleanFuelPercentageValue}%) use clean cooking fuels. The best adoption of clean fuel is in Ward ${bestWard?.wardNumber || ""} with ${bestWard?.percentage.toFixed(2) || ""}% clean fuel usage rate.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Cooking fuel",
         "Clean energy",
         "Ward-wise energy usage",
@@ -160,20 +177,20 @@ export default function WardWiseCookingFuelSEO({
           name: "Clean Fuel Index",
           unitText: "index",
           value: cleanFuelIndex.toFixed(2),
-        }
+        },
       ],
       observation: fuelStats,
       about: [
         {
           "@type": "Thing",
           name: "Cooking Fuel",
-          description: "Types of fuels used for cooking"
+          description: "Types of fuels used for cooking",
         },
         {
           "@type": "Thing",
           name: "Energy Access",
-          description: "Household access to different types of cooking fuels"
-        }
+          description: "Household access to different types of cooking fuels",
+        },
       ],
       isBasedOn: {
         "@type": "GovernmentService",

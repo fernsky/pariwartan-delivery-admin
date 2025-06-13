@@ -247,7 +247,7 @@ export default function WardTimeSeriesForm({
               <FormItem>
                 <FormLabel>वडाको नाम</FormLabel>
                 <FormControl>
-                  <Input placeholder="खजुरा वडा १" {...field} />
+                  <Input placeholder="परिवर्तन वडा १" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

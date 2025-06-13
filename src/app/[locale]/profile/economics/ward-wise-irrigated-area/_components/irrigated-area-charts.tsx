@@ -59,12 +59,14 @@ export default function IrrigatedAreaCharts({
 
   // Helper function to download chart data as CSV
   const downloadChartData = () => {
-    const headers = "वडा नं.,सिंचित क्षेत्रफल (हेक्टर),असिंचित क्षेत्रफल (हेक्टर),कुल क्षेत्रफल (हेक्टर),सिंचित प्रतिशत\n";
+    const headers =
+      "वडा नं.,सिंचित क्षेत्रफल (हेक्टर),असिंचित क्षेत्रफल (हेक्टर),कुल क्षेत्रफल (हेक्टर),सिंचित प्रतिशत\n";
     const csvData = wardData
       .map((ward) => {
-        const irrigatedPercent = ward.totalArea > 0 
-          ? ((ward.irrigatedArea / ward.totalArea) * 100).toFixed(2)
-          : "0";
+        const irrigatedPercent =
+          ward.totalArea > 0
+            ? ((ward.irrigatedArea / ward.totalArea) * 100).toFixed(2)
+            : "0";
         return `${ward.wardNumber},${ward.irrigatedArea.toFixed(2)},${ward.unirrigatedArea.toFixed(2)},${ward.totalArea.toFixed(2)},${irrigatedPercent}%`;
       })
       .join("\n");
@@ -119,9 +121,7 @@ export default function IrrigatedAreaCharts({
               समग्र सिंचित र असिंचित क्षेत्रफल
             </h4>
             <div className="h-[350px]">
-              <IrrigatedAreaPieChart
-                pieChartData={pieChartData}
-              />
+              <IrrigatedAreaPieChart pieChartData={pieChartData} />
             </div>
           </div>
 
@@ -135,7 +135,9 @@ export default function IrrigatedAreaCharts({
                 <thead>
                   <tr className="bg-muted sticky top-0">
                     <th className="border p-2 text-left">विवरण</th>
-                    <th className="border p-2 text-right">क्षेत्रफल (हेक्टर)</th>
+                    <th className="border p-2 text-right">
+                      क्षेत्रफल (हेक्टर)
+                    </th>
                     <th className="border p-2 text-right">प्रतिशत</th>
                   </tr>
                 </thead>
@@ -196,7 +198,8 @@ export default function IrrigatedAreaCharts({
                 />
               </div>
               <p className="text-sm text-muted-foreground mt-4 text-center">
-                नोट: सिंचाई प्रगति स्कोर कुल क्षेत्रफलमा सिंचित क्षेत्रफलको अनुपातमा आधारित छ।
+                नोट: सिंचाई प्रगति स्कोर कुल क्षेत्रफलमा सिंचित क्षेत्रफलको
+                अनुपातमा आधारित छ।
               </p>
             </div>
           </div>
@@ -286,21 +289,33 @@ export default function IrrigatedAreaCharts({
               <thead>
                 <tr className="bg-muted sticky top-0">
                   <th className="border p-2 text-left">वडा नं.</th>
-                  <th className="border p-2 text-right">सिंचित क्षेत्रफल (हेक्टर)</th>
-                  <th className="border p-2 text-right">असिंचित क्षेत्रफल (हेक्टर)</th>
-                  <th className="border p-2 text-right">कुल क्षेत्रफल (हेक्टर)</th>
+                  <th className="border p-2 text-right">
+                    सिंचित क्षेत्रफल (हेक्टर)
+                  </th>
+                  <th className="border p-2 text-right">
+                    असिंचित क्षेत्रफल (हेक्टर)
+                  </th>
+                  <th className="border p-2 text-right">
+                    कुल क्षेत्रफल (हेक्टर)
+                  </th>
                   <th className="border p-2 text-right">सिंचित क्षेत्रफल %</th>
                 </tr>
               </thead>
               <tbody>
                 {wardData.map((ward, index) => {
-                  const irrigatedPercent = ward.totalArea > 0 
-                    ? ((ward.irrigatedArea / ward.totalArea) * 100).toFixed(2)
-                    : "0";
-                    
+                  const irrigatedPercent =
+                    ward.totalArea > 0
+                      ? ((ward.irrigatedArea / ward.totalArea) * 100).toFixed(2)
+                      : "0";
+
                   return (
-                    <tr key={ward.wardNumber} className={index % 2 === 0 ? "bg-muted/40" : ""}>
-                      <td className="border p-2">{localizeNumber(String(ward.wardNumber), "ne")}</td>
+                    <tr
+                      key={ward.wardNumber}
+                      className={index % 2 === 0 ? "bg-muted/40" : ""}
+                    >
+                      <td className="border p-2">
+                        {localizeNumber(String(ward.wardNumber), "ne")}
+                      </td>
                       <td className="border p-2 text-right">
                         {localizeNumber(ward.irrigatedArea.toFixed(2), "ne")}
                       </td>
@@ -350,12 +365,11 @@ export default function IrrigatedAreaCharts({
 
         <div className="p-6">
           <div className="h-[400px]">
-            <IrrigatedUnitDistributionChart 
-              wardData={wardData} 
-            />
+            <IrrigatedUnitDistributionChart wardData={wardData} />
           </div>
           <p className="text-sm text-muted-foreground mt-4 text-center">
-            नोट: सिंचित एकाई भनेको कुल क्षेत्रफलको अनुपातमा सिंचित क्षेत्रफलको प्रतिशत हो।
+            नोट: सिंचित एकाई भनेको कुल क्षेत्रफलको अनुपातमा सिंचित क्षेत्रफलको
+            प्रतिशत हो।
           </p>
         </div>
       </div>
@@ -363,7 +377,9 @@ export default function IrrigatedAreaCharts({
       {/* Additional statistics section */}
       <div className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card">
         <div className="border-b px-4 py-3">
-          <h3 className="text-xl font-semibold">वडागत सिंचाईको समग्र तथ्याङ्क</h3>
+          <h3 className="text-xl font-semibold">
+            वडागत सिंचाईको समग्र तथ्याङ्क
+          </h3>
         </div>
 
         <div className="p-6">
@@ -399,10 +415,11 @@ export default function IrrigatedAreaCharts({
                   <p className="text-2xl font-bold">
                     {localizeNumber(
                       String(
-                        [...wardData].sort((a, b) => b.irrigatedArea - a.irrigatedArea)[0]
-                          .wardNumber
+                        [...wardData].sort(
+                          (a, b) => b.irrigatedArea - a.irrigatedArea,
+                        )[0].wardNumber,
                       ),
-                      "ne"
+                      "ne",
                     )}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
@@ -410,7 +427,7 @@ export default function IrrigatedAreaCharts({
                       [...wardData]
                         .sort((a, b) => b.irrigatedArea - a.irrigatedArea)[0]
                         .irrigatedArea.toFixed(2),
-                      "ne"
+                      "ne",
                     )}{" "}
                     हेक्टर
                   </p>
@@ -427,10 +444,11 @@ export default function IrrigatedAreaCharts({
                   <p className="text-2xl font-bold">
                     {localizeNumber(
                       String(
-                        [...wardData].sort((a, b) => a.irrigatedArea - b.irrigatedArea)[0]
-                          .wardNumber
+                        [...wardData].sort(
+                          (a, b) => a.irrigatedArea - b.irrigatedArea,
+                        )[0].wardNumber,
                       ),
-                      "ne"
+                      "ne",
                     )}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
@@ -438,7 +456,7 @@ export default function IrrigatedAreaCharts({
                       [...wardData]
                         .sort((a, b) => a.irrigatedArea - b.irrigatedArea)[0]
                         .irrigatedArea.toFixed(2),
-                      "ne"
+                      "ne",
                     )}{" "}
                     हेक्टर
                   </p>
@@ -451,35 +469,39 @@ export default function IrrigatedAreaCharts({
             <h5 className="font-medium mb-2">तथ्याङ्क विश्लेषण सारांश</h5>
             <ul className="list-disc pl-5 space-y-1">
               <li>
-                खजुरा गाउँपालिकामा कुल क्षेत्रफलको {localizeNumber(irrigatedPercentage, "ne")}% सिंचित
-                र {localizeNumber(unirrigatedPercentage, "ne")}% असिंचित रहेको अवस्था छ।
+                परिवर्तन गाउँपालिकामा कुल क्षेत्रफलको{" "}
+                {localizeNumber(irrigatedPercentage, "ne")}% सिंचित र{" "}
+                {localizeNumber(unirrigatedPercentage, "ne")}% असिंचित रहेको
+                अवस्था छ।
               </li>
               <li>
-                वडागत विश्लेषण गर्दा सिंचित क्षेत्रफलको वितरण असमान रहेको छ, केही
-                वडाहरूमा अधिक र केहीमा न्यून सिंचाई सुविधा उपलब्ध छ।
+                वडागत विश्लेषण गर्दा सिंचित क्षेत्रफलको वितरण असमान रहेको छ,
+                केही वडाहरूमा अधिक र केहीमा न्यून सिंचाई सुविधा उपलब्ध छ।
               </li>
               <li>
                 वडा नं.{" "}
                 {localizeNumber(
                   String(
-                    [...wardData].sort((a, b) => b.irrigatedArea - a.irrigatedArea)[0]
-                      .wardNumber
+                    [...wardData].sort(
+                      (a, b) => b.irrigatedArea - a.irrigatedArea,
+                    )[0].wardNumber,
                   ),
-                  "ne"
+                  "ne",
                 )}{" "}
                 मा सबैभन्दा बढी सिंचित क्षेत्रफल र वडा नं.{" "}
                 {localizeNumber(
                   String(
-                    [...wardData].sort((a, b) => a.irrigatedArea - b.irrigatedArea)[0]
-                      .wardNumber
+                    [...wardData].sort(
+                      (a, b) => a.irrigatedArea - b.irrigatedArea,
+                    )[0].wardNumber,
                   ),
-                  "ne"
+                  "ne",
                 )}{" "}
                 मा सबैभन्दा कम सिंचित क्षेत्रफल रहेको छ।
               </li>
               <li>
-                पालिकाले असिंचित क्षेत्रमा सिंचाई सुविधा विस्तार गर्न विशेष योजना
-                तयार गर्नुपर्ने देखिन्छ।
+                पालिकाले असिंचित क्षेत्रमा सिंचाई सुविधा विस्तार गर्न विशेष
+                योजना तयार गर्नुपर्ने देखिन्छ।
               </li>
             </ul>
           </div>

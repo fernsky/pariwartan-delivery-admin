@@ -9,7 +9,10 @@ interface RemittanceSEOProps {
     color: string;
   }>;
   totalSendingPopulation: number;
-  AMOUNT_RANGE_MAP: Record<string, { min: number; max: number | null; color: string; label: string }>;
+  AMOUNT_RANGE_MAP: Record<
+    string,
+    { min: number; max: number | null; color: string; label: string }
+  >;
   wardNumbers: number[];
   totalData: {
     totalSendingPopulation: number;
@@ -51,13 +54,20 @@ export default function RemittanceSEO({
     }));
 
     // Find most common remittance amount group
-    const mostCommonGroup = overallSummary.length > 0 
-      ? overallSummary.sort((a, b) => b.sendingPopulation - a.sendingPopulation)[0] 
-      : null;
-      
-    const mostCommonGroupPercentage = mostCommonGroup && totalSendingPopulation > 0 
-      ? ((mostCommonGroup.sendingPopulation / totalSendingPopulation) * 100).toFixed(2)
-      : "0";
+    const mostCommonGroup =
+      overallSummary.length > 0
+        ? overallSummary.sort(
+            (a, b) => b.sendingPopulation - a.sendingPopulation,
+          )[0]
+        : null;
+
+    const mostCommonGroupPercentage =
+      mostCommonGroup && totalSendingPopulation > 0
+        ? (
+            (mostCommonGroup.sendingPopulation / totalSendingPopulation) *
+            100
+          ).toFixed(2)
+        : "0";
 
     // Calculate high remittance statistics
     const highRemittancePercentage = totalData.highRemittancePercentage;
@@ -65,16 +75,17 @@ export default function RemittanceSEO({
 
     // Format average remittance and total estimated remittance
     const averageRemittance = totalData.averageRemittance;
-    const estimatedAnnualRemittanceCrores = totalData.estimatedAnnualRemittanceCrores;
+    const estimatedAnnualRemittanceCrores =
+      totalData.estimatedAnnualRemittanceCrores;
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Ward-wise Remittance Distribution from Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Ward-wise Remittance Distribution from Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Remittance statistics across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalSendingPopulation.toLocaleString()} people sending remittances. The most common amount range is ${mostCommonGroup?.amountGroupLabel} with ${mostCommonGroup?.sendingPopulation.toLocaleString()} senders (${mostCommonGroupPercentage}%). High remittance senders (above Rs. 300,000) account for ${highRemittancePercentage}% of all remittance senders. The estimated annual remittance is NPR ${estimatedAnnualRemittanceCrores} crore with an average of NPR ${averageRemittance.toLocaleString()} per person.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Remittance distribution",
         "Ward-wise remittance",
         "Nepal remittance statistics",
@@ -131,7 +142,7 @@ export default function RemittanceSEO({
           name: "Average Remittance Per Person",
           unitText: "NPR",
           value: averageRemittance,
-        }
+        },
       ],
       observation: remittanceStats,
     };

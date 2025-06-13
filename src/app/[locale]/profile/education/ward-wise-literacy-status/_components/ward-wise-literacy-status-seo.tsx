@@ -13,9 +13,9 @@ interface WardWiseLiteracyStatusSEOProps {
   bestLiteracyWard: any;
   worstLiteracyWard: any;
   LITERACY_STATUS_TYPES: {
-    BOTH_READING_AND_WRITING: { name: string; nameEn: string; color: string; };
-    READING_ONLY: { name: string; nameEn: string; color: string; };
-    ILLITERATE: { name: string; nameEn: string; color: string; };
+    BOTH_READING_AND_WRITING: { name: string; nameEn: string; color: string };
+    READING_ONLY: { name: string; nameEn: string; color: string };
+    ILLITERATE: { name: string; nameEn: string; color: string };
   };
   wardNumbers: number[];
 }
@@ -37,50 +37,62 @@ export default function WardWiseLiteracyStatusSEO({
   // Create structured data for SEO
   const generateStructuredData = () => {
     // Convert ward-wise literacy status to structured data format
-    const literacyStats = wardNumbers.map((wardNumber) => {
-      const wardData = wardWiseLiteracyStatusData.filter((item) => item.wardNumber === wardNumber);
-      
-      if (!wardData?.length) return null;
-      
-      const totalWardPopulation = wardData.reduce((sum, item) => sum + item.population, 0);
-      const bothReadingWriting = wardData.find((item) => 
-        item.literacyType === 'BOTH_READING_AND_WRITING')?.population || 0;
-      const bothReadingWritingPercent = totalWardPopulation > 0 
-        ? ((bothReadingWriting / totalWardPopulation) * 100).toFixed(2)
-        : "0";
-        
-      return {
-        "@type": "Observation",
-        name: `Literacy Statistics in Ward ${wardNumber} of Khajura Rural Municipality`,
-        observationDate: new Date().toISOString().split("T")[0],
-        measuredProperty: {
-          "@type": "PropertyValue",
-          name: "Literacy rate",
-          unitText: "percentage",
-        },
-        measuredValue: parseFloat(bothReadingWritingPercent),
-        description: `In Ward ${wardNumber} of Khajura Rural Municipality, ${bothReadingWriting.toLocaleString()} people (${bothReadingWritingPercent}%) can read and write out of a total of ${totalWardPopulation.toLocaleString()} people.`,
-      };
-    }).filter(Boolean);
+    const literacyStats = wardNumbers
+      .map((wardNumber) => {
+        const wardData = wardWiseLiteracyStatusData.filter(
+          (item) => item.wardNumber === wardNumber,
+        );
+
+        if (!wardData?.length) return null;
+
+        const totalWardPopulation = wardData.reduce(
+          (sum, item) => sum + item.population,
+          0,
+        );
+        const bothReadingWriting =
+          wardData.find(
+            (item) => item.literacyType === "BOTH_READING_AND_WRITING",
+          )?.population || 0;
+        const bothReadingWritingPercent =
+          totalWardPopulation > 0
+            ? ((bothReadingWriting / totalWardPopulation) * 100).toFixed(2)
+            : "0";
+
+        return {
+          "@type": "Observation",
+          name: `Literacy Statistics in Ward ${wardNumber} of Khajura Rural Municipality`,
+          observationDate: new Date().toISOString().split("T")[0],
+          measuredProperty: {
+            "@type": "PropertyValue",
+            name: "Literacy rate",
+            unitText: "percentage",
+          },
+          measuredValue: parseFloat(bothReadingWritingPercent),
+          description: `In Ward ${wardNumber} of Khajura Rural Municipality, ${bothReadingWriting.toLocaleString()} people (${bothReadingWritingPercent}%) can read and write out of a total of ${totalWardPopulation.toLocaleString()} people.`,
+        };
+      })
+      .filter(Boolean);
 
     // Calculate literacy rate (people who can read and write + read only)
-    const literacyRate = (bothReadingWritingPercentage + readingOnlyPercentage).toFixed(2);
+    const literacyRate = (
+      bothReadingWritingPercentage + readingOnlyPercentage
+    ).toFixed(2);
 
     // Calculate literacy index (0-100)
-    const literacyIndex = (
-      (bothReadingWritingPercentage * 1.0) + 
-      (readingOnlyPercentage * 0.5) + 
-      (illiteratePercentage * 0.0)
-    ) / 100;
+    const literacyIndex =
+      (bothReadingWritingPercentage * 1.0 +
+        readingOnlyPercentage * 0.5 +
+        illiteratePercentage * 0.0) /
+      100;
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Literacy Status Distribution in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Literacy Status Distribution in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Analysis of literacy status across ${wardNumbers.length} wards of Khajura Rural Municipality with a total population of ${totalPopulation.toLocaleString()}. ${bothReadingWritingTotal.toLocaleString()} people (${bothReadingWritingPercentage.toFixed(2)}%) can both read and write, while ${illiterateTotal.toLocaleString()} people (${illiteratePercentage.toFixed(2)}%) are illiterate. The best literacy is in Ward ${bestLiteracyWard?.wardNumber || ""} with ${bestLiteracyWard?.bothReadingWritingPercent.toFixed(2) || ""}% of people who can read and write.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Literacy status",
         "Literacy rate",
         "Illiteracy rate",
@@ -138,20 +150,21 @@ export default function WardWiseLiteracyStatusSEO({
           name: "Literacy Index",
           unitText: "index",
           value: literacyIndex.toFixed(2),
-        }
+        },
       ],
       observation: literacyStats,
       about: [
         {
           "@type": "Thing",
           name: "Literacy",
-          description: "Ability to read and write in a language"
+          description: "Ability to read and write in a language",
         },
         {
           "@type": "Thing",
           name: "Education Status",
-          description: "Measure of educational achievement and literacy in a population"
-        }
+          description:
+            "Measure of educational achievement and literacy in a population",
+        },
       ],
       isBasedOn: {
         "@type": "GovernmentService",

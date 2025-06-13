@@ -56,11 +56,11 @@ export default function WardWiseHealthInsuredHouseholdsSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Health Insurance Coverage in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Health Insurance Coverage in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Analysis of health insurance coverage across wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${totalInsuredHouseholds.toLocaleString()} households (${insuredPercentage.toFixed(2)}%) have health insurance coverage. The highest coverage is in Ward ${bestInsuranceWard?.wardNumber || ""} with ${bestInsuranceWard?.percentage.toFixed(2) || ""}% insurance rate.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Health insurance",
         "स्वास्थ्य बीमा",
         "Ward-wise health insurance",
@@ -111,20 +111,20 @@ export default function WardWiseHealthInsuredHouseholdsSEO({
           name: "Insurance Coverage Index",
           unitText: "index",
           value: insuranceCoverageIndex.toFixed(2),
-        }
+        },
       ],
       observation: insuranceStats,
       about: [
         {
           "@type": "Thing",
           name: "Healthcare",
-          description: "Health insurance coverage analysis"
+          description: "Health insurance coverage analysis",
         },
         {
           "@type": "Thing",
           name: "Health Insurance",
-          description: "Status of households with health insurance"
-        }
+          description: "Status of households with health insurance",
+        },
       ],
       isBasedOn: {
         "@type": "GovernmentService",

@@ -62,15 +62,18 @@ export default function FarmersGroupSEO({
           name: "Percentage of Total",
           unitText: "percentage",
           value: item.percentage,
-        }
-      ]
+        },
+      ],
     }));
 
     // Ward distribution data
-    const wardDistributionData = farmsByWard.map(ward => ({
+    const wardDistributionData = farmsByWard.map((ward) => ({
       "@type": "Dataset",
       name: `${WARD_NAMES_EN[ward.wardNumber]} Agricultural Groups`,
-      description: `Ward ${ward.wardNumber} has ${ward.farmCount} agriculture related groups, with groups such as ${ward.farms.slice(0, 3).map(farm => farm.name).join(", ")}${ward.farms.length > 3 ? " and others" : ""}.`,
+      description: `Ward ${ward.wardNumber} has ${ward.farmCount} agriculture related groups, with groups such as ${ward.farms
+        .slice(0, 3)
+        .map((farm) => farm.name)
+        .join(", ")}${ward.farms.length > 3 ? " and others" : ""}.`,
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
@@ -80,7 +83,7 @@ export default function FarmersGroupSEO({
         name: "Number of Groups in Ward",
         unitText: "count",
         value: ward.farmCount,
-      }
+      },
     }));
 
     // Find most common group type
@@ -93,14 +96,14 @@ export default function FarmersGroupSEO({
       description: `Comprehensive analysis of ${totalGroups} agriculture related farmers groups in Khajura Rural Municipality. The most common type is ${mostCommonGroupType} (${statistics.mostPopularGroupTypePercentage.toFixed(1)}%), and Ward ${statistics.wardWithMostGroups} has the highest concentration with ${statistics.maximumGroupsInAWard} groups. This dataset covers all 9 wards of the municipality.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Agriculture",
         "Farmers Groups",
         "Agricultural Development",
         "Rural Development",
         "Nepal Agriculture",
         "Farming Groups",
-        ...groupSummary.map(item => item.type),
+        ...groupSummary.map((item) => item.type),
       ],
       url: "https://digital.khajuramun.gov.np/profile/economics/agriculture-related-farmers-group",
       creator: {
@@ -141,7 +144,7 @@ export default function FarmersGroupSEO({
           name: "Most Common Group Type Percentage",
           unitText: "percentage",
           value: statistics.mostPopularGroupTypePercentage,
-        }
+        },
       ],
       distribution: groupTypeStats,
       hasPart: wardDistributionData,
@@ -149,24 +152,26 @@ export default function FarmersGroupSEO({
         {
           "@type": "Thing",
           name: "Agricultural Development",
-          description: "The development and improvement of agricultural practices and systems"
+          description:
+            "The development and improvement of agricultural practices and systems",
         },
         {
           "@type": "Thing",
           name: "Rural Development",
-          description: "Economic and social development focused on rural areas"
+          description: "Economic and social development focused on rural areas",
         },
         {
           "@type": "Thing",
           name: "Cooperative Farming",
-          description: "Agricultural production carried out by farming groups or cooperatives"
-        }
+          description:
+            "Agricultural production carried out by farming groups or cooperatives",
+        },
       ],
       isPartOf: {
         "@type": "Dataset",
         name: "Khajura Rural Municipality Digital Profile",
-        url: "https://digital.khajuramun.gov.np"
-      }
+        url: "https://digital.khajuramun.gov.np",
+      },
     };
   };
 

@@ -188,7 +188,7 @@ export default function HouseholdCharts({
                 stroke="#6D28D9"
                 strokeDasharray="3 3"
                 label={{
-                  value: `खजुरा गाउँपालिका औसत: ${localizeNumber(municipalityAverages.averageHouseholdSize.toFixed(2), "ne")}`,
+                  value: `परिवर्तन गाउँपालिका औसत: ${localizeNumber(municipalityAverages.averageHouseholdSize.toFixed(2), "ne")}`,
                   position: "insideBottomRight",
                   fill: "#4C1D95",
                   fontSize: 12,
@@ -258,7 +258,6 @@ export default function HouseholdCharts({
             </tbody>
           </table>
         </div>
-       
       </TabsContent>
     </>
   );

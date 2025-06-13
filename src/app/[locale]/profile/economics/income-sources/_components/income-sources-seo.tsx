@@ -47,11 +47,11 @@ export default function IncomeSourcesSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Household Income Sources of Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Household Income Sources of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Household income sources distribution data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Income sources",
         "Household economics",
         "Ward-wise income data",

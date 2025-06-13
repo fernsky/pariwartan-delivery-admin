@@ -36,36 +36,43 @@ export default function EconomicallyActivePopulationAnalysisSection({
   };
 
   // Calculate working age population and dependent population
-  const workingAgePopulation = overallSummary.find(
-    (item) => item.ageGroup === "AGE_15_TO_59"
-  )?.population || 0;
-  
+  const workingAgePopulation =
+    overallSummary.find((item) => item.ageGroup === "AGE_15_TO_59")
+      ?.population || 0;
+
   const dependentPopulation = totalPopulation - workingAgePopulation;
-  
-  const dependencyRatio = workingAgePopulation > 0
-    ? ((dependentPopulation / workingAgePopulation) * 100).toFixed(2)
-    : "0";
-    
+
+  const dependencyRatio =
+    workingAgePopulation > 0
+      ? ((dependentPopulation / workingAgePopulation) * 100).toFixed(2)
+      : "0";
+
   // Calculate child and elderly dependency ratios
-  const childPopulation = overallSummary.find(
-    (item) => item.ageGroup === "AGE_0_TO_14"
-  )?.population || 0;
-  
-  const elderlyPopulation = overallSummary.find(
-    (item) => item.ageGroup === "AGE_60_PLUS"
-  )?.population || 0;
-  
-  const childDependencyRatio = workingAgePopulation > 0
-    ? ((childPopulation / workingAgePopulation) * 100).toFixed(2)
-    : "0";
-    
-  const elderlyDependencyRatio = workingAgePopulation > 0
-    ? ((elderlyPopulation / workingAgePopulation) * 100).toFixed(2)
-    : "0";
+  const childPopulation =
+    overallSummary.find((item) => item.ageGroup === "AGE_0_TO_14")
+      ?.population || 0;
+
+  const elderlyPopulation =
+    overallSummary.find((item) => item.ageGroup === "AGE_60_PLUS")
+      ?.population || 0;
+
+  const childDependencyRatio =
+    workingAgePopulation > 0
+      ? ((childPopulation / workingAgePopulation) * 100).toFixed(2)
+      : "0";
+
+  const elderlyDependencyRatio =
+    workingAgePopulation > 0
+      ? ((elderlyPopulation / workingAgePopulation) * 100).toFixed(2)
+      : "0";
 
   // Find ward with highest and lowest dependency ratios
-  const highestDependencyWard = [...dependencyRatios].sort((a, b) => b.ratio - a.ratio)[0];
-  const lowestDependencyWard = [...dependencyRatios].sort((a, b) => a.ratio - b.ratio)[0];
+  const highestDependencyWard = [...dependencyRatios].sort(
+    (a, b) => b.ratio - a.ratio,
+  )[0];
+  const lowestDependencyWard = [...dependencyRatios].sort(
+    (a, b) => a.ratio - b.ratio,
+  )[0];
 
   // Add SEO-friendly data attributes to enhance crawler understanding
   useEffect(() => {
@@ -73,7 +80,7 @@ export default function EconomicallyActivePopulationAnalysisSection({
     if (document && document.body) {
       document.body.setAttribute(
         "data-municipality",
-        "Khajura Rural Municipality / खजुरा गाउँपालिका",
+        "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
       );
       document.body.setAttribute(
         "data-total-population",
@@ -91,15 +98,12 @@ export default function EconomicallyActivePopulationAnalysisSection({
       );
 
       // Add dependency data
-      document.body.setAttribute(
-        "data-dependency-ratio",
-        dependencyRatio,
-      );
+      document.body.setAttribute("data-dependency-ratio", dependencyRatio);
       document.body.setAttribute(
         "data-dependent-population",
         dependentPopulation.toString(),
       );
-      
+
       // Add child and elderly data
       document.body.setAttribute(
         "data-child-population",
@@ -145,7 +149,9 @@ export default function EconomicallyActivePopulationAnalysisSection({
                 className="absolute bottom-0 left-0 right-0"
                 style={{
                   height: `${Math.min(
-                    (item.population / Math.max(...overallSummary.map(i => i.population))) * 100,
+                    (item.population /
+                      Math.max(...overallSummary.map((i) => i.population))) *
+                      100,
                     100,
                   )}%`,
                   backgroundColor:
@@ -168,7 +174,8 @@ export default function EconomicallyActivePopulationAnalysisSection({
                   {localizeNumber(percentage, "ne")}%
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {localizeNumber(item.population.toLocaleString(), "ne")} व्यक्ति
+                  {localizeNumber(item.population.toLocaleString(), "ne")}{" "}
+                  व्यक्ति
                   <span className="sr-only">
                     ({item.population.toLocaleString()} people)
                   </span>
@@ -182,13 +189,18 @@ export default function EconomicallyActivePopulationAnalysisSection({
       <div className="bg-muted/50 p-4 rounded-lg mt-8">
         <h3 className="text-xl font-medium mb-4">
           आर्थिक सक्रिय जनसंख्या विश्लेषण
-          <span className="sr-only">Economically Active Population Analysis of Khajura</span>
+          <span className="sr-only">
+            Economically Active Population Analysis of Khajura
+          </span>
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div
             className="bg-card p-4 rounded border"
             data-analysis-type="working-age-population"
-            data-percentage={((workingAgePopulation / totalPopulation) * 100).toFixed(2)}
+            data-percentage={(
+              (workingAgePopulation / totalPopulation) *
+              100
+            ).toFixed(2)}
           >
             <h4 className="font-medium mb-2">
               कार्य उमेर जनसंख्या (१५-५९ वर्ष)
@@ -197,12 +209,18 @@ export default function EconomicallyActivePopulationAnalysisSection({
               </span>
             </h4>
             <p className="text-3xl font-bold">
-              {localizeNumber(((workingAgePopulation / totalPopulation) * 100).toFixed(2), "ne")}%
+              {localizeNumber(
+                ((workingAgePopulation / totalPopulation) * 100).toFixed(2),
+                "ne",
+              )}
+              %
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              {localizeNumber(workingAgePopulation.toLocaleString(), "ne")} व्यक्ति आर्थिक रूपमा सक्रिय उमेरका
+              {localizeNumber(workingAgePopulation.toLocaleString(), "ne")}{" "}
+              व्यक्ति आर्थिक रूपमा सक्रिय उमेरका
               <span className="sr-only">
-                {workingAgePopulation.toLocaleString()} people are of working age
+                {workingAgePopulation.toLocaleString()} people are of working
+                age
               </span>
             </p>
           </div>
@@ -220,9 +238,11 @@ export default function EconomicallyActivePopulationAnalysisSection({
               {localizeNumber(dependencyRatio, "ne")}%
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              हरेक १०० कार्य उमेरका व्यक्तिहरूमा {localizeNumber(dependencyRatio, "ne")} आश्रित व्यक्तिहरू
+              हरेक १०० कार्य उमेरका व्यक्तिहरूमा{" "}
+              {localizeNumber(dependencyRatio, "ne")} आश्रित व्यक्तिहरू
               <span className="sr-only">
-                {dependencyRatio} dependent persons for every 100 working-age persons
+                {dependencyRatio} dependent persons for every 100 working-age
+                persons
               </span>
             </p>
           </div>
@@ -235,10 +255,13 @@ export default function EconomicallyActivePopulationAnalysisSection({
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <h5 className="text-sm font-medium">बाल निर्भरता अनुपात (०-१४ वर्ष)</h5>
+              <h5 className="text-sm font-medium">
+                बाल निर्भरता अनुपात (०-१४ वर्ष)
+              </h5>
               <p className="text-sm text-muted-foreground">
-                {localizeNumber(childDependencyRatio, "ne")}% 
-                ({localizeNumber(childPopulation.toLocaleString(), "ne")} व्यक्ति)
+                {localizeNumber(childDependencyRatio, "ne")}% (
+                {localizeNumber(childPopulation.toLocaleString(), "ne")}{" "}
+                व्यक्ति)
               </p>
               <div className="w-full bg-muted h-2 rounded-full mt-2 overflow-hidden">
                 <div
@@ -251,10 +274,13 @@ export default function EconomicallyActivePopulationAnalysisSection({
               </div>
             </div>
             <div>
-              <h5 className="text-sm font-medium">वृद्ध निर्भरता अनुपात (६०+ वर्ष)</h5>
+              <h5 className="text-sm font-medium">
+                वृद्ध निर्भरता अनुपात (६०+ वर्ष)
+              </h5>
               <p className="text-sm text-muted-foreground">
-                {localizeNumber(elderlyDependencyRatio, "ne")}% 
-                ({localizeNumber(elderlyPopulation.toLocaleString(), "ne")} व्यक्ति)
+                {localizeNumber(elderlyDependencyRatio, "ne")}% (
+                {localizeNumber(elderlyPopulation.toLocaleString(), "ne")}{" "}
+                व्यक्ति)
               </p>
               <div className="w-full bg-muted h-2 rounded-full mt-2 overflow-hidden">
                 <div
@@ -267,18 +293,46 @@ export default function EconomicallyActivePopulationAnalysisSection({
               </div>
             </div>
           </div>
-          
+
           <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <h5 className="text-sm font-medium">सबैभन्दा बढी निर्भरता अनुपात</h5>
+              <h5 className="text-sm font-medium">
+                सबैभन्दा बढी निर्भरता अनुपात
+              </h5>
               <p className="text-sm">
-                <strong>वडा {localizeNumber(highestDependencyWard?.wardNumber.toString() || "", "ne")}:</strong> {localizeNumber(highestDependencyWard?.ratio.toFixed(2) || "", "ne")}%
+                <strong>
+                  वडा{" "}
+                  {localizeNumber(
+                    highestDependencyWard?.wardNumber.toString() || "",
+                    "ne",
+                  )}
+                  :
+                </strong>{" "}
+                {localizeNumber(
+                  highestDependencyWard?.ratio.toFixed(2) || "",
+                  "ne",
+                )}
+                %
               </p>
             </div>
             <div>
-              <h5 className="text-sm font-medium">सबैभन्दा कम निर्भरता अनुपात</h5>
+              <h5 className="text-sm font-medium">
+                सबैभन्दा कम निर्भरता अनुपात
+              </h5>
               <p className="text-sm">
-                <strong>वडा {localizeNumber(lowestDependencyWard?.wardNumber.toString() || "", "ne")}:</strong> {localizeNumber(lowestDependencyWard?.ratio.toFixed(2) || "", "ne")}%
+                <strong>
+                  वडा{" "}
+                  {localizeNumber(
+                    lowestDependencyWard?.wardNumber.toString() || "",
+                    "ne",
+                  )}
+                  :
+                </strong>{" "}
+                {localizeNumber(
+                  lowestDependencyWard?.ratio.toFixed(2) || "",
+                  "ne",
+                )}
+                %
               </p>
             </div>
           </div>

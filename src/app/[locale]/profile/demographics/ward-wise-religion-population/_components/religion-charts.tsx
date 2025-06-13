@@ -71,7 +71,7 @@ export default function ReligionCharts({
 
         <div className="border-b px-4 py-3">
           <h3 className="text-xl font-semibold" itemProp="headline">
-            खजुरा गाउँपालिकामा धर्म अनुसार जनसंख्या वितरण
+            परिवर्तन गाउँपालिकामा धर्म अनुसार जनसंख्या वितरण
           </h3>
           <p className="text-sm text-muted-foreground">
             कुल जनसंख्या:{" "}
@@ -117,8 +117,10 @@ export default function ReligionCharts({
                       </td>
                       <td className="border p-2 text-right">
                         {localizeNumber(
-                          ((item.population / totalPopulation) * 100).toFixed(2),
-                          "ne"
+                          ((item.population / totalPopulation) * 100).toFixed(
+                            2,
+                          ),
+                          "ne",
                         )}
                         %
                       </td>
@@ -165,7 +167,7 @@ export default function ReligionCharts({
                     <span className="font-medium">
                       {localizeNumber(
                         ((item.population / totalPopulation) * 100).toFixed(1),
-                        "ne"
+                        "ne",
                       )}
                       %
                     </span>
@@ -211,7 +213,7 @@ export default function ReligionCharts({
 
         <div className="border-b px-4 py-3">
           <h3 className="text-xl font-semibold" itemProp="headline">
-            खजुरा गाउँपालिकाको वडा अनुसार धर्म वितरण
+            परिवर्तन गाउँपालिकाको वडा अनुसार धर्म वितरण
           </h3>
           <p className="text-sm text-muted-foreground">
             वडा र धर्म अनुसार जनसंख्या वितरण
@@ -246,7 +248,7 @@ export default function ReligionCharts({
 
         <div className="border-b px-4 py-3">
           <h3 className="text-xl font-semibold" itemProp="headline">
-            खजुरा गाउँपालिकाको वडा अनुसार विस्तृत धार्मिक विश्लेषण
+            परिवर्तन गाउँपालिकाको वडा अनुसार विस्तृत धार्मिक विश्लेषण
           </h3>
           <p className="text-sm text-muted-foreground">
             प्रत्येक वडाको विस्तृत धार्मिक संरचना
@@ -271,16 +273,16 @@ export default function ReligionCharts({
               <tbody>
                 {wardNumbers.map((wardNumber, i) => {
                   const wardItems = religionData.filter(
-                    (item) => item.wardNumber === wardNumber
+                    (item) => item.wardNumber === wardNumber,
                   );
                   const wardTotal = wardItems.reduce(
                     (sum, item) => sum + (item.population || 0),
-                    0
+                    0,
                   );
 
                   // Sort by population to find primary and secondary religions
                   const sortedItems = [...wardItems].sort(
-                    (a, b) => (b.population || 0) - (a.population || 0)
+                    (a, b) => (b.population || 0) - (a.population || 0),
                   );
                   const primaryReligion = sortedItems[0];
                   const secondaryReligion = sortedItems[1];
@@ -300,7 +302,7 @@ export default function ReligionCharts({
                         {primaryReligion?.population
                           ? localizeNumber(
                               primaryReligion.population.toLocaleString(),
-                              "ne"
+                              "ne",
                             )
                           : "०"}
                       </td>
@@ -311,7 +313,7 @@ export default function ReligionCharts({
                                 (primaryReligion.population / wardTotal) *
                                 100
                               ).toFixed(2),
-                              "ne"
+                              "ne",
                             ) + "%"
                           : "०%"}
                       </td>
@@ -325,7 +327,7 @@ export default function ReligionCharts({
                         {secondaryReligion?.population
                           ? localizeNumber(
                               secondaryReligion.population.toLocaleString(),
-                              "ne"
+                              "ne",
                             )
                           : "०"}
                       </td>
@@ -336,7 +338,7 @@ export default function ReligionCharts({
                                 (secondaryReligion.population / wardTotal) *
                                 100
                               ).toFixed(2),
-                              "ne"
+                              "ne",
                             ) + "%"
                           : "०%"}
                       </td>

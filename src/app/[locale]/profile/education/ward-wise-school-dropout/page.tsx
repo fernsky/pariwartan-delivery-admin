@@ -14,39 +14,26 @@ const DROPOUT_CAUSE_GROUPS = {
     name: "आर्थिक कारण",
     nameEn: "Economic Reasons",
     color: "#4285F4", // Blue
-    causes: [
-      "EXPENSIVE",
-      "HOUSE_HELP",
-      "EMPLOYMENT"
-    ]
+    causes: ["EXPENSIVE", "HOUSE_HELP", "EMPLOYMENT"],
   },
   EDUCATIONAL: {
     name: "शैक्षिक कारण",
-    nameEn: "Educational Reasons", 
+    nameEn: "Educational Reasons",
     color: "#FBBC05", // Yellow
-    causes: [
-      "LIMITED_SPACE",
-      "FAR",
-      "WANTED_STUDY_COMPLETED"
-    ]
+    causes: ["LIMITED_SPACE", "FAR", "WANTED_STUDY_COMPLETED"],
   },
   SOCIAL: {
     name: "सामाजिक कारण",
     nameEn: "Social Reasons",
     color: "#34A853", // Green
-    causes: [
-      "MARRIAGE",
-      "UNWILLING_PARENTS"
-    ]
+    causes: ["MARRIAGE", "UNWILLING_PARENTS"],
   },
   OTHER: {
     name: "अन्य कारण",
     nameEn: "Other Reasons",
     color: "#EA4335", // Red
-    causes: [
-      "OTHER"
-    ]
-  }
+    causes: ["OTHER"],
+  },
 };
 
 // Force dynamic rendering since we're using tRPC which relies on headers
@@ -65,14 +52,17 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     const wardWiseSchoolDropoutData =
       await api.profile.education.wardWiseSchoolDropout.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Group by ward number
-    const wardGroups = wardWiseSchoolDropoutData.reduce((acc: any, curr: any) => {
-      acc[curr.wardNumber] = acc[curr.wardNumber] || [];
-      acc[curr.wardNumber].push(curr);
-      return acc;
-    }, {});
+    const wardGroups = wardWiseSchoolDropoutData.reduce(
+      (acc: any, curr: any) => {
+        acc[curr.wardNumber] = acc[curr.wardNumber] || [];
+        acc[curr.wardNumber].push(curr);
+        return acc;
+      },
+      {},
+    );
 
     // Calculate ward totals and grand total
     let totalDropouts = 0;
@@ -88,11 +78,14 @@ export async function generateMetadata(): Promise<Metadata> {
     });
 
     // Calculate percentages for SEO description
-    const economicDropoutPercentage = ((economicDropouts / totalDropouts) * 100).toFixed(2);
+    const economicDropoutPercentage = (
+      (economicDropouts / totalDropouts) *
+      100
+    ).toFixed(2);
 
     // Create rich keywords
     const keywordsNP = [
-      "खजुरा गाउँपालिका विद्यालय छाड्ने कारण",
+      "परिवर्तन गाउँपालिका विद्यालय छाड्ने कारण",
       "स्कूल ड्रपआउट",
       "वडागत शैक्षिक त्याग",
       "रोजगारीका लागि विद्यालय छाड्ने",
@@ -110,7 +103,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create description
-    const descriptionNP = `खजुरा गाउँपालिकामा विद्यालय छाड्नुका कारणहरूको विश्लेषण। कुल ${localizeNumber(totalDropouts.toLocaleString(), "ne")} जनसंख्या मध्ये ${localizeNumber(economicDropoutPercentage, "ne")}% (${localizeNumber(economicDropouts.toLocaleString(), "ne")}) जनाले आर्थिक कारणले विद्यालय छोडेका छन्।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकामा विद्यालय छाड्नुका कारणहरूको विश्लेषण। कुल ${localizeNumber(totalDropouts.toLocaleString(), "ne")} जनसंख्या मध्ये ${localizeNumber(economicDropoutPercentage, "ne")}% (${localizeNumber(economicDropouts.toLocaleString(), "ne")}) जनाले आर्थिक कारणले विद्यालय छोडेका छन्।`;
 
     const descriptionEN = `Analysis of school dropout causes in Khajura Rural Municipality. Out of a total of ${totalDropouts.toLocaleString()} dropouts, ${economicDropoutPercentage}% (${economicDropouts.toLocaleString()}) have left school for economic reasons.`;
 
@@ -142,7 +135,8 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "विद्यालय छाड्ने कारणहरूको अवस्था | खजुरा गाउँपालिका डिजिटल प्रोफाइल",
+      title:
+        "विद्यालय छाड्ने कारणहरूको अवस्था | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
       description: "वडा अनुसार विद्यालय छाड्ने कारणहरूको अवस्था र विश्लेषण।",
     };
   }
@@ -150,10 +144,26 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const toc = [
   { level: 2, text: "परिचय", slug: "introduction" },
-  { level: 2, text: "विद्यालय छाड्ने कारणहरूको वितरण", slug: "distribution-of-school-dropout-causes" },
-  { level: 2, text: "वडा अनुसार विद्यालय छाड्ने कारणहरू", slug: "ward-wise-school-dropout-causes" },
-  { level: 2, text: "विद्यालय छाड्ने कारणहरूको विश्लेषण", slug: "school-dropout-analysis" },
-  { level: 2, text: "शैक्षिक संरक्षण रणनीति", slug: "educational-retention-strategy" },
+  {
+    level: 2,
+    text: "विद्यालय छाड्ने कारणहरूको वितरण",
+    slug: "distribution-of-school-dropout-causes",
+  },
+  {
+    level: 2,
+    text: "वडा अनुसार विद्यालय छाड्ने कारणहरू",
+    slug: "ward-wise-school-dropout-causes",
+  },
+  {
+    level: 2,
+    text: "विद्यालय छाड्ने कारणहरूको विश्लेषण",
+    slug: "school-dropout-analysis",
+  },
+  {
+    level: 2,
+    text: "शैक्षिक संरक्षण रणनीति",
+    slug: "educational-retention-strategy",
+  },
 ];
 
 export default async function WardWiseSchoolDropoutPage() {
@@ -179,7 +189,7 @@ export default async function WardWiseSchoolDropoutPage() {
 
   // Create a mapping of cause to its human-readable name
   const causeMap: Record<string, string> = {};
-  schoolDropoutCauseOptions.forEach(option => {
+  schoolDropoutCauseOptions.forEach((option) => {
     causeMap[option.value] = option.label.split(" (")[0];
   });
 
@@ -189,7 +199,7 @@ export default async function WardWiseSchoolDropoutPage() {
     ECONOMIC: 0,
     EDUCATIONAL: 0,
     SOCIAL: 0,
-    OTHER: 0
+    OTHER: 0,
   };
 
   // Count by individual dropout cause
@@ -199,18 +209,22 @@ export default async function WardWiseSchoolDropoutPage() {
     wardData.forEach((item: any) => {
       // Add to total dropouts
       totalDropouts += item.population;
-      
+
       // Initialize if not exists
       if (!dropoutCauseTotals[item.cause]) {
         dropoutCauseTotals[item.cause] = 0;
       }
-      
+
       // Add to cause totals
       dropoutCauseTotals[item.cause] += item.population;
-      
+
       // Add to group totals
       for (const groupKey of Object.keys(DROPOUT_CAUSE_GROUPS)) {
-        if (DROPOUT_CAUSE_GROUPS[groupKey as keyof typeof DROPOUT_CAUSE_GROUPS].causes.includes(item.cause)) {
+        if (
+          DROPOUT_CAUSE_GROUPS[
+            groupKey as keyof typeof DROPOUT_CAUSE_GROUPS
+          ].causes.includes(item.cause)
+        ) {
           dropoutGroupTotals[groupKey] += item.population;
           break;
         }
@@ -220,16 +234,21 @@ export default async function WardWiseSchoolDropoutPage() {
 
   // Calculate percentages
   const dropoutGroupPercentages: Record<string, number> = {};
-  Object.keys(dropoutGroupTotals).forEach(group => {
-    dropoutGroupPercentages[group] = parseFloat(((dropoutGroupTotals[group] / totalDropouts) * 100).toFixed(2));
+  Object.keys(dropoutGroupTotals).forEach((group) => {
+    dropoutGroupPercentages[group] = parseFloat(
+      ((dropoutGroupTotals[group] / totalDropouts) * 100).toFixed(2),
+    );
   });
 
   // Get unique ward numbers
-  const wardNumbers = Object.keys(wardGroups).map(Number).sort((a, b) => a - b);
+  const wardNumbers = Object.keys(wardGroups)
+    .map(Number)
+    .sort((a, b) => a - b);
 
-  // Process data for pie chart 
-  const pieChartData = Object.keys(DROPOUT_CAUSE_GROUPS).map(groupKey => {
-    const group = DROPOUT_CAUSE_GROUPS[groupKey as keyof typeof DROPOUT_CAUSE_GROUPS];
+  // Process data for pie chart
+  const pieChartData = Object.keys(DROPOUT_CAUSE_GROUPS).map((groupKey) => {
+    const group =
+      DROPOUT_CAUSE_GROUPS[groupKey as keyof typeof DROPOUT_CAUSE_GROUPS];
     return {
       name: group.name,
       nameEn: group.nameEn,
@@ -240,43 +259,54 @@ export default async function WardWiseSchoolDropoutPage() {
   });
 
   // Process data for ward-wise visualization
-  const wardWiseData = wardNumbers.map((wardNumber) => {
-    const wardData = wardGroups[wardNumber];
-    
-    if (!wardData) return null;
-    
-    const totalWardDropouts = wardData.reduce((sum: number, item: any) => sum + item.population, 0);
-    
-    // Calculate ward-level totals for each dropout group
-    const wardDropoutGroups: Record<string, number> = {};
-    Object.keys(DROPOUT_CAUSE_GROUPS).forEach(groupKey => {
-      const group = DROPOUT_CAUSE_GROUPS[groupKey as keyof typeof DROPOUT_CAUSE_GROUPS];
-      const groupTotal = wardData
-        .filter((item: any) => group.causes.includes(item.cause))
-        .reduce((sum: number, item: any) => sum + item.population, 0);
-      
-      wardDropoutGroups[group.name] = groupTotal;
-    });
-    
-    return {
-      ward: `वडा ${wardNumber}`,
-      wardNumber,
-      ...wardDropoutGroups,
-      total: totalWardDropouts,
-    };
-  }).filter(Boolean);
+  const wardWiseData = wardNumbers
+    .map((wardNumber) => {
+      const wardData = wardGroups[wardNumber];
+
+      if (!wardData) return null;
+
+      const totalWardDropouts = wardData.reduce(
+        (sum: number, item: any) => sum + item.population,
+        0,
+      );
+
+      // Calculate ward-level totals for each dropout group
+      const wardDropoutGroups: Record<string, number> = {};
+      Object.keys(DROPOUT_CAUSE_GROUPS).forEach((groupKey) => {
+        const group =
+          DROPOUT_CAUSE_GROUPS[groupKey as keyof typeof DROPOUT_CAUSE_GROUPS];
+        const groupTotal = wardData
+          .filter((item: any) => group.causes.includes(item.cause))
+          .reduce((sum: number, item: any) => sum + item.population, 0);
+
+        wardDropoutGroups[group.name] = groupTotal;
+      });
+
+      return {
+        ward: `वडा ${wardNumber}`,
+        wardNumber,
+        ...wardDropoutGroups,
+        total: totalWardDropouts,
+      };
+    })
+    .filter(Boolean);
 
   // Find the ward with highest economic-related dropouts percentage
   const wardEconomicDropoutPercentages = wardWiseData.map((ward: any) => {
-    const economicDropoutPercentage = (ward[DROPOUT_CAUSE_GROUPS.ECONOMIC.name] / ward.total) * 100;
+    const economicDropoutPercentage =
+      (ward[DROPOUT_CAUSE_GROUPS.ECONOMIC.name] / ward.total) * 100;
     return {
       wardNumber: ward.wardNumber,
-      percentage: economicDropoutPercentage
+      percentage: economicDropoutPercentage,
     };
   });
-  
-  const highestEconomicDropoutWard = [...wardEconomicDropoutPercentages].sort((a, b) => b.percentage - a.percentage)[0];
-  const lowestEconomicDropoutWard = [...wardEconomicDropoutPercentages].sort((a, b) => a.percentage - b.percentage)[0];
+
+  const highestEconomicDropoutWard = [...wardEconomicDropoutPercentages].sort(
+    (a, b) => b.percentage - a.percentage,
+  )[0];
+  const lowestEconomicDropoutWard = [...wardEconomicDropoutPercentages].sort(
+    (a, b) => a.percentage - b.percentage,
+  )[0];
 
   return (
     <DocsLayout toc={<TableOfContents toc={toc} />}>
@@ -299,7 +329,7 @@ export default async function WardWiseSchoolDropoutPage() {
               src="/images/school-dropout-causes.svg"
               width={1200}
               height={400}
-              alt="विद्यालय छाड्ने कारणहरू - खजुरा गाउँपालिका (School Dropout Causes - Khajura Rural Municipality)"
+              alt="विद्यालय छाड्ने कारणहरू - परिवर्तन गाउँपालिका (School Dropout Causes - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -307,23 +337,36 @@ export default async function WardWiseSchoolDropoutPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा विद्यालय छाड्ने कारणहरूको अवस्था
+              परिवर्तन गाउँपालिकामा विद्यालय छाड्ने कारणहरूको अवस्था
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              विद्यालय छाड्नुका कारणहरू र त्यसले समग्र शैक्षिक प्रणालीमा पार्ने प्रभावको अध्ययन एक महत्वपूर्ण 
-              पक्ष हो। विद्यालय छाड्नुका विभिन्न सामाजिक, आर्थिक र शैक्षिक कारणहरू हुन सक्छन् जुन समग्र शिक्षा 
-              प्रणालीको सुधारका लागि महत्वपूर्ण छन्। यस खण्डमा खजुरा गाउँपालिकाको विभिन्न वडाहरूमा विद्यालय 
-              छाड्नुका कारणहरूको विश्लेषण प्रस्तुत गरिएको छ।
+              विद्यालय छाड्नुका कारणहरू र त्यसले समग्र शैक्षिक प्रणालीमा पार्ने
+              प्रभावको अध्ययन एक महत्वपूर्ण पक्ष हो। विद्यालय छाड्नुका विभिन्न
+              सामाजिक, आर्थिक र शैक्षिक कारणहरू हुन सक्छन् जुन समग्र शिक्षा
+              प्रणालीको सुधारका लागि महत्वपूर्ण छन्। यस खण्डमा परिवर्तन
+              गाउँपालिकाको विभिन्न वडाहरूमा विद्यालय छाड्नुका कारणहरूको विश्लेषण
+              प्रस्तुत गरिएको छ।
             </p>
             <p>
-              खजुरा गाउँपालिकामा कुल {localizeNumber(totalDropouts.toLocaleString(), "ne")} विद्यार्थीहरूले विविध कारणहरूले 
-              विद्यालय छोडेका छन्, जसमध्ये {localizeNumber(dropoutGroupPercentages.ECONOMIC.toFixed(2), "ne")}% आर्थिक सम्बन्धी, 
-              {localizeNumber(dropoutGroupPercentages.EDUCATIONAL.toFixed(2), "ne")}% शिक्षा सम्बन्धी, र 
-              {localizeNumber(dropoutGroupPercentages.SOCIAL.toFixed(2), "ne")}% सामाजिक कारणहरूले गर्दा विद्यालय छाडेका छन्।
+              परिवर्तन गाउँपालिकामा कुल{" "}
+              {localizeNumber(totalDropouts.toLocaleString(), "ne")}{" "}
+              विद्यार्थीहरूले विविध कारणहरूले विद्यालय छोडेका छन्, जसमध्ये{" "}
+              {localizeNumber(
+                dropoutGroupPercentages.ECONOMIC.toFixed(2),
+                "ne",
+              )}
+              % आर्थिक सम्बन्धी,
+              {localizeNumber(
+                dropoutGroupPercentages.EDUCATIONAL.toFixed(2),
+                "ne",
+              )}
+              % शिक्षा सम्बन्धी, र
+              {localizeNumber(dropoutGroupPercentages.SOCIAL.toFixed(2), "ne")}%
+              सामाजिक कारणहरूले गर्दा विद्यालय छाडेका छन्।
             </p>
 
             <h2
@@ -333,11 +376,11 @@ export default async function WardWiseSchoolDropoutPage() {
               विद्यालय छाड्ने कारणहरूको वितरण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा विद्यालय छाड्ने कारणहरूको वितरण निम्नानुसार रहेको छ:
+              परिवर्तन गाउँपालिकामा विद्यालय छाड्ने कारणहरूको वितरण निम्नानुसार
+              रहेको छ:
             </p>
           </div>
 
-        
           <WardWiseSchoolDropoutCharts
             pieChartData={pieChartData}
             wardWiseData={wardWiseData}
@@ -353,15 +396,31 @@ export default async function WardWiseSchoolDropoutPage() {
           />
 
           <div className="prose prose-slate dark:prose-invert max-w-none mt-8">
-            <h2 id="school-dropout-analysis" className="scroll-m-20 border-b pb-2">
+            <h2
+              id="school-dropout-analysis"
+              className="scroll-m-20 border-b pb-2"
+            >
               विद्यालय छाड्ने कारणहरूको विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा विद्यालय छाड्ने कारणहरूको विश्लेषण गर्दा, समग्रमा 
-              {localizeNumber(dropoutGroupPercentages.ECONOMIC.toFixed(2), "ne")}% जनसंख्याले आर्थिक सम्बन्धी कारणले विद्यालय छोडेका छन्।
-              वडागत रूपमा हेर्दा वडा नं. {localizeNumber(highestEconomicDropoutWard.wardNumber.toString(), "ne")} मा 
-              सबैभन्दा बढी {localizeNumber(highestEconomicDropoutWard.percentage.toFixed(2), "ne")}% 
-              जनसंख्याले आर्थिक कारणले विद्यालय छोडेका छन्।
+              परिवर्तन गाउँपालिकामा विद्यालय छाड्ने कारणहरूको विश्लेषण गर्दा,
+              समग्रमा
+              {localizeNumber(
+                dropoutGroupPercentages.ECONOMIC.toFixed(2),
+                "ne",
+              )}
+              % जनसंख्याले आर्थिक सम्बन्धी कारणले विद्यालय छोडेका छन्। वडागत
+              रूपमा हेर्दा वडा नं.{" "}
+              {localizeNumber(
+                highestEconomicDropoutWard.wardNumber.toString(),
+                "ne",
+              )}{" "}
+              मा सबैभन्दा बढी{" "}
+              {localizeNumber(
+                highestEconomicDropoutWard.percentage.toFixed(2),
+                "ne",
+              )}
+              % जनसंख्याले आर्थिक कारणले विद्यालय छोडेका छन्।
             </p>
 
             <WardWiseSchoolDropoutAnalysisSection
@@ -384,49 +443,67 @@ export default async function WardWiseSchoolDropoutPage() {
             </h2>
 
             <p>
-              खजुरा गाउँपालिकामा विद्यालय छाड्ने कारणहरूको तथ्याङ्क विश्लेषणबाट निम्न रणनीतिहरू 
-              अवलम्बन गर्न सकिन्छ:
+              परिवर्तन गाउँपालिकामा विद्यालय छाड्ने कारणहरूको तथ्याङ्क
+              विश्लेषणबाट निम्न रणनीतिहरू अवलम्बन गर्न सकिन्छ:
             </p>
 
             <div className="pl-6 space-y-4">
               <div className="flex">
                 <span className="font-bold mr-2">१.</span>
                 <div>
-                  <strong>आर्थिक सहायता कार्यक्रम:</strong> {localizeNumber(dropoutGroupPercentages.ECONOMIC.toFixed(2), "ne")}% 
-                  विद्यार्थीहरू आर्थिक कारणले स्कुल छाड्ने गरेकोले उनीहरूलाई छात्रवृत्ति र आर्थिक सहयोग कार्यक्रमहरू सञ्चालन गर्ने।
+                  <strong>आर्थिक सहायता कार्यक्रम:</strong>{" "}
+                  {localizeNumber(
+                    dropoutGroupPercentages.ECONOMIC.toFixed(2),
+                    "ne",
+                  )}
+                  % विद्यार्थीहरू आर्थिक कारणले स्कुल छाड्ने गरेकोले उनीहरूलाई
+                  छात्रवृत्ति र आर्थिक सहयोग कार्यक्रमहरू सञ्चालन गर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">२.</span>
                 <div>
-                  <strong>सामाजिक सहायता कार्यक्रम:</strong> सामाजिक कारणले विद्यालय छाड्नेहरूलाई समुदायमा आधारित सहयोग प्रणाली विकास गरी शिक्षामा निरन्तरता दिन प्रोत्साहन गर्ने।
+                  <strong>सामाजिक सहायता कार्यक्रम:</strong> सामाजिक कारणले
+                  विद्यालय छाड्नेहरूलाई समुदायमा आधारित सहयोग प्रणाली विकास गरी
+                  शिक्षामा निरन्तरता दिन प्रोत्साहन गर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">३.</span>
                 <div>
-                  <strong>लचिलो शैक्षिक कार्यक्रम:</strong> काम गर्दै पढ्न चाहने विद्यार्थीहरूका लागि अंशकालिक वा लचिलो समयमा पढ्न सक्ने व्यवस्था गर्ने।
+                  <strong>लचिलो शैक्षिक कार्यक्रम:</strong> काम गर्दै पढ्न चाहने
+                  विद्यार्थीहरूका लागि अंशकालिक वा लचिलो समयमा पढ्न सक्ने
+                  व्यवस्था गर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">४.</span>
                 <div>
-                  <strong>वडागत विशेष कार्यक्रमहरू:</strong> वडा नं. {localizeNumber(highestEconomicDropoutWard.wardNumber.toString(), "ne")} जस्ता 
-                  बढी ड्रपआउट दर भएका क्षेत्रहरूमा विशेष शैक्षिक प्रोत्साहन कार्यक्रमहरू सञ्चालन गर्ने।
+                  <strong>वडागत विशेष कार्यक्रमहरू:</strong> वडा नं.{" "}
+                  {localizeNumber(
+                    highestEconomicDropoutWard.wardNumber.toString(),
+                    "ne",
+                  )}{" "}
+                  जस्ता बढी ड्रपआउट दर भएका क्षेत्रहरूमा विशेष शैक्षिक
+                  प्रोत्साहन कार्यक्रमहरू सञ्चालन गर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">५.</span>
                 <div>
-                  <strong>परामर्श सेवा:</strong> विद्यालय छाड्न लागेका विद्यार्थीहरूका लागि परामर्श सेवा र अभिभावक शिक्षा कार्यक्रम सञ्चालन गर्ने।
+                  <strong>परामर्श सेवा:</strong> विद्यालय छाड्न लागेका
+                  विद्यार्थीहरूका लागि परामर्श सेवा र अभिभावक शिक्षा कार्यक्रम
+                  सञ्चालन गर्ने।
                 </div>
               </div>
             </div>
 
             <p className="mt-6">
-              यसरी खजुरा गाउँपालिकामा विद्यालय छाड्ने कारणहरूको विश्लेषणले पालिकामा 
-              शैक्षिक नीति निर्माण र कार्यक्रम तर्जुमा गर्न महत्वपूर्ण भूमिका खेल्दछ। विद्यालय छाड्ने दर घटाउन र विद्यार्थी संरक्षण गर्नका लागि 
-              वडागत आवश्यकता र विशेषताहरूलाई ध्यानमा राखी विशेष कार्यक्रमहरू सञ्चालन गर्नुपर्ने देखिन्छ।
+              यसरी परिवर्तन गाउँपालिकामा विद्यालय छाड्ने कारणहरूको विश्लेषणले
+              पालिकामा शैक्षिक नीति निर्माण र कार्यक्रम तर्जुमा गर्न महत्वपूर्ण
+              भूमिका खेल्दछ। विद्यालय छाड्ने दर घटाउन र विद्यार्थी संरक्षण
+              गर्नका लागि वडागत आवश्यकता र विशेषताहरूलाई ध्यानमा राखी विशेष
+              कार्यक्रमहरू सञ्चालन गर्नुपर्ने देखिन्छ।
             </p>
           </div>
         </section>

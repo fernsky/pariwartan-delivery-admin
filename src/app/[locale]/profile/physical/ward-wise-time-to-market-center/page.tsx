@@ -49,7 +49,7 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     const timeToMarketCenterData =
       await api.profile.physical.wardWiseTimeToMarketCenter.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Group by ward number
     const wardGroups = timeToMarketCenterData.reduce((acc: any, curr: any) => {
@@ -76,12 +76,18 @@ export async function generateMetadata(): Promise<Metadata> {
     });
 
     // Calculate percentages for SEO description
-    const under15MinPercentage = ((under15MinHouseholds / totalHouseholds) * 100).toFixed(2);
-    const over1HourPercentage = ((over1HourHouseholds / totalHouseholds) * 100).toFixed(2);
+    const under15MinPercentage = (
+      (under15MinHouseholds / totalHouseholds) *
+      100
+    ).toFixed(2);
+    const over1HourPercentage = (
+      (over1HourHouseholds / totalHouseholds) *
+      100
+    ).toFixed(2);
 
     // Create rich keywords
     const keywordsNP = [
-      "खजुरा गाउँपालिका बजार केन्द्र पहुँच",
+      "परिवर्तन गाउँपालिका बजार केन्द्र पहुँच",
       "बजार केन्द्र पहुँचको अवस्था",
       "वडागत बजार केन्द्र दूरी",
       "बजार केन्द्र पुग्न लाग्ने समय",
@@ -99,7 +105,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create description
-    const descriptionNP = `खजुरा गाउँपालिकामा बजार केन्द्रसम्म पुग्ने समय सम्बन्धी विश्लेषण। कुल ${localizeNumber(totalHouseholds.toLocaleString(), "ne")} घरधुरी मध्ये ${localizeNumber(under15MinPercentage, "ne")}% (${localizeNumber(under15MinHouseholds.toLocaleString(), "ne")}) घरधुरीले १५ मिनेटभित्र बजार केन्द्र पुग्न सक्छन्।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकामा बजार केन्द्रसम्म पुग्ने समय सम्बन्धी विश्लेषण। कुल ${localizeNumber(totalHouseholds.toLocaleString(), "ne")} घरधुरी मध्ये ${localizeNumber(under15MinPercentage, "ne")}% (${localizeNumber(under15MinHouseholds.toLocaleString(), "ne")}) घरधुरीले १५ मिनेटभित्र बजार केन्द्र पुग्न सक्छन्।`;
 
     const descriptionEN = `Analysis of time taken to reach market centers in Khajura Rural Municipality. Out of a total of ${totalHouseholds.toLocaleString()} households, ${under15MinPercentage}% (${under15MinHouseholds.toLocaleString()}) can reach a market center within 15 minutes.`;
 
@@ -131,18 +137,36 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "बजार केन्द्र पुग्न लाग्ने समयको अवस्था | खजुरा गाउँपालिका डिजिटल प्रोफाइल",
-      description: "वडा अनुसार बजार केन्द्रमा पुग्न लाग्ने समयको अवस्था र विश्लेषण।",
+      title:
+        "बजार केन्द्र पुग्न लाग्ने समयको अवस्था | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
+      description:
+        "वडा अनुसार बजार केन्द्रमा पुग्न लाग्ने समयको अवस्था र विश्लेषण।",
     };
   }
 }
 
 const toc = [
   { level: 2, text: "परिचय", slug: "introduction" },
-  { level: 2, text: "बजार केन्द्र पुग्न लाग्ने समयको वितरण", slug: "distribution-of-time-to-market-center" },
-  { level: 2, text: "वडा अनुसार बजार केन्द्र पहुँच", slug: "ward-wise-market-center-access" },
-  { level: 2, text: "बजार केन्द्र पहुँचको विश्लेषण", slug: "market-center-access-analysis" },
-  { level: 2, text: "बजार पहुँच सुधार रणनीति", slug: "market-access-improvement-strategy" },
+  {
+    level: 2,
+    text: "बजार केन्द्र पुग्न लाग्ने समयको वितरण",
+    slug: "distribution-of-time-to-market-center",
+  },
+  {
+    level: 2,
+    text: "वडा अनुसार बजार केन्द्र पहुँच",
+    slug: "ward-wise-market-center-access",
+  },
+  {
+    level: 2,
+    text: "बजार केन्द्र पहुँचको विश्लेषण",
+    slug: "market-center-access-analysis",
+  },
+  {
+    level: 2,
+    text: "बजार पहुँच सुधार रणनीति",
+    slug: "market-access-improvement-strategy",
+  },
 ];
 
 export default async function WardWiseTimeToMarketCenterPage() {
@@ -168,7 +192,7 @@ export default async function WardWiseTimeToMarketCenterPage() {
 
   // Create a mapping of timeToMarketCenter to its human-readable name
   const timeMap: Record<string, string> = {};
-  timeToMarketCenterOptions.forEach(option => {
+  timeToMarketCenterOptions.forEach((option) => {
     timeMap[option.value] = option.label.split(" (")[0];
   });
 
@@ -178,14 +202,14 @@ export default async function WardWiseTimeToMarketCenterPage() {
     UNDER_15_MIN: 0,
     UNDER_30_MIN: 0,
     UNDER_1_HOUR: 0,
-    "1_HOUR_OR_MORE": 0
+    "1_HOUR_OR_MORE": 0,
   };
 
   Object.values(wardGroups).forEach((wardData: any) => {
     wardData.forEach((item: any) => {
       // Add to total households
       totalHouseholds += item.households;
-      
+
       // Add to time category totals
       if (timeCategoryTotals[item.timeToMarketCenter] !== undefined) {
         timeCategoryTotals[item.timeToMarketCenter] += item.households;
@@ -195,18 +219,23 @@ export default async function WardWiseTimeToMarketCenterPage() {
 
   // Calculate percentages
   const timeCategoryPercentages: Record<string, number> = {};
-  Object.keys(timeCategoryTotals).forEach(category => {
-    timeCategoryPercentages[category] = parseFloat(((timeCategoryTotals[category] / totalHouseholds) * 100).toFixed(2));
+  Object.keys(timeCategoryTotals).forEach((category) => {
+    timeCategoryPercentages[category] = parseFloat(
+      ((timeCategoryTotals[category] / totalHouseholds) * 100).toFixed(2),
+    );
   });
 
   // Get unique ward numbers
-  const wardNumbers = Object.keys(wardGroups).map(Number).sort((a, b) => a - b);
+  const wardNumbers = Object.keys(wardGroups)
+    .map(Number)
+    .sort((a, b) => a - b);
 
-  // Process data for pie chart 
-  const pieChartData = Object.keys(TIME_CATEGORIES).map(categoryKey => {
+  // Process data for pie chart
+  const pieChartData = Object.keys(TIME_CATEGORIES).map((categoryKey) => {
     return {
       name: TIME_CATEGORIES[categoryKey as keyof typeof TIME_CATEGORIES].name,
-      nameEn: TIME_CATEGORIES[categoryKey as keyof typeof TIME_CATEGORIES].nameEn,
+      nameEn:
+        TIME_CATEGORIES[categoryKey as keyof typeof TIME_CATEGORIES].nameEn,
       value: timeCategoryTotals[categoryKey],
       percentage: timeCategoryPercentages[categoryKey].toFixed(2),
       color: TIME_CATEGORIES[categoryKey as keyof typeof TIME_CATEGORIES].color,
@@ -214,51 +243,63 @@ export default async function WardWiseTimeToMarketCenterPage() {
   });
 
   // Process data for ward-wise visualization
-  const wardWiseData = wardNumbers.map((wardNumber) => {
-    const wardData = wardGroups[wardNumber];
-    
-    if (!wardData) return null;
-    
-    const totalWardHouseholds = wardData.reduce((sum: number, item: any) => sum + item.households, 0);
-    
-    // Calculate ward-level totals for each time category
-    const wardTimeCategories: Record<string, number> = {};
-    Object.keys(TIME_CATEGORIES).forEach(categoryKey => {
-      const category = TIME_CATEGORIES[categoryKey as keyof typeof TIME_CATEGORIES];
-      const categoryTotal = wardData
-        .filter((item: any) => item.timeToMarketCenter === categoryKey)
-        .reduce((sum: number, item: any) => sum + item.households, 0);
-      
-      wardTimeCategories[category.name] = categoryTotal;
-    });
-    
-    return {
-      ward: `वडा ${wardNumber}`,
-      wardNumber,
-      ...wardTimeCategories,
-      total: totalWardHouseholds,
-    };
-  }).filter(Boolean);
+  const wardWiseData = wardNumbers
+    .map((wardNumber) => {
+      const wardData = wardGroups[wardNumber];
+
+      if (!wardData) return null;
+
+      const totalWardHouseholds = wardData.reduce(
+        (sum: number, item: any) => sum + item.households,
+        0,
+      );
+
+      // Calculate ward-level totals for each time category
+      const wardTimeCategories: Record<string, number> = {};
+      Object.keys(TIME_CATEGORIES).forEach((categoryKey) => {
+        const category =
+          TIME_CATEGORIES[categoryKey as keyof typeof TIME_CATEGORIES];
+        const categoryTotal = wardData
+          .filter((item: any) => item.timeToMarketCenter === categoryKey)
+          .reduce((sum: number, item: any) => sum + item.households, 0);
+
+        wardTimeCategories[category.name] = categoryTotal;
+      });
+
+      return {
+        ward: `वडा ${wardNumber}`,
+        wardNumber,
+        ...wardTimeCategories,
+        total: totalWardHouseholds,
+      };
+    })
+    .filter(Boolean);
 
   // Find the ward with highest and lowest percentages of households that can access market center quickly
   const wardQuickAccessPercentages = wardWiseData.map((ward: any) => {
-    const quickAccessHouseholds = (ward[TIME_CATEGORIES.UNDER_15_MIN.name] || 0) + (ward[TIME_CATEGORIES.UNDER_30_MIN.name] || 0);
+    const quickAccessHouseholds =
+      (ward[TIME_CATEGORIES.UNDER_15_MIN.name] || 0) +
+      (ward[TIME_CATEGORIES.UNDER_30_MIN.name] || 0);
     const quickAccessPercentage = (quickAccessHouseholds / ward.total) * 100;
     return {
       wardNumber: ward.wardNumber,
-      percentage: quickAccessPercentage
+      percentage: quickAccessPercentage,
     };
   });
-  
-  const bestAccessWard = [...wardQuickAccessPercentages].sort((a, b) => b.percentage - a.percentage)[0];
-  const worstAccessWard = [...wardQuickAccessPercentages].sort((a, b) => a.percentage - b.percentage)[0];
+
+  const bestAccessWard = [...wardQuickAccessPercentages].sort(
+    (a, b) => b.percentage - a.percentage,
+  )[0];
+  const worstAccessWard = [...wardQuickAccessPercentages].sort(
+    (a, b) => a.percentage - b.percentage,
+  )[0];
 
   // Calculate accessibility index (0-100, higher is better)
-  const accessibilityIndex = 
-    (timeCategoryPercentages.UNDER_15_MIN * 1.0) + 
-    (timeCategoryPercentages.UNDER_30_MIN * 0.75) + 
-    (timeCategoryPercentages.UNDER_1_HOUR * 0.5) + 
-    (timeCategoryPercentages["1_HOUR_OR_MORE"] * 0.25);
+  const accessibilityIndex =
+    timeCategoryPercentages.UNDER_15_MIN * 1.0 +
+    timeCategoryPercentages.UNDER_30_MIN * 0.75 +
+    timeCategoryPercentages.UNDER_1_HOUR * 0.5 +
+    timeCategoryPercentages["1_HOUR_OR_MORE"] * 0.25;
 
   return (
     <DocsLayout toc={<TableOfContents toc={toc} />}>
@@ -282,7 +323,7 @@ export default async function WardWiseTimeToMarketCenterPage() {
               src="/images/market-access.svg"
               width={1200}
               height={400}
-              alt="बजार केन्द्र पुग्न लाग्ने समय - खजुरा गाउँपालिका (Time to Market Center - Khajura Rural Municipality)"
+              alt="बजार केन्द्र पुग्न लाग्ने समय - परिवर्तन गाउँपालिका (Time to Market Center - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -290,23 +331,39 @@ export default async function WardWiseTimeToMarketCenterPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा बजार केन्द्र पुग्न लाग्ने समयको अवस्था
+              परिवर्तन गाउँपालिकामा बजार केन्द्र पुग्न लाग्ने समयको अवस्था
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              बजार केन्द्रको पहुँच एक महत्वपूर्ण भौतिक सूचक हो जसले समुदायको आवश्यक वस्तु र सेवामा पहुँचको अवस्थालाई दर्शाउँछ। 
-              बजार केन्द्रसम्म पुग्न लाग्ने समयको अध्ययनले स्थानीय जनताको दैनिक जीवनयापन, व्यापार-व्यवसाय र आर्थिक गतिविधिहरूमा पहुँचको अवस्था 
-              बुझ्न मद्दत पुर्‍याउँछ। यस खण्डमा खजुरा गाउँपालिकाको विभिन्न वडाहरूमा बजार केन्द्रसम्म पुग्न लाग्ने समयको विस्तृत विश्लेषण 
-              प्रस्तुत गरिएको छ।
+              बजार केन्द्रको पहुँच एक महत्वपूर्ण भौतिक सूचक हो जसले समुदायको
+              आवश्यक वस्तु र सेवामा पहुँचको अवस्थालाई दर्शाउँछ। बजार केन्द्रसम्म
+              पुग्न लाग्ने समयको अध्ययनले स्थानीय जनताको दैनिक जीवनयापन,
+              व्यापार-व्यवसाय र आर्थिक गतिविधिहरूमा पहुँचको अवस्था बुझ्न मद्दत
+              पुर्‍याउँछ। यस खण्डमा परिवर्तन गाउँपालिकाको विभिन्न वडाहरूमा बजार
+              केन्द्रसम्म पुग्न लाग्ने समयको विस्तृत विश्लेषण प्रस्तुत गरिएको छ।
             </p>
             <p>
-              खजुरा गाउँपालिकामा कुल {localizeNumber(totalHouseholds.toLocaleString(), "ne")} घरधुरी मध्ये 
-              {localizeNumber(timeCategoryPercentages.UNDER_15_MIN.toFixed(2), "ne")}% घरधुरीले १५ मिनेटभित्र, 
-              {localizeNumber(timeCategoryPercentages.UNDER_30_MIN.toFixed(2), "ne")}% घरधुरीले ३० मिनेटभित्र, र 
-              {localizeNumber(timeCategoryPercentages.UNDER_1_HOUR.toFixed(2), "ne")}% घरधुरीले १ घण्टाभित्र बजार केन्द्र पुग्न सक्छन्।
+              परिवर्तन गाउँपालिकामा कुल{" "}
+              {localizeNumber(totalHouseholds.toLocaleString(), "ne")} घरधुरी
+              मध्ये
+              {localizeNumber(
+                timeCategoryPercentages.UNDER_15_MIN.toFixed(2),
+                "ne",
+              )}
+              % घरधुरीले १५ मिनेटभित्र,
+              {localizeNumber(
+                timeCategoryPercentages.UNDER_30_MIN.toFixed(2),
+                "ne",
+              )}
+              % घरधुरीले ३० मिनेटभित्र, र
+              {localizeNumber(
+                timeCategoryPercentages.UNDER_1_HOUR.toFixed(2),
+                "ne",
+              )}
+              % घरधुरीले १ घण्टाभित्र बजार केन्द्र पुग्न सक्छन्।
             </p>
 
             <h2
@@ -316,7 +373,8 @@ export default async function WardWiseTimeToMarketCenterPage() {
               बजार केन्द्र पुग्न लाग्ने समयको वितरण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा बजार केन्द्रसम्म पुग्न लाग्ने समयको वितरण निम्नानुसार रहेको छ:
+              परिवर्तन गाउँपालिकामा बजार केन्द्रसम्म पुग्न लाग्ने समयको वितरण
+              निम्नानुसार रहेको छ:
             </p>
           </div>
 
@@ -335,14 +393,23 @@ export default async function WardWiseTimeToMarketCenterPage() {
           />
 
           <div className="prose prose-slate dark:prose-invert max-w-none mt-8">
-            <h2 id="market-center-access-analysis" className="scroll-m-20 border-b pb-2">
+            <h2
+              id="market-center-access-analysis"
+              className="scroll-m-20 border-b pb-2"
+            >
               बजार केन्द्र पहुँचको विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा बजार केन्द्र पहुँचको विश्लेषण गर्दा, समग्रमा 
-              {localizeNumber(timeCategoryPercentages.UNDER_30_MIN.toFixed(2), "ne")}% घरधुरीले ३० मिनेटभित्र बजार केन्द्र पुग्न सक्छन्।
-              वडागत रूपमा हेर्दा वडा नं. {localizeNumber(bestAccessWard.wardNumber.toString(), "ne")} मा 
-              सबैभन्दा राम्रो बजार पहुँच रहेको छ, जहाँ {localizeNumber(bestAccessWard.percentage.toFixed(2), "ne")}% 
+              परिवर्तन गाउँपालिकामा बजार केन्द्र पहुँचको विश्लेषण गर्दा, समग्रमा
+              {localizeNumber(
+                timeCategoryPercentages.UNDER_30_MIN.toFixed(2),
+                "ne",
+              )}
+              % घरधुरीले ३० मिनेटभित्र बजार केन्द्र पुग्न सक्छन्। वडागत रूपमा
+              हेर्दा वडा नं.{" "}
+              {localizeNumber(bestAccessWard.wardNumber.toString(), "ne")} मा
+              सबैभन्दा राम्रो बजार पहुँच रहेको छ, जहाँ{" "}
+              {localizeNumber(bestAccessWard.percentage.toFixed(2), "ne")}%
               घरधुरीहरूले ३० मिनेटभित्रै बजार केन्द्र पुग्न सक्छन्।
             </p>
 
@@ -365,49 +432,68 @@ export default async function WardWiseTimeToMarketCenterPage() {
             </h2>
 
             <p>
-              खजुरा गाउँपालिकामा बजार केन्द्र पुग्न लाग्ने समयको तथ्याङ्क विश्लेषणबाट निम्न रणनीतिहरू 
-              अवलम्बन गर्न सकिन्छ:
+              परिवर्तन गाउँपालिकामा बजार केन्द्र पुग्न लाग्ने समयको तथ्याङ्क
+              विश्लेषणबाट निम्न रणनीतिहरू अवलम्बन गर्न सकिन्छ:
             </p>
 
             <div className="pl-6 space-y-4">
               <div className="flex">
                 <span className="font-bold mr-2">१.</span>
                 <div>
-                  <strong>स्थानीय बजार केन्द्र विकास:</strong> {localizeNumber(timeCategoryPercentages["1_HOUR_OR_MORE"].toFixed(2), "ne")}% 
-                  घरधुरीहरूलाई बजार केन्द्र पुग्न १ घण्टाभन्दा बढी समय लाग्ने हुनाले त्यस्ता क्षेत्रहरूमा स-साना स्थानीय बजार केन्द्रहरूको विकास गर्ने।
+                  <strong>स्थानीय बजार केन्द्र विकास:</strong>{" "}
+                  {localizeNumber(
+                    timeCategoryPercentages["1_HOUR_OR_MORE"].toFixed(2),
+                    "ne",
+                  )}
+                  % घरधुरीहरूलाई बजार केन्द्र पुग्न १ घण्टाभन्दा बढी समय लाग्ने
+                  हुनाले त्यस्ता क्षेत्रहरूमा स-साना स्थानीय बजार केन्द्रहरूको
+                  विकास गर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">२.</span>
                 <div>
-                  <strong>सडक पूर्वाधार सुधार:</strong> वडा नं. {localizeNumber(worstAccessWard.wardNumber.toString(), "ne")} मा बजार केन्द्र पहुँचको अवस्था सबैभन्दा कमजोर रहेकोले
-                  त्यस क्षेत्रमा सडक संजालको विस्तार र सुधार गर्ने तथा बजारसम्म पुग्ने सडकको स्तरोन्नति गर्ने।
+                  <strong>सडक पूर्वाधार सुधार:</strong> वडा नं.{" "}
+                  {localizeNumber(worstAccessWard.wardNumber.toString(), "ne")}{" "}
+                  मा बजार केन्द्र पहुँचको अवस्था सबैभन्दा कमजोर रहेकोले त्यस
+                  क्षेत्रमा सडक संजालको विस्तार र सुधार गर्ने तथा बजारसम्म
+                  पुग्ने सडकको स्तरोन्नति गर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">३.</span>
                 <div>
-                  <strong>मोबाइल बजार सेवा प्रवर्द्धन:</strong> टाढाका बस्तीहरूमा नियमित रूपमा मोबाइल बजार सेवा संचालन गरी आवश्यक वस्तु तथा सेवाहरूको पहुँच सुनिश्चित गर्ने।
+                  <strong>मोबाइल बजार सेवा प्रवर्द्धन:</strong> टाढाका
+                  बस्तीहरूमा नियमित रूपमा मोबाइल बजार सेवा संचालन गरी आवश्यक
+                  वस्तु तथा सेवाहरूको पहुँच सुनिश्चित गर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">४.</span>
                 <div>
-                  <strong>सामुदायिक बजार सहकारी प्रवर्द्धन:</strong> दूरदराजका क्षेत्रहरूमा सामुदायिक सहकारी मार्फत आवश्यक वस्तुहरू सुपथ मूल्यमा उपलब्ध गराउने संयन्त्र विकास गर्ने।
+                  <strong>सामुदायिक बजार सहकारी प्रवर्द्धन:</strong> दूरदराजका
+                  क्षेत्रहरूमा सामुदायिक सहकारी मार्फत आवश्यक वस्तुहरू सुपथ
+                  मूल्यमा उपलब्ध गराउने संयन्त्र विकास गर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">५.</span>
                 <div>
-                  <strong>आधुनिक बजार पूर्वाधार विकास:</strong> मौजुदा बजार केन्द्रहरूमा आधुनिक पूर्वाधार विकास, सडक सम्पर्क सुधार, सार्वजनिक यातायात सेवा विस्तार गरी केन्द्रीय बजारको सेवा प्रभावकारिता बढाउने।
+                  <strong>आधुनिक बजार पूर्वाधार विकास:</strong> मौजुदा बजार
+                  केन्द्रहरूमा आधुनिक पूर्वाधार विकास, सडक सम्पर्क सुधार,
+                  सार्वजनिक यातायात सेवा विस्तार गरी केन्द्रीय बजारको सेवा
+                  प्रभावकारिता बढाउने।
                 </div>
               </div>
             </div>
 
             <p className="mt-6">
-              यसरी खजुरा गाउँपालिकामा बजार केन्द्र पुग्न लाग्ने समयको विश्लेषण र समग्र बजार पहुँचको अध्ययनले पालिकामा 
-              स्थानीय अर्थतन्त्रको विकास, बजार प्रणालीको सुदृढीकरण र आपूर्ति व्यवस्थापनका लागि रणनीतिक योजना बनाउन महत्वपूर्ण भूमिका खेल्दछ। 
-              वडागत आवश्यकता र प्राथमिकताका आधारमा लक्षित कार्यक्रम र पूर्वाधार विकास गरेर बजार केन्द्रहरूको पहुँच सुधार गर्न सकिन्छ।
+              यसरी परिवर्तन गाउँपालिकामा बजार केन्द्र पुग्न लाग्ने समयको
+              विश्लेषण र समग्र बजार पहुँचको अध्ययनले पालिकामा स्थानीय
+              अर्थतन्त्रको विकास, बजार प्रणालीको सुदृढीकरण र आपूर्ति
+              व्यवस्थापनका लागि रणनीतिक योजना बनाउन महत्वपूर्ण भूमिका खेल्दछ।
+              वडागत आवश्यकता र प्राथमिकताका आधारमा लक्षित कार्यक्रम र पूर्वाधार
+              विकास गरेर बजार केन्द्रहरूको पहुँच सुधार गर्न सकिन्छ।
             </p>
           </div>
         </section>

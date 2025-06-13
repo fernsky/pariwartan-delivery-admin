@@ -26,38 +26,41 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const birthCertificateData =
       await api.profile.demographics.wardWiseBirthCertificatePopulation.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Try to get summary data
     let totalWithCertificate = 0;
     let totalWithoutCertificate = 0;
     let totalPopulation = 0;
-    
+
     try {
-      const summaryData = await api.profile.demographics.wardWiseBirthCertificatePopulation.summary.query();
+      const summaryData =
+        await api.profile.demographics.wardWiseBirthCertificatePopulation.summary.query();
       totalWithCertificate = summaryData.totalWithBirthCertificate;
       totalWithoutCertificate = summaryData.totalWithoutBirthCertificate;
       totalPopulation = summaryData.totalPopulationUnder5;
     } catch (error) {
       // Calculate from raw data if summary API fails
       totalWithCertificate = birthCertificateData.reduce(
-        (sum, item) => sum + (item.withBirthCertificate || 0), 0
+        (sum, item) => sum + (item.withBirthCertificate || 0),
+        0,
       );
       totalWithoutCertificate = birthCertificateData.reduce(
-        (sum, item) => sum + (item.withoutBirthCertificate || 0), 0
+        (sum, item) => sum + (item.withoutBirthCertificate || 0),
+        0,
       );
       totalPopulation = totalWithCertificate + totalWithoutCertificate;
     }
 
     // Create rich keywords with actual data
     const keywordsNP = [
-      "खजुरा गाउँपालिका जन्मदर्ता",
+      "परिवर्तन गाउँपालिका जन्मदर्ता",
       "पाँच वर्षमुनिका बालबालिका जन्मदर्ता",
       "वडा अनुसार जन्मदर्ता विवरण",
       "बालबालिका जन्मदर्ता विश्लेषण",
       "जन्मदर्ता प्रमाणपत्र धारक बालबालिका",
-      `खजुरा जन्मदर्ताको स्थिति: जन्मदर्ता भएका ${localizeNumber(totalWithCertificate.toString(), "ne")}, नभएका ${localizeNumber(totalWithoutCertificate.toString(), "ne")}`,
-      `खजुरा पाँच वर्षमुनिका कुल बालबालिका संख्या ${localizeNumber(totalPopulation.toString(), "ne")}`,
+      `परिवर्तन जन्मदर्ताको स्थिति: जन्मदर्ता भएका ${localizeNumber(totalWithCertificate.toString(), "ne")}, नभएका ${localizeNumber(totalWithoutCertificate.toString(), "ne")}`,
+      `परिवर्तन पाँच वर्षमुनिका कुल बालबालिका संख्या ${localizeNumber(totalPopulation.toString(), "ne")}`,
     ];
 
     const keywordsEN = [
@@ -71,7 +74,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data
-    const descriptionNP = `खजुरा गाउँपालिकाको वडा अनुसार पाँच वर्षमुनिका बालबालिकाहरूको जन्मदर्ता प्रमाणपत्र वितरण र विश्लेषण। कुल ${localizeNumber(totalPopulation.toString(), "ne")} बालबालिकामध्ये ${localizeNumber(totalWithCertificate.toString(), "ne")} जनासँग जन्मदर्ता प्रमाणपत्र छ भने ${localizeNumber(totalWithoutCertificate.toString(), "ne")} जनासँग छैन।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार पाँच वर्षमुनिका बालबालिकाहरूको जन्मदर्ता प्रमाणपत्र वितरण र विश्लेषण। कुल ${localizeNumber(totalPopulation.toString(), "ne")} बालबालिकामध्ये ${localizeNumber(totalWithCertificate.toString(), "ne")} जनासँग जन्मदर्ता प्रमाणपत्र छ भने ${localizeNumber(totalWithoutCertificate.toString(), "ne")} जनासँग छैन।`;
 
     const descriptionEN = `Ward-wise distribution and analysis of birth certificate holders among children under five in Khajura Rural Municipality. Out of ${totalPopulation} total children, ${totalWithCertificate} have birth certificates and ${totalWithoutCertificate} do not have birth certificates.`;
 
@@ -80,7 +83,8 @@ export async function generateMetadata(): Promise<Metadata> {
       description: descriptionNP,
       keywords: [...keywordsNP, ...keywordsEN],
       alternates: {
-        canonical: "/profile/demographics/ward-wise-birth-certificate-population",
+        canonical:
+          "/profile/demographics/ward-wise-birth-certificate-population",
         languages: {
           en: "/en/profile/demographics/ward-wise-birth-certificate-population",
           ne: "/ne/profile/demographics/ward-wise-birth-certificate-population",
@@ -103,7 +107,8 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "पाँच वर्षमुनिका बालबालिका जन्मदर्ता | खजुरा गाउँपालिका डिजिटल प्रोफाइल",
+      title:
+        "पाँच वर्षमुनिका बालबालिका जन्मदर्ता | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
       description:
         "वडा अनुसार पाँच वर्षमुनिका बालबालिकाहरूको जन्मदर्ता प्रमाणपत्र वितरण र विश्लेषण।",
     };
@@ -112,8 +117,16 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const toc = [
   { level: 2, text: "परिचय", slug: "introduction" },
-  { level: 2, text: "पाँच वर्षमुनिका बालबालिका जन्मदर्ता", slug: "birth-certificate-status" },
-  { level: 2, text: "वडा अनुसार जन्मदर्ता वितरण", slug: "ward-wise-birth-certificates" },
+  {
+    level: 2,
+    text: "पाँच वर्षमुनिका बालबालिका जन्मदर्ता",
+    slug: "birth-certificate-status",
+  },
+  {
+    level: 2,
+    text: "वडा अनुसार जन्मदर्ता वितरण",
+    slug: "ward-wise-birth-certificates",
+  },
   { level: 2, text: "जन्मदर्ता विश्लेषण", slug: "birth-certificate-analysis" },
 ];
 
@@ -131,7 +144,7 @@ export default async function WardWiseBirthCertificatePopulationPage() {
   try {
     summaryData =
       await api.profile.demographics.wardWiseBirthCertificatePopulation.summary.query();
-    
+
     totalWithCertificate = summaryData.totalWithBirthCertificate;
     totalWithoutCertificate = summaryData.totalWithoutBirthCertificate;
     totalPopulation = summaryData.totalPopulationUnder5;
@@ -139,16 +152,20 @@ export default async function WardWiseBirthCertificatePopulationPage() {
     console.error("Could not fetch summary data", error);
     // Calculate from raw data if summary API fails
     totalWithCertificate = birthCertificateData.reduce(
-      (sum, item) => sum + (item.withBirthCertificate || 0), 0
+      (sum, item) => sum + (item.withBirthCertificate || 0),
+      0,
     );
     totalWithoutCertificate = birthCertificateData.reduce(
-      (sum, item) => sum + (item.withoutBirthCertificate || 0), 0
+      (sum, item) => sum + (item.withoutBirthCertificate || 0),
+      0,
     );
     totalPopulation = totalWithCertificate + totalWithoutCertificate;
   }
 
   // Sort data by ward number for consistent presentation
-  const sortedData = [...birthCertificateData].sort((a, b) => a.wardNumber - b.wardNumber);
+  const sortedData = [...birthCertificateData].sort(
+    (a, b) => a.wardNumber - b.wardNumber,
+  );
 
   // Get unique ward numbers
   const wardNumbers = Array.from(
@@ -160,23 +177,22 @@ export default async function WardWiseBirthCertificatePopulationPage() {
     const wardData = birthCertificateData.find(
       (item) => item.wardNumber === wardNumber,
     );
-    
+
     const withCertificate = wardData?.withBirthCertificate || 0;
     const withoutCertificate = wardData?.withoutBirthCertificate || 0;
     const total = withCertificate + withoutCertificate;
-    
-    const percentageWithCertificate = totalWithCertificate > 0 
-      ? ((withCertificate / totalWithCertificate) * 100).toFixed(2) 
-      : "0";
-      
-    const percentageOfTotal = totalPopulation > 0 
-      ? ((total / totalPopulation) * 100).toFixed(2)
-      : "0";
-    
-    const coverageRate = total > 0 
-      ? ((withCertificate / total) * 100).toFixed(2)
-      : "0";
-    
+
+    const percentageWithCertificate =
+      totalWithCertificate > 0
+        ? ((withCertificate / totalWithCertificate) * 100).toFixed(2)
+        : "0";
+
+    const percentageOfTotal =
+      totalPopulation > 0 ? ((total / totalPopulation) * 100).toFixed(2) : "0";
+
+    const coverageRate =
+      total > 0 ? ((withCertificate / total) * 100).toFixed(2) : "0";
+
     return {
       wardNumber,
       withCertificate,
@@ -184,25 +200,26 @@ export default async function WardWiseBirthCertificatePopulationPage() {
       total,
       percentageWithCertificate,
       percentageOfTotal,
-      coverageRate
+      coverageRate,
     };
   });
 
   // Find wards with highest and lowest birth certificate registration
-  const wardsRanked = [...wardWiseAnalysis].sort((a, b) => 
-    b.withCertificate - a.withCertificate
+  const wardsRanked = [...wardWiseAnalysis].sort(
+    (a, b) => b.withCertificate - a.withCertificate,
   );
-  
+
   const highestWard = wardsRanked[0];
   const lowestWard = wardsRanked[wardsRanked.length - 1];
-  
+
   // Find ward with highest and lowest coverage rate
-  const wardsRankedByCoverage = [...wardWiseAnalysis].sort((a, b) => 
-    parseFloat(b.coverageRate) - parseFloat(a.coverageRate)
+  const wardsRankedByCoverage = [...wardWiseAnalysis].sort(
+    (a, b) => parseFloat(b.coverageRate) - parseFloat(a.coverageRate),
   );
-  
+
   const highestCoverageWard = wardsRankedByCoverage[0];
-  const lowestCoverageWard = wardsRankedByCoverage[wardsRankedByCoverage.length - 1];
+  const lowestCoverageWard =
+    wardsRankedByCoverage[wardsRankedByCoverage.length - 1];
 
   return (
     <DocsLayout toc={<TableOfContents toc={toc} />}>
@@ -222,7 +239,7 @@ export default async function WardWiseBirthCertificatePopulationPage() {
               src="/images/birth-certificate.svg"
               width={1200}
               height={400}
-              alt="पाँच वर्षमुनिका बालबालिका जन्मदर्ता - खजुरा गाउँपालिका (Birth Certificates for Children Under Five - Khajura Rural Municipality)"
+              alt="पाँच वर्षमुनिका बालबालिका जन्मदर्ता - परिवर्तन गाउँपालिका (Birth Certificates for Children Under Five - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -230,31 +247,47 @@ export default async function WardWiseBirthCertificatePopulationPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा पाँच वर्षमुनिका बालबालिकाहरूको जन्मदर्ता
+              परिवर्तन गाउँपालिकामा पाँच वर्षमुनिका बालबालिकाहरूको जन्मदर्ता
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              जन्मदर्ता प्रमाणपत्र हरेक नागरिकको अधिकार हो र यसले बालबालिकाको पहिचान, शिक्षा, स्वास्थ्य सेवा
-              लगायत विभिन्न सरकारी सेवाहरूमा पहुँच सुनिश्चित गर्दछ। यस खण्डमा खजुरा गाउँपालिकामा रहेका
-              पाँच वर्षमुनिका बालबालिकाहरूको जन्मदर्ता स्थिति प्रस्तुत गरिएको छ।
+              जन्मदर्ता प्रमाणपत्र हरेक नागरिकको अधिकार हो र यसले बालबालिकाको
+              पहिचान, शिक्षा, स्वास्थ्य सेवा लगायत विभिन्न सरकारी सेवाहरूमा
+              पहुँच सुनिश्चित गर्दछ। यस खण्डमा परिवर्तन गाउँपालिकामा रहेका पाँच
+              वर्षमुनिका बालबालिकाहरूको जन्मदर्ता स्थिति प्रस्तुत गरिएको छ।
             </p>
             <p>
-              खजुरा गाउँपालिकाभरि पाँच वर्षमुनिका बालबालिकाहरूको कुल संख्या 
-              {localizeNumber(totalPopulation.toLocaleString(), "ne")} रहेको छ। यसमध्ये 
-              {localizeNumber(totalWithCertificate.toLocaleString(), "ne")} जना ({localizeNumber(((totalWithCertificate/totalPopulation)*100).toFixed(2), "ne")}%)
-              बालबालिकासँग जन्मदर्ता प्रमाणपत्र छ भने {localizeNumber(totalWithoutCertificate.toLocaleString(), "ne")} जना 
-              ({localizeNumber(((totalWithoutCertificate/totalPopulation)*100).toFixed(2), "ne")}%)
-              बालबालिकासँग जन्मदर्ता प्रमाणपत्र छैन।
+              परिवर्तन गाउँपालिकाभरि पाँच वर्षमुनिका बालबालिकाहरूको कुल संख्या
+              {localizeNumber(totalPopulation.toLocaleString(), "ne")} रहेको छ।
+              यसमध्ये
+              {localizeNumber(totalWithCertificate.toLocaleString(), "ne")} जना
+              (
+              {localizeNumber(
+                ((totalWithCertificate / totalPopulation) * 100).toFixed(2),
+                "ne",
+              )}
+              %) बालबालिकासँग जन्मदर्ता प्रमाणपत्र छ भने{" "}
+              {localizeNumber(totalWithoutCertificate.toLocaleString(), "ne")}{" "}
+              जना (
+              {localizeNumber(
+                ((totalWithoutCertificate / totalPopulation) * 100).toFixed(2),
+                "ne",
+              )}
+              %) बालबालिकासँग जन्मदर्ता प्रमाणपत्र छैन।
             </p>
 
-            <h2 id="birth-certificate-status" className="scroll-m-20 border-b pb-2">
+            <h2
+              id="birth-certificate-status"
+              className="scroll-m-20 border-b pb-2"
+            >
               पाँच वर्षमुनिका बालबालिका जन्मदर्ता स्थिति
             </h2>
             <p>
-              खजुरा गाउँपालिकामा पाँच वर्षमुनिका बालबालिकाको जन्मदर्ता स्थिति निम्नानुसार रहेको छ:
+              परिवर्तन गाउँपालिकामा पाँच वर्षमुनिका बालबालिकाको जन्मदर्ता स्थिति
+              निम्नानुसार रहेको छ:
             </p>
           </div>
 
@@ -273,19 +306,34 @@ export default async function WardWiseBirthCertificatePopulationPage() {
           />
 
           <div className="prose prose-slate dark:prose-invert max-w-none mt-8">
-            <h2 id="birth-certificate-analysis" className="scroll-m-20 border-b pb-2">
+            <h2
+              id="birth-certificate-analysis"
+              className="scroll-m-20 border-b pb-2"
+            >
               जन्मदर्ता विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा पाँच वर्षमुनिका बालबालिकाको जन्मदर्ता विश्लेषण गर्दा, 
-              सबैभन्दा बढी जन्मदर्ता प्रमाणपत्र धारकहरू वडा नं {localizeNumber(highestWard.wardNumber.toString(), "ne")} मा 
-              {localizeNumber(highestWard.withCertificate.toLocaleString(), "ne")} जना 
-              ({localizeNumber(highestWard.percentageWithCertificate, "ne")}%) रहेको पाइन्छ।
+              परिवर्तन गाउँपालिकामा पाँच वर्षमुनिका बालबालिकाको जन्मदर्ता
+              विश्लेषण गर्दा, सबैभन्दा बढी जन्मदर्ता प्रमाणपत्र धारकहरू वडा नं{" "}
+              {localizeNumber(highestWard.wardNumber.toString(), "ne")} मा
+              {localizeNumber(
+                highestWard.withCertificate.toLocaleString(),
+                "ne",
+              )}{" "}
+              जना ({localizeNumber(highestWard.percentageWithCertificate, "ne")}
+              %) रहेको पाइन्छ।
             </p>
             <p>
-              जन्मदर्ता प्रमाणपत्र कभरेज दर (कुल बालबालिकामा जन्मदर्ता भएकाको अनुपात) सबैभन्दा उच्च वडा नं 
-              {localizeNumber(highestCoverageWard.wardNumber.toString(), "ne")} मा {localizeNumber(highestCoverageWard.coverageRate, "ne")}% 
-              र सबैभन्दा कम वडा नं {localizeNumber(lowestCoverageWard.wardNumber.toString(), "ne")} मा 
+              जन्मदर्ता प्रमाणपत्र कभरेज दर (कुल बालबालिकामा जन्मदर्ता भएकाको
+              अनुपात) सबैभन्दा उच्च वडा नं
+              {localizeNumber(
+                highestCoverageWard.wardNumber.toString(),
+                "ne",
+              )}{" "}
+              मा {localizeNumber(highestCoverageWard.coverageRate, "ne")}% र
+              सबैभन्दा कम वडा नं{" "}
+              {localizeNumber(lowestCoverageWard.wardNumber.toString(), "ne")}{" "}
+              मा
               {localizeNumber(lowestCoverageWard.coverageRate, "ne")}% रहेको छ।
             </p>
 

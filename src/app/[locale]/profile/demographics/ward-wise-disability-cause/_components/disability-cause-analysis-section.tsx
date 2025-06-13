@@ -35,26 +35,40 @@ export default function DisabilityCauseAnalysisSection({
     CONFLICT: "#7B2CBF", // Purple for conflict
     OTHER: "#9D9D9D", // Gray for other
   };
-  
+
   // Find wards with highest and lowest disability population
-  const highestDisabilityWard = [...wardWiseAnalysis].sort((a, b) => b.totalDisabilityPopulation - a.totalDisabilityPopulation)[0];
-  const lowestDisabilityWard = [...wardWiseAnalysis].sort((a, b) => a.totalDisabilityPopulation - b.totalDisabilityPopulation)[0];
+  const highestDisabilityWard = [...wardWiseAnalysis].sort(
+    (a, b) => b.totalDisabilityPopulation - a.totalDisabilityPopulation,
+  )[0];
+  const lowestDisabilityWard = [...wardWiseAnalysis].sort(
+    (a, b) => a.totalDisabilityPopulation - b.totalDisabilityPopulation,
+  )[0];
 
   // SEO attributes to include directly in JSX
   const seoAttributes = {
-    "data-municipality": "Khajura Rural Municipality / खजुरा गाउँपालिका",
-    "data-total-disability-population": totalPopulationWithDisability.toString(),
-    "data-most-common-disability-cause": overallSummary.length > 0 ? 
-      `${overallSummary[0].disabilityCauseName} / ${DISABILITY_CAUSE_NAMES_EN[overallSummary[0].disabilityCause as keyof typeof DISABILITY_CAUSE_NAMES_EN] || overallSummary[0].disabilityCause}` : "",
-    "data-most-common-cause-percentage": overallSummary.length > 0 ? 
-      ((overallSummary[0].population / totalPopulationWithDisability) * 100).toFixed(2) : "0",
-    "data-highest-disability-ward": highestDisabilityWard?.wardNumber.toString() || "",
-    "data-lowest-disability-ward": lowestDisabilityWard?.wardNumber.toString() || ""
+    "data-municipality": "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
+    "data-total-disability-population":
+      totalPopulationWithDisability.toString(),
+    "data-most-common-disability-cause":
+      overallSummary.length > 0
+        ? `${overallSummary[0].disabilityCauseName} / ${DISABILITY_CAUSE_NAMES_EN[overallSummary[0].disabilityCause as keyof typeof DISABILITY_CAUSE_NAMES_EN] || overallSummary[0].disabilityCause}`
+        : "",
+    "data-most-common-cause-percentage":
+      overallSummary.length > 0
+        ? (
+            (overallSummary[0].population / totalPopulationWithDisability) *
+            100
+          ).toFixed(2)
+        : "0",
+    "data-highest-disability-ward":
+      highestDisabilityWard?.wardNumber.toString() || "",
+    "data-lowest-disability-ward":
+      lowestDisabilityWard?.wardNumber.toString() || "",
   };
 
   return (
     <>
-      <div 
+      <div
         className="mt-6 flex flex-wrap gap-4 justify-center"
         {...seoAttributes}
       >
@@ -78,7 +92,9 @@ export default function DisabilityCauseAnalysisSection({
                 className="absolute bottom-0 left-0 right-0"
                 style={{
                   height: `${Math.min(
-                    (item.population / Math.max(...overallSummary.map(i => i.population))) * 100,
+                    (item.population /
+                      Math.max(...overallSummary.map((i) => i.population))) *
+                      100,
                     100,
                   )}%`,
                   backgroundColor:
@@ -94,14 +110,17 @@ export default function DisabilityCauseAnalysisSection({
                   {item.disabilityCauseName}
                   {/* Hidden span for SEO with English name */}
                   <span className="sr-only">
-                    {DISABILITY_CAUSE_NAMES_EN[item.disabilityCause as keyof typeof DISABILITY_CAUSE_NAMES_EN] || item.disabilityCause}
+                    {DISABILITY_CAUSE_NAMES_EN[
+                      item.disabilityCause as keyof typeof DISABILITY_CAUSE_NAMES_EN
+                    ] || item.disabilityCause}
                   </span>
                 </h3>
                 <p className="text-2xl font-bold">
                   {localizeNumber(percentage, "ne")}%
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {localizeNumber(item.population.toLocaleString(), "ne")} व्यक्ति
+                  {localizeNumber(item.population.toLocaleString(), "ne")}{" "}
+                  व्यक्ति
                   <span className="sr-only">
                     ({item.population.toLocaleString()} people)
                   </span>
@@ -121,7 +140,15 @@ export default function DisabilityCauseAnalysisSection({
           <div
             className="bg-card p-4 rounded border"
             data-analysis-type="most-common-disability-cause"
-            data-percentage={overallSummary.length > 0 ? ((overallSummary[0].population / totalPopulationWithDisability) * 100).toFixed(2) : "0"}
+            data-percentage={
+              overallSummary.length > 0
+                ? (
+                    (overallSummary[0].population /
+                      totalPopulationWithDisability) *
+                    100
+                  ).toFixed(2)
+                : "0"
+            }
           >
             <h4 className="font-medium mb-2">
               प्रमुख अपाङ्गताको कारण
@@ -130,12 +157,40 @@ export default function DisabilityCauseAnalysisSection({
               </span>
             </h4>
             <p className="text-3xl font-bold">
-              {overallSummary.length > 0 ? overallSummary[0].disabilityCauseName : ""}
+              {overallSummary.length > 0
+                ? overallSummary[0].disabilityCauseName
+                : ""}
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              {localizeNumber(overallSummary.length > 0 ? ((overallSummary[0].population / totalPopulationWithDisability) * 100).toFixed(2) : "0", "ne")}% ({localizeNumber(overallSummary.length > 0 ? overallSummary[0].population.toLocaleString() : "0", "ne")} व्यक्ति)
+              {localizeNumber(
+                overallSummary.length > 0
+                  ? (
+                      (overallSummary[0].population /
+                        totalPopulationWithDisability) *
+                      100
+                    ).toFixed(2)
+                  : "0",
+                "ne",
+              )}
+              % (
+              {localizeNumber(
+                overallSummary.length > 0
+                  ? overallSummary[0].population.toLocaleString()
+                  : "0",
+                "ne",
+              )}{" "}
+              व्यक्ति)
               <span className="sr-only">
-                {overallSummary.length > 0 ? ((overallSummary[0].population / totalPopulationWithDisability) * 100).toFixed(2) : "0"}% ({overallSummary.length > 0 ? overallSummary[0].population : 0} people)
+                {overallSummary.length > 0
+                  ? (
+                      (overallSummary[0].population /
+                        totalPopulationWithDisability) *
+                      100
+                    ).toFixed(2)
+                  : "0"}
+                % (
+                {overallSummary.length > 0 ? overallSummary[0].population : 0}{" "}
+                people)
               </span>
             </p>
           </div>
@@ -146,15 +201,27 @@ export default function DisabilityCauseAnalysisSection({
           >
             <h4 className="font-medium mb-2">
               सबैभन्दा बढी अपाङ्गता भएको वडा
-              <span className="sr-only">Ward with Highest Disability Population in Khajura</span>
+              <span className="sr-only">
+                Ward with Highest Disability Population in Khajura
+              </span>
             </h4>
             <p className="text-3xl font-bold">
-              वडा {localizeNumber(highestDisabilityWard?.wardNumber.toString() || "", "ne")}
+              वडा{" "}
+              {localizeNumber(
+                highestDisabilityWard?.wardNumber.toString() || "",
+                "ne",
+              )}
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              {localizeNumber(highestDisabilityWard?.totalDisabilityPopulation.toString() || "0", "ne")} व्यक्ति
+              {localizeNumber(
+                highestDisabilityWard?.totalDisabilityPopulation.toString() ||
+                  "0",
+                "ne",
+              )}{" "}
+              व्यक्ति
               <span className="sr-only">
-                {highestDisabilityWard?.totalDisabilityPopulation || 0} people with disabilities
+                {highestDisabilityWard?.totalDisabilityPopulation || 0} people
+                with disabilities
               </span>
             </p>
           </div>
@@ -169,43 +236,64 @@ export default function DisabilityCauseAnalysisSection({
             {/* Display top two most common disability causes */}
             {overallSummary.slice(0, 2).map((item, index) => (
               <div key={index}>
-                <h5 className="text-sm font-medium">{item.disabilityCauseName}</h5>
+                <h5 className="text-sm font-medium">
+                  {item.disabilityCauseName}
+                </h5>
                 <p className="text-sm text-muted-foreground">
-                  {localizeNumber(((item.population / totalPopulationWithDisability) * 100).toFixed(2), "ne")}% 
-                  ({localizeNumber(item.population.toLocaleString(), "ne")} व्यक्ति)
+                  {localizeNumber(
+                    (
+                      (item.population / totalPopulationWithDisability) *
+                      100
+                    ).toFixed(2),
+                    "ne",
+                  )}
+                  % ({localizeNumber(item.population.toLocaleString(), "ne")}{" "}
+                  व्यक्ति)
                 </p>
                 <div className="w-full bg-muted h-2 rounded-full mt-2 overflow-hidden">
                   <div
                     className="h-full rounded-full"
                     style={{
                       width: `${Math.min((item.population / totalPopulationWithDisability) * 100, 100)}%`,
-                      backgroundColor: DISABILITY_CAUSE_COLORS[item.disabilityCause as keyof typeof DISABILITY_CAUSE_COLORS] || "#888",
+                      backgroundColor:
+                        DISABILITY_CAUSE_COLORS[
+                          item.disabilityCause as keyof typeof DISABILITY_CAUSE_COLORS
+                        ] || "#888",
                     }}
                   ></div>
                 </div>
               </div>
             ))}
           </div>
-          
+
           <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <h5 className="text-sm font-medium">वडागत प्रमुख कारणहरू</h5>
               <ul className="mt-2 text-sm space-y-1">
                 {wardWiseAnalysis.slice(0, 3).map((ward, index) => (
                   <li key={index} className="flex justify-between">
-                    <span>वडा {localizeNumber(ward.wardNumber.toString(), "ne")}:</span>
+                    <span>
+                      वडा {localizeNumber(ward.wardNumber.toString(), "ne")}:
+                    </span>
                     <span className="font-medium">
-                      {DISABILITY_CAUSE_NAMES[ward.mostCommonCause as keyof typeof DISABILITY_CAUSE_NAMES] || ward.mostCommonCause}
+                      {DISABILITY_CAUSE_NAMES[
+                        ward.mostCommonCause as keyof typeof DISABILITY_CAUSE_NAMES
+                      ] || ward.mostCommonCause}
                     </span>
                   </li>
                 ))}
               </ul>
             </div>
             <div>
-              <h5 className="text-sm font-medium">अपाङ्गताको कारण आधारित सुझाव</h5>
+              <h5 className="text-sm font-medium">
+                अपाङ्गताको कारण आधारित सुझाव
+              </h5>
               <p className="mt-2 text-sm text-muted-foreground">
-                सबैभन्दा बढी देखिएको अपाङ्गताको कारण, {overallSummary.length > 0 ? overallSummary[0].disabilityCauseName : ""} को
-                न्यूनीकरणका लागि विशेष कार्यक्रम सञ्चालन गर्नु उपयुक्त हुनेछ।
+                सबैभन्दा बढी देखिएको अपाङ्गताको कारण,{" "}
+                {overallSummary.length > 0
+                  ? overallSummary[0].disabilityCauseName
+                  : ""}{" "}
+                को न्यूनीकरणका लागि विशेष कार्यक्रम सञ्चालन गर्नु उपयुक्त हुनेछ।
               </p>
             </div>
           </div>

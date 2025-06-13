@@ -55,7 +55,7 @@ export default function IncomeAnalysisSection({
     if (document && document.body) {
       document.body.setAttribute(
         "data-municipality",
-        "Khajura Rural Municipality / खजुरा गाउँपालिका",
+        "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
       );
       document.body.setAttribute(
         "data-total-households",
@@ -158,9 +158,12 @@ export default function IncomeAnalysisSection({
                   {/* Hidden span for SEO with English name */}
                   <span className="sr-only">{incomeSourceEN}</span>
                 </h3>
-                <p className="text-2xl font-bold">{localizeNumber(percentage, "ne")}%</p>
+                <p className="text-2xl font-bold">
+                  {localizeNumber(percentage, "ne")}%
+                </p>
                 <p className="text-sm text-muted-foreground">
-                  {localizeNumber(item.households.toLocaleString(), "ne")} घरपरिवार
+                  {localizeNumber(item.households.toLocaleString(), "ne")}{" "}
+                  घरपरिवार
                   <span className="sr-only">
                     ({item.households.toLocaleString()} households)
                   </span>
@@ -173,7 +176,7 @@ export default function IncomeAnalysisSection({
 
       <div className="bg-muted/50 p-4 rounded-lg mt-8">
         <h3 className="text-xl font-medium mb-4">
-          खजुरा गाउँपालिकाको आय स्रोत विविधता विश्लेषण
+          परिवर्तन गाउँपालिकाको आय स्रोत विविधता विश्लेषण
           <span className="sr-only">
             Income Source Diversity Analysis of Khajura Rural Municipality
           </span>
@@ -226,7 +229,9 @@ export default function IncomeAnalysisSection({
                 Primary to Secondary Income Source Ratio in Khajura
               </span>
             </h4>
-            <p className="text-3xl font-bold">{localizeNumber(topTwoIncomeSourceRatio, "ne")}</p>
+            <p className="text-3xl font-bold">
+              {localizeNumber(topTwoIncomeSourceRatio, "ne")}
+            </p>
             <p className="text-sm text-muted-foreground mt-2">
               {topIncomeSource && secondIncomeSource
                 ? `हरेक ${localizeNumber(topTwoIncomeSourceRatio, "ne")} ${topIncomeSource.incomeSourceName} आय स्रोत भएका घरपरिवारका लागि १ ${secondIncomeSource.incomeSourceName} आय स्रोत भएका घरपरिवार`

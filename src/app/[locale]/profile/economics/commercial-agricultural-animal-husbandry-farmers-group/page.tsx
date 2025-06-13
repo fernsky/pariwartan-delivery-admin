@@ -48,7 +48,7 @@ const BUSINESS_TYPES: Record<string, string> = businessTypeOptions.reduce(
     ...acc,
     [option.value]: option.label,
   }),
-  {}
+  {},
 );
 
 // Define colors for business types
@@ -99,7 +99,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const farmersGroupData =
       await api.profile.economics.municipalityWideCommercialAgriculturalAnimalHusbandryFarmersGroup.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalGroups = farmersGroupData.length;
@@ -108,7 +108,7 @@ export async function generateMetadata(): Promise<Metadata> {
         acc[item.type] = (acc[item.type] || 0) + 1;
         return acc;
       },
-      {} as Record<string, number>
+      {} as Record<string, number>,
     );
 
     // Find most common business type
@@ -131,7 +131,7 @@ export async function generateMetadata(): Promise<Metadata> {
         acc[item.wardNumber] = (acc[item.wardNumber] || 0) + 1;
         return acc;
       },
-      {}
+      {},
     );
 
     // Find ward with most groups
@@ -146,13 +146,13 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // Create rich keywords with actual data
     const keywordsNP = [
-      "खजुरा गाउँपालिका कृषि समूह",
-      "खजुरा व्यावसायिक पशुपालन",
+      "परिवर्तन गाउँपालिका कृषि समूह",
+      "परिवर्तन व्यावसायिक पशुपालन",
       "पालिका स्तरीय कृषि समूह",
-      "खजुरा कृषि व्यवसाय",
-      `खजुरा ${BUSINESS_TYPES[mostCommonBusinessType] || "व्यावसायिक कृषि"}`,
+      "परिवर्तन कृषि व्यवसाय",
+      `परिवर्तन ${BUSINESS_TYPES[mostCommonBusinessType] || "व्यावसायिक कृषि"}`,
       `वडा ${localizeNumber(wardWithMostGroups.toString(), "ne")} कृषि समूह`,
-      `खजुरा ${localizeNumber(totalGroups.toString(), "ne")} कृषि समूह`,
+      `परिवर्तन ${localizeNumber(totalGroups.toString(), "ne")} कृषि समूह`,
       "व्यावसायिक पशुपालन समूह",
     ];
 
@@ -168,7 +168,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data
-    const descriptionNP = `खजुरा गाउँपालिकामा संचालित ${localizeNumber(totalGroups.toString(), "ne")} व्यावसायिक कृषि तथा पशुपालन समूहहरूको विस्तृत विश्लेषण। सबैभन्दा बढी ${BUSINESS_TYPES[mostCommonBusinessType] || ""} व्यवसाय गर्ने समूहहरू (${localizeNumber(mostCommonBusinessTypePercentage.toFixed(1), "ne")}%) रहेका छन्। वडा नं ${localizeNumber(wardWithMostGroups.toString(), "ne")} मा सबैभन्दा बढी ${localizeNumber(wardMaxCount.toString(), "ne")} समूहहरू क्रियाशील छन्। पालिका स्तरीय कृषि तथा पशुपालन समूहहरूको विस्तृत जानकारी।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकामा संचालित ${localizeNumber(totalGroups.toString(), "ne")} व्यावसायिक कृषि तथा पशुपालन समूहहरूको विस्तृत विश्लेषण। सबैभन्दा बढी ${BUSINESS_TYPES[mostCommonBusinessType] || ""} व्यवसाय गर्ने समूहहरू (${localizeNumber(mostCommonBusinessTypePercentage.toFixed(1), "ne")}%) रहेका छन्। वडा नं ${localizeNumber(wardWithMostGroups.toString(), "ne")} मा सबैभन्दा बढी ${localizeNumber(wardMaxCount.toString(), "ne")} समूहहरू क्रियाशील छन्। पालिका स्तरीय कृषि तथा पशुपालन समूहहरूको विस्तृत जानकारी।`;
 
     const descriptionEN = `Detailed analysis of ${totalGroups} commercial agricultural and animal husbandry farmers groups operating in Khajura Rural Municipality. ${BUSINESS_TYPES_EN[mostCommonBusinessType] || "Agricultural business"} groups are most common (${mostCommonBusinessTypePercentage.toFixed(1)}%). Ward ${wardWithMostGroups} has the highest concentration with ${wardMaxCount} active groups. Comprehensive information on municipality-wide agricultural and livestock groups.`;
 
@@ -177,7 +177,8 @@ export async function generateMetadata(): Promise<Metadata> {
       description: descriptionNP,
       keywords: [...keywordsNP, ...keywordsEN],
       alternates: {
-        canonical: "/profile/economics/commercial-agricultural-animal-husbandry-farmers-group",
+        canonical:
+          "/profile/economics/commercial-agricultural-animal-husbandry-farmers-group",
         languages: {
           en: "/en/profile/economics/commercial-agricultural-animal-husbandry-farmers-group",
           ne: "/ne/profile/economics/commercial-agricultural-animal-husbandry-farmers-group",
@@ -201,7 +202,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fallback metadata if data fetching fails
     return {
       title:
-        "व्यावसायिक कृषि तथा पशुपालन समूहहरू | खजुरा गाउँपालिका डिजिटल प्रोफाइल",
+        "व्यावसायिक कृषि तथा पशुपालन समूहहरू | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
       description:
         "पालिका स्तरीय व्यावसायिक कृषि तथा पशुपालन समूहहरूको विवरण र विश्लेषण।",
     };
@@ -250,13 +251,15 @@ export default async function CommercialAgriculturalAnimalHusbandryFarmersGroupP
       acc[item.type] = (acc[item.type] || 0) + 1;
       return acc;
     },
-    {} as Record<string, number>
+    {} as Record<string, number>,
   );
 
   const totalGroups = farmersGroupData.length;
 
   // Create business summary
-  const businessSummary: BusinessSummaryType[] = Object.entries(businessTypeCount)
+  const businessSummary: BusinessSummaryType[] = Object.entries(
+    businessTypeCount,
+  )
     .map(([type, count]) => {
       return {
         type,
@@ -274,7 +277,7 @@ export default async function CommercialAgriculturalAnimalHusbandryFarmersGroupP
       acc[item.wardNumber] = (acc[item.wardNumber] || 0) + 1;
       return acc;
     },
-    {}
+    {},
   );
 
   // Organize farms by ward
@@ -291,7 +294,7 @@ export default async function CommercialAgriculturalAnimalHusbandryFarmersGroupP
   };
 
   const farmsByWard: WardFarmsType[] = [];
-  
+
   // Process all 9 wards (whether they have farms or not)
   for (let ward = 1; ward <= 9; ward++) {
     const wardFarms = farmersGroupData
@@ -303,7 +306,7 @@ export default async function CommercialAgriculturalAnimalHusbandryFarmersGroupP
         typeName: BUSINESS_TYPES[farm.type] || farm.type,
         icon: BUSINESS_ICONS[farm.type] || "🧑‍🌾",
       }));
-    
+
     farmsByWard.push({
       wardNumber: ward,
       farmCount: wardFarms.length,
@@ -315,11 +318,14 @@ export default async function CommercialAgriculturalAnimalHusbandryFarmersGroupP
   farmsByWard.sort((a, b) => b.farmCount - a.farmCount);
 
   // Find popular business types by ward
-  const popularBusinessByWard = farmsByWard.map(ward => {
-    const businessTypes = ward.farms.reduce((acc: Record<string, number>, farm) => {
-      acc[farm.type] = (acc[farm.type] || 0) + 1;
-      return acc;
-    }, {});
+  const popularBusinessByWard = farmsByWard.map((ward) => {
+    const businessTypes = ward.farms.reduce(
+      (acc: Record<string, number>, farm) => {
+        acc[farm.type] = (acc[farm.type] || 0) + 1;
+        return acc;
+      },
+      {},
+    );
 
     // Find most common business type in this ward
     let mostCommonType = "";
@@ -346,9 +352,12 @@ export default async function CommercialAgriculturalAnimalHusbandryFarmersGroupP
     totalGroups,
     totalWards: Object.keys(wardDistribution).length,
     avgGroupsPerWard: totalGroups / 9, // Khajura has 9 wards
-    mostPopularBusinessType: businessSummary.length > 0 ? businessSummary[0].type : "",
-    mostPopularBusinessTypeName: businessSummary.length > 0 ? businessSummary[0].typeName : "",
-    mostPopularBusinessTypePercentage: businessSummary.length > 0 ? businessSummary[0].percentage : 0,
+    mostPopularBusinessType:
+      businessSummary.length > 0 ? businessSummary[0].type : "",
+    mostPopularBusinessTypeName:
+      businessSummary.length > 0 ? businessSummary[0].typeName : "",
+    mostPopularBusinessTypePercentage:
+      businessSummary.length > 0 ? businessSummary[0].percentage : 0,
     wardWithMostGroups: farmsByWard.length > 0 ? farmsByWard[0].wardNumber : 0,
     maximumGroupsInAWard: farmsByWard.length > 0 ? farmsByWard[0].farmCount : 0,
   };
@@ -372,7 +381,7 @@ export default async function CommercialAgriculturalAnimalHusbandryFarmersGroupP
               src="/images/farmers.svg"
               width={1200}
               height={400}
-              alt="व्यावसायिक कृषि तथा पशुपालन समूहहरू - खजुरा गाउँपालिका (Commercial Agricultural and Animal Husbandry Farmers Groups - Khajura Rural Municipality)"
+              alt="व्यावसायिक कृषि तथा पशुपालन समूहहरू - परिवर्तन गाउँपालिका (Commercial Agricultural and Animal Husbandry Farmers Groups - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -380,17 +389,18 @@ export default async function CommercialAgriculturalAnimalHusbandryFarmersGroupP
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा व्यावसायिक कृषि तथा पशुपालन समूहहरू
+              परिवर्तन गाउँपालिकामा व्यावसायिक कृषि तथा पशुपालन समूहहरू
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              व्यावसायिक कृषि तथा पशुपालन समूहहरू खजुरा गाउँपालिकाको आर्थिक विकासमा
-              महत्त्वपूर्ण भूमिका निर्वाह गरिरहेका छन्। यस क्षेत्रमा तरकारी खेती,
-              बाख्रापालन, कुखुरा पालन, माछापालन, फलफूल खेती, मौरीपालन लगायतका
-              विभिन्न प्रकारका व्यावसायिक कृषि तथा पशुपालन समूहहरू सक्रिय छन्।
+              व्यावसायिक कृषि तथा पशुपालन समूहहरू परिवर्तन गाउँपालिकाको आर्थिक
+              विकासमा महत्त्वपूर्ण भूमिका निर्वाह गरिरहेका छन्। यस क्षेत्रमा
+              तरकारी खेती, बाख्रापालन, कुखुरा पालन, माछापालन, फलफूल खेती,
+              मौरीपालन लगायतका विभिन्न प्रकारका व्यावसायिक कृषि तथा पशुपालन
+              समूहहरू सक्रिय छन्।
             </p>
             <p>
               यी समूहहरूले स्थानीय रोजगारी सिर्जना, खाद्य सुरक्षा सुनिश्चित गर्न
@@ -400,23 +410,31 @@ export default async function CommercialAgriculturalAnimalHusbandryFarmersGroupP
             </p>
 
             <p>
-              खजुरा गाउँपालिकामा कुल {localizeNumber(totalGroups.toString(), "ne")}{" "}
-              व्यावसायिक कृषि तथा पशुपालन समूहहरू रहेका छन्। सबैभन्दा बढी{" "}
-              {businessSummary[0]?.typeName || ""}
-              ({businessSummary[0]?.icon || ""}) समूहहरू रहेका छन्, जसको संख्या{" "}
-              {localizeNumber(businessSummary[0]?.count.toString() || "0", "ne")} (
+              परिवर्तन गाउँपालिकामा कुल{" "}
+              {localizeNumber(totalGroups.toString(), "ne")} व्यावसायिक कृषि तथा
+              पशुपालन समूहहरू रहेका छन्। सबैभन्दा बढी{" "}
+              {businessSummary[0]?.typeName || ""}(
+              {businessSummary[0]?.icon || ""}) समूहहरू रहेका छन्, जसको संख्या{" "}
+              {localizeNumber(
+                businessSummary[0]?.count.toString() || "0",
+                "ne",
+              )}{" "}
+              (
               {localizeNumber(
                 businessSummary[0]?.percentage.toFixed(1) || "0",
-                "ne"
+                "ne",
               )}
               %) रहेको छ।
             </p>
 
-            <h2 id="business-types-and-distribution" className="scroll-m-20 border-b pb-2">
+            <h2
+              id="business-types-and-distribution"
+              className="scroll-m-20 border-b pb-2"
+            >
               व्यवसायको प्रकार र वितरण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा विभिन्न प्रकारका व्यावसायिक कृषि तथा पशुपालन
+              परिवर्तन गाउँपालिकामा विभिन्न प्रकारका व्यावसायिक कृषि तथा पशुपालन
               समूहहरू संचालनमा छन्। मुख्य व्यवसायहरू र तिनको वितरण निम्न अनुसार
               रहेको छ:
             </p>
@@ -441,7 +459,7 @@ export default async function CommercialAgriculturalAnimalHusbandryFarmersGroupP
                         .slice(0, 8)
                         .reduce((sum, item) => sum + item.count, 0)
                     ).toString(),
-                    "ne"
+                    "ne",
                   )}{" "}
                   समूह
                 </li>
@@ -465,17 +483,14 @@ export default async function CommercialAgriculturalAnimalHusbandryFarmersGroupP
               वडागत वितरण
             </h2>
             <p>
-              खजुरा गाउँपालिकाका विभिन्न वडाहरूमा व्यावसायिक कृषि तथा पशुपालन
+              परिवर्तन गाउँपालिकाका विभिन्न वडाहरूमा व्यावसायिक कृषि तथा पशुपालन
               समूहहरूको वितरण असमान रहेको छ। वडा नं.{" "}
-              {localizeNumber(statistics.wardWithMostGroups.toString(), "ne")} मा
-              सबैभन्दा बढी{" "}
-              {localizeNumber(
-                statistics.maximumGroupsInAWard.toString(),
-                "ne"
-              )}{" "}
+              {localizeNumber(statistics.wardWithMostGroups.toString(), "ne")}{" "}
+              मा सबैभन्दा बढी{" "}
+              {localizeNumber(statistics.maximumGroupsInAWard.toString(), "ne")}{" "}
               समूहहरू रहेका छन्, जहाँ मुख्यतया{" "}
               {popularBusinessByWard.find(
-                (item) => item.wardNumber === statistics.wardWithMostGroups
+                (item) => item.wardNumber === statistics.wardWithMostGroups,
               )?.mostCommonTypeName || ""}{" "}
               व्यवसाय संचालित छन्।
             </p>
@@ -489,7 +504,7 @@ export default async function CommercialAgriculturalAnimalHusbandryFarmersGroupP
           </div>
 
           {/* Ward-based farms list component */}
-          <WardBasedFarmsList 
+          <WardBasedFarmsList
             farmsByWard={farmsByWard}
             BUSINESS_TYPES={BUSINESS_TYPES}
             BUSINESS_COLORS={BUSINESS_COLORS}
@@ -551,22 +566,22 @@ export default async function CommercialAgriculturalAnimalHusbandryFarmersGroupP
                   </li>
                 </ul>
               </div>
-              
+
               <div>
                 <h3 className="text-xl font-semibold">अवसरहरू</h3>
                 <ul className="space-y-2 mt-4">
                   <li className="flex gap-2">
                     <span className="text-green-500">•</span>
                     <span>
-                      <strong>स्थानीय उत्पादन प्रोत्साहन:</strong> स्थानीय उत्पादनलाई
-                      प्राथमिकता दिने नीति र कार्यक्रमहरू
+                      <strong>स्थानीय उत्पादन प्रोत्साहन:</strong> स्थानीय
+                      उत्पादनलाई प्राथमिकता दिने नीति र कार्यक्रमहरू
                     </span>
                   </li>
                   <li className="flex gap-2">
                     <span className="text-green-500">•</span>
                     <span>
-                      <strong>जैविक खेती माग:</strong> जैविक उत्पादनहरूको बढ्दो माग
-                      र उच्च मूल्य
+                      <strong>जैविक खेती माग:</strong> जैविक उत्पादनहरूको बढ्दो
+                      माग र उच्च मूल्य
                     </span>
                   </li>
                   <li className="flex gap-2">
@@ -595,25 +610,26 @@ export default async function CommercialAgriculturalAnimalHusbandryFarmersGroupP
             </h2>
 
             <p>
-              खजुरा गाउँपालिकामा व्यावसायिक कृषि तथा पशुपालन समूहहरूको अवस्थाको
-              विश्लेषणबाट निम्न निष्कर्ष र सिफारिसहरू प्रस्तुत गरिएका छन्:
+              परिवर्तन गाउँपालिकामा व्यावसायिक कृषि तथा पशुपालन समूहहरूको
+              अवस्थाको विश्लेषणबाट निम्न निष्कर्ष र सिफारिसहरू प्रस्तुत गरिएका
+              छन्:
             </p>
 
             <div className="pl-6 space-y-4">
               <div className="flex">
                 <span className="font-bold mr-2">१.</span>
                 <div>
-                  <strong>समूह क्षमता विकास:</strong> व्यावसायिक कृषि तथा पशुपालन
-                  समूहहरूको क्षमता विकासका लागि नियमित तालिम र प्राविधिक सहयोगको
-                  व्यवस्था गर्नुपर्ने।
+                  <strong>समूह क्षमता विकास:</strong> व्यावसायिक कृषि तथा
+                  पशुपालन समूहहरूको क्षमता विकासका लागि नियमित तालिम र प्राविधिक
+                  सहयोगको व्यवस्था गर्नुपर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">२.</span>
                 <div>
-                  <strong>मूल्य श्रृंखला विकास:</strong> उत्पादनदेखि बजारीकरणसम्मको
-                  मूल्य श्रृंखला विकासका लागि आवश्यक पूर्वाधार र संयन्त्रको
-                  विकास गर्नुपर्ने।
+                  <strong>मूल्य श्रृंखला विकास:</strong> उत्पादनदेखि
+                  बजारीकरणसम्मको मूल्य श्रृंखला विकासका लागि आवश्यक पूर्वाधार र
+                  संयन्त्रको विकास गर्नुपर्ने।
                 </div>
               </div>
               <div className="flex">
@@ -628,26 +644,26 @@ export default async function CommercialAgriculturalAnimalHusbandryFarmersGroupP
                 <span className="font-bold mr-2">४.</span>
                 <div>
                   <strong>जैविक खेती प्रवर्द्धन:</strong> जैविक कृषि उत्पादनलाई
-                  प्रोत्साहन दिने र वातावरणमैत्री कृषि पद्धतिलाई बढावा दिने
-                  नीति अवलम्बन गर्नुपर्ने।
+                  प्रोत्साहन दिने र वातावरणमैत्री कृषि पद्धतिलाई बढावा दिने नीति
+                  अवलम्बन गर्नुपर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">५.</span>
                 <div>
-                  <strong>वित्तीय पहुँच सुधार:</strong> कृषि तथा पशुपालन समूहहरूको
-                  वित्तीय पहुँच सुनिश्चित गर्न सहुलियतपूर्ण ऋण र अनुदानको
-                  व्यवस्था मिलाउनुपर्ने।
+                  <strong>वित्तीय पहुँच सुधार:</strong> कृषि तथा पशुपालन
+                  समूहहरूको वित्तीय पहुँच सुनिश्चित गर्न सहुलियतपूर्ण ऋण र
+                  अनुदानको व्यवस्था मिलाउनुपर्ने।
                 </div>
               </div>
             </div>
 
             <p className="mt-6">
-              खजुरा गाउँपालिकामा व्यावसायिक कृषि तथा पशुपालन समूहहरूको विकास र
-              प्रवर्द्धनले स्थानीय अर्थतन्त्रलाई बलियो बनाउन, रोजगारी सिर्जना गर्न र
-              खाद्य सुरक्षा सुनिश्चित गर्न महत्त्वपूर्ण योगदान पुर्‍याउने निश्चित छ।
-              यसका लागि स्थानीय सरकार, प्राविधिक संस्थाहरू र कृषि समूहहरू बीचको
-              समन्वय र सहकार्यलाई थप प्रभावकारी बनाउन आवश्यक छ।
+              परिवर्तन गाउँपालिकामा व्यावसायिक कृषि तथा पशुपालन समूहहरूको विकास
+              र प्रवर्द्धनले स्थानीय अर्थतन्त्रलाई बलियो बनाउन, रोजगारी सिर्जना
+              गर्न र खाद्य सुरक्षा सुनिश्चित गर्न महत्त्वपूर्ण योगदान पुर्‍याउने
+              निश्चित छ। यसका लागि स्थानीय सरकार, प्राविधिक संस्थाहरू र कृषि
+              समूहहरू बीचको समन्वय र सहकार्यलाई थप प्रभावकारी बनाउन आवश्यक छ।
             </p>
           </div>
         </section>

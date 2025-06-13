@@ -24,21 +24,21 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const importedProductsData =
       await api.profile.economics.importedProducts.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalProducts = importedProductsData.length;
 
     // Create rich keywords with actual data
     const keywordsNP = [
-      "खजुरा गाउँपालिका आयातित उत्पादन",
-      "खजुरा आयातित वस्तुहरू",
-      "आयातित सामान खजुरा",
-      "खजुरा आयात सूची",
-      "आर्थिक प्रोफाइल खजुरा",
+      "परिवर्तन गाउँपालिका आयातित उत्पादन",
+      "परिवर्तन आयातित वस्तुहरू",
+      "आयातित सामान परिवर्तन",
+      "परिवर्तन आयात सूची",
+      "आर्थिक प्रोफाइल परिवर्तन",
       "आयातित वस्तु विश्लेषण",
       "आयातित उत्पादनहरूको प्रवृत्ति",
-      `खजुरा ${totalProducts} आयातित उत्पादनहरू`,
+      `परिवर्तन ${totalProducts} आयातित उत्पादनहरू`,
     ];
 
     const keywordsEN = [
@@ -53,7 +53,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data
-    const descriptionNP = `खजुरा गाउँपालिकाको आयातित उत्पादनहरूको विस्तृत सूची, प्रवृत्ति र विश्लेषण। कुल ${totalProducts} आयातित उत्पादनहरू पालिकामा दर्ता गरिएका छन्। यी आयातित वस्तुहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको आयातित उत्पादनहरूको विस्तृत सूची, प्रवृत्ति र विश्लेषण। कुल ${totalProducts} आयातित उत्पादनहरू पालिकामा दर्ता गरिएका छन्। यी आयातित वस्तुहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
 
     const descriptionEN = `Detailed catalog, trends and analysis of imported products for Khajura Rural Municipality. A total of ${totalProducts} imported products are registered in the municipality. Detailed statistics and visualizations of various imported goods.`;
 
@@ -191,7 +191,7 @@ export default async function ImportedProductsPage() {
               src="/images/imported-products.svg"
               width={1200}
               height={400}
-              alt="आयातित उत्पादनहरू - खजुरा गाउँपालिका (Imported Products - Khajura Rural Municipality)"
+              alt="आयातित उत्पादनहरू - परिवर्तन गाउँपालिका (Imported Products - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -199,19 +199,19 @@ export default async function ImportedProductsPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा आयातित उत्पादनहरू
+              परिवर्तन गाउँपालिकामा आयातित उत्पादनहरू
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              यस खण्डमा खजुरा गाउँपालिकामा आयात गरिने विभिन्न उत्पादनहरूको सूची
-              र विश्लेषण प्रस्तुत गरिएको छ। यी आयातित उत्पादनहरूले स्थानीय
+              यस खण्डमा परिवर्तन गाउँपालिकामा आयात गरिने विभिन्न उत्पादनहरूको
+              सूची र विश्लेषण प्रस्तुत गरिएको छ। यी आयातित उत्पादनहरूले स्थानीय
               अर्थतन्त्र, उपभोग ढाँचा र व्यापारिक आवश्यकताहरूको चित्रण गर्दछन्।
             </p>
             <p>
-              खजुरा गाउँपालिकामा दर्ता भएका कुल {totalProducts} आयातित
+              परिवर्तन गाउँपालिकामा दर्ता भएका कुल {totalProducts} आयातित
               उत्पादनहरूको विवरण यहाँ उपलब्ध छ। यी तथ्याङ्कहरूले स्थानीय आर्थिक
               नीति निर्माण, व्यापार सन्तुलन र उत्पादन प्रवर्द्धनका लागि
               महत्त्वपूर्ण जानकारी प्रदान गर्दछन्।
@@ -224,7 +224,7 @@ export default async function ImportedProductsPage() {
               आयातित उत्पादनहरूको सूची
             </h2>
             <p>
-              खजुरा गाउँपालिकामा आयात गरिएका उत्पादनहरूको सूची निम्नानुसार छ:
+              परिवर्तन गाउँपालिकामा आयात गरिएका उत्पादनहरूको सूची निम्नानुसार छ:
             </p>
           </div>
 
@@ -244,7 +244,7 @@ export default async function ImportedProductsPage() {
               आयात प्रवृत्ति विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा आयात गरिने उत्पादनहरूको प्रवृत्ति र उपभोग
+              परिवर्तन गाउँपालिकामा आयात गरिने उत्पादनहरूको प्रवृत्ति र उपभोग
               ढाँचामा निम्न विशेषताहरू देखिएका छन्। यी आयातित वस्तुहरूको नियमित
               अनुगमन र विश्लेषणले स्थानीय उत्पादन र आत्मनिर्भरता प्रवर्द्धन गर्न
               सहयोग पुर्‍याउँछ।
@@ -260,7 +260,7 @@ export default async function ImportedProductsPage() {
               तथ्याङ्क स्रोत
             </h2>
             <p>
-              माथि प्रस्तुत गरिएका तथ्याङ्कहरू खजुरा गाउँपालिकाको आर्थिक
+              माथि प्रस्तुत गरिएका तथ्याङ्कहरू परिवर्तन गाउँपालिकाको आर्थिक
               प्रोफाइल अध्ययन र स्थानीय व्यापार सर्वेक्षणबाट संकलन गरिएको हो। यी
               तथ्याङ्कहरूको महत्व निम्न अनुसार छ:
             </p>

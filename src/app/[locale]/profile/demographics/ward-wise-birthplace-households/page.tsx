@@ -42,7 +42,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const birthplaceData =
       await api.profile.demographics.wardWiseBirthplaceHouseholds.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalHouseholds = birthplaceData.reduce(
@@ -68,19 +68,20 @@ export async function generateMetadata(): Promise<Metadata> {
       }
     });
 
-    const mostCommonPercentage = totalHouseholds > 0
-      ? ((mostCommonCount / totalHouseholds) * 100).toFixed(2)
-      : "0";
+    const mostCommonPercentage =
+      totalHouseholds > 0
+        ? ((mostCommonCount / totalHouseholds) * 100).toFixed(2)
+        : "0";
 
     // Create rich keywords with actual data
     const keywordsNP = [
-      "खजुरा गाउँपालिका घरपरिवारको जन्मस्थान",
-      "खजुरा परिवार जन्मस्थान वितरण",
+      "परिवर्तन गाउँपालिका घरपरिवारको जन्मस्थान",
+      "परिवर्तन परिवार जन्मस्थान वितरण",
       "वडा अनुसार जन्मस्थान विवरण",
       "घरपरिवारको जन्मस्थान विश्लेषण",
-      "स्थानीय घरपरिवार खजुरा",
+      "स्थानीय घरपरिवार परिवर्तन",
       "जिल्ला बाहिरका घर परिवार",
-      `खजुरा घरपरिवार संख्या ${localizeNumber(totalHouseholds.toString(), "ne")}`,
+      `परिवर्तन घरपरिवार संख्या ${localizeNumber(totalHouseholds.toString(), "ne")}`,
     ];
 
     const keywordsEN = [
@@ -94,7 +95,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data
-    const descriptionNP = `खजुरा गाउँपालिकाको वडा अनुसार घरपरिवारको जन्मस्थानको वितरण र विश्लेषण। कुल घरपरिवार संख्या ${localizeNumber(totalHouseholds.toString(), "ne")} मध्ये ${localizeNumber(mostCommonPercentage, "ne")}% (${localizeNumber(mostCommonCount.toString(), "ne")}) ${BIRTH_PLACE_NAMES[mostCommonBirthplace] || mostCommonBirthplace} बाट आएका देखिन्छ। विभिन्न वडाहरूमा घरपरिवारको जन्मस्थानको विस्तृत विश्लेषण।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार घरपरिवारको जन्मस्थानको वितरण र विश्लेषण। कुल घरपरिवार संख्या ${localizeNumber(totalHouseholds.toString(), "ne")} मध्ये ${localizeNumber(mostCommonPercentage, "ne")}% (${localizeNumber(mostCommonCount.toString(), "ne")}) ${BIRTH_PLACE_NAMES[mostCommonBirthplace] || mostCommonBirthplace} बाट आएका देखिन्छ। विभिन्न वडाहरूमा घरपरिवारको जन्मस्थानको विस्तृत विश्लेषण।`;
 
     const descriptionEN = `Ward-wise distribution and analysis of household birthplaces in Khajura Rural Municipality. Out of a total of ${totalHouseholds} households, ${mostCommonPercentage}% (${mostCommonCount}) are from ${BIRTH_PLACE_NAMES_EN[mostCommonBirthplace] || mostCommonBirthplace}. Detailed analysis of household birthplaces across various wards.`;
 
@@ -126,9 +127,8 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "घरपरिवारको जन्मस्थान | खजुरा गाउँपालिका डिजिटल प्रोफाइल",
-      description:
-        "वडा अनुसार घरपरिवारको जन्मस्थानको वितरण र विश्लेषण।",
+      title: "घरपरिवारको जन्मस्थान | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
+      description: "वडा अनुसार घरपरिवारको जन्मस्थानको वितरण र विश्लेषण।",
     };
   }
 }
@@ -177,7 +177,7 @@ export default async function WardWiseBirthplaceHouseholdsPage() {
     0,
   );
 
-  // Create data for pie chart 
+  // Create data for pie chart
   const pieChartData = overallSummary.map((item) => ({
     name: item.birthPlaceName,
     value: item.households,
@@ -213,24 +213,33 @@ export default async function WardWiseBirthplaceHouseholdsPage() {
     const wardData = birthplaceData.filter(
       (item) => item.wardNumber === wardNumber,
     );
-    
+
     const wardTotalHouseholds = wardData.reduce(
-      (sum, item) => sum + (item.households || 0), 
-      0
+      (sum, item) => sum + (item.households || 0),
+      0,
     );
-    
-    const mostCommonBirthplace = wardData.reduce((prev, current) => {
-      return (prev.households || 0) > (current.households || 0) ? prev : current;
-    }, { birthPlace: "", households: 0 });
-    
+
+    const mostCommonBirthplace = wardData.reduce(
+      (prev, current) => {
+        return (prev.households || 0) > (current.households || 0)
+          ? prev
+          : current;
+      },
+      { birthPlace: "", households: 0 },
+    );
+
     return {
       wardNumber,
       totalHouseholds: wardTotalHouseholds,
       mostCommonBirthplace: mostCommonBirthplace.birthPlace,
       mostCommonBirthplaceHouseholds: mostCommonBirthplace.households || 0,
-      mostCommonBirthplacePercentage: wardTotalHouseholds > 0 
-        ? ((mostCommonBirthplace.households || 0) / wardTotalHouseholds * 100).toFixed(2)
-        : "0",
+      mostCommonBirthplacePercentage:
+        wardTotalHouseholds > 0
+          ? (
+              ((mostCommonBirthplace.households || 0) / wardTotalHouseholds) *
+              100
+            ).toFixed(2)
+          : "0",
     };
   });
 
@@ -252,7 +261,7 @@ export default async function WardWiseBirthplaceHouseholdsPage() {
               src="/images/birthplace-households.svg"
               width={1200}
               height={400}
-              alt="घरपरिवारको जन्मस्थान - खजुरा गाउँपालिका (Household Birthplaces - Khajura Rural Municipality)"
+              alt="घरपरिवारको जन्मस्थान - परिवर्तन गाउँपालिका (Household Birthplaces - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -260,24 +269,33 @@ export default async function WardWiseBirthplaceHouseholdsPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा घरपरिवारको जन्मस्थान
+              परिवर्तन गाउँपालिकामा घरपरिवारको जन्मस्थान
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              घरपरिवारको जन्मस्थान सम्बन्धी तथ्याङ्कले गाउँपालिकामा बसोबास गर्ने परिवारहरूको
-              मूल स्थान, आप्रवासन प्रवृत्ति र जनसंख्या गतिशीलताको विश्लेषण गर्न सहयोग गर्दछ।
-              यस खण्डमा खजुरा गाउँपालिकामा रहेका घरपरिवारको जन्मस्थान अनुसारको वितरण र वडागत
-              विश्लेषण प्रस्तुत गरिएको छ।
+              घरपरिवारको जन्मस्थान सम्बन्धी तथ्याङ्कले गाउँपालिकामा बसोबास गर्ने
+              परिवारहरूको मूल स्थान, आप्रवासन प्रवृत्ति र जनसंख्या गतिशीलताको
+              विश्लेषण गर्न सहयोग गर्दछ। यस खण्डमा परिवर्तन गाउँपालिकामा रहेका
+              घरपरिवारको जन्मस्थान अनुसारको वितरण र वडागत विश्लेषण प्रस्तुत
+              गरिएको छ।
             </p>
             <p>
-              खजुरा गाउँपालिकामा रहेका परिवारहरूको जन्मस्थानको
-              तथ्याङ्क हेर्दा, कुल घरपरिवार {localizeNumber(totalHouseholds.toLocaleString(), "ne")} 
-              मध्ये सबैभन्दा बढी {overallSummary[0]?.birthPlaceName || ""} 
-              बाट {localizeNumber(((overallSummary[0]?.households || 0) / totalHouseholds * 100).toFixed(1), "ne")}% 
-              परिवारहरू रहेको देखिन्छ।
+              परिवर्तन गाउँपालिकामा रहेका परिवारहरूको जन्मस्थानको तथ्याङ्क
+              हेर्दा, कुल घरपरिवार{" "}
+              {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
+              मध्ये सबैभन्दा बढी {overallSummary[0]?.birthPlaceName || ""}
+              बाट{" "}
+              {localizeNumber(
+                (
+                  ((overallSummary[0]?.households || 0) / totalHouseholds) *
+                  100
+                ).toFixed(1),
+                "ne",
+              )}
+              % परिवारहरू रहेको देखिन्छ।
             </p>
 
             <h2
@@ -287,8 +305,8 @@ export default async function WardWiseBirthplaceHouseholdsPage() {
               घरपरिवारको जन्मस्थान
             </h2>
             <p>
-              खजुरा गाउँपालिकामा रहेका परिवारहरूको जन्मस्थानको विवरण र वितरण निम्नानुसार
-              रहेको छ:
+              परिवर्तन गाउँपालिकामा रहेका परिवारहरूको जन्मस्थानको विवरण र वितरण
+              निम्नानुसार रहेको छ:
             </p>
           </div>
 
@@ -309,11 +327,19 @@ export default async function WardWiseBirthplaceHouseholdsPage() {
               जन्मस्थान विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा रहेका परिवारहरूको जन्मस्थानको विश्लेषण गर्दा, 
-              {BIRTH_PLACE_NAMES[overallSummary[0]?.birthPlace || ''] || overallSummary[0]?.birthPlace} 
-              बाट आएका परिवारहरू सबैभन्दा बढी 
-              {localizeNumber(((overallSummary[0]?.households || 0) / totalHouseholds * 100).toFixed(2), "ne")}% 
-              रहेको पाइन्छ।
+              परिवर्तन गाउँपालिकामा रहेका परिवारहरूको जन्मस्थानको विश्लेषण
+              गर्दा,
+              {BIRTH_PLACE_NAMES[overallSummary[0]?.birthPlace || ""] ||
+                overallSummary[0]?.birthPlace}
+              बाट आएका परिवारहरू सबैभन्दा बढी
+              {localizeNumber(
+                (
+                  ((overallSummary[0]?.households || 0) / totalHouseholds) *
+                  100
+                ).toFixed(2),
+                "ne",
+              )}
+              % रहेको पाइन्छ।
             </p>
 
             {/* Client component for birthplace analysis section */}

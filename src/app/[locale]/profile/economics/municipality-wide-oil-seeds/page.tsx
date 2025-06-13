@@ -55,7 +55,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const oilSeedData =
       await api.profile.economics.municipalityWideOilSeeds.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalProduction = oilSeedData.reduce(
@@ -95,14 +95,14 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // Create rich keywords with actual data
     const keywordsNP = [
-      "खजुरा गाउँपालिका तेलहन बाली",
-      "खजुरा तेलहनको उत्पादन",
+      "परिवर्तन गाउँपालिका तेलहन बाली",
+      "परिवर्तन तेलहनको उत्पादन",
       "पालिका स्तरीय तेलहन बाली तथ्याङ्क",
-      "तोरी/सरसोँ उत्पादन खजुरा",
+      "तोरी/सरसोँ उत्पादन परिवर्तन",
       "आलस उत्पादन तथ्याङ्क",
       "सूर्यमूखी उत्पादन",
-      `खजुरा तेलहन बाली बिक्री ${localizeNumber(totalSales.toFixed(2), "ne")} टन`,
-      `खजुरा तेलहन बाली आय ${localizeNumber((totalRevenue / 1000000).toFixed(2), "ne")} मिलियन`,
+      `परिवर्तन तेलहन बाली बिक्री ${localizeNumber(totalSales.toFixed(2), "ne")} टन`,
+      `परिवर्तन तेलहन बाली आय ${localizeNumber((totalRevenue / 1000000).toFixed(2), "ne")} मिलियन`,
     ];
 
     const keywordsEN = [
@@ -117,7 +117,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data
-    const descriptionNP = `खजुरा गाउँपालिकाको तेलहन बाली उत्पादन र बिक्री विश्लेषण। कुल ${localizeNumber(totalProduction.toFixed(2), "ne")} मेट्रिक टन तेलहन बाली उत्पादन मध्ये ${localizeNumber(mostProducedPercentage, "ne")}% (${localizeNumber(mostProducedAmount.toFixed(2), "ne")} टन) ${OIL_SEED_TYPES[mostProducedOilSeed] || mostProducedOilSeed} रहेको छ। पालिका स्तरीय तेलहन बालीको विस्तृत विश्लेषण।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको तेलहन बाली उत्पादन र बिक्री विश्लेषण। कुल ${localizeNumber(totalProduction.toFixed(2), "ne")} मेट्रिक टन तेलहन बाली उत्पादन मध्ये ${localizeNumber(mostProducedPercentage, "ne")}% (${localizeNumber(mostProducedAmount.toFixed(2), "ne")} टन) ${OIL_SEED_TYPES[mostProducedOilSeed] || mostProducedOilSeed} रहेको छ। पालिका स्तरीय तेलहन बालीको विस्तृत विश्लेषण।`;
 
     const descriptionEN = `Analysis of oil seed production and sales in Khajura Rural Municipality. Out of total ${totalProduction.toFixed(2)} metric tonnes of oil seed production, ${mostProducedPercentage}% (${mostProducedAmount.toFixed(2)} tonnes) is ${OIL_SEED_TYPES_EN[mostProducedOilSeed] || mostProducedOilSeed}. Detailed analysis of municipality-wide oil seed patterns.`;
 
@@ -150,7 +150,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fallback metadata if data fetching fails
     return {
       title:
-        "तेलहन बालीको प्रकार अनुसार उत्पादन र बिक्री | खजुरा गाउँपालिका डिजिटल प्रोफाइल",
+        "तेलहन बालीको प्रकार अनुसार उत्पादन र बिक्री | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
       description:
         "पालिका स्तरीय तेलहन बालीको प्रकार अनुसारको उत्पादन, बिक्री र आम्दानीको विश्लेषण।",
     };
@@ -323,7 +323,7 @@ export default async function MunicipalityWideOilSeedsPage() {
               src="/images/oil-seeds.svg"
               width={1200}
               height={400}
-              alt="तेलहन बालीको प्रकार अनुसार उत्पादन र बिक्री - खजुरा गाउँपालिका (Oil Seeds by Production and Sales - Khajura Rural Municipality)"
+              alt="तेलहन बालीको प्रकार अनुसार उत्पादन र बिक्री - परिवर्तन गाउँपालिका (Oil Seeds by Production and Sales - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -331,20 +331,20 @@ export default async function MunicipalityWideOilSeedsPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा तेलहन बालीको प्रकार अनुसार उत्पादन र बिक्री
+              परिवर्तन गाउँपालिकामा तेलहन बालीको प्रकार अनुसार उत्पादन र बिक्री
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              तेलहन बाली खजुरा गाउँपालिकाको प्रमुख कृषि उत्पादनहरू मध्ये एक हो।
-              यसका प्रमुख बालीहरूमा तोरी/सरसोँ, आलस, सूर्यमूखी, र अन्य तेलहन
+              तेलहन बाली परिवर्तन गाउँपालिकाको प्रमुख कृषि उत्पादनहरू मध्ये एक
+              हो। यसका प्रमुख बालीहरूमा तोरी/सरसोँ, आलस, सूर्यमूखी, र अन्य तेलहन
               बालीहरू पर्दछन्। यी तेलहन बालीहरूले पालिकाको तेल आत्मनिर्भरता र
               आर्थिक स्थितिमा महत्त्वपूर्ण भूमिका खेल्दछन्।
             </p>
             <p>
-              खजुरा गाउँपालिकाको तेलहन बाली सम्बन्धी तथ्याङ्क अनुसार, यस
+              परिवर्तन गाउँपालिकाको तेलहन बाली सम्बन्धी तथ्याङ्क अनुसार, यस
               क्षेत्रमा वार्षिक कुल{" "}
               {localizeNumber(totalProduction.toFixed(2), "ne")} मेट्रिक टन
               तेलहन बाली उत्पादन हुन्छ, जसमध्ये सबैभन्दा बढी{" "}
@@ -371,8 +371,8 @@ export default async function MunicipalityWideOilSeedsPage() {
               प्रमुख तेलहन बालीहरू
             </h2>
             <p>
-              खजुरा गाउँपालिकामा उत्पादित प्रमुख तेलहन बालीहरू र तिनको उत्पादन
-              परिमाण निम्नानुसार रहेको छ:
+              परिवर्तन गाउँपालिकामा उत्पादित प्रमुख तेलहन बालीहरू र तिनको
+              उत्पादन परिमाण निम्नानुसार रहेको छ:
             </p>
 
             <ul>
@@ -390,9 +390,9 @@ export default async function MunicipalityWideOilSeedsPage() {
             </ul>
 
             <p>
-              तेलहन बालीको विश्लेषण गर्दा, खजुरा गाउँपालिकामा उत्पादित कुल तेलहन
-              बाली मध्ये {localizeNumber(soldPercentage, "ne")}% बिक्रीका लागि
-              बजारमा जान्छ, जबकि{" "}
+              तेलहन बालीको विश्लेषण गर्दा, परिवर्तन गाउँपालिकामा उत्पादित कुल
+              तेलहन बाली मध्ये {localizeNumber(soldPercentage, "ne")}% बिक्रीका
+              लागि बजारमा जान्छ, जबकि{" "}
               {localizeNumber(selfConsumptionPercentage, "ne")}% घरायसी उपभोगमा
               खर्च हुन्छ। यसबाट वार्षिक रु.{" "}
               {localizeNumber((totalRevenue / 1000000).toFixed(2), "ne")} मिलियन
@@ -434,7 +434,7 @@ export default async function MunicipalityWideOilSeedsPage() {
               तेलहन बाली र स्थानीय अर्थतन्त्र
             </h2>
             <p>
-              खजुरा गाउँपालिकामा तेलहन बालीको उत्पादनले स्थानीय अर्थतन्त्रमा
+              परिवर्तन गाउँपालिकामा तेलहन बालीको उत्पादनले स्थानीय अर्थतन्त्रमा
               महत्त्वपूर्ण भूमिका खेल्दछ। कुल{" "}
               {localizeNumber(totalProduction.toFixed(2), "ne")} मेट्रिक टन
               तेलहन बाली उत्पादन मध्ये{" "}
@@ -445,7 +445,7 @@ export default async function MunicipalityWideOilSeedsPage() {
             </p>
 
             <p>
-              खजुरा गाउँपालिकाको प्रमुख तेलहन बालीको उत्पादकत्व र बजारीकरणको
+              परिवर्तन गाउँपालिकाको प्रमुख तेलहन बालीको उत्पादकत्व र बजारीकरणको
               विश्लेषण गर्दा {overallSummary[0]?.typeName || ""} सबैभन्दा
               प्रभावकारी तेलहन बाली रहेको देखिन्छ, जसले कुल तेलहन बाली उत्पादनको{" "}
               {localizeNumber(
@@ -482,7 +482,7 @@ export default async function MunicipalityWideOilSeedsPage() {
             </h2>
 
             <p>
-              खजुरा गाउँपालिकाको तेलहन बालीको अवस्थाको विश्लेषणबाट निम्न
+              परिवर्तन गाउँपालिकाको तेलहन बालीको अवस्थाको विश्लेषणबाट निम्न
               निष्कर्ष र सिफारिसहरू गर्न सकिन्छ:
             </p>
 
@@ -531,7 +531,7 @@ export default async function MunicipalityWideOilSeedsPage() {
             </div>
 
             <p className="mt-6">
-              खजुरा गाउँपालिकामा तेलहन बालीको वर्तमान अवस्थाले अझै विकासको
+              परिवर्तन गाउँपालिकामा तेलहन बालीको वर्तमान अवस्थाले अझै विकासको
               सम्भावना देखाउँछ। उत्पादकत्व वृद्धि, तेल निकाल्ने प्रविधिमा
               आधुनिकीकरण र व्यावसायीकरण मार्फत तेल आत्मनिर्भरता र आर्थिक समृद्धि
               हासिल गर्न सकिनेछ। यसका लागि स्थानीय सरकारले सक्रिय नीति निर्माण र

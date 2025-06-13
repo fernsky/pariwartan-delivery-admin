@@ -131,7 +131,7 @@ export default function SkillsAnalysisSection({
     if (document && document.body) {
       document.body.setAttribute(
         "data-municipality",
-        "Khajura Rural Municipality / खजुरा गाउँपालिका",
+        "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
       );
       document.body.setAttribute(
         "data-total-skilled-population",
@@ -234,7 +234,8 @@ export default function SkillsAnalysisSection({
                   {localizeNumber(percentage, "ne")}%
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {localizeNumber(item.population.toLocaleString(), "ne")} व्यक्ति
+                  {localizeNumber(item.population.toLocaleString(), "ne")}{" "}
+                  व्यक्ति
                   <span className="sr-only">
                     ({item.population.toLocaleString()} people)
                   </span>
@@ -323,9 +324,16 @@ export default function SkillsAnalysisSection({
           <div className="bg-card p-3 rounded border">
             <h5 className="text-sm font-medium">प्राविधिक सीप</h5>
             <p className="text-sm flex justify-between">
-              <span>{localizeNumber(technicalPopulation.toLocaleString(), "ne")} व्यक्ति</span>
+              <span>
+                {localizeNumber(technicalPopulation.toLocaleString(), "ne")}{" "}
+                व्यक्ति
+              </span>
               <span className="font-medium">
-                {localizeNumber(((technicalPopulation / totalPopulation) * 100).toFixed(1), "ne")}%
+                {localizeNumber(
+                  ((technicalPopulation / totalPopulation) * 100).toFixed(1),
+                  "ne",
+                )}
+                %
               </span>
             </p>
             <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -341,9 +349,16 @@ export default function SkillsAnalysisSection({
           <div className="bg-card p-3 rounded border">
             <h5 className="text-sm font-medium">पेशागत सीप</h5>
             <p className="text-sm flex justify-between">
-              <span>{localizeNumber(professionalPopulation.toLocaleString(), "ne")} व्यक्ति</span>
+              <span>
+                {localizeNumber(professionalPopulation.toLocaleString(), "ne")}{" "}
+                व्यक्ति
+              </span>
               <span className="font-medium">
-                {localizeNumber(((professionalPopulation / totalPopulation) * 100).toFixed(1), "ne")}%
+                {localizeNumber(
+                  ((professionalPopulation / totalPopulation) * 100).toFixed(1),
+                  "ne",
+                )}
+                %
               </span>
             </p>
             <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -359,9 +374,16 @@ export default function SkillsAnalysisSection({
           <div className="bg-card p-3 rounded border">
             <h5 className="text-sm font-medium">कृषि सम्बन्धी सीप</h5>
             <p className="text-sm flex justify-between">
-              <span>{localizeNumber(agriculturalPopulation.toLocaleString(), "ne")} व्यक्ति</span>
+              <span>
+                {localizeNumber(agriculturalPopulation.toLocaleString(), "ne")}{" "}
+                व्यक्ति
+              </span>
               <span className="font-medium">
-                {localizeNumber(((agriculturalPopulation / totalPopulation) * 100).toFixed(1), "ne")}%
+                {localizeNumber(
+                  ((agriculturalPopulation / totalPopulation) * 100).toFixed(1),
+                  "ne",
+                )}
+                %
               </span>
             </p>
             <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -377,9 +399,16 @@ export default function SkillsAnalysisSection({
           <div className="bg-card p-3 rounded border">
             <h5 className="text-sm font-medium">सेवा सम्बन्धी सीप</h5>
             <p className="text-sm flex justify-between">
-              <span>{localizeNumber(servicePopulation.toLocaleString(), "ne")} व्यक्ति</span>
+              <span>
+                {localizeNumber(servicePopulation.toLocaleString(), "ne")}{" "}
+                व्यक्ति
+              </span>
               <span className="font-medium">
-                {localizeNumber(((servicePopulation / totalPopulation) * 100).toFixed(1), "ne")}%
+                {localizeNumber(
+                  ((servicePopulation / totalPopulation) * 100).toFixed(1),
+                  "ne",
+                )}
+                %
               </span>
             </p>
             <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -395,9 +424,16 @@ export default function SkillsAnalysisSection({
           <div className="bg-card p-3 rounded border">
             <h5 className="text-sm font-medium">हस्तकला तथा कला सम्बन्धी</h5>
             <p className="text-sm flex justify-between">
-              <span>{localizeNumber(artisanPopulation.toLocaleString(), "ne")} व्यक्ति</span>
+              <span>
+                {localizeNumber(artisanPopulation.toLocaleString(), "ne")}{" "}
+                व्यक्ति
+              </span>
               <span className="font-medium">
-                {localizeNumber(((artisanPopulation / totalPopulation) * 100).toFixed(1), "ne")}%
+                {localizeNumber(
+                  ((artisanPopulation / totalPopulation) * 100).toFixed(1),
+                  "ne",
+                )}
+                %
               </span>
             </p>
             <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -413,9 +449,15 @@ export default function SkillsAnalysisSection({
           <div className="bg-card p-3 rounded border">
             <h5 className="text-sm font-medium">अन्य</h5>
             <p className="text-sm flex justify-between">
-              <span>{localizeNumber(otherPopulation.toLocaleString(), "ne")} व्यक्ति</span>
+              <span>
+                {localizeNumber(otherPopulation.toLocaleString(), "ne")} व्यक्ति
+              </span>
               <span className="font-medium">
-                {localizeNumber(((otherPopulation / totalPopulation) * 100).toFixed(1), "ne")}%
+                {localizeNumber(
+                  ((otherPopulation / totalPopulation) * 100).toFixed(1),
+                  "ne",
+                )}
+                %
               </span>
             </p>
             <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -429,8 +471,6 @@ export default function SkillsAnalysisSection({
           </div>
         </div>
       </div>
-
-     
     </>
   );
 }

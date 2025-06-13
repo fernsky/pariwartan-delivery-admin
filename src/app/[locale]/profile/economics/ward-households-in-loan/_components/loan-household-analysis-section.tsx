@@ -55,7 +55,7 @@ export default function LoanHouseholdAnalysisSection({
     if (document && document.body) {
       document.body.setAttribute(
         "data-municipality",
-        "Khajura Rural Municipality / खजुरा गाउँपालिका",
+        "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
       );
       document.body.setAttribute(
         "data-total-households-with-loans",
@@ -186,8 +186,8 @@ export default function LoanHouseholdAnalysisSection({
           </span>
         </h3>
         <p>
-          खजुरा गाउँपालिकाको ऋण वितरण सम्बन्धी थप जानकारी वा विस्तृत तथ्याङ्कको
-          लागि, कृपया{" "}
+          परिवर्तन गाउँपालिकाको ऋण वितरण सम्बन्धी थप जानकारी वा विस्तृत
+          तथ्याङ्कको लागि, कृपया{" "}
           <Link href="/contact" className="text-primary hover:underline">
             हामीलाई सम्पर्क
           </Link>{" "}

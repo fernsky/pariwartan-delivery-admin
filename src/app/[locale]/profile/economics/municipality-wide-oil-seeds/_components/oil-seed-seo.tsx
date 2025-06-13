@@ -63,11 +63,11 @@ export default function OilSeedSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Oil Seed Types in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Oil Seed Types in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Oil seed production and sales statistics of Khajura Rural Municipality with a total production of ${totalProduction.toFixed(2)} tonnes and sales of ${totalSales.toFixed(2)} tonnes (${((totalSales / totalProduction) * 100).toFixed(2)}% of production). The most common oil seed crop is ${mostProducedOilSeedEN} with ${mostProducedOilSeed?.production.toFixed(2)} tonnes (${mostProducedPercentage}%). Self-consumption represents ${selfConsumptionPercentage}% of total production. Total revenue from oil seed sales is NPR ${totalRevenue.toLocaleString()}.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Oil seed production",
         "Oil seed sales",
         "Mustard production",

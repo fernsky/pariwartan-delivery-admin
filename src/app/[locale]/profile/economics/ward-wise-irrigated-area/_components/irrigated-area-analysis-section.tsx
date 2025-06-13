@@ -41,27 +41,25 @@ export default function IrrigatedAreaAnalysisSection({
 }: IrrigatedAreaAnalysisSectionProps) {
   // Find ward with highest irrigated proportion
   const highestIrrigatedProportionWard = [...wardData]
-    .filter(ward => ward.totalArea > 0)
-    .sort((a, b) => 
-      (b.irrigatedArea / b.totalArea) - (a.irrigatedArea / a.totalArea)
+    .filter((ward) => ward.totalArea > 0)
+    .sort(
+      (a, b) => b.irrigatedArea / b.totalArea - a.irrigatedArea / a.totalArea,
     )[0];
 
   // Find ward with lowest irrigated proportion
   const lowestIrrigatedProportionWard = [...wardData]
-    .filter(ward => ward.totalArea > 0)
-    .sort((a, b) => 
-      (a.irrigatedArea / a.totalArea) - (b.irrigatedArea / b.totalArea)
+    .filter((ward) => ward.totalArea > 0)
+    .sort(
+      (a, b) => a.irrigatedArea / a.totalArea - b.irrigatedArea / b.totalArea,
     )[0];
 
   // Calculate average irrigated area per ward
-  const averageIrrigatedArea = 
-    wardData.length > 0 
-      ? totalIrrigatedArea / wardData.length
-      : 0;
+  const averageIrrigatedArea =
+    wardData.length > 0 ? totalIrrigatedArea / wardData.length : 0;
 
   // SEO attributes to include directly in JSX
   const seoAttributes = {
-    "data-municipality": "Khajura Rural Municipality / खजुरा गाउँपालिका",
+    "data-municipality": "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
     "data-total-area": totalArea.toString(),
     "data-irrigated-area": totalIrrigatedArea.toString(),
     "data-irrigated-percentage": irrigatedPercentage,
@@ -127,14 +125,26 @@ export default function IrrigatedAreaAnalysisSection({
                 <div className="w-4 h-16 rounded bg-blue-500"></div>
                 <div>
                   <p className="text-2xl font-bold">
-                    वडा नं. {localizeNumber(String(mostIrrigatedWard.wardNumber), "ne")}
+                    वडा नं.{" "}
+                    {localizeNumber(String(mostIrrigatedWard.wardNumber), "ne")}
                   </p>
                   <p className="text-sm text-muted-foreground mt-1">
-                    {localizeNumber(mostIrrigatedWard.irrigatedArea.toFixed(2), "ne")} हेक्टर
-                    {" "}
-                    ({mostIrrigatedWard.totalArea > 0 
-                      ? localizeNumber(((mostIrrigatedWard.irrigatedArea / mostIrrigatedWard.totalArea) * 100).toFixed(1), "ne") 
-                      : "0"}%)
+                    {localizeNumber(
+                      mostIrrigatedWard.irrigatedArea.toFixed(2),
+                      "ne",
+                    )}{" "}
+                    हेक्टर (
+                    {mostIrrigatedWard.totalArea > 0
+                      ? localizeNumber(
+                          (
+                            (mostIrrigatedWard.irrigatedArea /
+                              mostIrrigatedWard.totalArea) *
+                            100
+                          ).toFixed(1),
+                          "ne",
+                        )
+                      : "0"}
+                    %)
                   </p>
                 </div>
               </div>
@@ -149,10 +159,12 @@ export default function IrrigatedAreaAnalysisSection({
                   <div key={index} className="mt-3">
                     <div className="flex justify-between text-sm">
                       <span>
-                        {localizeNumber(String(index + 1), "ne")}. वडा नं. {localizeNumber(String(ward.wardNumber), "ne")}
+                        {localizeNumber(String(index + 1), "ne")}. वडा नं.{" "}
+                        {localizeNumber(String(ward.wardNumber), "ne")}
                       </span>
                       <span className="font-medium">
-                        {localizeNumber(ward.irrigatedArea.toFixed(1), "ne")} हेक्टर
+                        {localizeNumber(ward.irrigatedArea.toFixed(1), "ne")}{" "}
+                        हेक्टर
                       </span>
                     </div>
                     <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -171,25 +183,36 @@ export default function IrrigatedAreaAnalysisSection({
           <div className="bg-card p-4 rounded border">
             <h4 className="font-medium mb-2">
               सिंचाई चुनौती भएको वडा
-              <span className="sr-only">
-                Ward with irrigation challenges
-              </span>
+              <span className="sr-only">Ward with irrigation challenges</span>
             </h4>
             {mostUnirrigatedWard && (
               <div className="flex items-center gap-3">
                 <div className="w-4 h-16 rounded bg-red-500"></div>
                 <div>
                   <p className="text-2xl font-bold">
-                    वडा नं. {localizeNumber(String(mostUnirrigatedWard.wardNumber), "ne")}
+                    वडा नं.{" "}
+                    {localizeNumber(
+                      String(mostUnirrigatedWard.wardNumber),
+                      "ne",
+                    )}
                   </p>
                   <p className="text-sm text-muted-foreground mt-1">
-                    {localizeNumber(mostUnirrigatedWard.unirrigatedArea.toFixed(2), "ne")} हेक्टर
-                    {" "}
-                    असिंचित क्षेत्र
-                    {" "}
-                    ({mostUnirrigatedWard.totalArea > 0
-                      ? localizeNumber(((mostUnirrigatedWard.unirrigatedArea / mostUnirrigatedWard.totalArea) * 100).toFixed(1), "ne")
-                      : "0"}%)
+                    {localizeNumber(
+                      mostUnirrigatedWard.unirrigatedArea.toFixed(2),
+                      "ne",
+                    )}{" "}
+                    हेक्टर असिंचित क्षेत्र (
+                    {mostUnirrigatedWard.totalArea > 0
+                      ? localizeNumber(
+                          (
+                            (mostUnirrigatedWard.unirrigatedArea /
+                              mostUnirrigatedWard.totalArea) *
+                            100
+                          ).toFixed(1),
+                          "ne",
+                        )
+                      : "0"}
+                    %)
                   </p>
                 </div>
               </div>
@@ -204,10 +227,12 @@ export default function IrrigatedAreaAnalysisSection({
                   <div key={index} className="mt-3">
                     <div className="flex justify-between text-sm">
                       <span>
-                        {localizeNumber(String(index + 1), "ne")}. वडा नं. {localizeNumber(String(ward.wardNumber), "ne")}
+                        {localizeNumber(String(index + 1), "ne")}. वडा नं.{" "}
+                        {localizeNumber(String(ward.wardNumber), "ne")}
                       </span>
                       <span className="font-medium">
-                        {localizeNumber(ward.unirrigatedArea.toFixed(1), "ne")} हेक्टर
+                        {localizeNumber(ward.unirrigatedArea.toFixed(1), "ne")}{" "}
+                        हेक्टर
                       </span>
                     </div>
                     <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -231,25 +256,74 @@ export default function IrrigatedAreaAnalysisSection({
               <li className="flex gap-2">
                 <span className="text-blue-500">•</span>
                 <span>
-                  <strong>सिंचाई वितरण:</strong> पालिकामा औसत {localizeNumber(averageIrrigatedArea.toFixed(2), "ne")} हेक्टर प्रति वडा सिंचित क्षेत्रफल रहेको छ। उच्च सिंचित वडा नं. {localizeNumber(String(mostIrrigatedWard?.wardNumber || ""), "ne")} ({localizeNumber(mostIrrigatedWard?.irrigatedArea.toFixed(1) || "0", "ne")} हेक्टर) र न्यून सिंचित वडा नं. {localizeNumber(String(lowestIrrigatedProportionWard?.wardNumber || ""), "ne")} ({localizeNumber(lowestIrrigatedProportionWard?.irrigatedArea.toFixed(1) || "0", "ne")} हेक्टर) बीच ठूलो भिन्नता रहेको छ।
+                  <strong>सिंचाई वितरण:</strong> पालिकामा औसत{" "}
+                  {localizeNumber(averageIrrigatedArea.toFixed(2), "ne")} हेक्टर
+                  प्रति वडा सिंचित क्षेत्रफल रहेको छ। उच्च सिंचित वडा नं.{" "}
+                  {localizeNumber(
+                    String(mostIrrigatedWard?.wardNumber || ""),
+                    "ne",
+                  )}{" "}
+                  (
+                  {localizeNumber(
+                    mostIrrigatedWard?.irrigatedArea.toFixed(1) || "0",
+                    "ne",
+                  )}{" "}
+                  हेक्टर) र न्यून सिंचित वडा नं.{" "}
+                  {localizeNumber(
+                    String(lowestIrrigatedProportionWard?.wardNumber || ""),
+                    "ne",
+                  )}{" "}
+                  (
+                  {localizeNumber(
+                    lowestIrrigatedProportionWard?.irrigatedArea.toFixed(1) ||
+                      "0",
+                    "ne",
+                  )}{" "}
+                  हेक्टर) बीच ठूलो भिन्नता रहेको छ।
                 </span>
               </li>
               <li className="flex gap-2">
                 <span className="text-amber-500">•</span>
                 <span>
-                  <strong>सिंचाई अन्तराल:</strong> पालिकामा कुल क्षेत्रफलको {localizeNumber(unirrigatedPercentage, "ne")}% {localizeNumber(totalUnirrigatedArea.toFixed(2), "ne")} हेक्टर क्षेत्रफलमा सिंचाई सुविधा पुग्न नसकेको अवस्था छ।
+                  <strong>सिंचाई अन्तराल:</strong> पालिकामा कुल क्षेत्रफलको{" "}
+                  {localizeNumber(unirrigatedPercentage, "ne")}%{" "}
+                  {localizeNumber(totalUnirrigatedArea.toFixed(2), "ne")} हेक्टर
+                  क्षेत्रफलमा सिंचाई सुविधा पुग्न नसकेको अवस्था छ।
                 </span>
               </li>
               <li className="flex gap-2">
                 <span className="text-green-500">•</span>
                 <span>
-                  <strong>सिंचाई दक्षता:</strong> सिंचाईको दिगोपना स्कोर {localizeNumber(irrigationSustainabilityScore.toString(), "ne")}% रहेकोले {irrigationSustainabilityScore >= 60 ? "सन्तोषजनक" : irrigationSustainabilityScore >= 40 ? "मध्यम" : "न्यून"} अवस्था देखिन्छ। यसलाई अझ सुधार गर्न विशेष कार्यक्रमहरू सञ्चालन गर्नुपर्ने आवश्यकता छ।
+                  <strong>सिंचाई दक्षता:</strong> सिंचाईको दिगोपना स्कोर{" "}
+                  {localizeNumber(
+                    irrigationSustainabilityScore.toString(),
+                    "ne",
+                  )}
+                  % रहेकोले{" "}
+                  {irrigationSustainabilityScore >= 60
+                    ? "सन्तोषजनक"
+                    : irrigationSustainabilityScore >= 40
+                      ? "मध्यम"
+                      : "न्यून"}{" "}
+                  अवस्था देखिन्छ। यसलाई अझ सुधार गर्न विशेष कार्यक्रमहरू सञ्चालन
+                  गर्नुपर्ने आवश्यकता छ।
                 </span>
               </li>
               <li className="flex gap-2">
                 <span className="text-red-500">•</span>
                 <span>
-                  <strong>सिंचाई प्राथमिकता:</strong> वडा नं. {localizeNumber(String(mostUnirrigatedWard?.wardNumber || ""), "ne")} मा सबैभन्दा बढी {localizeNumber(mostUnirrigatedWard?.unirrigatedArea.toFixed(1) || "0", "ne")} हेक्टर असिंचित क्षेत्रफल रहेकोले सिंचाई विकास योजनामा यस वडालाई प्राथमिकतामा राख्नुपर्ने देखिन्छ।
+                  <strong>सिंचाई प्राथमिकता:</strong> वडा नं.{" "}
+                  {localizeNumber(
+                    String(mostUnirrigatedWard?.wardNumber || ""),
+                    "ne",
+                  )}{" "}
+                  मा सबैभन्दा बढी{" "}
+                  {localizeNumber(
+                    mostUnirrigatedWard?.unirrigatedArea.toFixed(1) || "0",
+                    "ne",
+                  )}{" "}
+                  हेक्टर असिंचित क्षेत्रफल रहेकोले सिंचाई विकास योजनामा यस
+                  वडालाई प्राथमिकतामा राख्नुपर्ने देखिन्छ।
                 </span>
               </li>
             </ul>
@@ -259,20 +333,24 @@ export default function IrrigatedAreaAnalysisSection({
             <h4 className="font-medium mb-4">वडागत सिंचाई प्रतिशत</h4>
             <div className="space-y-3">
               {wardData
-                .sort((a, b) => 
-                  (b.irrigatedArea / b.totalArea) - (a.irrigatedArea / a.totalArea)
+                .sort(
+                  (a, b) =>
+                    b.irrigatedArea / b.totalArea -
+                    a.irrigatedArea / a.totalArea,
                 )
                 .slice(0, 5)
                 .map((ward) => {
-                  const irrigatedPercent = ward.totalArea > 0 
-                    ? (ward.irrigatedArea / ward.totalArea) * 100 
-                    : 0;
-                  
+                  const irrigatedPercent =
+                    ward.totalArea > 0
+                      ? (ward.irrigatedArea / ward.totalArea) * 100
+                      : 0;
+
                   return (
                     <div key={ward.wardNumber}>
                       <div className="flex justify-between items-center">
                         <span className="text-sm">
-                          वडा नं. {localizeNumber(String(ward.wardNumber), "ne")}
+                          वडा नं.{" "}
+                          {localizeNumber(String(ward.wardNumber), "ne")}
                         </span>
                         <span className="font-medium text-sm">
                           {localizeNumber(irrigatedPercent.toFixed(1), "ne")}%
@@ -284,12 +362,16 @@ export default function IrrigatedAreaAnalysisSection({
                             className="h-full rounded-full"
                             style={{
                               width: `${irrigatedPercent}%`,
-                              backgroundColor: 
-                                irrigatedPercent > 80 ? "#2ecc71" :
-                                irrigatedPercent > 60 ? "#27ae60" :
-                                irrigatedPercent > 40 ? "#f39c12" :
-                                irrigatedPercent > 20 ? "#e67e22" :
-                                "#e74c3c",
+                              backgroundColor:
+                                irrigatedPercent > 80
+                                  ? "#2ecc71"
+                                  : irrigatedPercent > 60
+                                    ? "#27ae60"
+                                    : irrigatedPercent > 40
+                                      ? "#f39c12"
+                                      : irrigatedPercent > 20
+                                        ? "#e67e22"
+                                        : "#e74c3c",
                             }}
                           ></div>
                         </div>

@@ -4,18 +4,18 @@ import GroupTypePieChart from "./charts/group-type-pie-chart";
 import WardDistributionBarChart from "./charts/ward-distribution-bar-chart";
 import PopularGroupByWardChart from "./charts/popular-group-by-ward-chart";
 import GroupTrendChart from "./charts/group-trend-chart";
-import { 
-  BarChart3, 
-  PieChart, 
-  TrendingUp, 
-  Users, 
-  Home, 
-  Building, 
-  Target, 
+import {
+  BarChart3,
+  PieChart,
+  TrendingUp,
+  Users,
+  Home,
+  Building,
+  Target,
   Award,
   Map,
   BarChart,
-  LineChart 
+  LineChart,
 } from "lucide-react";
 
 interface FarmersGroupChartsProps {
@@ -64,7 +64,7 @@ export default function FarmersGroupCharts({
 }: FarmersGroupChartsProps) {
   // Format data for pie chart (group type distribution)
   const groupPieChartData = groupSummary
-    .filter(item => item.count > 0)
+    .filter((item) => item.count > 0)
     .map((item) => ({
       name: item.type,
       value: item.count,
@@ -74,7 +74,7 @@ export default function FarmersGroupCharts({
 
   // Format data for bar chart (ward distribution)
   const wardBarChartData = farmsByWard
-    .filter(ward => ward.farmCount > 0)
+    .filter((ward) => ward.farmCount > 0)
     .map((ward) => ({
       name: `वडा ${localizeNumber(ward.wardNumber.toString(), "ne")}`,
       value: ward.farmCount,
@@ -86,25 +86,28 @@ export default function FarmersGroupCharts({
   // Simulate historical trend data (for demonstration)
   const generateHistoricalData = () => {
     // Get top 4 ward numbers
-    const topWards = farmsByWard.slice(0, 4).map(w => w.wardNumber);
-    
+    const topWards = farmsByWard.slice(0, 4).map((w) => w.wardNumber);
+
     // Years (2075-2080)
     const years = ["२०७५", "२०७६", "२०७७", "२०७८", "२०७९", "२०८०"];
-    
+
     // Generate trend data
     return years.map((year, index) => {
       // Base data point
       const dataPoint: any = { year };
-      
+
       // Add counts for each ward
       // This simulates growth over the years
-      topWards.forEach(wardNum => {
-        const currentCount = farmsByWard.find(w => w.wardNumber === wardNum)?.farmCount || 0;
+      topWards.forEach((wardNum) => {
+        const currentCount =
+          farmsByWard.find((w) => w.wardNumber === wardNum)?.farmCount || 0;
         // Create a growth pattern (fewer in past years)
-        const growthFactor = 0.6 + (0.4 * (index / (years.length - 1)));
-        dataPoint[`वडा ${wardNum}`] = Math.round(currentCount * growthFactor * (0.9 + Math.random() * 0.2));
+        const growthFactor = 0.6 + 0.4 * (index / (years.length - 1));
+        dataPoint[`वडा ${wardNum}`] = Math.round(
+          currentCount * growthFactor * (0.9 + Math.random() * 0.2),
+        );
       });
-      
+
       return dataPoint;
     });
   };
@@ -132,9 +135,7 @@ export default function FarmersGroupCharts({
                 समूहको प्रकार अनुसार वितरण
               </h3>
               <div className="h-[350px]">
-                <GroupTypePieChart
-                  pieChartData={groupPieChartData}
-                />
+                <GroupTypePieChart pieChartData={groupPieChartData} />
               </div>
             </CardContent>
           </Card>
@@ -150,9 +151,7 @@ export default function FarmersGroupCharts({
                   <li className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
                     <Users className="w-5 h-5 text-blue-600 mt-0.5" />
                     <div>
-                      <span className="font-medium">
-                        कुल कृषि समूहहरू
-                      </span>
+                      <span className="font-medium">कुल कृषि समूहहरू</span>
                       <div className="text-xl font-bold text-blue-600">
                         {localizeNumber(totalGroups.toString(), "ne")}
                       </div>
@@ -169,7 +168,7 @@ export default function FarmersGroupCharts({
                           {groupSummary[0].icon} {groupSummary[0].type} (
                           {localizeNumber(
                             groupSummary[0].percentage.toFixed(1),
-                            "ne"
+                            "ne",
                           )}
                           %)
                         </div>
@@ -181,7 +180,8 @@ export default function FarmersGroupCharts({
                     <div>
                       <span className="font-medium">सक्रिय वडाहरू</span>
                       <div className="text-lg font-bold text-green-600">
-                        {localizeNumber(statistics.totalWards.toString(), "ne")}/९
+                        {localizeNumber(statistics.totalWards.toString(), "ne")}
+                        /९
                       </div>
                     </div>
                   </li>
@@ -190,7 +190,11 @@ export default function FarmersGroupCharts({
                     <div>
                       <span className="font-medium">औसत प्रति वडा</span>
                       <div className="text-lg font-bold text-purple-600">
-                        {localizeNumber(statistics.avgGroupsPerWard.toFixed(1), "ne")} समूह
+                        {localizeNumber(
+                          statistics.avgGroupsPerWard.toFixed(1),
+                          "ne",
+                        )}{" "}
+                        समूह
                       </div>
                     </div>
                   </li>
@@ -236,7 +240,7 @@ export default function FarmersGroupCharts({
               </h3>
               <div className="h-[350px]">
                 <PopularGroupByWardChart
-                  data={popularGroupByWard.filter(item => item.count > 0)}
+                  data={popularGroupByWard.filter((item) => item.count > 0)}
                   WARD_COLORS={WARD_COLORS}
                 />
               </div>
@@ -253,10 +257,18 @@ export default function FarmersGroupCharts({
                   सबैभन्दा बढी समूह भएको वडा
                 </h3>
                 <p className="text-3xl font-bold text-blue-600">
-                  वडा नं. {localizeNumber(statistics.wardWithMostGroups.toString(), "ne")}
+                  वडा नं.{" "}
+                  {localizeNumber(
+                    statistics.wardWithMostGroups.toString(),
+                    "ne",
+                  )}
                 </p>
                 <p className="text-sm mt-2">
-                  {localizeNumber(statistics.maximumGroupsInAWard.toString(), "ne")} समूहहरू
+                  {localizeNumber(
+                    statistics.maximumGroupsInAWard.toString(),
+                    "ne",
+                  )}{" "}
+                  समूहहरू
                 </p>
               </div>
             </CardContent>
@@ -270,8 +282,15 @@ export default function FarmersGroupCharts({
                   वडा १-९ समूह अनुपात
                 </h3>
                 <p className="text-3xl font-bold text-green-600">
-                  {localizeNumber(farmsByWard.filter(ward => ward.farmCount > 0).length, "ne")}:
-                  {localizeNumber(farmsByWard.filter(ward => ward.farmCount === 0).length, "ne")}
+                  {localizeNumber(
+                    farmsByWard.filter((ward) => ward.farmCount > 0).length,
+                    "ne",
+                  )}
+                  :
+                  {localizeNumber(
+                    farmsByWard.filter((ward) => ward.farmCount === 0).length,
+                    "ne",
+                  )}
                 </p>
                 <p className="text-sm mt-2">सक्रिय:निष्क्रिय वडा अनुपात</p>
               </div>
@@ -288,10 +307,12 @@ export default function FarmersGroupCharts({
                 <p className="text-3xl font-bold text-purple-600">
                   {localizeNumber(
                     (
-                      (statistics.maximumGroupsInAWard / statistics.avgGroupsPerWard).toFixed(1)
-                    ),
-                    "ne"
-                  )}x
+                      statistics.maximumGroupsInAWard /
+                      statistics.avgGroupsPerWard
+                    ).toFixed(1),
+                    "ne",
+                  )}
+                  x
                 </p>
                 <p className="text-sm mt-2">अधिकतम/औसत अनुपात</p>
               </div>
@@ -320,7 +341,9 @@ export default function FarmersGroupCharts({
             <div className="h-[400px]">
               <GroupTrendChart
                 data={trendData}
-                wardNumbers={farmsByWard.slice(0, 4).map(w => `वडा ${w.wardNumber}`)}
+                wardNumbers={farmsByWard
+                  .slice(0, 4)
+                  .map((w) => `वडा ${w.wardNumber}`)}
                 WARD_COLORS={WARD_COLORS}
               />
             </div>
@@ -335,14 +358,16 @@ export default function FarmersGroupCharts({
             </h4>
             <div className="prose prose-sm">
               <p>
-                पछिल्ला वर्षहरूमा खजुरा गाउँपालिकामा कृषि सम्बन्धित समूहहरूको संख्यामा क्रमिक वृद्धि भएको देखिन्छ। 
-                विशेषगरी वडा नं. {localizeNumber(statistics.wardWithMostGroups.toString(), "ne")} मा समूह दर्ता र 
-                सक्रियता बढेको पाइन्छ।
+                पछिल्ला वर्षहरूमा परिवर्तन गाउँपालिकामा कृषि सम्बन्धित समूहहरूको
+                संख्यामा क्रमिक वृद्धि भएको देखिन्छ। विशेषगरी वडा नं.{" "}
+                {localizeNumber(statistics.wardWithMostGroups.toString(), "ne")}{" "}
+                मा समूह दर्ता र सक्रियता बढेको पाइन्छ।
               </p>
               <p className="mt-2">
-                यो प्रवृत्तिले स्थानीय स्तरमा कृषि क्षेत्रमा संगठित हुने चाहना र पालिकाले लिएको 
-                कृषि विकास नीतिको सकारात्मक प्रभाव देखाउँछ। आगामी वर्षहरूमा यी समूहहरूको 
-                क्षमता विकास र प्राविधिक सहयोग गर्न सके कृषि क्षेत्रको योगदान थप बढ्ने देखिन्छ।
+                यो प्रवृत्तिले स्थानीय स्तरमा कृषि क्षेत्रमा संगठित हुने चाहना र
+                पालिकाले लिएको कृषि विकास नीतिको सकारात्मक प्रभाव देखाउँछ। आगामी
+                वर्षहरूमा यी समूहहरूको क्षमता विकास र प्राविधिक सहयोग गर्न सके
+                कृषि क्षेत्रको योगदान थप बढ्ने देखिन्छ।
               </p>
             </div>
           </CardContent>

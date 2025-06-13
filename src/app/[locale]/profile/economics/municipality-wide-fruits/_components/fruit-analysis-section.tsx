@@ -55,7 +55,7 @@ export default function FruitAnalysisSection({
 
   // SEO attributes to include directly in JSX
   const seoAttributes = {
-    "data-municipality": "Khajura Rural Municipality / खजुरा गाउँपालिका",
+    "data-municipality": "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
     "data-total-production": totalProduction.toString(),
     "data-most-common-fruit":
       overallSummary.length > 0

@@ -16,11 +16,11 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "खजुरा गाउँपालिका भौतिक पूर्वाधार | डिजिटल प्रोफाइल",
+  title: "परिवर्तन गाउँपालिका भौतिक पूर्वाधार | डिजिटल प्रोफाइल",
   description:
-    "खजुरा गाउँपालिकाको भौतिक पूर्वाधार सम्बन्धी तथ्याङ्क: सार्वजनिक यातायात, बजार केन्द्र पहुँच, खाना पकाउने इन्धन, विद्युत स्रोत र घरायसी सुविधाहरू सम्बन्धी विस्तृत विवरण।",
+    "परिवर्तन गाउँपालिकाको भौतिक पूर्वाधार सम्बन्धी तथ्याङ्क: सार्वजनिक यातायात, बजार केन्द्र पहुँच, खाना पकाउने इन्धन, विद्युत स्रोत र घरायसी सुविधाहरू सम्बन्धी विस्तृत विवरण।",
   keywords: [
-    "खजुरा गाउँपालिका",
+    "परिवर्तन गाउँपालिका",
     "भौतिक पूर्वाधार",
     "यातायात पहुँच",
     "बजार केन्द्र",
@@ -30,19 +30,23 @@ export const metadata: Metadata = {
     "तथ्याङ्क",
   ],
   openGraph: {
-    title: "खजुरा गाउँपालिका भौतिक पूर्वाधार | डिजिटल प्रोफाइल",
+    title: "परिवर्तन गाउँपालिका भौतिक पूर्वाधार | डिजिटल प्रोफाइल",
     description:
-      "खजुरा गाउँपालिकाको भौतिक पूर्वाधार सम्बन्धी तथ्याङ्क: सार्वजनिक यातायात, बजार केन्द्र पहुँच, खाना पकाउने इन्धन, विद्युत स्रोत र घरायसी सुविधाहरू सम्बन्धी विस्तृत विवरण।",
+      "परिवर्तन गाउँपालिकाको भौतिक पूर्वाधार सम्बन्धी तथ्याङ्क: सार्वजनिक यातायात, बजार केन्द्र पहुँच, खाना पकाउने इन्धन, विद्युत स्रोत र घरायसी सुविधाहरू सम्बन्धी विस्तृत विवरण।",
     type: "article",
     locale: "ne_NP",
-    siteName: "खजुरा गाउँपालिका डिजिटल प्रोफाइल",
+    siteName: "परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
   },
 };
 
 const toc = [
   { level: 2, text: "परिचय", slug: "introduction" },
   { level: 2, text: "प्रमुख तथ्यहरू", slug: "key-facts" },
-  { level: 2, text: "भौतिक पूर्वाधार श्रेणीहरू", slug: "physical-infrastructure-categories" },
+  {
+    level: 2,
+    text: "भौतिक पूर्वाधार श्रेणीहरू",
+    slug: "physical-infrastructure-categories",
+  },
   { level: 2, text: "सुधारका रणनीतिहरू", slug: "improvement-strategies" },
 ];
 
@@ -50,34 +54,36 @@ const physicalInfrastructureCategories = [
   {
     title: "सार्वजनिक यातायातसम्मको पहुँचको अवस्था",
     description:
-      "खजुरा गाउँपालिकामा घरपरिवारले सार्वजनिक यातायातमा पुग्न लाग्ने समयको वडागत विवरण र विश्लेषण।",
+      "परिवर्तन गाउँपालिकामा घरपरिवारले सार्वजनिक यातायातमा पुग्न लाग्ने समयको वडागत विवरण र विश्लेषण।",
     href: "/profile/physical/ward-wise-time-to-public-transport",
     icon: <Clock className="h-5 w-5" />,
   },
   {
-    title: "आफु बसोबास गरेको स्थानबाट नजिकका बजार केन्द्रसम्म लाग्ने अनुमानित समय",
-    description: "खजुरा गाउँपालिकामा घरधुरीहरूले नजिकको बजार केन्द्रसम्म पुग्न लाग्ने समयको वडागत विवरण।",
+    title:
+      "आफु बसोबास गरेको स्थानबाट नजिकका बजार केन्द्रसम्म लाग्ने अनुमानित समय",
+    description:
+      "परिवर्तन गाउँपालिकामा घरधुरीहरूले नजिकको बजार केन्द्रसम्म पुग्न लाग्ने समयको वडागत विवरण।",
     href: "/profile/physical/ward-wise-time-to-market-center",
     icon: <ShoppingBag className="h-5 w-5" />,
   },
   {
     title: "खाना पकाउने मुख्य इन्धनको आधारमा घरधुरी",
     description:
-      "खजुरा गाउँपालिकामा घरपरिवारले खाना पकाउन प्रयोग गर्ने इन्धनको प्रकार र त्यसको वडागत वितरण।",
+      "परिवर्तन गाउँपालिकामा घरपरिवारले खाना पकाउन प्रयोग गर्ने इन्धनको प्रकार र त्यसको वडागत वितरण।",
     href: "/profile/physical/ward-wise-cooking-fuel",
     icon: <Flame className="h-5 w-5" />,
   },
   {
     title: "बत्ती बाल्ने इन्धनको प्रयोगको आधारमा",
     description:
-      "खजुरा गाउँपालिकामा घरपरिवारले बत्ती बाल्न प्रयोग गर्ने विद्युतको स्रोत र त्यसको वडागत वितरण।",
+      "परिवर्तन गाउँपालिकामा घरपरिवारले बत्ती बाल्न प्रयोग गर्ने विद्युतको स्रोत र त्यसको वडागत वितरण।",
     href: "/profile/physical/ward-wise-electricity-source",
     icon: <Zap className="h-5 w-5" />,
   },
   {
     title: "आधुनिक सुविधामा पहुँच सम्बन्धी विवरण",
     description:
-      "खजुरा गाउँपालिकामा घरपरिवारको आधुनिक सुविधा तथा घरायसी उपकरणहरूमा पहुँचको वडागत विश्लेषण।",
+      "परिवर्तन गाउँपालिकामा घरपरिवारको आधुनिक सुविधा तथा घरायसी उपकरणहरूमा पहुँचको वडागत विश्लेषण।",
     href: "/profile/physical/ward-wise-facilities",
     icon: <Smartphone className="h-5 w-5" />,
   },
@@ -93,39 +99,65 @@ export default async function PhysicalInfrastructurePage() {
 
   try {
     // Try to fetch public transport access data
-    publicTransportData = await api.profile.physical.wardWiseTimeToPublicTransport.getAll.query().catch(() => null);
-    
+    publicTransportData =
+      await api.profile.physical.wardWiseTimeToPublicTransport.getAll
+        .query()
+        .catch(() => null);
+
     // Try to fetch market center access data
-    marketAccessData = await api.profile.physical.wardWiseTimeToMarketCenter.getAll.query().catch(() => null);
-    
+    marketAccessData =
+      await api.profile.physical.wardWiseTimeToMarketCenter.getAll
+        .query()
+        .catch(() => null);
+
     // Try to fetch cooking fuel data
-    cookingFuelData = await api.profile.physical.wardWiseCookingFuel.getAll.query().catch(() => null);
-    
+    cookingFuelData = await api.profile.physical.wardWiseCookingFuel.getAll
+      .query()
+      .catch(() => null);
+
     // Try to fetch electricity source data
-    electricitySourceData = await api.profile.physical.wardWiseElectricitySource.getAll.query().catch(() => null);
-    
+    electricitySourceData =
+      await api.profile.physical.wardWiseElectricitySource.getAll
+        .query()
+        .catch(() => null);
+
     // Try to fetch facilities data
-    facilitiesData = await api.profile.physical.wardWiseFacilities.getAll.query().catch(() => null);
+    facilitiesData = await api.profile.physical.wardWiseFacilities.getAll
+      .query()
+      .catch(() => null);
   } catch (error) {
     console.error("Error fetching physical infrastructure data:", error);
   }
 
   // Calculate summary statistics if data is available
-  const quickPublicTransportAccess = publicTransportData 
+  const quickPublicTransportAccess = publicTransportData
     ? publicTransportData
-        .filter(item => item.timeToPublicTransport === "UNDER_15_MIN" || item.timeToPublicTransport === "UNDER_30_MIN")
+        .filter(
+          (item) =>
+            item.timeToPublicTransport === "UNDER_15_MIN" ||
+            item.timeToPublicTransport === "UNDER_30_MIN",
+        )
         .reduce((sum, item) => sum + (item.households || 0), 0)
     : null;
 
   const quickMarketAccess = marketAccessData
     ? marketAccessData
-        .filter((item) => item.timeToMarketCenter === "UNDER_15_MIN" || item.timeToMarketCenter === "UNDER_30_MIN")
+        .filter(
+          (item) =>
+            item.timeToMarketCenter === "UNDER_15_MIN" ||
+            item.timeToMarketCenter === "UNDER_30_MIN",
+        )
         .reduce((sum, item) => sum + (item.households || 0), 0)
     : null;
 
   const cleanCookingFuel = cookingFuelData
     ? cookingFuelData
-        .filter(item => item.cookingFuel === "LP_GAS" || item.cookingFuel === "ELECTRICITY" || item.cookingFuel === "BIOGAS")
+        .filter(
+          (item) =>
+            item.cookingFuel === "LP_GAS" ||
+            item.cookingFuel === "ELECTRICITY" ||
+            item.cookingFuel === "BIOGAS",
+        )
         .reduce((sum, item) => sum + (item.households || 0), 0)
     : null;
 
@@ -143,13 +175,15 @@ export default async function PhysicalInfrastructurePage() {
           acc[curr.wardNumber].push(curr);
           return acc;
         }, {});
-        
+
         let internetHouseholds = 0;
         Object.values(wardGroups).forEach((wardData: any) => {
-          const internetItem = wardData.find((item: any) => item.facility === "INTERNET");
+          const internetItem = wardData.find(
+            (item: any) => item.facility === "INTERNET",
+          );
           if (internetItem) internetHouseholds += internetItem.households;
         });
-        
+
         return internetHouseholds;
       })()
     : null;
@@ -161,7 +195,7 @@ export default async function PhysicalInfrastructurePage() {
         <div className="relative rounded-lg overflow-hidden">
           <Image
             src="/images/physical-infrastructure-hero.svg"
-            alt="खजुरा गाउँपालिका भौतिक पूर्वाधार"
+            alt="परिवर्तन गाउँपालिका भौतिक पूर्वाधार"
             width={1200}
             height={400}
             className="w-full h-[300px] object-cover"
@@ -170,7 +204,7 @@ export default async function PhysicalInfrastructurePage() {
         </div>
         <div className="mt-6 px-2">
           <h1 className="text-4xl font-bold mb-3">
-            खजुरा गाउँपालिकाको भौतिक पूर्वाधार
+            परिवर्तन गाउँपालिकाको भौतिक पूर्वाधार
           </h1>
         </div>
 
@@ -178,11 +212,14 @@ export default async function PhysicalInfrastructurePage() {
         <section id="introduction">
           <div className="prose prose-lg dark:prose-invert max-w-none">
             <p>
-              भौतिक पूर्वाधार सम्बन्धी तथ्याङ्कहरू पालिकाको विकास, जनताको जीवनस्तर र सेवा सुविधाको पहुँचको महत्त्वपूर्ण सूचकहरू हुन्।
-              खजुरा गाउँपालिकाको भौतिक पूर्वाधार सम्बन्धी प्रोफाइलमा सार्वजनिक यातायातमा पहुँच, बजार केन्द्रसम्मको दूरी,
-              खाना पकाउने इन्धन, विद्युतको स्रोत तथा घरायसी सुविधाहरू सम्बन्धी विस्तृत तथ्याङ्कहरू समेटिएका छन्।
-              यी तथ्याङ्कहरूले पालिकाभित्रका नागरिकहरूको भौतिक सुविधा, जीवनस्तर र विकासको अवस्था बुझ्न र सुधारका लागि 
-              योजना बनाउन महत्त्वपूर्ण भूमिका खेल्छन्।
+              भौतिक पूर्वाधार सम्बन्धी तथ्याङ्कहरू पालिकाको विकास, जनताको
+              जीवनस्तर र सेवा सुविधाको पहुँचको महत्त्वपूर्ण सूचकहरू हुन्।
+              परिवर्तन गाउँपालिकाको भौतिक पूर्वाधार सम्बन्धी प्रोफाइलमा
+              सार्वजनिक यातायातमा पहुँच, बजार केन्द्रसम्मको दूरी, खाना पकाउने
+              इन्धन, विद्युतको स्रोत तथा घरायसी सुविधाहरू सम्बन्धी विस्तृत
+              तथ्याङ्कहरू समेटिएका छन्। यी तथ्याङ्कहरूले पालिकाभित्रका
+              नागरिकहरूको भौतिक सुविधा, जीवनस्तर र विकासको अवस्था बुझ्न र
+              सुधारका लागि योजना बनाउन महत्त्वपूर्ण भूमिका खेल्छन्।
             </p>
           </div>
         </section>
@@ -198,7 +235,9 @@ export default async function PhysicalInfrastructurePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Key stats cards */}
             <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
-              <h3 className="text-lg font-medium mb-2">३० मिनेटभित्र यातायात पहुँच भएका घरधुरी</h3>
+              <h3 className="text-lg font-medium mb-2">
+                ३० मिनेटभित्र यातायात पहुँच भएका घरधुरी
+              </h3>
               <p className="text-3xl font-bold text-primary">
                 {quickPublicTransportAccess !== null
                   ? localizeNumber(
@@ -226,10 +265,7 @@ export default async function PhysicalInfrastructurePage() {
               </h3>
               <p className="text-3xl font-bold text-primary">
                 {cleanCookingFuel !== null
-                  ? localizeNumber(
-                      cleanCookingFuel.toLocaleString(),
-                      "ne",
-                    )
+                  ? localizeNumber(cleanCookingFuel.toLocaleString(), "ne")
                   : "लोड हुँदैछ..."}
               </p>
             </div>
@@ -254,9 +290,9 @@ export default async function PhysicalInfrastructurePage() {
               भौतिक पूर्वाधार श्रेणीहरू
             </h2>
             <p>
-              खजुरा गाउँपालिकाको भौतिक पूर्वाधार सम्बन्धी विस्तृत जानकारीका लागि
-              तलका श्रेणीहरू हेर्नुहोस्। प्रत्येक श्रेणीमा विस्तृत तथ्याङ्क,
-              चार्ट र विश्लेषण प्रस्तुत गरिएको छ।
+              परिवर्तन गाउँपालिकाको भौतिक पूर्वाधार सम्बन्धी विस्तृत जानकारीका
+              लागि तलका श्रेणीहरू हेर्नुहोस्। प्रत्येक श्रेणीमा विस्तृत
+              तथ्याङ्क, चार्ट र विश्लेषण प्रस्तुत गरिएको छ।
             </p>
           </div>
 
@@ -299,48 +335,56 @@ export default async function PhysicalInfrastructurePage() {
               सुधारका रणनीतिहरू
             </h2>
             <p>
-              खजुरा गाउँपालिकामा भौतिक पूर्वाधारको अवस्था सुधार गर्न निम्न रणनीतिहरू अपनाउन सकिन्छ:
+              परिवर्तन गाउँपालिकामा भौतिक पूर्वाधारको अवस्था सुधार गर्न निम्न
+              रणनीतिहरू अपनाउन सकिन्छ:
             </p>
-            
+
             <div className="pl-6 space-y-4 mt-4">
               <div className="flex">
                 <span className="font-bold mr-2">१.</span>
                 <div>
-                  <strong>सार्वजनिक यातायात विस्तार:</strong> यातायात पहुँच कम भएका वडाहरूमा सार्वजनिक यातायातको पहुँच विस्तार गर्ने।
+                  <strong>सार्वजनिक यातायात विस्तार:</strong> यातायात पहुँच कम
+                  भएका वडाहरूमा सार्वजनिक यातायातको पहुँच विस्तार गर्ने।
                 </div>
               </div>
-              
+
               <div className="flex">
                 <span className="font-bold mr-2">२.</span>
                 <div>
-                  <strong>सडक पूर्वाधार सुधार:</strong> सबै वडा र बस्तीलाई बजार केन्द्रसम्म जोड्ने सडक संजाल विकास र स्तरोन्नति गर्ने।
+                  <strong>सडक पूर्वाधार सुधार:</strong> सबै वडा र बस्तीलाई बजार
+                  केन्द्रसम्म जोड्ने सडक संजाल विकास र स्तरोन्नति गर्ने।
                 </div>
               </div>
-              
+
               <div className="flex">
                 <span className="font-bold mr-2">३.</span>
                 <div>
-                  <strong>स्वच्छ इन्धन प्रवर्द्धन:</strong> दाउरा र गोबर ग्याँसको प्रयोग कम गरी एलपी ग्याँस र विद्युतको प्रयोग बढाउने।
+                  <strong>स्वच्छ इन्धन प्रवर्द्धन:</strong> दाउरा र गोबर
+                  ग्याँसको प्रयोग कम गरी एलपी ग्याँस र विद्युतको प्रयोग बढाउने।
                 </div>
               </div>
-              
+
               <div className="flex">
                 <span className="font-bold mr-2">४.</span>
                 <div>
-                  <strong>विद्युत आपूर्ति सुधार:</strong> केन्द्रीय विद्युत प्रणालीबाट टाढा रहेका क्षेत्रमा वैकल्पिक ऊर्जा स्रोत विकास गर्ने।
+                  <strong>विद्युत आपूर्ति सुधार:</strong> केन्द्रीय विद्युत
+                  प्रणालीबाट टाढा रहेका क्षेत्रमा वैकल्पिक ऊर्जा स्रोत विकास
+                  गर्ने।
                 </div>
               </div>
-              
+
               <div className="flex">
                 <span className="font-bold mr-2">५.</span>
                 <div>
-                  <strong>डिजिटल पहुँच विस्तार:</strong> इन्टरनेट र अन्य आधुनिक सुविधाहरूमा पहुँच बढाउने गरी पूर्वाधार विकास गर्ने।
+                  <strong>डिजिटल पहुँच विस्तार:</strong> इन्टरनेट र अन्य आधुनिक
+                  सुविधाहरूमा पहुँच बढाउने गरी पूर्वाधार विकास गर्ने।
                 </div>
               </div>
             </div>
-            
+
             <p className="mt-6">
-              विस्तृत तथ्याङ्क र विश्लेषणका लागि माथि उल्लेखित विभिन्न श्रेणीहरू अन्तर्गतका पृष्ठहरू हेर्नुहोस्।
+              विस्तृत तथ्याङ्क र विश्लेषणका लागि माथि उल्लेखित विभिन्न श्रेणीहरू
+              अन्तर्गतका पृष्ठहरू हेर्नुहोस्।
             </p>
           </div>
         </section>

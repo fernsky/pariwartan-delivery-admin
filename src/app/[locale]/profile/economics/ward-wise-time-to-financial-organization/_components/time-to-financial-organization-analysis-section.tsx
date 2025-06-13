@@ -27,10 +27,10 @@ interface TimeToFinancialOrganizationAnalysisSectionProps {
   bestAccessWard: any;
   worstAccessWard: any;
   TIME_TO_FINANCIAL_ORG_STATUS: {
-    UNDER_15_MIN: { name: string; nameEn: string; color: string; };
-    UNDER_30_MIN: { name: string; nameEn: string; color: string; };
-    UNDER_1_HOUR: { name: string; nameEn: string; color: string; };
-    HOUR_OR_MORE: { name: string; nameEn: string; color: string; };
+    UNDER_15_MIN: { name: string; nameEn: string; color: string };
+    UNDER_30_MIN: { name: string; nameEn: string; color: string };
+    UNDER_1_HOUR: { name: string; nameEn: string; color: string };
+    HOUR_OR_MORE: { name: string; nameEn: string; color: string };
   };
 }
 
@@ -52,24 +52,26 @@ export default function TimeToFinancialOrganizationAnalysisSection({
   // Calculate combined quick access (under 30 min)
   const quickAccessTotal = under15MinTotal + under30MinTotal;
   const quickAccessPercentage = under15MinPercentage + under30MinPercentage;
-  
+
   // Calculate financial inclusion index (0-100)
   // Higher weight for quicker access, lower weight for longer times
-  const financialInclusionIndex = (
-    (under15MinPercentage * 1.0) + 
-    (under30MinPercentage * 0.75) + 
-    (under1HourPercentage * 0.5) + 
-    (over1HourPercentage * 0.25)
-  ) / 100;
-  
-  const accessLevel = 
-    financialInclusionIndex >= 0.75 ? "उच्च" :
-    financialInclusionIndex >= 0.50 ? "मध्यम" :
-    "न्यून";
+  const financialInclusionIndex =
+    (under15MinPercentage * 1.0 +
+      under30MinPercentage * 0.75 +
+      under1HourPercentage * 0.5 +
+      over1HourPercentage * 0.25) /
+    100;
+
+  const accessLevel =
+    financialInclusionIndex >= 0.75
+      ? "उच्च"
+      : financialInclusionIndex >= 0.5
+        ? "मध्यम"
+        : "न्यून";
 
   // SEO attributes to include directly in JSX
   const seoAttributes = {
-    "data-municipality": "Khajura Rural Municipality / खजुरा गाउँपालिका",
+    "data-municipality": "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
     "data-total-households": totalHouseholds.toString(),
     "data-quick-access-percentage": quickAccessPercentage.toFixed(2),
     "data-best-access-ward": bestAccessWard?.wardNumber.toString() || "",
@@ -79,7 +81,7 @@ export default function TimeToFinancialOrganizationAnalysisSection({
 
   return (
     <>
-      <div 
+      <div
         className="mt-6 flex flex-wrap gap-4 justify-center"
         {...seoAttributes}
       >
@@ -226,17 +228,25 @@ export default function TimeToFinancialOrganizationAnalysisSection({
                 <div
                   className="w-4 h-16 rounded"
                   style={{
-                    backgroundColor: TIME_TO_FINANCIAL_ORG_STATUS.UNDER_15_MIN.color,
+                    backgroundColor:
+                      TIME_TO_FINANCIAL_ORG_STATUS.UNDER_15_MIN.color,
                   }}
                 ></div>
                 <div>
                   <p className="text-2xl font-bold">
-                    वडा {localizeNumber(bestAccessWard.wardNumber.toString(), "ne")}
+                    वडा{" "}
+                    {localizeNumber(bestAccessWard.wardNumber.toString(), "ne")}
                   </p>
                   <p className="text-sm text-muted-foreground mt-1">
-                    १५ मिनेटभित्र पुग्न सक्ने: {localizeNumber(bestAccessWard.under15MinPercent.toFixed(2), "ne")}%
+                    १५ मिनेटभित्र पुग्न सक्ने:{" "}
+                    {localizeNumber(
+                      bestAccessWard.under15MinPercent.toFixed(2),
+                      "ne",
+                    )}
+                    %
                     <span className="sr-only">
-                      {bestAccessWard.under15MinPercent.toFixed(2)}% can reach within 15 minutes
+                      {bestAccessWard.under15MinPercent.toFixed(2)}% can reach
+                      within 15 minutes
                     </span>
                   </p>
                 </div>
@@ -246,49 +256,52 @@ export default function TimeToFinancialOrganizationAnalysisSection({
             <div className="mt-4">
               <h5 className="text-sm font-medium">वित्तीय पहुँच वितरण</h5>
               <div className="mt-2 space-y-2">
-                {bestAccessWard && Object.entries(TIME_TO_FINANCIAL_ORG_STATUS).map(([key, value], index) => {
-                  let percent = 0;
-                  let households = 0;
-                  
-                  switch(key) {
-                    case 'UNDER_15_MIN':
-                      percent = bestAccessWard.under15MinPercent;
-                      households = bestAccessWard.under15MinHouseholds;
-                      break;
-                    case 'UNDER_30_MIN':
-                      percent = bestAccessWard.under30MinPercent;
-                      households = bestAccessWard.under30MinHouseholds;
-                      break;
-                    case 'UNDER_1_HOUR':
-                      percent = bestAccessWard.under1HourPercent;
-                      households = bestAccessWard.under1HourHouseholds;
-                      break;
-                    case 'HOUR_OR_MORE':
-                      percent = bestAccessWard.over1HourPercent;
-                      households = bestAccessWard.over1HourHouseholds;
-                      break;
-                  }
-                  
-                  return (
-                    <div key={index}>
-                      <div className="flex justify-between text-sm">
-                        <span>{value.name}</span>
-                        <span className="font-medium">
-                          {localizeNumber(percent.toFixed(2), "ne")}%
-                        </span>
-                      </div>
-                      <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
-                        <div
-                          className="h-full rounded-full"
-                          style={{
-                            width: `${percent}%`,
-                            backgroundColor: value.color,
-                          }}
-                        ></div>
-                      </div>
-                    </div>
-                  );
-                })}
+                {bestAccessWard &&
+                  Object.entries(TIME_TO_FINANCIAL_ORG_STATUS).map(
+                    ([key, value], index) => {
+                      let percent = 0;
+                      let households = 0;
+
+                      switch (key) {
+                        case "UNDER_15_MIN":
+                          percent = bestAccessWard.under15MinPercent;
+                          households = bestAccessWard.under15MinHouseholds;
+                          break;
+                        case "UNDER_30_MIN":
+                          percent = bestAccessWard.under30MinPercent;
+                          households = bestAccessWard.under30MinHouseholds;
+                          break;
+                        case "UNDER_1_HOUR":
+                          percent = bestAccessWard.under1HourPercent;
+                          households = bestAccessWard.under1HourHouseholds;
+                          break;
+                        case "HOUR_OR_MORE":
+                          percent = bestAccessWard.over1HourPercent;
+                          households = bestAccessWard.over1HourHouseholds;
+                          break;
+                      }
+
+                      return (
+                        <div key={index}>
+                          <div className="flex justify-between text-sm">
+                            <span>{value.name}</span>
+                            <span className="font-medium">
+                              {localizeNumber(percent.toFixed(2), "ne")}%
+                            </span>
+                          </div>
+                          <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
+                            <div
+                              className="h-full rounded-full"
+                              style={{
+                                width: `${percent}%`,
+                                backgroundColor: value.color,
+                              }}
+                            ></div>
+                          </div>
+                        </div>
+                      );
+                    },
+                  )}
               </div>
             </div>
           </div>
@@ -301,24 +314,37 @@ export default function TimeToFinancialOrganizationAnalysisSection({
           >
             <h4 className="font-medium mb-2">
               न्यून वित्तीय पहुँच भएको वडा
-              <span className="sr-only">Ward with Poor Financial Access in Khajura</span>
+              <span className="sr-only">
+                Ward with Poor Financial Access in Khajura
+              </span>
             </h4>
             {worstAccessWard && (
               <div className="flex items-center gap-3">
                 <div
                   className="w-4 h-16 rounded"
                   style={{
-                    backgroundColor: TIME_TO_FINANCIAL_ORG_STATUS.HOUR_OR_MORE.color,
+                    backgroundColor:
+                      TIME_TO_FINANCIAL_ORG_STATUS.HOUR_OR_MORE.color,
                   }}
                 ></div>
                 <div>
                   <p className="text-2xl font-bold">
-                    वडा {localizeNumber(worstAccessWard.wardNumber.toString(), "ne")}
+                    वडा{" "}
+                    {localizeNumber(
+                      worstAccessWard.wardNumber.toString(),
+                      "ne",
+                    )}
                   </p>
                   <p className="text-sm text-muted-foreground mt-1">
-                    १ घण्टाभन्दा बढी लाग्ने: {localizeNumber(worstAccessWard.over1HourPercent.toFixed(2), "ne")}%
+                    १ घण्टाभन्दा बढी लाग्ने:{" "}
+                    {localizeNumber(
+                      worstAccessWard.over1HourPercent.toFixed(2),
+                      "ne",
+                    )}
+                    %
                     <span className="sr-only">
-                      {worstAccessWard.over1HourPercent.toFixed(2)}% take more than 1 hour
+                      {worstAccessWard.over1HourPercent.toFixed(2)}% take more
+                      than 1 hour
                     </span>
                   </p>
                 </div>
@@ -329,10 +355,20 @@ export default function TimeToFinancialOrganizationAnalysisSection({
               <h5 className="text-sm font-medium">विशेष ध्यान दिनुपर्ने</h5>
               <div className="mt-2 p-3 bg-red-50 rounded-lg border border-red-100">
                 <p className="text-sm">
-                  यस वडामा {localizeNumber(worstAccessWard?.over1HourHouseholds.toLocaleString() || "0", "ne")} घरधुरी 
-                  (कुल {localizeNumber(worstAccessWard?.totalHouseholds.toLocaleString() || "0", "ne")} मध्ये) लाई 
-                  वित्तीय संस्था पुग्न १ घण्टा भन्दा बढी समय लाग्छ। यहाँ डिजिटल बैंकिङ्ग र मोबाइल बैंकिङ्ग सेवा 
-                  विस्तार गर्नुपर्ने देखिन्छ।
+                  यस वडामा{" "}
+                  {localizeNumber(
+                    worstAccessWard?.over1HourHouseholds.toLocaleString() ||
+                      "0",
+                    "ne",
+                  )}{" "}
+                  घरधुरी (कुल{" "}
+                  {localizeNumber(
+                    worstAccessWard?.totalHouseholds.toLocaleString() || "0",
+                    "ne",
+                  )}{" "}
+                  मध्ये) लाई वित्तीय संस्था पुग्न १ घण्टा भन्दा बढी समय लाग्छ।
+                  यहाँ डिजिटल बैंकिङ्ग र मोबाइल बैंकिङ्ग सेवा विस्तार गर्नुपर्ने
+                  देखिन्छ।
                 </p>
               </div>
             </div>
@@ -345,7 +381,10 @@ export default function TimeToFinancialOrganizationAnalysisSection({
             <div className="text-center mb-4">
               <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-r from-blue-100 to-blue-50 border-4 border-blue-200">
                 <span className="text-2xl font-bold text-blue-600">
-                  {localizeNumber((financialInclusionIndex * 100).toFixed(1), "ne")}
+                  {localizeNumber(
+                    (financialInclusionIndex * 100).toFixed(1),
+                    "ne",
+                  )}
                 </span>
               </div>
               <p className="mt-2 text-sm font-medium">{accessLevel} स्तर</p>
@@ -355,17 +394,22 @@ export default function TimeToFinancialOrganizationAnalysisSection({
               <p className="flex gap-2">
                 <span className="text-blue-500">•</span>
                 <span>
-                  <strong>सूचकाङ्क विवरण:</strong> वित्तीय पहुँचको यो सूचकाङ्क 
-                  १५ मिनेट, ३० मिनेट, १ घण्टा र १ घण्टाभन्दा बढी समय लाग्ने घरधुरीहरूको 
-                  भारित औसतमा आधारित छ।
+                  <strong>सूचकाङ्क विवरण:</strong> वित्तीय पहुँचको यो सूचकाङ्क
+                  १५ मिनेट, ३० मिनेट, १ घण्टा र १ घण्टाभन्दा बढी समय लाग्ने
+                  घरधुरीहरूको भारित औसतमा आधारित छ।
                 </span>
               </p>
               <p className="flex gap-2">
                 <span className="text-blue-500">•</span>
                 <span>
-                  <strong>व्याख्या:</strong> {localizeNumber((financialInclusionIndex * 100).toFixed(1), "ne")} 
-                  अंकले {accessLevel} स्तरको वित्तीय पहुँच दर्शाउँछ। यसमा सुधारका लागि वित्तीय सेवा विस्तार 
-                  र यातायात सुविधा सुधार गर्न सुझाव गरिन्छ।
+                  <strong>व्याख्या:</strong>{" "}
+                  {localizeNumber(
+                    (financialInclusionIndex * 100).toFixed(1),
+                    "ne",
+                  )}
+                  अंकले {accessLevel} स्तरको वित्तीय पहुँच दर्शाउँछ। यसमा
+                  सुधारका लागि वित्तीय सेवा विस्तार र यातायात सुविधा सुधार गर्न
+                  सुझाव गरिन्छ।
                 </span>
               </p>
             </div>
@@ -375,7 +419,9 @@ export default function TimeToFinancialOrganizationAnalysisSection({
             <h4 className="font-medium mb-4">वडागत वित्तीय पहुँच विश्लेषण</h4>
 
             <div>
-              <h5 className="text-sm font-medium">खजुरा गाउँपालिका वित्तीय पहुँचको स्थिति</h5>
+              <h5 className="text-sm font-medium">
+                परिवर्तन गाउँपालिका वित्तीय पहुँचको स्थिति
+              </h5>
               <div className="mt-2 space-y-3">
                 {/* Quick access percentage (under 30 min) */}
                 <div>

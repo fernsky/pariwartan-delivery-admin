@@ -2,10 +2,9 @@ import { pgTable } from "../../../schema/basic";
 import { integer, timestamp, varchar } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
-// Define the ward age wise population table
-export const wardAgeWisePopulation = pgTable("ward_age_wise_population", {
+// Define the age wise population table (removed ward dependency)
+export const ageWisePopulation = pgTable("acme_age_wise_population", {
   id: varchar("id", { length: 36 }).primaryKey(),
-  wardNumber: integer("ward_number").notNull(),
   ageGroup: varchar("age_group")
     .notNull()
     .$type<
@@ -24,7 +23,11 @@ export const wardAgeWisePopulation = pgTable("ward_age_wise_population", {
       | "AGE_60_64"
       | "AGE_65_69"
       | "AGE_70_74"
-      | "AGE_75_AND_ABOVE"
+      | "AGE_75_79"
+      | "AGE_80_84"
+      | "AGE_85_89"
+      | "AGE_90_94"
+      | "AGE_95_ABOVE"
     >(),
   gender: varchar("gender").notNull().$type<"MALE" | "FEMALE" | "OTHER">(),
   population: integer("population").notNull().default(0),
@@ -34,6 +37,5 @@ export const wardAgeWisePopulation = pgTable("ward_age_wise_population", {
   createdAt: timestamp("created_at").default(sql`NOW()`),
 });
 
-export type WardAgeWisePopulation = typeof wardAgeWisePopulation.$inferSelect;
-export type NewWardAgeWisePopulation =
-  typeof wardAgeWisePopulation.$inferInsert;
+export type AgeWisePopulation = typeof ageWisePopulation.$inferSelect;
+export type NewAgeWisePopulation = typeof ageWisePopulation.$inferInsert;

@@ -44,7 +44,6 @@ const Navbar: React.FC<NavbarProps> = ({ lng }) => {
       color: "from-[#123772] to-[#1a4894]",
       description: "इन्टर्याक्टिभ प्रोफाइल हेर्नुहोस्",
     },
-   
   ];
 
   return (
@@ -64,10 +63,12 @@ const Navbar: React.FC<NavbarProps> = ({ lng }) => {
                 <Mountain className="w-5 h-5" />
               </div>
               <div className="flex flex-col">
-                <span className={`font-bold tracking-tight ${
-                  scrolled ? "text-gray-900" : "text-white"
-                }`}>
-                  खजुरा
+                <span
+                  className={`font-bold tracking-tight ${
+                    scrolled ? "text-gray-900" : "text-white"
+                  }`}
+                >
+                  परिवर्तन
                 </span>
                 <Badge
                   variant="outline"
@@ -90,18 +91,24 @@ const Navbar: React.FC<NavbarProps> = ({ lng }) => {
                     href={item.href}
                     className="group flex items-center gap-3 px-3 py-2"
                   >
-                    <div className={`p-2 rounded-lg ${
-                      scrolled 
-                        ? "border border-[#123772]/20" 
-                        : "bg-white/20 backdrop-blur-sm border border-white/30"
-                    } transition-all`}>
-                      <item.icon className={`w-4 h-4 ${
-                        scrolled ? "text-[#123772]" : "text-white"
-                      }`} />
+                    <div
+                      className={`p-2 rounded-lg ${
+                        scrolled
+                          ? "border border-[#123772]/20"
+                          : "bg-white/20 backdrop-blur-sm border border-white/30"
+                      } transition-all`}
+                    >
+                      <item.icon
+                        className={`w-4 h-4 ${
+                          scrolled ? "text-[#123772]" : "text-white"
+                        }`}
+                      />
                     </div>
-                    <span className={`text-sm font-medium tracking-tight ${
-                      scrolled ? "text-gray-600" : "text-white"
-                    }`}>
+                    <span
+                      className={`text-sm font-medium tracking-tight ${
+                        scrolled ? "text-gray-600" : "text-white"
+                      }`}
+                    >
                       {item.label}
                     </span>
                   </Link>
@@ -113,8 +120,8 @@ const Navbar: React.FC<NavbarProps> = ({ lng }) => {
             <motion.button
               whileTap={{ scale: 0.95 }}
               className={`md:hidden p-2 rounded-xl transition-all ${
-                scrolled 
-                  ? "bg-gradient-to-br from-[#123772]/10 to-[#0b1f42]/10 text-[#123772]" 
+                scrolled
+                  ? "bg-gradient-to-br from-[#123772]/10 to-[#0b1f42]/10 text-[#123772]"
                   : "bg-white/20 text-white backdrop-blur-sm"
               }`}
               onClick={() => setIsOpen(!isOpen)}
@@ -133,9 +140,13 @@ const Navbar: React.FC<NavbarProps> = ({ lng }) => {
               exit={{ opacity: 0, height: 0 }}
               className="md:hidden border-t border-[#123772]/10 z-[500]"
             >
-              <div className={`px-4 pt-2 pb-3 z-[500] ${
-                scrolled ? "bg-gradient-to-b from-white to-[#123772]/5" : "bg-gradient-to-b from-[#0b1f42]/90 to-[#123772]/80 backdrop-blur-sm"
-              }`}>
+              <div
+                className={`px-4 pt-2 pb-3 z-[500] ${
+                  scrolled
+                    ? "bg-gradient-to-b from-white to-[#123772]/5"
+                    : "bg-gradient-to-b from-[#0b1f42]/90 to-[#123772]/80 backdrop-blur-sm"
+                }`}
+              >
                 {menuItems.map((item, index) => (
                   <motion.div
                     key={item.label}
@@ -146,30 +157,32 @@ const Navbar: React.FC<NavbarProps> = ({ lng }) => {
                     <Link
                       href={item.href}
                       className={`flex items-center gap-4 p-3 rounded-xl ${
-                        scrolled 
-                          ? "" 
-                          : ""
+                        scrolled ? "" : ""
                       } transition-all duration-300`}
                       onClick={() => setIsOpen(false)}
                     >
-                      <div className={`p-2 rounded-lg ${
-                        scrolled 
-                          ? "bg-gradient-to-br from-[#123772] to-[#0b1f42] text-white" 
-                          : "border border-white/30 bg-white/20 text-white"
-                      } shadow-sm transition-all`}>
+                      <div
+                        className={`p-2 rounded-lg ${
+                          scrolled
+                            ? "bg-gradient-to-br from-[#123772] to-[#0b1f42] text-white"
+                            : "border border-white/30 bg-white/20 text-white"
+                        } shadow-sm transition-all`}
+                      >
                         <item.icon className="w-4 h-4" />
                       </div>
                       <div className="flex-1">
-                        <h4 className={`text-sm font-medium ${
-                          scrolled 
-                            ? "text-gray-900" 
-                            : "text-white"
-                        } transition-colors`}>
+                        <h4
+                          className={`text-sm font-medium ${
+                            scrolled ? "text-gray-900" : "text-white"
+                          } transition-colors`}
+                        >
                           {item.label}
                         </h4>
-                        <p className={`text-xs ${
-                          scrolled ? "text-gray-500" : "text-white/70"
-                        }`}>
+                        <p
+                          className={`text-xs ${
+                            scrolled ? "text-gray-500" : "text-white/70"
+                          }`}
+                        >
                           {item.description}
                         </p>
                       </div>

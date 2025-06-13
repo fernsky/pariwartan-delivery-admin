@@ -6,7 +6,10 @@ import DeathCauseCharts from "./_components/death-cause-charts";
 import DeathCauseAnalysisSection from "./_components/death-cause-analysis-section";
 import DeathCauseSEO from "./_components/death-cause-seo";
 import { api } from "@/trpc/server";
-import { DeathCauseType, deathCauseLabels } from "@/server/api/routers/profile/demographics/ward-wise-death-cause.schema";
+import {
+  DeathCauseType,
+  deathCauseLabels,
+} from "@/server/api/routers/profile/demographics/ward-wise-death-cause.schema";
 import { localizeNumber } from "@/lib/utils/localize-number";
 
 // Force dynamic rendering since we're using tRPC which relies on headers
@@ -69,7 +72,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const deathCauseData =
       await api.profile.demographics.wardWiseDeathCause.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalDeaths = deathCauseData.reduce(
@@ -93,16 +96,17 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // Create rich keywords with actual data
     const keywordsNP = [
-      "खजुरा गाउँपालिका मृत्युका कारणहरू",
-      "खजुरा मृत्युदर विश्लेषण",
-      `खजुरा ${deathCauseLabels[topDeathCauses[0] as DeathCauseType]} मृत्यु संख्या`,
+      "परिवर्तन गाउँपालिका मृत्युका कारणहरू",
+      "परिवर्तन मृत्युदर विश्लेषण",
+      `परिवर्तन ${deathCauseLabels[topDeathCauses[0] as DeathCauseType]} मृत्यु संख्या`,
       ...topDeathCauses.map(
-        (r) => `${deathCauseLabels[r as DeathCauseType]} मृत्युको कारण खजुरा`,
+        (r) =>
+          `${deathCauseLabels[r as DeathCauseType]} मृत्युको कारण परिवर्तन`,
       ),
       "वडा अनुसार मृत्युका कारणहरू",
-      "स्वास्थ्य तथ्याङ्क खजुरा",
-      "मृत्यु कारण सर्वेक्षण खजुरा",
-      `खजुरा कुल मृत्यु संख्या ${localizeNumber(totalDeaths.toString(), "ne")}`,
+      "स्वास्थ्य तथ्याङ्क परिवर्तन",
+      "मृत्यु कारण सर्वेक्षण परिवर्तन",
+      `परिवर्तन कुल मृत्यु संख्या ${localizeNumber(totalDeaths.toString(), "ne")}`,
     ];
 
     const keywordsEN = [
@@ -110,8 +114,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "Khajura mortality analysis",
       `Khajura ${DEATH_CAUSE_NAMES_EN[topDeathCauses[0] as DeathCauseType]} deaths`,
       ...topDeathCauses.map(
-        (r) =>
-          `${DEATH_CAUSE_NAMES_EN[r as DeathCauseType]} deaths in Khajura`,
+        (r) => `${DEATH_CAUSE_NAMES_EN[r as DeathCauseType]} deaths in Khajura`,
       ),
       "Ward-wise death cause distribution",
       "Health statistics Khajura",
@@ -120,7 +123,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data
-    const descriptionNP = `खजुरा गाउँपालिकाको वडा अनुसार मृत्युका प्रमुख कारण, प्रवृत्ति र विश्लेषण। कुल मृत्यु संख्या ${localizeNumber(totalDeaths.toString(), "ne")} मध्ये ${deathCauseLabels[topDeathCauses[0] as DeathCauseType]} (${localizeNumber(deathCauseCounts[topDeathCauses[0]].toString(), "ne")}) सबैभन्दा ठूलो कारण हो, त्यसपछि ${deathCauseLabels[topDeathCauses[1] as DeathCauseType]} (${localizeNumber(deathCauseCounts[topDeathCauses[1]].toString(), "ne")}) र ${deathCauseLabels[topDeathCauses[2] as DeathCauseType]} (${localizeNumber(deathCauseCounts[topDeathCauses[2]].toString(), "ne")})। विभिन्न मृत्युका कारणहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार मृत्युका प्रमुख कारण, प्रवृत्ति र विश्लेषण। कुल मृत्यु संख्या ${localizeNumber(totalDeaths.toString(), "ne")} मध्ये ${deathCauseLabels[topDeathCauses[0] as DeathCauseType]} (${localizeNumber(deathCauseCounts[topDeathCauses[0]].toString(), "ne")}) सबैभन्दा ठूलो कारण हो, त्यसपछि ${deathCauseLabels[topDeathCauses[1] as DeathCauseType]} (${localizeNumber(deathCauseCounts[topDeathCauses[1]].toString(), "ne")}) र ${deathCauseLabels[topDeathCauses[2] as DeathCauseType]} (${localizeNumber(deathCauseCounts[topDeathCauses[2]].toString(), "ne")})। विभिन्न मृत्युका कारणहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
 
     const descriptionEN = `Ward-wise main causes of death, trends and analysis for Khajura Rural Municipality. Out of a total deaths of ${totalDeaths}, ${DEATH_CAUSE_NAMES_EN[topDeathCauses[0] as DeathCauseType]} (${deathCauseCounts[topDeathCauses[0]]}) is the leading cause, followed by ${DEATH_CAUSE_NAMES_EN[topDeathCauses[1] as DeathCauseType]} (${deathCauseCounts[topDeathCauses[1]]}) and ${DEATH_CAUSE_NAMES_EN[topDeathCauses[2] as DeathCauseType]} (${deathCauseCounts[topDeathCauses[2]]})। Detailed statistics and visualizations of various causes of mortality.`;
 
@@ -152,7 +155,7 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "मृत्युका प्रमुख कारणहरू | खजुरा गाउँपालिका डिजिटल प्रोफाइल",
+      title: "मृत्युका प्रमुख कारणहरू | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
       description:
         "वडा अनुसार मृत्युका प्रमुख कारणहरू, प्रवृत्ति र विश्लेषण। विभिन्न मृत्युका कारणहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।",
     };
@@ -161,9 +164,21 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const toc = [
   { level: 2, text: "परिचय", slug: "introduction" },
-  { level: 2, text: "मृत्युका कारण अनुसार जनसंख्या", slug: "death-cause-distribution" },
-  { level: 2, text: "वडा अनुसार मृत्युका कारणहरू", slug: "ward-wise-death-causes" },
-  { level: 2, text: "प्रमुख मृत्युका कारणहरूको विश्लेषण", slug: "major-death-causes" },
+  {
+    level: 2,
+    text: "मृत्युका कारण अनुसार जनसंख्या",
+    slug: "death-cause-distribution",
+  },
+  {
+    level: 2,
+    text: "वडा अनुसार मृत्युका कारणहरू",
+    slug: "ward-wise-death-causes",
+  },
+  {
+    level: 2,
+    text: "प्रमुख मृत्युका कारणहरूको विश्लेषण",
+    slug: "major-death-causes",
+  },
 ];
 
 export default async function WardDeathCausesPage() {
@@ -285,7 +300,7 @@ export default async function WardDeathCausesPage() {
               src="/images/death-causes.svg"
               width={1200}
               height={400}
-              alt="मृत्युका प्रमुख कारणहरू - खजुरा गाउँपालिका (Main Causes of Death - Khajura Rural Municipality)"
+              alt="मृत्युका प्रमुख कारणहरू - परिवर्तन गाउँपालिका (Main Causes of Death - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -293,27 +308,33 @@ export default async function WardDeathCausesPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा मृत्युका प्रमुख कारणहरू
+              परिवर्तन गाउँपालिकामा मृत्युका प्रमुख कारणहरू
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              यस खण्डमा खजुरा गाउँपालिकाको विभिन्न वडाहरूमा मृत्युका प्रमुख कारणहरू
-              सम्बन्धी विस्तृत तथ्याङ्क प्रस्तुत गरिएको छ। यो तथ्याङ्कले स्वास्थ्य सेवाको
-              अवस्था, रोगको प्रकोप र स्वास्थ्य चुनौतीहरूलाई प्रतिबिम्बित गर्दछ।
+              यस खण्डमा परिवर्तन गाउँपालिकाको विभिन्न वडाहरूमा मृत्युका प्रमुख
+              कारणहरू सम्बन्धी विस्तृत तथ्याङ्क प्रस्तुत गरिएको छ। यो तथ्याङ्कले
+              स्वास्थ्य सेवाको अवस्था, रोगको प्रकोप र स्वास्थ्य चुनौतीहरूलाई
+              प्रतिबिम्बित गर्दछ।
             </p>
             <p>
-              खजुरा गाउँपालिकामा विभिन्न प्रकारका कारणहरूले मृत्यु हुने गरेको देखिन्छ।
-              कुल मृत्यु संख्या {localizeNumber(totalDeaths.toLocaleString(), "ne")} मध्ये{" "}
+              परिवर्तन गाउँपालिकामा विभिन्न प्रकारका कारणहरूले मृत्यु हुने गरेको
+              देखिन्छ। कुल मृत्यु संख्या{" "}
+              {localizeNumber(totalDeaths.toLocaleString(), "ne")} मध्ये{" "}
               {overallSummary[0]?.deathCauseName || ""} का कारणले{" "}
-              {localizeNumber((
-                ((overallSummary[0]?.population || 0) / totalDeaths) *
-                100
-              ).toFixed(1), "ne")}
-              % मृत्यु भएको देखिन्छ। यस तथ्याङ्कले स्वास्थ्य सेवाको सुधार, रोग नियन्त्रण र
-              स्वास्थ्य शिक्षाका लागि महत्वपूर्ण जानकारी प्रदान गर्दछ।
+              {localizeNumber(
+                (
+                  ((overallSummary[0]?.population || 0) / totalDeaths) *
+                  100
+                ).toFixed(1),
+                "ne",
+              )}
+              % मृत्यु भएको देखिन्छ। यस तथ्याङ्कले स्वास्थ्य सेवाको सुधार, रोग
+              नियन्त्रण र स्वास्थ्य शिक्षाका लागि महत्वपूर्ण जानकारी प्रदान
+              गर्दछ।
             </p>
 
             <h2
@@ -323,7 +344,8 @@ export default async function WardDeathCausesPage() {
               मृत्युका कारण अनुसार जनसंख्या
             </h2>
             <p>
-              खजुरा गाउँपालिकामा विभिन्न कारणहरूले हुने मृत्युको संख्या निम्नानुसार छ:
+              परिवर्तन गाउँपालिकामा विभिन्न कारणहरूले हुने मृत्युको संख्या
+              निम्नानुसार छ:
             </p>
           </div>
 
@@ -343,16 +365,20 @@ export default async function WardDeathCausesPage() {
               प्रमुख मृत्युका कारणहरूको विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा निम्न मृत्युका कारणहरू प्रमुख रूपमा देखिन्छन्। यी
-              कारणहरू मध्ये{" "}
+              परिवर्तन गाउँपालिकामा निम्न मृत्युका कारणहरू प्रमुख रूपमा
+              देखिन्छन्। यी कारणहरू मध्ये{" "}
               {deathCauseLabels[
                 overallSummary[0]?.deathCause as keyof typeof deathCauseLabels
               ] || "अन्य कारण"}{" "}
-              सबैभन्दा धेरै व्यक्तिहरूको मृत्युको प्रमुख कारण हो, जसमा कुल मृत्युको{" "}
-              {localizeNumber((
-                ((overallSummary[0]?.population || 0) / totalDeaths) *
-                100
-              ).toFixed(2), "ne")}
+              सबैभन्दा धेरै व्यक्तिहरूको मृत्युको प्रमुख कारण हो, जसमा कुल
+              मृत्युको{" "}
+              {localizeNumber(
+                (
+                  ((overallSummary[0]?.population || 0) / totalDeaths) *
+                  100
+                ).toFixed(2),
+                "ne",
+              )}
               % रहेको छ।
             </p>
 

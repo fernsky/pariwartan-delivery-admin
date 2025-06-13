@@ -8,7 +8,6 @@ import TimeToFinancialOrganizationCharts from "./_components/time-to-financial-o
 import TimeToFinancialOrganizationAnalysisSection from "./_components/time-to-financial-organization-analysis-section";
 import TimeToFinancialOrganizationSEO from "./_components/time-to-financial-organization-seo";
 
-
 const TIME_TO_FINANCIAL_ORG_STATUS = {
   UNDER_15_MIN: {
     name: "१५ मिनेटभित्र",
@@ -48,7 +47,7 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     const timeToFinancialOrgData =
       await api.profile.economics.wardWiseTimeToFinancialOrganization.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Group by ward number
     const wardGroups = timeToFinancialOrgData.reduce((acc: any, curr: any) => {
@@ -67,37 +66,54 @@ export async function generateMetadata(): Promise<Metadata> {
     Object.values(wardGroups).forEach((wardData: any) => {
       wardData.forEach((item: any) => {
         totalHouseholds += item.households;
-        if (item.timeToFinancialOrganizationType === 'UNDER_15_MIN') {
+        if (item.timeToFinancialOrganizationType === "UNDER_15_MIN") {
           under15MinTotal += item.households;
-        } else if (item.timeToFinancialOrganizationType === 'UNDER_30_MIN') {
+        } else if (item.timeToFinancialOrganizationType === "UNDER_30_MIN") {
           under30MinTotal += item.households;
-        } else if (item.timeToFinancialOrganizationType === 'UNDER_1_HOUR') {
+        } else if (item.timeToFinancialOrganizationType === "UNDER_1_HOUR") {
           under1HourTotal += item.households;
-        } else if (item.timeToFinancialOrganizationType === '1_HOUR_OR_MORE') {
+        } else if (item.timeToFinancialOrganizationType === "1_HOUR_OR_MORE") {
           over1HourTotal += item.households;
         }
       });
     });
 
     // Calculate percentages for SEO description
-    const under15MinPercentage = ((under15MinTotal / totalHouseholds) * 100).toFixed(2);
-    const over1HourPercentage = ((over1HourTotal / totalHouseholds) * 100).toFixed(2);
+    const under15MinPercentage = (
+      (under15MinTotal / totalHouseholds) *
+      100
+    ).toFixed(2);
+    const over1HourPercentage = (
+      (over1HourTotal / totalHouseholds) *
+      100
+    ).toFixed(2);
 
     // Find ward with best financial access
-    let bestAccessWard = '1';
+    let bestAccessWard = "1";
     let bestAccessPercentage = 0;
-    let worstAccessWard = '1';
+    let worstAccessWard = "1";
     let worstAccessPercentage = 0;
 
     Object.entries(wardGroups).forEach(([ward, data]: [string, any]) => {
-      const wardTotalHouseholds = data.reduce((sum: number, item: any) => sum + item.households, 0);
-      const under15MinHouseholds = data.find((item: any) => 
-        item.timeToFinancialOrganizationType === 'UNDER_15_MIN')?.households || 0;
-      const over1HourHouseholds = data.find((item: any) => 
-        item.timeToFinancialOrganizationType === '1_HOUR_OR_MORE')?.households || 0;
-      
-      const quickAccessPercentage = (under15MinHouseholds / wardTotalHouseholds) * 100;
-      const slowAccessPercentage = (over1HourHouseholds / wardTotalHouseholds) * 100;
+      const wardTotalHouseholds = data.reduce(
+        (sum: number, item: any) => sum + item.households,
+        0,
+      );
+      const under15MinHouseholds =
+        data.find(
+          (item: any) =>
+            item.timeToFinancialOrganizationType === "UNDER_15_MIN",
+        )?.households || 0;
+      const over1HourHouseholds =
+        data.find(
+          (item: any) =>
+            item.timeToFinancialOrganizationType === "1_HOUR_OR_MORE",
+        )?.households || 0;
+
+      const quickAccessPercentage =
+        (under15MinHouseholds / wardTotalHouseholds) * 100;
+      const slowAccessPercentage =
+        (over1HourHouseholds / wardTotalHouseholds) * 100;
 
       if (quickAccessPercentage > bestAccessPercentage) {
         bestAccessPercentage = quickAccessPercentage;
@@ -112,7 +128,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // Create rich keywords
     const keywordsNP = [
-      "खजुरा गाउँपालिका वित्तीय पहुँच",
+      "परिवर्तन गाउँपालिका वित्तीय पहुँच",
       "वित्तीय संस्थामा पुग्न लाग्ने समय",
       "वडागत वित्तीय पहुँच",
       "बैंकमा पुग्न लाग्ने समय",
@@ -132,7 +148,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create description
-    const descriptionNP = `खजुरा गाउँपालिकाको वडा अनुसार वित्तीय संस्थासम्मको पहुँचको विश्लेषण। कुल ${localizeNumber(totalHouseholds.toLocaleString(), "ne")} घरधुरी मध्ये ${localizeNumber(under15MinPercentage, "ne")}% (${localizeNumber(under15MinTotal.toLocaleString(), "ne")}) घरधुरीले १५ मिनेटभित्र वित्तीय संस्था पुग्न सक्छन्। वडा ${localizeNumber(bestAccessWard, "ne")} मा सबैभन्दा राम्रो पहुँच छ, जहाँ ${localizeNumber(bestAccessPercentage.toFixed(2), "ne")}% घरधुरीले १५ मिनेट भित्र वित्तीय संस्था पुग्न सक्छन्।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार वित्तीय संस्थासम्मको पहुँचको विश्लेषण। कुल ${localizeNumber(totalHouseholds.toLocaleString(), "ne")} घरधुरी मध्ये ${localizeNumber(under15MinPercentage, "ne")}% (${localizeNumber(under15MinTotal.toLocaleString(), "ne")}) घरधुरीले १५ मिनेटभित्र वित्तीय संस्था पुग्न सक्छन्। वडा ${localizeNumber(bestAccessWard, "ne")} मा सबैभन्दा राम्रो पहुँच छ, जहाँ ${localizeNumber(bestAccessPercentage.toFixed(2), "ne")}% घरधुरीले १५ मिनेट भित्र वित्तीय संस्था पुग्न सक्छन्।`;
 
     const descriptionEN = `Analysis of access to financial organizations across wards in Khajura Rural Municipality. Out of a total of ${totalHouseholds.toLocaleString()} households, ${under15MinPercentage}% (${under15MinTotal.toLocaleString()}) households can reach a financial institution within 15 minutes. Ward ${bestAccessWard} has the best access, where ${bestAccessPercentage.toFixed(2)}% households can reach a financial institution within 15 minutes.`;
 
@@ -141,7 +157,8 @@ export async function generateMetadata(): Promise<Metadata> {
       description: descriptionNP,
       keywords: [...keywordsNP, ...keywordsEN],
       alternates: {
-        canonical: "/profile/economics/ward-wise-time-to-financial-organization",
+        canonical:
+          "/profile/economics/ward-wise-time-to-financial-organization",
         languages: {
           en: "/en/profile/economics/ward-wise-time-to-financial-organization",
           ne: "/ne/profile/economics/ward-wise-time-to-financial-organization",
@@ -164,7 +181,8 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "वित्तीय संस्थामा पुग्न लाग्ने समय | खजुरा गाउँपालिका डिजिटल प्रोफाइल",
+      title:
+        "वित्तीय संस्थामा पुग्न लाग्ने समय | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
       description: "वडा अनुसार वित्तीय संस्थामा पुग्ने समयको वितरण र विश्लेषण।",
     };
   }
@@ -172,10 +190,26 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const toc = [
   { level: 2, text: "परिचय", slug: "introduction" },
-  { level: 2, text: "वित्तीय संस्थामा पुग्न लाग्ने समयको वितरण", slug: "distribution-of-time-to-financial-organization" },
-  { level: 2, text: "वडा अनुसार वित्तीय पहुँच", slug: "ward-wise-financial-access" },
-  { level: 2, text: "वित्तीय पहुँच विश्लेषण", slug: "financial-access-analysis" },
-  { level: 2, text: "वित्तीय समावेशिता रणनीति", slug: "financial-inclusion-strategy" },
+  {
+    level: 2,
+    text: "वित्तीय संस्थामा पुग्न लाग्ने समयको वितरण",
+    slug: "distribution-of-time-to-financial-organization",
+  },
+  {
+    level: 2,
+    text: "वडा अनुसार वित्तीय पहुँच",
+    slug: "ward-wise-financial-access",
+  },
+  {
+    level: 2,
+    text: "वित्तीय पहुँच विश्लेषण",
+    slug: "financial-access-analysis",
+  },
+  {
+    level: 2,
+    text: "वित्तीय समावेशिता रणनीति",
+    slug: "financial-inclusion-strategy",
+  },
 ];
 
 export default async function WardWiseTimeToFinancialOrganizationPage() {
@@ -209,28 +243,42 @@ export default async function WardWiseTimeToFinancialOrganizationPage() {
   Object.values(wardGroups).forEach((wardData: any) => {
     wardData.forEach((item: any) => {
       totalHouseholds += item.households;
-      if (item.timeToFinancialOrganizationType === 'UNDER_15_MIN') {
+      if (item.timeToFinancialOrganizationType === "UNDER_15_MIN") {
         under15MinTotal += item.households;
-      } else if (item.timeToFinancialOrganizationType === 'UNDER_30_MIN') {
+      } else if (item.timeToFinancialOrganizationType === "UNDER_30_MIN") {
         under30MinTotal += item.households;
-      } else if (item.timeToFinancialOrganizationType === 'UNDER_1_HOUR') {
+      } else if (item.timeToFinancialOrganizationType === "UNDER_1_HOUR") {
         under1HourTotal += item.households;
-      } else if (item.timeToFinancialOrganizationType === '1_HOUR_OR_MORE') {
+      } else if (item.timeToFinancialOrganizationType === "1_HOUR_OR_MORE") {
         over1HourTotal += item.households;
       }
     });
   });
 
   // Calculate percentages
-  const under15MinPercentage = ((under15MinTotal / totalHouseholds) * 100).toFixed(2);
-  const under30MinPercentage = ((under30MinTotal / totalHouseholds) * 100).toFixed(2);
-  const under1HourPercentage = ((under1HourTotal / totalHouseholds) * 100).toFixed(2);
-  const over1HourPercentage = ((over1HourTotal / totalHouseholds) * 100).toFixed(2);
+  const under15MinPercentage = (
+    (under15MinTotal / totalHouseholds) *
+    100
+  ).toFixed(2);
+  const under30MinPercentage = (
+    (under30MinTotal / totalHouseholds) *
+    100
+  ).toFixed(2);
+  const under1HourPercentage = (
+    (under1HourTotal / totalHouseholds) *
+    100
+  ).toFixed(2);
+  const over1HourPercentage = (
+    (over1HourTotal / totalHouseholds) *
+    100
+  ).toFixed(2);
 
   // Get unique ward numbers
-  const wardNumbers = Object.keys(wardGroups).map(Number).sort((a, b) => a - b);
+  const wardNumbers = Object.keys(wardGroups)
+    .map(Number)
+    .sort((a, b) => a - b);
 
-  // Process data for pie chart 
+  // Process data for pie chart
   const pieChartData = [
     {
       name: TIME_TO_FINANCIAL_ORG_STATUS.UNDER_15_MIN.name,
@@ -259,53 +307,91 @@ export default async function WardWiseTimeToFinancialOrganizationPage() {
   ];
 
   // Process data for ward-wise visualization
-  const wardWiseData = wardNumbers.map((wardNumber) => {
-    const wardData = wardGroups[wardNumber];
-    
-    if (!wardData) return null;
-    
-    const totalWardHouseholds = wardData.reduce((sum: number, item: any) => sum + item.households, 0);
-    const under15Min = wardData.find((item: any) => item.timeToFinancialOrganizationType === 'UNDER_15_MIN')?.households || 0;
-    const under30Min = wardData.find((item: any) => item.timeToFinancialOrganizationType === 'UNDER_30_MIN')?.households || 0;
-    const under1Hour = wardData.find((item: any) => item.timeToFinancialOrganizationType === 'UNDER_1_HOUR')?.households || 0;
-    const over1Hour = wardData.find((item: any) => item.timeToFinancialOrganizationType === '1_HOUR_OR_MORE')?.households || 0;
-    
-    return {
-      ward: `वडा ${wardNumber}`,
-      wardNumber,
-      [TIME_TO_FINANCIAL_ORG_STATUS.UNDER_15_MIN.name]: under15Min,
-      [TIME_TO_FINANCIAL_ORG_STATUS.UNDER_30_MIN.name]: under30Min,
-      [TIME_TO_FINANCIAL_ORG_STATUS.UNDER_1_HOUR.name]: under1Hour,
-      [TIME_TO_FINANCIAL_ORG_STATUS.HOUR_OR_MORE.name]: over1Hour,
-      total: totalWardHouseholds,
-      under15MinPercent: totalWardHouseholds > 0 ? (under15Min / totalWardHouseholds) * 100 : 0,
-      under30MinPercent: totalWardHouseholds > 0 ? (under30Min / totalWardHouseholds) * 100 : 0,
-      under1HourPercent: totalWardHouseholds > 0 ? (under1Hour / totalWardHouseholds) * 100 : 0,
-      over1HourPercent: totalWardHouseholds > 0 ? (over1Hour / totalWardHouseholds) * 100 : 0,
-    };
-  }).filter(Boolean);
+  const wardWiseData = wardNumbers
+    .map((wardNumber) => {
+      const wardData = wardGroups[wardNumber];
+
+      if (!wardData) return null;
+
+      const totalWardHouseholds = wardData.reduce(
+        (sum: number, item: any) => sum + item.households,
+        0,
+      );
+      const under15Min =
+        wardData.find(
+          (item: any) =>
+            item.timeToFinancialOrganizationType === "UNDER_15_MIN",
+        )?.households || 0;
+      const under30Min =
+        wardData.find(
+          (item: any) =>
+            item.timeToFinancialOrganizationType === "UNDER_30_MIN",
+        )?.households || 0;
+      const under1Hour =
+        wardData.find(
+          (item: any) =>
+            item.timeToFinancialOrganizationType === "UNDER_1_HOUR",
+        )?.households || 0;
+      const over1Hour =
+        wardData.find(
+          (item: any) =>
+            item.timeToFinancialOrganizationType === "1_HOUR_OR_MORE",
+        )?.households || 0;
+
+      return {
+        ward: `वडा ${wardNumber}`,
+        wardNumber,
+        [TIME_TO_FINANCIAL_ORG_STATUS.UNDER_15_MIN.name]: under15Min,
+        [TIME_TO_FINANCIAL_ORG_STATUS.UNDER_30_MIN.name]: under30Min,
+        [TIME_TO_FINANCIAL_ORG_STATUS.UNDER_1_HOUR.name]: under1Hour,
+        [TIME_TO_FINANCIAL_ORG_STATUS.HOUR_OR_MORE.name]: over1Hour,
+        total: totalWardHouseholds,
+        under15MinPercent:
+          totalWardHouseholds > 0
+            ? (under15Min / totalWardHouseholds) * 100
+            : 0,
+        under30MinPercent:
+          totalWardHouseholds > 0
+            ? (under30Min / totalWardHouseholds) * 100
+            : 0,
+        under1HourPercent:
+          totalWardHouseholds > 0
+            ? (under1Hour / totalWardHouseholds) * 100
+            : 0,
+        over1HourPercent:
+          totalWardHouseholds > 0 ? (over1Hour / totalWardHouseholds) * 100 : 0,
+      };
+    })
+    .filter(Boolean);
 
   // Calculate ward-wise financial access analysis
-  const wardWiseAnalysis = wardWiseData.map((ward: any) => {
-    return {
-      wardNumber: ward?.wardNumber || 0,
-      totalHouseholds: ward?.total || 0,
-      under15MinHouseholds: ward?.[TIME_TO_FINANCIAL_ORG_STATUS.UNDER_15_MIN.name] || 0,
-      under30MinHouseholds: ward?.[TIME_TO_FINANCIAL_ORG_STATUS.UNDER_30_MIN.name] || 0,
-      under1HourHouseholds: ward?.[TIME_TO_FINANCIAL_ORG_STATUS.UNDER_1_HOUR.name] || 0,
-      over1HourHouseholds: ward?.[TIME_TO_FINANCIAL_ORG_STATUS.HOUR_OR_MORE.name] || 0,
-      under15MinPercent: ward?.under15MinPercent || 0,
-      under30MinPercent: ward?.under30MinPercent || 0, 
-      under1HourPercent: ward?.under1HourPercent || 0,
-      over1HourPercent: ward?.over1HourPercent || 0,
-      quickAccessPercent: (ward?.under15MinPercent || 0) + (ward?.under30MinPercent || 0),
-    };
-  }).sort((a, b) => b.quickAccessPercent - a.quickAccessPercent);
+  const wardWiseAnalysis = wardWiseData
+    .map((ward: any) => {
+      return {
+        wardNumber: ward?.wardNumber || 0,
+        totalHouseholds: ward?.total || 0,
+        under15MinHouseholds:
+          ward?.[TIME_TO_FINANCIAL_ORG_STATUS.UNDER_15_MIN.name] || 0,
+        under30MinHouseholds:
+          ward?.[TIME_TO_FINANCIAL_ORG_STATUS.UNDER_30_MIN.name] || 0,
+        under1HourHouseholds:
+          ward?.[TIME_TO_FINANCIAL_ORG_STATUS.UNDER_1_HOUR.name] || 0,
+        over1HourHouseholds:
+          ward?.[TIME_TO_FINANCIAL_ORG_STATUS.HOUR_OR_MORE.name] || 0,
+        under15MinPercent: ward?.under15MinPercent || 0,
+        under30MinPercent: ward?.under30MinPercent || 0,
+        under1HourPercent: ward?.under1HourPercent || 0,
+        over1HourPercent: ward?.over1HourPercent || 0,
+        quickAccessPercent:
+          (ward?.under15MinPercent || 0) + (ward?.under30MinPercent || 0),
+      };
+    })
+    .sort((a, b) => b.quickAccessPercent - a.quickAccessPercent);
 
   // Find wards with best and worst financial access
   const bestAccessWard = wardWiseAnalysis[0];
   const worstAccessWard = [...wardWiseAnalysis].sort(
-    (a, b) => a.under15MinPercent - b.under15MinPercent
+    (a, b) => a.under15MinPercent - b.under15MinPercent,
   )[0];
 
   return (
@@ -335,7 +421,7 @@ export default async function WardWiseTimeToFinancialOrganizationPage() {
               src="/images/financial-access.svg"
               width={1200}
               height={400}
-              alt="वित्तीय संस्थामा पुग्न लाग्ने समय - खजुरा गाउँपालिका (Time to Financial Organizations - Khajura Rural Municipality)"
+              alt="वित्तीय संस्थामा पुग्न लाग्ने समय - परिवर्तन गाउँपालिका (Time to Financial Organizations - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -343,26 +429,35 @@ export default async function WardWiseTimeToFinancialOrganizationPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा वित्तीय संस्थासम्मको पहुँच
+              परिवर्तन गाउँपालिकामा वित्तीय संस्थासम्मको पहुँच
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              वित्तीय संस्थासम्मको पहुँच आर्थिक विकासको महत्वपूर्ण सूचक हो र यसले नागरिकको वित्तीय
-              समावेशीता र सशक्तिकरणमा प्रत्यक्ष प्रभाव पार्दछ। यस खण्डमा खजुरा गाउँपालिकाको विभिन्न
-              वडाहरूमा नागरिकले वित्तीय संस्थामा पुग्न लाग्ने समयको विश्लेषण प्रस्तुत
-              गरिएको छ, जसले भविष्यको वित्तीय नीति निर्माणमा सहयोग पुर्याउने छ।
+              वित्तीय संस्थासम्मको पहुँच आर्थिक विकासको महत्वपूर्ण सूचक हो र
+              यसले नागरिकको वित्तीय समावेशीता र सशक्तिकरणमा प्रत्यक्ष प्रभाव
+              पार्दछ। यस खण्डमा परिवर्तन गाउँपालिकाको विभिन्न वडाहरूमा नागरिकले
+              वित्तीय संस्थामा पुग्न लाग्ने समयको विश्लेषण प्रस्तुत गरिएको छ,
+              जसले भविष्यको वित्तीय नीति निर्माणमा सहयोग पुर्याउने छ।
             </p>
             <p>
-              खजुरा गाउँपालिकामा कुल {localizeNumber(totalHouseholds.toLocaleString(), "ne")} घरधुरीमध्ये
-              {localizeNumber(under15MinPercentage, "ne")}% अर्थात {localizeNumber(under15MinTotal.toLocaleString(), "ne")} 
-              घरधुरीले १५ मिनेटभित्र वित्तीय संस्था पुग्न सक्छन्, {localizeNumber(under30MinPercentage, "ne")}% 
-              अर्थात {localizeNumber(under30MinTotal.toLocaleString(), "ne")} घरधुरीले ३० मिनेटभित्र, 
-              {localizeNumber(under1HourPercentage, "ne")}% अर्थात {localizeNumber(under1HourTotal.toLocaleString(), "ne")} 
-              घरधुरीले १ घण्टाभित्र र {localizeNumber(over1HourPercentage, "ne")}% अर्थात 
-              {localizeNumber(over1HourTotal.toLocaleString(), "ne")} घरधुरीलाई १ घण्टाभन्दा बढी समय लाग्छ।
+              परिवर्तन गाउँपालिकामा कुल{" "}
+              {localizeNumber(totalHouseholds.toLocaleString(), "ne")}{" "}
+              घरधुरीमध्ये
+              {localizeNumber(under15MinPercentage, "ne")}% अर्थात{" "}
+              {localizeNumber(under15MinTotal.toLocaleString(), "ne")}
+              घरधुरीले १५ मिनेटभित्र वित्तीय संस्था पुग्न सक्छन्,{" "}
+              {localizeNumber(under30MinPercentage, "ne")}% अर्थात{" "}
+              {localizeNumber(under30MinTotal.toLocaleString(), "ne")} घरधुरीले
+              ३० मिनेटभित्र,
+              {localizeNumber(under1HourPercentage, "ne")}% अर्थात{" "}
+              {localizeNumber(under1HourTotal.toLocaleString(), "ne")}
+              घरधुरीले १ घण्टाभित्र र{" "}
+              {localizeNumber(over1HourPercentage, "ne")}% अर्थात
+              {localizeNumber(over1HourTotal.toLocaleString(), "ne")} घरधुरीलाई
+              १ घण्टाभन्दा बढी समय लाग्छ।
             </p>
 
             <h2
@@ -372,7 +467,8 @@ export default async function WardWiseTimeToFinancialOrganizationPage() {
               वित्तीय संस्थामा पुग्न लाग्ने समयको वितरण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा वित्तीय संस्थामा पुग्न लाग्ने समयको वितरण निम्नानुसार रहेको छ:
+              परिवर्तन गाउँपालिकामा वित्तीय संस्थामा पुग्न लाग्ने समयको वितरण
+              निम्नानुसार रहेको छ:
             </p>
           </div>
 
@@ -396,16 +492,26 @@ export default async function WardWiseTimeToFinancialOrganizationPage() {
           />
 
           <div className="prose prose-slate dark:prose-invert max-w-none mt-8">
-            <h2 id="financial-access-analysis" className="scroll-m-20 border-b pb-2">
+            <h2
+              id="financial-access-analysis"
+              className="scroll-m-20 border-b pb-2"
+            >
               वित्तीय पहुँच विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा वित्तीय संस्थामा पुग्ने समयको विश्लेषण गर्दा, समग्रमा 
-              {localizeNumber(under15MinPercentage, "ne")}% घरधुरीहरू १५ मिनेटभित्र र 
-              {localizeNumber(under30MinPercentage, "ne")}% घरधुरीहरू ३० मिनेटभित्र वित्तीय संस्था पुग्न सक्छन्।
-              वडागत रूपमा हेर्दा वडा नं. {localizeNumber(bestAccessWard.wardNumber.toString(), "ne")} मा 
-              सबैभन्दा राम्रो पहुँच छ, जहाँ {localizeNumber(bestAccessWard.under15MinPercent.toFixed(2), "ne")}% घरधुरीहरू 
-              १५ मिनेटभित्र वित्तीय संस्था पुग्न सक्छन्।
+              परिवर्तन गाउँपालिकामा वित्तीय संस्थामा पुग्ने समयको विश्लेषण
+              गर्दा, समग्रमा
+              {localizeNumber(under15MinPercentage, "ne")}% घरधुरीहरू १५
+              मिनेटभित्र र{localizeNumber(under30MinPercentage, "ne")}%
+              घरधुरीहरू ३० मिनेटभित्र वित्तीय संस्था पुग्न सक्छन्। वडागत रूपमा
+              हेर्दा वडा नं.{" "}
+              {localizeNumber(bestAccessWard.wardNumber.toString(), "ne")} मा
+              सबैभन्दा राम्रो पहुँच छ, जहाँ{" "}
+              {localizeNumber(
+                bestAccessWard.under15MinPercent.toFixed(2),
+                "ne",
+              )}
+              % घरधुरीहरू १५ मिनेटभित्र वित्तीय संस्था पुग्न सक्छन्।
             </p>
 
             <TimeToFinancialOrganizationAnalysisSection
@@ -432,53 +538,61 @@ export default async function WardWiseTimeToFinancialOrganizationPage() {
             </h2>
 
             <p>
-              खजुरा गाउँपालिकामा वित्तीय संस्थामा पुग्न लाग्ने समयको तथ्याङ्क विश्लेषणबाट निम्न रणनीतिहरू 
-              अवलम्बन गर्न सकिन्छ:
+              परिवर्तन गाउँपालिकामा वित्तीय संस्थामा पुग्न लाग्ने समयको तथ्याङ्क
+              विश्लेषणबाट निम्न रणनीतिहरू अवलम्बन गर्न सकिन्छ:
             </p>
 
             <div className="pl-6 space-y-4">
               <div className="flex">
                 <span className="font-bold mr-2">१.</span>
                 <div>
-                  <strong>वित्तीय संस्थाहरूको विस्तार:</strong> {localizeNumber(over1HourPercentage, "ne")}% 
-                  घरधुरीलाई वित्तीय संस्था पुग्न १ घण्टाभन्दा बढी लाग्ने भएकाले त्यस्ता क्षेत्रमा वित्तीय 
-                  संस्थाहरू स्थापना गर्न प्रोत्साहन गर्ने।
+                  <strong>वित्तीय संस्थाहरूको विस्तार:</strong>{" "}
+                  {localizeNumber(over1HourPercentage, "ne")}% घरधुरीलाई वित्तीय
+                  संस्था पुग्न १ घण्टाभन्दा बढी लाग्ने भएकाले त्यस्ता क्षेत्रमा
+                  वित्तीय संस्थाहरू स्थापना गर्न प्रोत्साहन गर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">२.</span>
                 <div>
-                  <strong>डिजिटल वित्तीय सेवा:</strong> मोबाइल बैंकिङ, इन्टरनेट बैंकिङ र एजेन्ट बैंकिङ जस्ता 
-                  डिजिटल वित्तीय सेवाहरू विस्तार गरी भौगोलिक पहुँचको समस्या समाधान गर्ने।
+                  <strong>डिजिटल वित्तीय सेवा:</strong> मोबाइल बैंकिङ, इन्टरनेट
+                  बैंकिङ र एजेन्ट बैंकिङ जस्ता डिजिटल वित्तीय सेवाहरू विस्तार
+                  गरी भौगोलिक पहुँचको समस्या समाधान गर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">३.</span>
                 <div>
-                  <strong>वित्तीय साक्षरता कार्यक्रम:</strong> विशेष गरी वडा नं. {localizeNumber(worstAccessWard.wardNumber.toString(), "ne")} 
-                  जस्ता न्यून पहुँच भएका क्षेत्रमा वित्तीय साक्षरता कार्यक्रम सञ्चालन गर्ने।
+                  <strong>वित्तीय साक्षरता कार्यक्रम:</strong> विशेष गरी वडा नं.{" "}
+                  {localizeNumber(worstAccessWard.wardNumber.toString(), "ne")}
+                  जस्ता न्यून पहुँच भएका क्षेत्रमा वित्तीय साक्षरता कार्यक्रम
+                  सञ्चालन गर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">४.</span>
                 <div>
-                  <strong>यातायात पूर्वाधार सुधार:</strong> वित्तीय संस्थामा पुग्न लामो समय लाग्ने क्षेत्रहरूमा 
-                  यातायात पूर्वाधार सुधार गरी पहुँच सहज बनाउने।
+                  <strong>यातायात पूर्वाधार सुधार:</strong> वित्तीय संस्थामा
+                  पुग्न लामो समय लाग्ने क्षेत्रहरूमा यातायात पूर्वाधार सुधार गरी
+                  पहुँच सहज बनाउने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">५.</span>
                 <div>
-                  <strong>विशेष वित्तीय उत्पादन:</strong> ग्रामीण क्षेत्रमा बस्ने नागरिकहरूका लागि विशेष 
-                  वित्तीय उत्पादन र सेवाहरू विकास गर्ने।
+                  <strong>विशेष वित्तीय उत्पादन:</strong> ग्रामीण क्षेत्रमा
+                  बस्ने नागरिकहरूका लागि विशेष वित्तीय उत्पादन र सेवाहरू विकास
+                  गर्ने।
                 </div>
               </div>
             </div>
 
             <p className="mt-6">
-              यसरी खजुरा गाउँपालिकामा वित्तीय संस्थामा पुग्न लाग्ने समयको वितरणको विश्लेषणले पालिकामा 
-              वित्तीय समावेशीकरणको अवस्था र भविष्यको रणनीति निर्माणमा महत्वपूर्ण भूमिका खेल्दछ। यसका लागि 
-              वडागत विशेषताहरूलाई ध्यानमा राखी वित्तीय सेवा विस्तारका कार्यक्रमहरू तर्जुमा गर्नु आवश्यक देखिन्छ।
+              यसरी परिवर्तन गाउँपालिकामा वित्तीय संस्थामा पुग्न लाग्ने समयको
+              वितरणको विश्लेषणले पालिकामा वित्तीय समावेशीकरणको अवस्था र भविष्यको
+              रणनीति निर्माणमा महत्वपूर्ण भूमिका खेल्दछ। यसका लागि वडागत
+              विशेषताहरूलाई ध्यानमा राखी वित्तीय सेवा विस्तारका कार्यक्रमहरू
+              तर्जुमा गर्नु आवश्यक देखिन्छ।
             </p>
           </div>
         </section>

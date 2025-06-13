@@ -23,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     // Fetch data for SEO using our API service (not tRPC)
     const religionData = await wardWiseReligionPopulationService.getAll();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalPopulation = religionData.reduce(
@@ -76,16 +76,16 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // Create rich keywords with actual data using localized numbers
     const keywordsNP = [
-      "खजुरा गाउँपालिका धार्मिक जनसंख्या",
-      "खजुरा धार्मिक विविधता",
-      `खजुरा ${RELIGION_NAMES_NP[topReligions[0] as ReligionType]} जनसंख्या`,
+      "परिवर्तन गाउँपालिका धार्मिक जनसंख्या",
+      "परिवर्तन धार्मिक विविधता",
+      `परिवर्तन ${RELIGION_NAMES_NP[topReligions[0] as ReligionType]} जनसंख्या`,
       ...topReligions.map(
-        (r) => `${RELIGION_NAMES_NP[r as ReligionType]} धर्मावलम्बी खजुरा`,
+        (r) => `${RELIGION_NAMES_NP[r as ReligionType]} धर्मावलम्बी परिवर्तन`,
       ),
       "वडा अनुसार धार्मिक जनसंख्या",
       "धार्मिक विविधता तथ्याङ्क",
-      "धार्मिक जनगणना खजुरा",
-      `खजुरा कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")}`,
+      "धार्मिक जनगणना परिवर्तन",
+      `परिवर्तन कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")}`,
     ];
 
     const keywordsEN = [
@@ -102,12 +102,12 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data using localized numbers
-    const descriptionNP = `खजुरा गाउँपालिकाको वडा अनुसार धार्मिक जनसंख्या वितरण, प्रवृत्ति र विश्लेषण। कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")} मध्ये ${RELIGION_NAMES_NP[topReligions[0] as ReligionType]} (${localizeNumber(religionCounts[topReligions[0]].toString(), "ne")}) सबैभन्दा ठूलो समूह हो, त्यसपछि ${RELIGION_NAMES_NP[topReligions[1] as ReligionType]} (${localizeNumber(religionCounts[topReligions[1]].toString(), "ne")}) र ${RELIGION_NAMES_NP[topReligions[2] as ReligionType]} (${localizeNumber(religionCounts[topReligions[2]].toString(), "ne")})। विभिन्न धर्मावलम्बीहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार धार्मिक जनसंख्या वितरण, प्रवृत्ति र विश्लेषण। कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")} मध्ये ${RELIGION_NAMES_NP[topReligions[0] as ReligionType]} (${localizeNumber(religionCounts[topReligions[0]].toString(), "ne")}) सबैभन्दा ठूलो समूह हो, त्यसपछि ${RELIGION_NAMES_NP[topReligions[1] as ReligionType]} (${localizeNumber(religionCounts[topReligions[1]].toString(), "ne")}) र ${RELIGION_NAMES_NP[topReligions[2] as ReligionType]} (${localizeNumber(religionCounts[topReligions[2]].toString(), "ne")})। विभिन्न धर्मावलम्बीहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
 
     const descriptionEN = `Ward-wise religious population distribution, trends and analysis for Khajura Rural Municipality. Out of a total population of ${totalPopulation}, ${RELIGION_NAMES_EN[topReligions[0] as ReligionType]} (${religionCounts[topReligions[0]]}) is the largest group, followed by ${RELIGION_NAMES_EN[topReligions[1] as ReligionType]} (${religionCounts[topReligions[1]]}) and ${RELIGION_NAMES_EN[topReligions[2] as ReligionType]} (${religionCounts[topReligions[2]]})। Detailed statistics and visualizations of various religious communities.`;
 
     return {
-      title: `खजुरा गाउँपालिका | धर्म अनुसार जनसंख्या | डिजिटल प्रोफाइल`,
+      title: `परिवर्तन गाउँपालिका | धर्म अनुसार जनसंख्या | डिजिटल प्रोफाइल`,
       description: descriptionNP,
       keywords: [...keywordsNP, ...keywordsEN],
       alternates: {
@@ -118,25 +118,25 @@ export async function generateMetadata(): Promise<Metadata> {
         },
       },
       openGraph: {
-        title: `खजुरा गाउँपालिका | धर्म अनुसार जनसंख्या`,
+        title: `परिवर्तन गाउँपालिका | धर्म अनुसार जनसंख्या`,
         description: descriptionNP,
         type: "article",
         locale: "ne_NP",
         alternateLocale: "en_US",
-        siteName: `खजुरा गाउँपालिका डिजिटल प्रोफाइल`,
+        siteName: `परिवर्तन गाउँपालिका डिजिटल प्रोफाइल`,
       },
       twitter: {
         card: "summary_large_image",
-        title: `खजुरा गाउँपालिका | धर्म अनुसार जनसंख्या`,
+        title: `परिवर्तन गाउँपालिका | धर्म अनुसार जनसंख्या`,
         description: descriptionNP,
       },
     };
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "खजुरा गाउँपालिका | धर्म अनुसार जनसंख्या | डिजिटल प्रोफाइल",
+      title: "परिवर्तन गाउँपालिका | धर्म अनुसार जनसंख्या | डिजिटल प्रोफाइल",
       description:
-        "खजुरा गाउँपालिकाको प्रत्येक वडाको धार्मिक विवरण, धर्मावलम्बीहरूको संख्या र धार्मिक विविधताको विश्लेषण।",
+        "परिवर्तन गाउँपालिकाको प्रत्येक वडाको धार्मिक विवरण, धर्मावलम्बीहरूको संख्या र धार्मिक विविधताको विश्लेषण।",
     };
   }
 }
@@ -275,7 +275,7 @@ export default async function WardWiseReligionPopulationPage() {
               src="/images/religion-diversity.svg"
               width={1200}
               height={400}
-              alt="धार्मिक विविधता - खजुरा गाउँपालिका (Religious Diversity - Khajura Rural Municipality)"
+              alt="धार्मिक विविधता - परिवर्तन गाउँपालिका (Religious Diversity - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -283,21 +283,21 @@ export default async function WardWiseReligionPopulationPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिका | धर्म अनुसार जनसंख्या विश्लेषण
+              परिवर्तन गाउँपालिका | धर्म अनुसार जनसंख्या विश्लेषण
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              यस खण्डमा खजुरा गाउँपालिकाको विभिन्न वडाहरूमा अवलम्बन गरिने
+              यस खण्डमा परिवर्तन गाउँपालिकाको विभिन्न वडाहरूमा अवलम्बन गरिने
               धर्महरू र धर्मावलम्बीहरूको जनसंख्या सम्बन्धी विस्तृत तथ्याङ्क
-              प्रस्तुत गरिएको छ। यो तथ्याङ्कले खजुरा गाउँपालिकाको धार्मिक
+              प्रस्तुत गरिएको छ। यो तथ्याङ्कले परिवर्तन गाउँपालिकाको धार्मिक
               विविधता, सांस्कृतिक पहिचान र स्थानीय समुदायको धार्मिक स्वरूपलाई
               प्रतिबिम्बित गर्दछ।
             </p>
             <p>
-              खजुरा गाउँपालिका विभिन्न धर्मावलम्बी समुदायहरूको सद्भाव र
+              परिवर्तन गाउँपालिका विभिन्न धर्मावलम्बी समुदायहरूको सद्भाव र
               सहिष्णुताको नमूना हो, र यस पालिकामा पनि विविध धार्मिक समुदायहरूको
               बसोबास रहेको छ। कुल जनसंख्या{" "}
               {localizeNumber(totalPopulation.toLocaleString(), "ne")} मध्ये{" "}
@@ -309,7 +309,7 @@ export default async function WardWiseReligionPopulationPage() {
                 ).toFixed(1),
                 "ne",
               )}
-              % रहेका छन्। यस तथ्याङ्कले खजुरा गाउँपालिकाको धार्मिक नीति,
+              % रहेका छन्। यस तथ्याङ्कले परिवर्तन गाउँपालिकाको धार्मिक नीति,
               सांस्कृतिक संरक्षण र सामाजिक समानतामा सहयोग पुर्‍याउँछ।
             </p>
 
@@ -317,10 +317,10 @@ export default async function WardWiseReligionPopulationPage() {
               id="religion-distribution"
               className="scroll-m-20 border-b pb-2"
             >
-              खजुरा गाउँपालिकामा धर्म अनुसार जनसंख्या
+              परिवर्तन गाउँपालिकामा धर्म अनुसार जनसंख्या
             </h2>
             <p>
-              खजुरा गाउँपालिकामा विभिन्न धर्मावलम्बीहरूको कुल जनसंख्या
+              परिवर्तन गाउँपालिकामा विभिन्न धर्मावलम्बीहरूको कुल जनसंख्या
               निम्नानुसार छ:
             </p>
           </div>
@@ -338,11 +338,11 @@ export default async function WardWiseReligionPopulationPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none mt-8">
             <h2 id="major-religions" className="scroll-m-20 border-b pb-2">
-              खजुरा गाउँपालिकाको प्रमुख धर्महरूको विश्लेषण
+              परिवर्तन गाउँपालिकाको प्रमुख धर्महरूको विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा निम्न धर्महरू प्रमुख रूपमा अवलम्बन गरिन्छन्। यी
-              धर्महरूमध्ये{" "}
+              परिवर्तन गाउँपालिकामा निम्न धर्महरू प्रमुख रूपमा अवलम्बन गरिन्छन्।
+              यी धर्महरूमध्ये{" "}
               {RELIGION_NAMES[overallSummary[0]?.religion] || "हिन्दू"}
               सबैभन्दा धेरै व्यक्तिहरूले मान्ने धर्म हो, जसलाई कुल जनसंख्याको{" "}
               {localizeNumber(

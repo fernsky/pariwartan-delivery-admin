@@ -75,7 +75,7 @@ export async function generateMetadata(props: {
         "डिजिटल प्रोफाइल",
         "नेपाल",
         "सरकार",
-        "खजुरा",
+        "परिवर्तन",
       ],
       authors: [
         { name: "Digital Profile Information System, Government of Nepal" },

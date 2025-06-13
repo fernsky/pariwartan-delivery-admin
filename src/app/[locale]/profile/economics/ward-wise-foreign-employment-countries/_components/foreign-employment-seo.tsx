@@ -39,21 +39,33 @@ export default function ForeignEmploymentSEO({
     }));
 
     // Find most common destination country
-    const mostCommonCountry = overallSummary.length > 0 ? overallSummary[0] : null;
-    const mostCommonCountryEN = mostCommonCountry ? (COUNTRY_NAMES_EN[mostCommonCountry.country] || mostCommonCountry.country) : "";
-    const mostCommonCountryPercentage = mostCommonCountry && totalPopulation > 0 
-      ? ((mostCommonCountry.population / totalPopulation) * 100).toFixed(2)
-      : "0";
+    const mostCommonCountry =
+      overallSummary.length > 0 ? overallSummary[0] : null;
+    const mostCommonCountryEN = mostCommonCountry
+      ? COUNTRY_NAMES_EN[mostCommonCountry.country] || mostCommonCountry.country
+      : "";
+    const mostCommonCountryPercentage =
+      mostCommonCountry && totalPopulation > 0
+        ? ((mostCommonCountry.population / totalPopulation) * 100).toFixed(2)
+        : "0";
 
     // Calculate Gulf countries total
-    const gulfCountries = ["QATAR", "SAUDI_ARABIA", "UNITED_ARAB_EMIRATES", "KUWAIT", "BAHRAIN", "OMAN"];
+    const gulfCountries = [
+      "QATAR",
+      "SAUDI_ARABIA",
+      "UNITED_ARAB_EMIRATES",
+      "KUWAIT",
+      "BAHRAIN",
+      "OMAN",
+    ];
     const gulfCountriesCount = overallSummary
-      .filter(item => gulfCountries.includes(item.country))
+      .filter((item) => gulfCountries.includes(item.country))
       .reduce((sum, item) => sum + item.population, 0);
-      
-    const gulfCountriesPercentage = totalPopulation > 0
-      ? ((gulfCountriesCount / totalPopulation) * 100).toFixed(2)
-      : "0";
+
+    const gulfCountriesPercentage =
+      totalPopulation > 0
+        ? ((gulfCountriesCount / totalPopulation) * 100).toFixed(2)
+        : "0";
 
     // Format remittance to crores
     const remittanceCrores = (estimatedAnnualRemittance / 10000000).toFixed(2);
@@ -61,11 +73,11 @@ export default function ForeignEmploymentSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Foreign Employment Destinations from Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Foreign Employment Destinations from Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Foreign employment statistics across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalPopulation.toLocaleString()} migrant workers. The most common destination is ${mostCommonCountryEN} with ${mostCommonCountry?.population.toLocaleString()} workers (${mostCommonCountryPercentage}%). Gulf countries account for ${gulfCountriesPercentage}% of all foreign employment. Estimated annual remittance is NPR ${remittanceCrores} crore.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Foreign employment",
         "Migrant workers",
         "Destination countries",
@@ -73,10 +85,12 @@ export default function ForeignEmploymentSEO({
         "Remittance",
         "Gulf employment",
         "Ward-wise foreign employment",
-        ...Object.values(COUNTRY_NAMES_EN).slice(0, 10).map(
-          (name) => `${name} Nepali workers statistics`,
-        ),
-        ...Object.values(COUNTRY_NAMES).slice(0, 10).map((name) => `${name} मा कार्यरत खजुरावासी`),
+        ...Object.values(COUNTRY_NAMES_EN)
+          .slice(0, 10)
+          .map((name) => `${name} Nepali workers statistics`),
+        ...Object.values(COUNTRY_NAMES)
+          .slice(0, 10)
+          .map((name) => `${name} मा कार्यरत परिवर्तनवासी`),
       ],
       url: "https://digital.khajuramun.gov.np/profile/economics/ward-wise-foreign-employment-countries",
       creator: {
@@ -118,7 +132,7 @@ export default function ForeignEmploymentSEO({
           name: "Estimated Annual Remittance",
           unitText: "NPR",
           value: estimatedAnnualRemittance,
-        }
+        },
       ],
       observation: countryStats,
     };

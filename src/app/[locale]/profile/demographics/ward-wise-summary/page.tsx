@@ -26,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const wardData =
       await api.profile.demographics.wardWiseDemographicSummary.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalPopulation = wardData.reduce(
@@ -98,18 +98,18 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // Create rich keywords with actual data
     const keywordsNP = [
-      "खजुरा गाउँपालिका वडागत जनसंख्या",
-      "खजुरा गाउँपालिका वडा विवरण",
-      "खजुरा गाउँपालिका जनसांख्यिकी तथ्याङ्क",
-      "खजुरा गाउँपालिका घरधुरी विवरण",
-      `खजुरा गाउँपालिका जनसंख्या ${localizeNumber(totalPopulation, "ne")}`,
-      `खजुरा गाउँपालिका घरधुरी ${localizeNumber(totalHouseholds, "ne")}`,
-      "खजुरा गाउँपालिका लैङ्गिक अनुपात",
-      "खजुरा गाउँपालिका वडागत विश्लेषण",
-      `खजुरा गाउँपालिका वडा ${localizeNumber(highestWardNumber, "ne")} जनसंख्या ${localizeNumber(highestPopulation, "ne")}`,
-      `खजुरा पुरुष जनसंख्या ${localizeNumber(malePopulation, "ne")}`,
-      `खजुरा महिला जनसंख्या ${localizeNumber(femalePopulation, "ne")}`,
-      `खजुरा औसत परिवार संख्या ${localizeNumber(averageHouseholdSize, "ne")}`,
+      "परिवर्तन गाउँपालिका वडागत जनसंख्या",
+      "परिवर्तन गाउँपालिका वडा विवरण",
+      "परिवर्तन गाउँपालिका जनसांख्यिकी तथ्याङ्क",
+      "परिवर्तन गाउँपालिका घरधुरी विवरण",
+      `परिवर्तन गाउँपालिका जनसंख्या ${localizeNumber(totalPopulation, "ne")}`,
+      `परिवर्तन गाउँपालिका घरधुरी ${localizeNumber(totalHouseholds, "ne")}`,
+      "परिवर्तन गाउँपालिका लैङ्गिक अनुपात",
+      "परिवर्तन गाउँपालिका वडागत विश्लेषण",
+      `परिवर्तन गाउँपालिका वडा ${localizeNumber(highestWardNumber, "ne")} जनसंख्या ${localizeNumber(highestPopulation, "ne")}`,
+      `परिवर्तन पुरुष जनसंख्या ${localizeNumber(malePopulation, "ne")}`,
+      `परिवर्तन महिला जनसंख्या ${localizeNumber(femalePopulation, "ne")}`,
+      `परिवर्तन औसत परिवार संख्या ${localizeNumber(averageHouseholdSize, "ne")}`,
     ];
 
     const keywordsEN = [
@@ -128,12 +128,12 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data
-    const descriptionNP = `खजुरा गाउँपालिकाको वडागत जनसांख्यिकी सारांश। कुल जनसंख्या ${localizeNumber(totalPopulation, "ne")} (पुरुष: ${localizeNumber(malePopulation, "ne")}, महिला: ${localizeNumber(femalePopulation, "ne")}) र कुल घरधुरी ${localizeNumber(totalHouseholds, "ne")} रहेको छ। खजुरा गाउँपालिकाका ${localizeNumber(wardCount, "ne")} वडाहरूमध्ये वडा ${localizeNumber(highestWardNumber, "ne")} मा सबैभन्दा बढी जनसंख्या (${localizeNumber(highestPopulation, "ne")}) रहेको छ। खजुरा गाउँपालिकाको समग्र लैङ्गिक अनुपात ${localizeNumber(overallSexRatio, "ne")} र औसत परिवार संख्या ${localizeNumber(averageHouseholdSize, "ne")} रहेको छ। सबै वडाहरूको जनसंख्या वितरण, लैङ्गिक अनुपात, घरधुरी र परिवार संख्याको विस्तृत विश्लेषण प्रस्तुत गरिएको छ।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको वडागत जनसांख्यिकी सारांश। कुल जनसंख्या ${localizeNumber(totalPopulation, "ne")} (पुरुष: ${localizeNumber(malePopulation, "ne")}, महिला: ${localizeNumber(femalePopulation, "ne")}) र कुल घरधुरी ${localizeNumber(totalHouseholds, "ne")} रहेको छ। परिवर्तन गाउँपालिकाका ${localizeNumber(wardCount, "ne")} वडाहरूमध्ये वडा ${localizeNumber(highestWardNumber, "ne")} मा सबैभन्दा बढी जनसंख्या (${localizeNumber(highestPopulation, "ne")}) रहेको छ। परिवर्तन गाउँपालिकाको समग्र लैङ्गिक अनुपात ${localizeNumber(overallSexRatio, "ne")} र औसत परिवार संख्या ${localizeNumber(averageHouseholdSize, "ne")} रहेको छ। सबै वडाहरूको जनसंख्या वितरण, लैङ्गिक अनुपात, घरधुरी र परिवार संख्याको विस्तृत विश्लेषण प्रस्तुत गरिएको छ।`;
 
     const descriptionEN = `Ward-wise demographic summary for Khajura Rural Municipality. Total population of ${totalPopulation.toLocaleString()} (Male: ${malePopulation.toLocaleString()}, Female: ${femalePopulation.toLocaleString()}) and total households of ${totalHouseholds.toLocaleString()}. Among ${wardCount} wards of Khajura, Ward ${highestWardNumber} has the highest population (${highestPopulation.toLocaleString()}). The Khajura municipality's overall gender ratio is ${overallSexRatio} and average family size is ${averageHouseholdSize}. Detailed analysis of population distribution, gender ratio, households and family size across all wards of Khajura Rural Municipality.`;
 
     return {
-      title: `खजुरा गाउँपालिका | वडागत जनसांख्यिकी सारांश | डिजिटल प्रोफाइल`,
+      title: `परिवर्तन गाउँपालिका | वडागत जनसांख्यिकी सारांश | डिजिटल प्रोफाइल`,
       description: descriptionNP,
       keywords: [...keywordsNP, ...keywordsEN],
       alternates: {
@@ -144,25 +144,25 @@ export async function generateMetadata(): Promise<Metadata> {
         },
       },
       openGraph: {
-        title: `खजुरा गाउँपालिका | वडागत जनसांख्यिकी सारांश`,
+        title: `परिवर्तन गाउँपालिका | वडागत जनसांख्यिकी सारांश`,
         description: descriptionNP,
         type: "article",
         locale: "ne_NP",
         alternateLocale: "en_US",
-        siteName: `खजुरा गाउँपालिका डिजिटल प्रोफाइल`,
+        siteName: `परिवर्तन गाउँपालिका डिजिटल प्रोफाइल`,
       },
       twitter: {
         card: "summary_large_image",
-        title: `खजुरा गाउँपालिका | वडागत जनसांख्यिकी सारांश`,
+        title: `परिवर्तन गाउँपालिका | वडागत जनसांख्यिकी सारांश`,
         description: descriptionNP,
       },
     };
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "खजुरा गाउँपालिका | वडागत जनसांख्यिकी सारांश | डिजिटल प्रोफाइल",
+      title: "परिवर्तन गाउँपालिका | वडागत जनसांख्यिकी सारांश | डिजिटल प्रोफाइल",
       description:
-        "खजुरा गाउँपालिकाको प्रत्येक वडाको जनसांख्यिकी विवरण, लिङ्ग अनुपात, घरधुरी र जनसंख्या वितरणको विश्लेषण।",
+        "परिवर्तन गाउँपालिकाको प्रत्येक वडाको जनसांख्यिकी विवरण, लिङ्ग अनुपात, घरधुरी र जनसंख्या वितरणको विश्लेषण।",
     };
   }
 }
@@ -321,7 +321,7 @@ export default async function WardWiseSummaryPage() {
               src="/images/ward-demographics.svg"
               width={1200}
               height={400}
-              alt="खजुरा गाउँपालिका | वडागत जनसांख्यिकी सारांश (Khajura Rural Municipality Ward Demographics Summary)"
+              alt="परिवर्तन गाउँपालिका | वडागत जनसांख्यिकी सारांश (Khajura Rural Municipality Ward Demographics Summary)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -329,33 +329,33 @@ export default async function WardWiseSummaryPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिका | वडागत जनसांख्यिकी सारांश
+              परिवर्तन गाउँपालिका | वडागत जनसांख्यिकी सारांश
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              यस खण्डमा खजुरा गाउँपालिकाको प्रत्येक वडाको जनसांख्यिकी विवरण
+              यस खण्डमा परिवर्तन गाउँपालिकाको प्रत्येक वडाको जनसांख्यिकी विवरण
               प्रस्तुत गरिएको छ। वडागत जनसंख्या वितरण, लिङ्ग अनुपात, घरधुरी
               विवरण र अन्य महत्त्वपूर्ण जनसांख्यिकी सूचकहरू यहाँ विश्लेषण गरिएको
               छ।
             </p>
             <p>
-              वडागत विश्लेषणले खजुरा गाउँपालिकाभित्र रहेका विविधता र असमानताहरू
-              पहिचान गर्न मद्दत गर्दछ। यी तथ्याङ्कहरूले वडागत विकास योजना
-              तर्जुमा, स्रोत साधन विनियोजन तथा अनुगमन मूल्याङ्कनमा महत्त्वपूर्ण
-              भूमिका निर्वाह गर्दछन्।
+              वडागत विश्लेषणले परिवर्तन गाउँपालिकाभित्र रहेका विविधता र
+              असमानताहरू पहिचान गर्न मद्दत गर्दछ। यी तथ्याङ्कहरूले वडागत विकास
+              योजना तर्जुमा, स्रोत साधन विनियोजन तथा अनुगमन मूल्याङ्कनमा
+              महत्त्वपूर्ण भूमिका निर्वाह गर्दछन्।
             </p>
 
             <h2
               id="ward-population-distribution"
               className="scroll-m-20 border-b pb-2"
             >
-              खजुरा गाउँपालिकाको वडागत जनसंख्या वितरण
+              परिवर्तन गाउँपालिकाको वडागत जनसंख्या वितरण
             </h2>
             <p>
-              खजुरा गाउँपालिकाको कुल जनसंख्या{" "}
+              परिवर्तन गाउँपालिकाको कुल जनसंख्या{" "}
               {localizeNumber(
                 municipalityStats.totalPopulation.toLocaleString(),
                 "ne",
@@ -375,7 +375,7 @@ export default async function WardWiseSummaryPage() {
                 municipalityStats.otherPopulation.toLocaleString(),
                 "ne",
               )}{" "}
-              अन्य लिङ्गका व्यक्तिहरू रहेका छन्। खजुरा गाउँपालिकाका प्रत्येक
+              अन्य लिङ्गका व्यक्तिहरू रहेका छन्। परिवर्तन गाउँपालिकाका प्रत्येक
               वडाको जनसंख्या वितरण निम्नानुसार छ:
             </p>
           </div>
@@ -395,7 +395,7 @@ export default async function WardWiseSummaryPage() {
               वडागत विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकाको प्रत्येक वडाको जनसांख्यिकीय संरचनाको
+              परिवर्तन गाउँपालिकाको प्रत्येक वडाको जनसांख्यिकीय संरचनाको
               विश्लेषणबाट निम्न सूचकहरू प्राप्त हुन्छन्:
             </p>
 

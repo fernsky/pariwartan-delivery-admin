@@ -40,7 +40,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const migratedData =
       await api.profile.demographics.wardWiseMigratedHouseholds.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalHouseholds = migratedData.reduce(
@@ -66,19 +66,20 @@ export async function generateMetadata(): Promise<Metadata> {
       }
     });
 
-    const mostCommonPercentage = totalHouseholds > 0
-      ? ((mostCommonCount / totalHouseholds) * 100).toFixed(2)
-      : "0";
+    const mostCommonPercentage =
+      totalHouseholds > 0
+        ? ((mostCommonCount / totalHouseholds) * 100).toFixed(2)
+        : "0";
 
     // Create rich keywords with actual data
     const keywordsNP = [
-      "खजुरा गाउँपालिका आप्रवासित घरपरिवार",
-      "खजुरा बसाइँसराइ परिवार वितरण",
+      "परिवर्तन गाउँपालिका आप्रवासित घरपरिवार",
+      "परिवर्तन बसाइँसराइ परिवार वितरण",
       "वडा अनुसार आप्रवासित परिवार विवरण",
       "घरपरिवारको आप्रवासन विश्लेषण",
-      "स्थानांतरित परिवार खजुरा",
+      "स्थानांतरित परिवार परिवर्तन",
       "जिल्लान्तर आप्रवासन",
-      `खजुरा आप्रवासित घरपरिवार संख्या ${localizeNumber(totalHouseholds.toString(), "ne")}`,
+      `परिवर्तन आप्रवासित घरपरिवार संख्या ${localizeNumber(totalHouseholds.toString(), "ne")}`,
     ];
 
     const keywordsEN = [
@@ -92,7 +93,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data
-    const descriptionNP = `खजुरा गाउँपालिकाको वडा अनुसार आप्रवासित घरपरिवारको वितरण र विश्लेषण। कुल आप्रवासित घरपरिवार संख्या ${localizeNumber(totalHouseholds.toString(), "ne")} मध्ये ${localizeNumber(mostCommonPercentage, "ne")}% (${localizeNumber(mostCommonCount.toString(), "ne")}) ${MIGRATED_FROM_NAMES[mostCommonMigratedFrom] || mostCommonMigratedFrom} बाट आएका देखिन्छ। विभिन्न वडाहरूमा आप्रवासित घरपरिवारको विस्तृत विश्लेषण।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार आप्रवासित घरपरिवारको वितरण र विश्लेषण। कुल आप्रवासित घरपरिवार संख्या ${localizeNumber(totalHouseholds.toString(), "ne")} मध्ये ${localizeNumber(mostCommonPercentage, "ne")}% (${localizeNumber(mostCommonCount.toString(), "ne")}) ${MIGRATED_FROM_NAMES[mostCommonMigratedFrom] || mostCommonMigratedFrom} बाट आएका देखिन्छ। विभिन्न वडाहरूमा आप्रवासित घरपरिवारको विस्तृत विश्लेषण।`;
 
     const descriptionEN = `Ward-wise distribution and analysis of migrated households in Khajura Rural Municipality. Out of a total of ${totalHouseholds} migrated households, ${mostCommonPercentage}% (${mostCommonCount}) are from ${MIGRATED_FROM_NAMES_EN[mostCommonMigratedFrom] || mostCommonMigratedFrom}. Detailed analysis of migrated households across various wards.`;
 
@@ -124,9 +125,8 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "आप्रवासित घरपरिवार | खजुरा गाउँपालिका डिजिटल प्रोफाइल",
-      description:
-        "वडा अनुसार आप्रवासित घरपरिवारको वितरण र विश्लेषण।",
+      title: "आप्रवासित घरपरिवार | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
+      description: "वडा अनुसार आप्रवासित घरपरिवारको वितरण र विश्लेषण।",
     };
   }
 }
@@ -175,7 +175,7 @@ export default async function WardWiseMigratedHouseholdsPage() {
     0,
   );
 
-  // Create data for pie chart 
+  // Create data for pie chart
   const pieChartData = overallSummary.map((item) => ({
     name: item.migratedFromName,
     value: item.households,
@@ -198,8 +198,9 @@ export default async function WardWiseMigratedHouseholdsPage() {
     // Add migration origins
     wardData.forEach((item) => {
       result[
-        MIGRATED_FROM_NAMES[item.migratedFrom as keyof typeof MIGRATED_FROM_NAMES] ||
-          item.migratedFrom
+        MIGRATED_FROM_NAMES[
+          item.migratedFrom as keyof typeof MIGRATED_FROM_NAMES
+        ] || item.migratedFrom
       ] = item.households;
     });
 
@@ -211,24 +212,33 @@ export default async function WardWiseMigratedHouseholdsPage() {
     const wardData = migratedData.filter(
       (item) => item.wardNumber === wardNumber,
     );
-    
+
     const wardTotalHouseholds = wardData.reduce(
-      (sum, item) => sum + (item.households || 0), 
-      0
+      (sum, item) => sum + (item.households || 0),
+      0,
     );
-    
-    const mostCommonMigratedFrom = wardData.reduce((prev, current) => {
-      return (prev.households || 0) > (current.households || 0) ? prev : current;
-    }, { migratedFrom: "", households: 0 });
-    
+
+    const mostCommonMigratedFrom = wardData.reduce(
+      (prev, current) => {
+        return (prev.households || 0) > (current.households || 0)
+          ? prev
+          : current;
+      },
+      { migratedFrom: "", households: 0 },
+    );
+
     return {
       wardNumber,
       totalHouseholds: wardTotalHouseholds,
       mostCommonMigratedFrom: mostCommonMigratedFrom.migratedFrom,
       mostCommonMigratedFromHouseholds: mostCommonMigratedFrom.households || 0,
-      mostCommonMigratedFromPercentage: wardTotalHouseholds > 0 
-        ? ((mostCommonMigratedFrom.households || 0) / wardTotalHouseholds * 100).toFixed(2)
-        : "0",
+      mostCommonMigratedFromPercentage:
+        wardTotalHouseholds > 0
+          ? (
+              ((mostCommonMigratedFrom.households || 0) / wardTotalHouseholds) *
+              100
+            ).toFixed(2)
+          : "0",
     };
   });
 
@@ -250,7 +260,7 @@ export default async function WardWiseMigratedHouseholdsPage() {
               src="/images/migrated-households.svg"
               width={1200}
               height={400}
-              alt="आप्रवासित घरपरिवार - खजुरा गाउँपालिका (Migrated Households - Khajura Rural Municipality)"
+              alt="आप्रवासित घरपरिवार - परिवर्तन गाउँपालिका (Migrated Households - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -258,35 +268,41 @@ export default async function WardWiseMigratedHouseholdsPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा आप्रवासित घरपरिवार
+              परिवर्तन गाउँपालिकामा आप्रवासित घरपरिवार
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              आप्रवासित घरपरिवारको तथ्याङ्कले गाउँपालिकामा बसोबास गर्ने आप्रवासित परिवारहरूको
-              मूल स्थान, आप्रवासन प्रवृत्ति र जनसंख्या गतिशीलताको विश्लेषण गर्न सहयोग गर्दछ।
-              यस खण्डमा खजुरा गाउँपालिकामा रहेका आप्रवासित घरपरिवारको स्थान अनुसारको वितरण र वडागत
-              विश्लेषण प्रस्तुत गरिएको छ।
+              आप्रवासित घरपरिवारको तथ्याङ्कले गाउँपालिकामा बसोबास गर्ने
+              आप्रवासित परिवारहरूको मूल स्थान, आप्रवासन प्रवृत्ति र जनसंख्या
+              गतिशीलताको विश्लेषण गर्न सहयोग गर्दछ। यस खण्डमा परिवर्तन
+              गाउँपालिकामा रहेका आप्रवासित घरपरिवारको स्थान अनुसारको वितरण र
+              वडागत विश्लेषण प्रस्तुत गरिएको छ।
             </p>
             <p>
-              खजुरा गाउँपालिकामा रहेका आप्रवासित परिवारहरूको स्थानको
-              तथ्याङ्क हेर्दा, कुल घरपरिवार {localizeNumber(totalHouseholds.toLocaleString(), "ne")} 
-              मध्ये सबैभन्दा बढी {overallSummary[0]?.migratedFromName || ""} 
-              बाट {localizeNumber(((overallSummary[0]?.households || 0) / totalHouseholds * 100).toFixed(1), "ne")}% 
-              परिवारहरू आप्रवासित भएका देखिन्छ।
+              परिवर्तन गाउँपालिकामा रहेका आप्रवासित परिवारहरूको स्थानको तथ्याङ्क
+              हेर्दा, कुल घरपरिवार{" "}
+              {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
+              मध्ये सबैभन्दा बढी {overallSummary[0]?.migratedFromName || ""}
+              बाट{" "}
+              {localizeNumber(
+                (
+                  ((overallSummary[0]?.households || 0) / totalHouseholds) *
+                  100
+                ).toFixed(1),
+                "ne",
+              )}
+              % परिवारहरू आप्रवासित भएका देखिन्छ।
             </p>
 
-            <h2
-              id="migrated-households"
-              className="scroll-m-20 border-b pb-2"
-            >
+            <h2 id="migrated-households" className="scroll-m-20 border-b pb-2">
               आप्रवासित घरपरिवारको वितरण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा रहेका आप्रवासित परिवारहरूको वितरण निम्नानुसार
-              रहेको छ:
+              परिवर्तन गाउँपालिकामा रहेका आप्रवासित परिवारहरूको वितरण
+              निम्नानुसार रहेको छ:
             </p>
           </div>
 
@@ -307,11 +323,18 @@ export default async function WardWiseMigratedHouseholdsPage() {
               आप्रवासन विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा रहेका आप्रवासित परिवारहरूको विश्लेषण गर्दा, 
-              {MIGRATED_FROM_NAMES[overallSummary[0]?.migratedFrom || ''] || overallSummary[0]?.migratedFrom} 
-              बाट आएका परिवारहरू सबैभन्दा बढी 
-              {localizeNumber(((overallSummary[0]?.households || 0) / totalHouseholds * 100).toFixed(2), "ne")}% 
-              रहेको पाइन्छ।
+              परिवर्तन गाउँपालिकामा रहेका आप्रवासित परिवारहरूको विश्लेषण गर्दा,
+              {MIGRATED_FROM_NAMES[overallSummary[0]?.migratedFrom || ""] ||
+                overallSummary[0]?.migratedFrom}
+              बाट आएका परिवारहरू सबैभन्दा बढी
+              {localizeNumber(
+                (
+                  ((overallSummary[0]?.households || 0) / totalHouseholds) *
+                  100
+                ).toFixed(2),
+                "ne",
+              )}
+              % रहेको पाइन्छ।
             </p>
 
             {/* Client component for migrated analysis section */}

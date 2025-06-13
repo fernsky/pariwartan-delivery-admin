@@ -92,17 +92,9 @@ export default function DeathCauseAnalysisSection({
     .filter((item) => accidentCategories.includes(item.deathCause))
     .reduce((sum, item) => sum + item.population, 0);
 
-  const diseaseRate = ((diseaseDeaths / totalDeaths) * 100).toFixed(
-    2,
-  );
-  const infectiousRate = (
-    (infectiousDeaths / totalDeaths) *
-    100
-  ).toFixed(2);
-  const accidentRate = (
-    (accidentDeaths / totalDeaths) *
-    100
-  ).toFixed(2);
+  const diseaseRate = ((diseaseDeaths / totalDeaths) * 100).toFixed(2);
+  const infectiousRate = ((infectiousDeaths / totalDeaths) * 100).toFixed(2);
+  const accidentRate = ((accidentDeaths / totalDeaths) * 100).toFixed(2);
 
   // Calculate top two death causes ratio if both exist
   const topDeathCause = overallSummary[0];
@@ -119,12 +111,9 @@ export default function DeathCauseAnalysisSection({
     if (document && document.body) {
       document.body.setAttribute(
         "data-municipality",
-        "Khajura Rural Municipality / खजुरा गाउँपालिका",
+        "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
       );
-      document.body.setAttribute(
-        "data-total-deaths",
-        totalDeaths.toString(),
-      );
+      document.body.setAttribute("data-total-deaths", totalDeaths.toString());
 
       // Add main death cause data
       if (topDeathCause) {
@@ -180,10 +169,7 @@ export default function DeathCauseAnalysisSection({
       <div className="mt-6 flex flex-wrap gap-4 justify-center">
         {overallSummary.slice(0, 6).map((item, index) => {
           // Calculate percentage
-          const percentage = (
-            (item.population / totalDeaths) *
-            100
-          ).toFixed(2);
+          const percentage = ((item.population / totalDeaths) * 100).toFixed(2);
 
           return (
             <div
@@ -221,7 +207,8 @@ export default function DeathCauseAnalysisSection({
                   {localizeNumber(percentage, "ne")}%
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {localizeNumber(item.population.toLocaleString(), "ne")} मृत्यु
+                  {localizeNumber(item.population.toLocaleString(), "ne")}{" "}
+                  मृत्यु
                   <span className="sr-only">
                     ({item.population.toLocaleString()} deaths)
                   </span>
@@ -253,7 +240,8 @@ export default function DeathCauseAnalysisSection({
               {localizeNumber(diseaseRate, "ne")}%
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              {localizeNumber(diseaseDeaths.toLocaleString(), "ne")} मृत्यु दीर्घ रोगहरूबाट
+              {localizeNumber(diseaseDeaths.toLocaleString(), "ne")} मृत्यु
+              दीर्घ रोगहरूबाट
               <span className="sr-only">
                 {diseaseDeaths.toLocaleString()} deaths from chronic diseases
               </span>
@@ -275,9 +263,11 @@ export default function DeathCauseAnalysisSection({
               {localizeNumber(infectiousRate, "ne")}%
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              {localizeNumber(infectiousDeaths.toLocaleString(), "ne")} मृत्यु संक्रामक रोगहरूबाट
+              {localizeNumber(infectiousDeaths.toLocaleString(), "ne")} मृत्यु
+              संक्रामक रोगहरूबाट
               <span className="sr-only">
-                {infectiousDeaths.toLocaleString()} deaths from infectious diseases
+                {infectiousDeaths.toLocaleString()} deaths from infectious
+                diseases
               </span>
             </p>
           </div>
@@ -297,9 +287,11 @@ export default function DeathCauseAnalysisSection({
               {localizeNumber(accidentRate, "ne")}%
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              {localizeNumber(accidentDeaths.toLocaleString(), "ne")} मृत्यु दुर्घटना वा आत्महत्याबाट
+              {localizeNumber(accidentDeaths.toLocaleString(), "ne")} मृत्यु
+              दुर्घटना वा आत्महत्याबाट
               <span className="sr-only">
-                {accidentDeaths.toLocaleString()} deaths from accidents or suicide
+                {accidentDeaths.toLocaleString()} deaths from accidents or
+                suicide
               </span>
             </p>
           </div>
@@ -314,67 +306,93 @@ export default function DeathCauseAnalysisSection({
             <div>
               <h5 className="text-sm font-medium">मुटु र रक्तनलीका रोगहरू</h5>
               <p className="text-sm text-muted-foreground">
-                {localizeNumber(((overallSummary.find(
-                  (item) => item.deathCause === "HEART_RELATED_DISEASES",
-                )?.population || 0) +
-                  (overallSummary.find(
-                    (item) => item.deathCause === "BLOOD_PRESSURE",
-                  )?.population || 0)).toLocaleString(), "ne")}{" "}
-                (
-                {localizeNumber((
-                  (((overallSummary.find(
-                    (item) => item.deathCause === "HEART_RELATED_DISEASES",
-                  )?.population || 0) +
+                {localizeNumber(
+                  (
+                    (overallSummary.find(
+                      (item) => item.deathCause === "HEART_RELATED_DISEASES",
+                    )?.population || 0) +
                     (overallSummary.find(
                       (item) => item.deathCause === "BLOOD_PRESSURE",
-                    )?.population || 0)) /
-                    totalDeaths) *
-                  100
-                ).toFixed(1), "ne")}
+                    )?.population || 0)
+                  ).toLocaleString(),
+                  "ne",
+                )}{" "}
+                (
+                {localizeNumber(
+                  (
+                    (((overallSummary.find(
+                      (item) => item.deathCause === "HEART_RELATED_DISEASES",
+                    )?.population || 0) +
+                      (overallSummary.find(
+                        (item) => item.deathCause === "BLOOD_PRESSURE",
+                      )?.population || 0)) /
+                      totalDeaths) *
+                    100
+                  ).toFixed(1),
+                  "ne",
+                )}
                 %)
               </p>
             </div>
             <div>
-              <h5 className="text-sm font-medium">श्वासप्रश्वास सम्बन्धी रोगहरू</h5>
+              <h5 className="text-sm font-medium">
+                श्वासप्रश्वास सम्बन्धी रोगहरू
+              </h5>
               <p className="text-sm text-muted-foreground">
-                {localizeNumber(((overallSummary.find((item) => item.deathCause === "RESPIRATORY_DISEASES")
-                  ?.population || 0) +
-                  (overallSummary.find((item) => item.deathCause === "ASTHMA")
-                    ?.population || 0) +
-                  (overallSummary.find(
-                    (item) => item.deathCause === "PNEUMONIA",
-                  )?.population || 0)).toLocaleString(), "ne")}{" "}
-                (
-                {localizeNumber((
-                  (((overallSummary.find(
-                    (item) => item.deathCause === "RESPIRATORY_DISEASES",
-                  )?.population || 0) +
+                {localizeNumber(
+                  (
                     (overallSummary.find(
-                      (item) => item.deathCause === "ASTHMA",
+                      (item) => item.deathCause === "RESPIRATORY_DISEASES",
                     )?.population || 0) +
+                    (overallSummary.find((item) => item.deathCause === "ASTHMA")
+                      ?.population || 0) +
                     (overallSummary.find(
                       (item) => item.deathCause === "PNEUMONIA",
-                    )?.population || 0)) /
-                    totalDeaths) *
-                  100
-                ).toFixed(1), "ne")}
+                    )?.population || 0)
+                  ).toLocaleString(),
+                  "ne",
+                )}{" "}
+                (
+                {localizeNumber(
+                  (
+                    (((overallSummary.find(
+                      (item) => item.deathCause === "RESPIRATORY_DISEASES",
+                    )?.population || 0) +
+                      (overallSummary.find(
+                        (item) => item.deathCause === "ASTHMA",
+                      )?.population || 0) +
+                      (overallSummary.find(
+                        (item) => item.deathCause === "PNEUMONIA",
+                      )?.population || 0)) /
+                      totalDeaths) *
+                    100
+                  ).toFixed(1),
+                  "ne",
+                )}
                 %)
               </p>
             </div>
             <div>
               <h5 className="text-sm font-medium">क्यान्सर</h5>
               <p className="text-sm text-muted-foreground">
-                {localizeNumber((overallSummary.find(
-                  (item) => item.deathCause === "CANCER",
-                )?.population || 0).toLocaleString(), "ne")}{" "}
+                {localizeNumber(
+                  (
+                    overallSummary.find((item) => item.deathCause === "CANCER")
+                      ?.population || 0
+                  ).toLocaleString(),
+                  "ne",
+                )}{" "}
                 (
-                {localizeNumber((
-                  ((overallSummary.find(
-                    (item) => item.deathCause === "CANCER",
-                  )?.population || 0) /
-                    totalDeaths) *
-                  100
-                ).toFixed(1), "ne")}
+                {localizeNumber(
+                  (
+                    ((overallSummary.find(
+                      (item) => item.deathCause === "CANCER",
+                    )?.population || 0) /
+                      totalDeaths) *
+                    100
+                  ).toFixed(1),
+                  "ne",
+                )}
                 %)
               </p>
             </div>
@@ -389,23 +407,28 @@ export default function DeathCauseAnalysisSection({
           <p className="text-sm">
             वृद्धावस्थामा मृत्यु (कालगतिले मर्नु):
             <span className="font-medium ml-1">
-              {localizeNumber((
-                ((overallSummary.find(
-                  (item) => item.deathCause === "DEATH_BY_OLD_AGE",
-                )?.population || 0) /
-                  totalDeaths) *
-                100
-              ).toFixed(1), "ne")}%
+              {localizeNumber(
+                (
+                  ((overallSummary.find(
+                    (item) => item.deathCause === "DEATH_BY_OLD_AGE",
+                  )?.population || 0) /
+                    totalDeaths) *
+                  100
+                ).toFixed(1),
+                "ne",
+              )}
+              %
             </span>
             <span className="sr-only">
-              Death by old age: 
+              Death by old age:
               {(
                 ((overallSummary.find(
                   (item) => item.deathCause === "DEATH_BY_OLD_AGE",
                 )?.population || 0) /
                   totalDeaths) *
                 100
-              ).toFixed(1)}%
+              ).toFixed(1)}
+              %
             </span>
           </p>
         </div>
@@ -413,8 +436,9 @@ export default function DeathCauseAnalysisSection({
 
       <div className="mt-6 text-sm text-muted-foreground">
         <p>
-          यो तथ्याङ्क गाउँपालिकाको स्वास्थ्य योजना, रोग नियन्त्रण र स्वास्थ्य सेवाको विस्तारका लागि महत्त्वपूर्ण आधार हो।
-          स्वास्थ्य सम्बन्धी थप जानकारीका लागि स्थानीय स्वास्थ्य केन्द्रमा सम्पर्क गर्नुहोस्।
+          यो तथ्याङ्क गाउँपालिकाको स्वास्थ्य योजना, रोग नियन्त्रण र स्वास्थ्य
+          सेवाको विस्तारका लागि महत्त्वपूर्ण आधार हो। स्वास्थ्य सम्बन्धी थप
+          जानकारीका लागि स्थानीय स्वास्थ्य केन्द्रमा सम्पर्क गर्नुहोस्।
         </p>
       </div>
     </>

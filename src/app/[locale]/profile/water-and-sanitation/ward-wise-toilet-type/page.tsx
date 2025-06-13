@@ -34,7 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     const toiletTypeData =
       await api.profile.waterAndSanitation.wardWiseToiletType.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalHouseholds = toiletTypeData.reduce(
@@ -62,9 +62,9 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // Get human-readable name for most common toilet type
     const mostCommonTypeName =
-      toiletTypeOptions.find((option) => option.value === mostCommonType)?.label.split(
-        " ("
-      )[0] || mostCommonType;
+      toiletTypeOptions
+        .find((option) => option.value === mostCommonType)
+        ?.label.split(" (")[0] || mostCommonType;
     const mostCommonPercentage =
       totalHouseholds > 0
         ? ((mostCommonCount / totalHouseholds) * 100).toFixed(2)
@@ -72,14 +72,14 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // Create rich keywords with actual data
     const keywordsNP = [
-      "खजुरा गाउँपालिका शौचालय प्रकार",
+      "परिवर्तन गाउँपालिका शौचालय प्रकार",
       "वडागत शौचालय प्रकारहरू",
       "फ्लस शौचालय भएका घरधुरी",
       "सार्वजनिक शौचालय प्रयोग",
       "शौचालय नभएका घरधुरी",
-      `खजुरा शौचालय तथ्याङ्क ${localizeNumber(
+      `परिवर्तन शौचालय तथ्याङ्क ${localizeNumber(
         totalHouseholds.toString(),
-        "ne"
+        "ne",
       )}`,
     ];
 
@@ -93,12 +93,12 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data
-    const descriptionNP = `खजुरा गाउँपालिकामा वडा अनुसार शौचालय प्रकारहरूको वितरण र विश्लेषण। कुल घरधुरी संख्या ${localizeNumber(
+    const descriptionNP = `परिवर्तन गाउँपालिकामा वडा अनुसार शौचालय प्रकारहरूको वितरण र विश्लेषण। कुल घरधुरी संख्या ${localizeNumber(
       totalHouseholds.toString(),
-      "ne"
+      "ne",
     )} मध्ये ${localizeNumber(mostCommonPercentage, "ne")}% (${localizeNumber(
       mostCommonCount.toString(),
-      "ne"
+      "ne",
     )}) मा ${mostCommonTypeName} प्रकारका शौचालय छन्। विभिन्न वडाहरूमा शौचालय प्रकारहरूको विस्तृत विश्लेषण।`;
 
     const descriptionEN = `Ward-wise distribution and analysis of toilet types in Khajura Rural Municipality. Out of a total of ${totalHouseholds} households, ${mostCommonPercentage}% (${mostCommonCount}) use ${mostCommonTypeName}. Detailed analysis of toilet types across various wards.`;
@@ -131,7 +131,7 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "शौचालय प्रकारहरू | खजुरा गाउँपालिका डिजिटल प्रोफाइल",
+      title: "शौचालय प्रकारहरू | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
       description: "वडा अनुसार शौचालय प्रकारहरूको वितरण र विश्लेषण।",
     };
   }
@@ -140,9 +140,21 @@ export async function generateMetadata(): Promise<Metadata> {
 const toc = [
   { level: 2, text: "परिचय", slug: "introduction" },
   { level: 2, text: "शौचालय प्रकारहरू", slug: "toilet-types" },
-  { level: 2, text: "वडा अनुसार शौचालय प्रकारहरू", slug: "ward-wise-toilet-types" },
-  { level: 2, text: "शौचालय प्रकारहरूको विश्लेषण", slug: "toilet-types-analysis" },
-  { level: 2, text: "सुधारका लागि सिफारिसहरू", slug: "recommendations-for-improvement" },
+  {
+    level: 2,
+    text: "वडा अनुसार शौचालय प्रकारहरू",
+    slug: "ward-wise-toilet-types",
+  },
+  {
+    level: 2,
+    text: "शौचालय प्रकारहरूको विश्लेषण",
+    slug: "toilet-types-analysis",
+  },
+  {
+    level: 2,
+    text: "सुधारका लागि सिफारिसहरू",
+    slug: "recommendations-for-improvement",
+  },
 ];
 
 export default async function WardWiseToiletTypePage() {
@@ -171,7 +183,7 @@ export default async function WardWiseToiletTypePage() {
       if (!acc[item.toiletType]) acc[item.toiletType] = 0;
       acc[item.toiletType] += item.households || 0;
       return acc;
-    }, {})
+    }, {}),
   )
     .map(([toiletType, households]) => ({
       toiletType,
@@ -183,7 +195,7 @@ export default async function WardWiseToiletTypePage() {
   // Calculate total households for percentages
   const totalHouseholds = overallSummary.reduce(
     (sum, item) => sum + item.households,
-    0
+    0,
   );
 
   // Create data for pie chart
@@ -192,20 +204,19 @@ export default async function WardWiseToiletTypePage() {
     value: item.households,
     percentage: ((item.households / totalHouseholds) * 100).toFixed(2),
     color:
-      TOILET_TYPE_COLORS[
-        item.toiletType as keyof typeof TOILET_TYPE_COLORS
-      ] || "#888888",
+      TOILET_TYPE_COLORS[item.toiletType as keyof typeof TOILET_TYPE_COLORS] ||
+      "#888888",
   }));
 
   // Get unique ward numbers
   const wardNumbers = Array.from(
-    new Set(toiletTypeData.map((item) => item.wardNumber))
+    new Set(toiletTypeData.map((item) => item.wardNumber)),
   ).sort((a, b) => a - b); // Sort numerically
 
   // Process data for ward-wise visualization
   const wardWiseData = wardNumbers.map((wardNumber) => {
     const wardData = toiletTypeData.filter(
-      (item) => item.wardNumber === wardNumber
+      (item) => item.wardNumber === wardNumber,
     );
 
     const result: Record<string, any> = {
@@ -223,7 +234,7 @@ export default async function WardWiseToiletTypePage() {
     // Calculate total for this ward
     result.total = wardData.reduce(
       (sum, item) => sum + (item.households || 0),
-      0
+      0,
     );
 
     return result;
@@ -232,19 +243,22 @@ export default async function WardWiseToiletTypePage() {
   // Calculate ward-wise sanitation rates and analysis
   const wardWiseAnalysis = wardNumbers.map((wardNumber) => {
     const wardData = toiletTypeData.filter(
-      (item) => item.wardNumber === wardNumber
+      (item) => item.wardNumber === wardNumber,
     );
 
     const wardTotalHouseholds = wardData.reduce(
       (sum, item) => sum + (item.households || 0),
-      0
+      0,
     );
 
-    const mostCommonToilet = wardData.reduce((prev, current) => {
-      return (prev.households || 0) > (current.households || 0)
-        ? prev
-        : current;
-    }, { toiletType: "", households: 0 });
+    const mostCommonToilet = wardData.reduce(
+      (prev, current) => {
+        return (prev.households || 0) > (current.households || 0)
+          ? prev
+          : current;
+      },
+      { toiletType: "", households: 0 },
+    );
 
     // Calculate percentage of households with proper sanitation (not using NO_TOILET)
     const sanitationHouseholds = wardData
@@ -258,11 +272,14 @@ export default async function WardWiseToiletTypePage() {
 
     // Calculate percentage of households with modern toilets (FLUSH_WITH_SEPTIC_TANK)
     const modernToiletsData = wardData.find(
-      (item) => item.toiletType === "FLUSH_WITH_SEPTIC_TANK"
+      (item) => item.toiletType === "FLUSH_WITH_SEPTIC_TANK",
     );
     const modernToiletsPercentage =
       wardTotalHouseholds > 0
-        ? (((modernToiletsData?.households || 0) / wardTotalHouseholds) * 100).toFixed(2)
+        ? (
+            ((modernToiletsData?.households || 0) / wardTotalHouseholds) *
+            100
+          ).toFixed(2)
         : "0";
 
     // Calculate percentage for each toilet type
@@ -270,7 +287,7 @@ export default async function WardWiseToiletTypePage() {
     wardData.forEach((item) => {
       typePercentages[item.toiletType] =
         wardTotalHouseholds > 0
-          ? ((item.households || 0) / wardTotalHouseholds * 100).toFixed(2)
+          ? (((item.households || 0) / wardTotalHouseholds) * 100).toFixed(2)
           : "0";
     });
 
@@ -283,20 +300,23 @@ export default async function WardWiseToiletTypePage() {
       mostCommonTypeHouseholds: mostCommonToilet.households || 0,
       mostCommonTypePercentage:
         wardTotalHouseholds > 0
-          ? ((mostCommonToilet.households || 0) / wardTotalHouseholds * 100).toFixed(2)
+          ? (
+              ((mostCommonToilet.households || 0) / wardTotalHouseholds) *
+              100
+            ).toFixed(2)
           : "0",
       sanitationHouseholds,
       sanitationPercentage,
       modernToiletsPercentage,
-      noToiletsPercentage:
-        typePercentages["NO_TOILET"] || "0",
+      noToiletsPercentage: typePercentages["NO_TOILET"] || "0",
       typePercentages,
     };
   });
 
   // Find wards with highest and lowest sanitation rates
   const sortedBySanitationRate = [...wardWiseAnalysis].sort(
-    (a, b) => parseFloat(b.sanitationPercentage) - parseFloat(a.sanitationPercentage)
+    (a, b) =>
+      parseFloat(b.sanitationPercentage) - parseFloat(a.sanitationPercentage),
   );
 
   const highestSanitationWard = sortedBySanitationRate[0];
@@ -329,14 +349,14 @@ export default async function WardWiseToiletTypePage() {
     sanitationIndex >= 80
       ? "उत्तम (Excellent)"
       : sanitationIndex >= 65
-      ? "राम्रो (Good)"
-      : sanitationIndex >= 50
-      ? "मध्यम (Average)"
-      : "निम्न (Poor)";
+        ? "राम्रो (Good)"
+        : sanitationIndex >= 50
+          ? "मध्यम (Average)"
+          : "निम्न (Poor)";
 
   // Find percentage of households without toilets
   const noToiletData = overallSummary.find(
-    (item) => item.toiletType === "NO_TOILET"
+    (item) => item.toiletType === "NO_TOILET",
   );
   const noToiletPercentage =
     totalHouseholds > 0
@@ -364,7 +384,7 @@ export default async function WardWiseToiletTypePage() {
               src="/images/toilet-types.svg"
               width={1200}
               height={400}
-              alt="शौचालय प्रकारहरू - खजुरा गाउँपालिका (Toilet Types - Khajura Rural Municipality)"
+              alt="शौचालय प्रकारहरू - परिवर्तन गाउँपालिका (Toilet Types - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -372,7 +392,7 @@ export default async function WardWiseToiletTypePage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा शौचालय प्रकारहरूको अवस्था
+              परिवर्तन गाउँपालिकामा शौचालय प्रकारहरूको अवस्था
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
@@ -381,28 +401,32 @@ export default async function WardWiseToiletTypePage() {
             <p>
               शौचालय सुविधा स्वस्थ जीवनयापन र वातावरणीय सरसफाइको एक महत्वपूर्ण
               पक्ष हो। यसले जनस्वास्थ्यलाई सुधार गर्न र विभिन्न रोगहरूबाट बच्न
-              मद्दत गर्दछ। यस खण्डमा खजुरा गाउँपालिकाका विभिन्न वडाहरूमा प्रयोग
-              गरिने शौचालय प्रकारहरूको वितरण र विश्लेषण प्रस्तुत गरिएको छ।
+              मद्दत गर्दछ। यस खण्डमा परिवर्तन गाउँपालिकाका विभिन्न वडाहरूमा
+              प्रयोग गरिने शौचालय प्रकारहरूको वितरण र विश्लेषण प्रस्तुत गरिएको
+              छ।
             </p>
             <p>
-              खजुरा गाउँपालिकामा कुल{" "}
+              परिवर्तन गाउँपालिकामा कुल{" "}
               {localizeNumber(totalHouseholds.toLocaleString(), "ne")} घरधुरी
               मध्ये
               {overallSummary[0] &&
                 ` सबैभन्दा धेरै ${overallSummary[0]?.toiletTypeName} प्रकारको शौचालय 
               ${localizeNumber(
-                ((overallSummary[0]?.households || 0) / totalHouseholds * 100).toFixed(1),
-                "ne"
+                (
+                  ((overallSummary[0]?.households || 0) / totalHouseholds) *
+                  100
+                ).toFixed(1),
+                "ne",
               )}% घरधुरीमा`}{" "}
-              रहेको छ। यस अध्ययनले शौचालय सुविधाहरूको अवस्था र सुधारका क्षेत्रहरू
-              पहिचान गर्न मद्दत गर्नेछ।
+              रहेको छ। यस अध्ययनले शौचालय सुविधाहरूको अवस्था र सुधारका
+              क्षेत्रहरू पहिचान गर्न मद्दत गर्नेछ।
             </p>
 
             <h2 id="toilet-types" className="scroll-m-20 border-b pb-2">
               शौचालय प्रकारहरू
             </h2>
             <p>
-              खजुरा गाउँपालिकामा शौचालयका प्रमुख प्रकारहरू र तिनको वितरण
+              परिवर्तन गाउँपालिकामा शौचालयका प्रमुख प्रकारहरू र तिनको वितरण
               निम्नानुसार रहेको छ:
             </p>
           </div>
@@ -431,32 +455,30 @@ export default async function WardWiseToiletTypePage() {
               शौचालय प्रकारहरूको विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा शौचालय प्रकारहरूको विश्लेषण गर्दा,
+              परिवर्तन गाउँपालिकामा शौचालय प्रकारहरूको विश्लेषण गर्दा,
               {overallSummary[0]?.toiletTypeName || ""} प्रकारको शौचालय सबैभन्दा
               बढी
               {overallSummary[0]
                 ? ` ${localizeNumber(
                     (
-                      (overallSummary[0]?.households || 0) /
-                      totalHouseholds *
+                      ((overallSummary[0]?.households || 0) / totalHouseholds) *
                       100
                     ).toFixed(2),
-                    "ne"
+                    "ne",
                   )}% `
                 : " "}
               घरधुरीमा प्रयोग भएको पाइन्छ। शौचालय नभएका घरधुरीहरुको संख्या
               {(() => {
                 const noToiletData = overallSummary.find(
-                  (item) => item.toiletType === "NO_TOILET"
+                  (item) => item.toiletType === "NO_TOILET",
                 );
                 return noToiletData
                   ? ` ${localizeNumber(
                       (
-                        (noToiletData.households || 0) /
-                        totalHouseholds *
+                        ((noToiletData.households || 0) / totalHouseholds) *
                         100
                       ).toFixed(2),
-                      "ne"
+                      "ne",
                     )}% `
                   : " ";
               })()}
@@ -484,7 +506,7 @@ export default async function WardWiseToiletTypePage() {
             </h2>
 
             <p>
-              खजुरा गाउँपालिकामा शौचालय सुविधाहरू सुधार गर्न निम्न सिफारिसहरू
+              परिवर्तन गाउँपालिकामा शौचालय सुविधाहरू सुधार गर्न निम्न सिफारिसहरू
               प्रस्तुत गरिएका छन्:
             </p>
 
@@ -496,7 +518,7 @@ export default async function WardWiseToiletTypePage() {
                   {lowestSanitationWard
                     ? ` वडा नं. ${localizeNumber(
                         lowestSanitationWard.wardNumber.toString(),
-                        "ne"
+                        "ne",
                       )} `
                     : " सबैभन्दा कम शौचालय भएका वडाहरू "}
                   मा शौचालय निर्माणलाई प्राथमिकता दिने।
@@ -534,7 +556,7 @@ export default async function WardWiseToiletTypePage() {
             </div>
 
             <p className="mt-6">
-              यी सिफारिसहरू कार्यान्वयन गरेर, खजुरा गाउँपालिकामा शौचालय
+              यी सिफारिसहरू कार्यान्वयन गरेर, परिवर्तन गाउँपालिकामा शौचालय
               सुविधाहरूको अवस्थामा उल्लेखनीय सुधार ल्याउन सकिन्छ, जसले
               जनस्वास्थ्य सुधार र रोगहरू न्यूनीकरणमा महत्त्वपूर्ण योगदान
               पुर्याउनेछ।

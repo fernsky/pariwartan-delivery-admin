@@ -26,14 +26,26 @@ export default function SafeMotherhoodIndicatorsSEO({
   const generateStructuredData = () => {
     // Find key indicator values for structured data
     const findIndicatorValue = (indicator: string, data: any[]) => {
-      const item = data.find(d => d.indicator === indicator);
+      const item = data.find((d) => d.indicator === indicator);
       return item ? item.value || 0 : 0;
     };
 
-    const institutionalDeliveries = findIndicatorValue("INSTITUTIONAL_DELIVERIES", deliveryData);
-    const ancCheckups = findIndicatorValue("PREGNANT_WOMEN_FOUR_ANC_CHECKUPS_PROTOCOL", antenatalData);
-    const pncVisits = findIndicatorValue("POSTPARTUM_MOTHERS_TWO_PNC_HOME_VISITS", postnatalData);
-    const newbornCare = findIndicatorValue("NEWBORNS_CHX_APPLIED_AFTER_BIRTH", newbornHealthData);
+    const institutionalDeliveries = findIndicatorValue(
+      "INSTITUTIONAL_DELIVERIES",
+      deliveryData,
+    );
+    const ancCheckups = findIndicatorValue(
+      "PREGNANT_WOMEN_FOUR_ANC_CHECKUPS_PROTOCOL",
+      antenatalData,
+    );
+    const pncVisits = findIndicatorValue(
+      "POSTPARTUM_MOTHERS_TWO_PNC_HOME_VISITS",
+      postnatalData,
+    );
+    const newbornCare = findIndicatorValue(
+      "NEWBORNS_CHX_APPLIED_AFTER_BIRTH",
+      newbornHealthData,
+    );
 
     // Convert safe motherhood indicators to structured data format
     const mainIndicatorStats = [
@@ -84,17 +96,17 @@ export default function SafeMotherhoodIndicatorsSEO({
         },
         measuredValue: newbornCare,
         description: `Percentage of newborns who had CHX applied immediately after birth was ${newbornCare.toFixed(1)}% in year ${latestYear} in Khajura Rural Municipality.`,
-      }
+      },
     ];
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Safe Motherhood Indicators in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Safe Motherhood Indicators in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Analysis of safe motherhood services and indicators for year ${latestYear} in Khajura Rural Municipality. Key indicators include institutional delivery rate (${institutionalDeliveries.toFixed(1)}%), ANC checkups as per protocol (${ancCheckups.toFixed(1)}%), PNC home visits (${pncVisits.toFixed(1)}%), and newborn care (${newbornCare.toFixed(1)}%).`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Safe motherhood",
         "Maternal health",
         "Antenatal care",
@@ -152,20 +164,20 @@ export default function SafeMotherhoodIndicatorsSEO({
           name: "Maternal Health Quality Index",
           unitText: "index",
           value: maternalHealthIndex.toFixed(2),
-        }
+        },
       ],
       observation: mainIndicatorStats,
       about: [
         {
           "@type": "Thing",
           name: "Healthcare",
-          description: "Maternal and child health services"
+          description: "Maternal and child health services",
         },
         {
           "@type": "Thing",
           name: "Maternal Health",
-          description: "Safe motherhood and maternal health indicators"
-        }
+          description: "Safe motherhood and maternal health indicators",
+        },
       ],
       isBasedOn: {
         "@type": "GovernmentService",

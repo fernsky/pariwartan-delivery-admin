@@ -30,11 +30,14 @@ interface FinancialAccountsAnalysisSectionProps {
   }>;
   bestInclusionWard: any;
   worstInclusionWard: any;
-  FINANCIAL_ACCOUNT_TYPES: Record<string, {
-    name: string;
-    nameEn: string;
-    color: string;
-  }>;
+  FINANCIAL_ACCOUNT_TYPES: Record<
+    string,
+    {
+      name: string;
+      nameEn: string;
+      color: string;
+    }
+  >;
 }
 
 export default function FinancialAccountsAnalysisSection({
@@ -57,36 +60,39 @@ export default function FinancialAccountsAnalysisSection({
   // Calculate combined account holders (total households with any type of account)
   const accountTotal = totalHouseholds - noAccountTotal;
   const accountPercentage = 100 - noAccountPercentage;
-  
+
   // Calculate financial inclusion index (0-100)
   // Higher weight for formal banking system, lower for no accounts
-  const financialInclusionIndex = (
-    (bankPercentage * 1.0) + 
-    (financePercentage * 0.9) + 
-    (cooperativePercentage * 0.8) + 
-    (microfinancePercentage * 0.7) + 
-    (noAccountPercentage * 0.0)
-  ) / 100;
-  
-  const inclusionLevel = 
-    financialInclusionIndex >= 0.75 ? "उच्च" :
-    financialInclusionIndex >= 0.50 ? "मध्यम" :
-    "न्यून";
+  const financialInclusionIndex =
+    (bankPercentage * 1.0 +
+      financePercentage * 0.9 +
+      cooperativePercentage * 0.8 +
+      microfinancePercentage * 0.7 +
+      noAccountPercentage * 0.0) /
+    100;
+
+  const inclusionLevel =
+    financialInclusionIndex >= 0.75
+      ? "उच्च"
+      : financialInclusionIndex >= 0.5
+        ? "मध्यम"
+        : "न्यून";
 
   // SEO attributes to include directly in JSX
   const seoAttributes = {
-    "data-municipality": "Khajura Rural Municipality / खजुरा गाउँपालिका",
+    "data-municipality": "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
     "data-total-households": totalHouseholds.toString(),
     "data-bank-account-percentage": bankPercentage.toFixed(2),
     "data-no-account-percentage": noAccountPercentage.toFixed(2),
     "data-best-inclusion-ward": bestInclusionWard?.wardNumber.toString() || "",
-    "data-worst-inclusion-ward": worstInclusionWard?.wardNumber.toString() || "",
+    "data-worst-inclusion-ward":
+      worstInclusionWard?.wardNumber.toString() || "",
     "data-financial-inclusion-index": financialInclusionIndex.toFixed(2),
   };
 
   return (
     <>
-      <div 
+      <div
         className="mt-6 flex flex-wrap gap-4 justify-center"
         {...seoAttributes}
       >
@@ -132,17 +138,37 @@ export default function FinancialAccountsAnalysisSection({
           <div className="relative z-10">
             <h3 className="text-lg font-medium mb-2">
               अन्य वित्तीय खाता
-              <span className="sr-only">
-                Other financial accounts
-              </span>
+              <span className="sr-only">Other financial accounts</span>
             </h3>
             <p className="text-2xl font-bold">
-              {localizeNumber((financePercentage + microfinancePercentage + cooperativePercentage).toFixed(2), "ne")}%
+              {localizeNumber(
+                (
+                  financePercentage +
+                  microfinancePercentage +
+                  cooperativePercentage
+                ).toFixed(2),
+                "ne",
+              )}
+              %
             </p>
             <p className="text-sm text-muted-foreground">
-              {localizeNumber((financeTotal + microfinanceTotal + cooperativeTotal).toLocaleString(), "ne")} घरधुरी
+              {localizeNumber(
+                (
+                  financeTotal +
+                  microfinanceTotal +
+                  cooperativeTotal
+                ).toLocaleString(),
+                "ne",
+              )}{" "}
+              घरधुरी
               <span className="sr-only">
-                ({(financeTotal + microfinanceTotal + cooperativeTotal).toLocaleString()} households)
+                (
+                {(
+                  financeTotal +
+                  microfinanceTotal +
+                  cooperativeTotal
+                ).toLocaleString()}{" "}
+                households)
               </span>
             </p>
           </div>
@@ -209,12 +235,22 @@ export default function FinancialAccountsAnalysisSection({
                 ></div>
                 <div>
                   <p className="text-2xl font-bold">
-                    वडा {localizeNumber(bestInclusionWard.wardNumber.toString(), "ne")}
+                    वडा{" "}
+                    {localizeNumber(
+                      bestInclusionWard.wardNumber.toString(),
+                      "ne",
+                    )}
                   </p>
                   <p className="text-sm text-muted-foreground mt-1">
-                    वित्तीय खाता भएका: {localizeNumber(bestInclusionWard.accountPercent.toFixed(2), "ne")}%
+                    वित्तीय खाता भएका:{" "}
+                    {localizeNumber(
+                      bestInclusionWard.accountPercent.toFixed(2),
+                      "ne",
+                    )}
+                    %
                     <span className="sr-only">
-                      {bestInclusionWard.accountPercent.toFixed(2)}% have financial accounts
+                      {bestInclusionWard.accountPercent.toFixed(2)}% have
+                      financial accounts
                     </span>
                   </p>
                 </div>
@@ -230,7 +266,11 @@ export default function FinancialAccountsAnalysisSection({
                       <div className="flex justify-between text-sm">
                         <span>{FINANCIAL_ACCOUNT_TYPES.BANK.name}</span>
                         <span className="font-medium">
-                          {localizeNumber(bestInclusionWard.bankPercent.toFixed(2), "ne")}%
+                          {localizeNumber(
+                            bestInclusionWard.bankPercent.toFixed(2),
+                            "ne",
+                          )}
+                          %
                         </span>
                       </div>
                       <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -248,20 +288,25 @@ export default function FinancialAccountsAnalysisSection({
                         <span>अन्य वित्तीय खाता</span>
                         <span className="font-medium">
                           {localizeNumber(
-                            (bestInclusionWard.financePercent + 
-                             bestInclusionWard.microfinancePercent + 
-                             bestInclusionWard.cooperativePercent).toFixed(2), 
-                            "ne"
-                          )}%
+                            (
+                              bestInclusionWard.financePercent +
+                              bestInclusionWard.microfinancePercent +
+                              bestInclusionWard.cooperativePercent
+                            ).toFixed(2),
+                            "ne",
+                          )}
+                          %
                         </span>
                       </div>
                       <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
                         <div
                           className="h-full rounded-full"
                           style={{
-                            width: `${bestInclusionWard.financePercent + 
-                                   bestInclusionWard.microfinancePercent + 
-                                   bestInclusionWard.cooperativePercent}%`,
+                            width: `${
+                              bestInclusionWard.financePercent +
+                              bestInclusionWard.microfinancePercent +
+                              bestInclusionWard.cooperativePercent
+                            }%`,
                             backgroundColor: "#3498db",
                           }}
                         ></div>
@@ -271,7 +316,11 @@ export default function FinancialAccountsAnalysisSection({
                       <div className="flex justify-between text-sm">
                         <span>{FINANCIAL_ACCOUNT_TYPES.NONE.name}</span>
                         <span className="font-medium">
-                          {localizeNumber(bestInclusionWard.noAccountPercent.toFixed(2), "ne")}%
+                          {localizeNumber(
+                            bestInclusionWard.noAccountPercent.toFixed(2),
+                            "ne",
+                          )}
+                          %
                         </span>
                       </div>
                       <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -298,7 +347,9 @@ export default function FinancialAccountsAnalysisSection({
           >
             <h4 className="font-medium mb-2">
               न्यून वित्तीय समावेशीकरण भएको वडा
-              <span className="sr-only">Ward with Poor Financial Inclusion in Khajura</span>
+              <span className="sr-only">
+                Ward with Poor Financial Inclusion in Khajura
+              </span>
             </h4>
             {worstInclusionWard && (
               <div className="flex items-center gap-3">
@@ -310,12 +361,22 @@ export default function FinancialAccountsAnalysisSection({
                 ></div>
                 <div>
                   <p className="text-2xl font-bold">
-                    वडा {localizeNumber(worstInclusionWard.wardNumber.toString(), "ne")}
+                    वडा{" "}
+                    {localizeNumber(
+                      worstInclusionWard.wardNumber.toString(),
+                      "ne",
+                    )}
                   </p>
                   <p className="text-sm text-muted-foreground mt-1">
-                    खाता नभएका: {localizeNumber(worstInclusionWard.noAccountPercent.toFixed(2), "ne")}%
+                    खाता नभएका:{" "}
+                    {localizeNumber(
+                      worstInclusionWard.noAccountPercent.toFixed(2),
+                      "ne",
+                    )}
+                    %
                     <span className="sr-only">
-                      {worstInclusionWard.noAccountPercent.toFixed(2)}% have no financial accounts
+                      {worstInclusionWard.noAccountPercent.toFixed(2)}% have no
+                      financial accounts
                     </span>
                   </p>
                 </div>
@@ -326,9 +387,20 @@ export default function FinancialAccountsAnalysisSection({
               <h5 className="text-sm font-medium">विशेष ध्यान दिनुपर्ने</h5>
               <div className="mt-2 p-3 bg-red-50 rounded-lg border border-red-100">
                 <p className="text-sm">
-                  यस वडामा {localizeNumber(worstInclusionWard?.noAccountHouseholds.toLocaleString() || "0", "ne")} घरधुरी 
-                  (कुल {localizeNumber(worstInclusionWard?.totalHouseholds.toLocaleString() || "0", "ne")} मध्ये) को 
-                  कुनै पनि वित्तीय संस्थामा खाता छैन। वित्तीय समावेशीकरणको लागि यस वडामा विशेष कार्यक्रम सञ्चालन गर्नुपर्ने देखिन्छ।
+                  यस वडामा{" "}
+                  {localizeNumber(
+                    worstInclusionWard?.noAccountHouseholds.toLocaleString() ||
+                      "0",
+                    "ne",
+                  )}{" "}
+                  घरधुरी (कुल{" "}
+                  {localizeNumber(
+                    worstInclusionWard?.totalHouseholds.toLocaleString() || "0",
+                    "ne",
+                  )}{" "}
+                  मध्ये) को कुनै पनि वित्तीय संस्थामा खाता छैन। वित्तीय
+                  समावेशीकरणको लागि यस वडामा विशेष कार्यक्रम सञ्चालन गर्नुपर्ने
+                  देखिन्छ।
                 </p>
               </div>
             </div>
@@ -341,7 +413,10 @@ export default function FinancialAccountsAnalysisSection({
             <div className="text-center mb-4">
               <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-r from-blue-100 to-blue-50 border-4 border-blue-200">
                 <span className="text-2xl font-bold text-blue-600">
-                  {localizeNumber((financialInclusionIndex * 100).toFixed(1), "ne")}
+                  {localizeNumber(
+                    (financialInclusionIndex * 100).toFixed(1),
+                    "ne",
+                  )}
                 </span>
               </div>
               <p className="mt-2 text-sm font-medium">{inclusionLevel} स्तर</p>
@@ -351,27 +426,36 @@ export default function FinancialAccountsAnalysisSection({
               <p className="flex gap-2">
                 <span className="text-blue-500">•</span>
                 <span>
-                  <strong>सूचकाङ्क विवरण:</strong> वित्तीय समावेशीकरणको यो सूचकाङ्क 
-                  बैङ्क खाता, फाइनान्स, सहकारी, लघुवित्त र खाता नभएका घरधुरीहरूको 
-                  भारित औसतमा आधारित छ।
+                  <strong>सूचकाङ्क विवरण:</strong> वित्तीय समावेशीकरणको यो
+                  सूचकाङ्क बैङ्क खाता, फाइनान्स, सहकारी, लघुवित्त र खाता नभएका
+                  घरधुरीहरूको भारित औसतमा आधारित छ।
                 </span>
               </p>
               <p className="flex gap-2">
                 <span className="text-blue-500">•</span>
                 <span>
-                  <strong>व्याख्या:</strong> {localizeNumber((financialInclusionIndex * 100).toFixed(1), "ne")} 
-                  अंकले {inclusionLevel} स्तरको वित्तीय समावेशीकरण दर्शाउँछ। यसमा सुधारका लागि वित्तीय साक्षरता तथा 
-                  सेवा विस्तारका कार्यक्रमहरू आवश्यक छन्।
+                  <strong>व्याख्या:</strong>{" "}
+                  {localizeNumber(
+                    (financialInclusionIndex * 100).toFixed(1),
+                    "ne",
+                  )}
+                  अंकले {inclusionLevel} स्तरको वित्तीय समावेशीकरण दर्शाउँछ।
+                  यसमा सुधारका लागि वित्तीय साक्षरता तथा सेवा विस्तारका
+                  कार्यक्रमहरू आवश्यक छन्।
                 </span>
               </p>
             </div>
           </div>
 
           <div className="bg-card p-4 rounded border">
-            <h4 className="font-medium mb-4">वडागत वित्तीय समावेशीकरण विश्लेषण</h4>
+            <h4 className="font-medium mb-4">
+              वडागत वित्तीय समावेशीकरण विश्लेषण
+            </h4>
 
             <div>
-              <h5 className="text-sm font-medium">खजुरा गाउँपालिका वित्तीय समावेशीकरणको स्थिति</h5>
+              <h5 className="text-sm font-medium">
+                परिवर्तन गाउँपालिका वित्तीय समावेशीकरणको स्थिति
+              </h5>
               <div className="mt-2 space-y-3">
                 {/* Account presence percentage */}
                 <div>
@@ -398,9 +482,11 @@ export default function FinancialAccountsAnalysisSection({
                 <div>
                   <div className="flex justify-between text-sm">
                     <span>
-                      <span 
-                        className="inline-block w-2 h-2 rounded-full mr-2" 
-                        style={{ backgroundColor: FINANCIAL_ACCOUNT_TYPES.BANK.color }}
+                      <span
+                        className="inline-block w-2 h-2 rounded-full mr-2"
+                        style={{
+                          backgroundColor: FINANCIAL_ACCOUNT_TYPES.BANK.color,
+                        }}
                       ></span>
                       बैङ्क खाता भएका
                     </span>
@@ -423,9 +509,11 @@ export default function FinancialAccountsAnalysisSection({
                 <div>
                   <div className="flex justify-between text-sm">
                     <span>
-                      <span 
-                        className="inline-block w-2 h-2 rounded-full mr-2" 
-                        style={{ backgroundColor: FINANCIAL_ACCOUNT_TYPES.NONE.color }}
+                      <span
+                        className="inline-block w-2 h-2 rounded-full mr-2"
+                        style={{
+                          backgroundColor: FINANCIAL_ACCOUNT_TYPES.NONE.color,
+                        }}
                       ></span>
                       खाता नभएका
                     </span>
@@ -438,7 +526,7 @@ export default function FinancialAccountsAnalysisSection({
                       className="h-full rounded-full"
                       style={{
                         width: `${noAccountPercentage}%`,
-                        backgroundColor: FINANCIAL_ACCOUNT_TYPES.NONE.color, 
+                        backgroundColor: FINANCIAL_ACCOUNT_TYPES.NONE.color,
                       }}
                     ></div>
                   </div>

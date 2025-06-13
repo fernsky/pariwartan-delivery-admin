@@ -44,11 +44,11 @@ export default function ImportedProductsSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Imported Products Catalog of Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Imported Products Catalog of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Comprehensive catalog of ${totalProducts.toLocaleString()} products imported into Khajura Rural Municipality, categorized by type and usage.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Import catalog",
         "Economic profile",
         "Imported goods",

@@ -48,34 +48,40 @@ export default function IrrigatedAreaSEO({
     const highestIrrigationCoverageWard = [...wardData]
       .filter((ward) => ward.totalArea > 0)
       .sort(
-        (a, b) =>
-          b.irrigatedArea / b.totalArea - a.irrigatedArea / a.totalArea
+        (a, b) => b.irrigatedArea / b.totalArea - a.irrigatedArea / a.totalArea,
       )[0];
 
     // Find ward with lowest irrigation coverage (percentage)
     const lowestIrrigationCoverageWard = [...wardData]
       .filter((ward) => ward.totalArea > 0)
       .sort(
-        (a, b) =>
-          a.irrigatedArea / a.totalArea - b.irrigatedArea / a.totalArea
+        (a, b) => a.irrigatedArea / a.totalArea - b.irrigatedArea / a.totalArea,
       )[0];
 
     const highestCoveragePercentage = highestIrrigationCoverageWard
-      ? ((highestIrrigationCoverageWard.irrigatedArea / highestIrrigationCoverageWard.totalArea) * 100).toFixed(2)
+      ? (
+          (highestIrrigationCoverageWard.irrigatedArea /
+            highestIrrigationCoverageWard.totalArea) *
+          100
+        ).toFixed(2)
       : "0";
-    
+
     const lowestCoveragePercentage = lowestIrrigationCoverageWard
-      ? ((lowestIrrigationCoverageWard.irrigatedArea / lowestIrrigationCoverageWard.totalArea) * 100).toFixed(2)
+      ? (
+          (lowestIrrigationCoverageWard.irrigatedArea /
+            lowestIrrigationCoverageWard.totalArea) *
+          100
+        ).toFixed(2)
       : "0";
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Ward-wise Irrigated Area in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Ward-wise Irrigated Area in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Ward-wise irrigated and unirrigated area statistics of Khajura Rural Municipality with a total area of ${totalArea.toFixed(2)} hectares. ${irrigatedPercentage}% (${totalIrrigatedArea.toFixed(2)} hectares) of the total area is irrigated. Ward ${mostIrrigatedWard?.wardNumber || ""} has the highest irrigated area with ${mostIrrigatedWard?.irrigatedArea.toFixed(2) || "0"} hectares. Ward ${highestIrrigationCoverageWard?.wardNumber || ""} has the highest irrigation coverage percentage (${highestCoveragePercentage}%) and Ward ${lowestIrrigationCoverageWard?.wardNumber || ""} has the lowest (${lowestCoveragePercentage}%).`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Ward-wise irrigated area",
         "Irrigation coverage by ward",
         "Agricultural irrigation statistics",

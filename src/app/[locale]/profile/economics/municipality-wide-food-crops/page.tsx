@@ -63,7 +63,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const foodCropData =
       await api.profile.economics.municipalityWideFoodCrops.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalProduction = foodCropData.reduce(
@@ -103,14 +103,14 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // Create rich keywords with actual data
     const keywordsNP = [
-      "खजुरा गाउँपालिका खाद्यान्न बाली",
-      "खजुरा खाद्यान्न उत्पादन",
+      "परिवर्तन गाउँपालिका खाद्यान्न बाली",
+      "परिवर्तन खाद्यान्न उत्पादन",
       "पालिका स्तरीय खाद्यान्न तथ्याङ्क",
-      "धान उत्पादन खजुरा",
+      "धान उत्पादन परिवर्तन",
       "मकै उत्पादन तथ्याङ्क",
       "गहुँ उत्पादन",
-      `खजुरा खाद्यान्न बिक्री ${localizeNumber(totalSales.toFixed(2), "ne")} टन`,
-      `खजुरा कृषि आय ${localizeNumber((totalRevenue / 1000000).toFixed(2), "ne")} मिलियन`,
+      `परिवर्तन खाद्यान्न बिक्री ${localizeNumber(totalSales.toFixed(2), "ne")} टन`,
+      `परिवर्तन कृषि आय ${localizeNumber((totalRevenue / 1000000).toFixed(2), "ne")} मिलियन`,
     ];
 
     const keywordsEN = [
@@ -125,7 +125,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data
-    const descriptionNP = `खजुरा गाउँपालिकाको खाद्यान्न बाली उत्पादन र बिक्री विश्लेषण। कुल ${localizeNumber(totalProduction.toFixed(2), "ne")} मेट्रिक टन खाद्यान्न उत्पादन मध्ये ${localizeNumber(mostProducedPercentage, "ne")}% (${localizeNumber(mostProducedAmount.toFixed(2), "ne")} टन) ${FOOD_CROP_TYPES[mostProducedCrop] || mostProducedCrop} रहेको छ। पालिका स्तरीय खाद्यान्न बालीको विस्तृत विश्लेषण।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको खाद्यान्न बाली उत्पादन र बिक्री विश्लेषण। कुल ${localizeNumber(totalProduction.toFixed(2), "ne")} मेट्रिक टन खाद्यान्न उत्पादन मध्ये ${localizeNumber(mostProducedPercentage, "ne")}% (${localizeNumber(mostProducedAmount.toFixed(2), "ne")} टन) ${FOOD_CROP_TYPES[mostProducedCrop] || mostProducedCrop} रहेको छ। पालिका स्तरीय खाद्यान्न बालीको विस्तृत विश्लेषण।`;
 
     const descriptionEN = `Analysis of food crop production and sales in Khajura Rural Municipality. Out of total ${totalProduction.toFixed(2)} metric tonnes of food crop production, ${mostProducedPercentage}% (${mostProducedAmount.toFixed(2)} tonnes) is ${FOOD_CROP_TYPES_EN[mostProducedCrop] || mostProducedCrop}. Detailed analysis of municipality-wide food crop patterns.`;
 
@@ -158,7 +158,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fallback metadata if data fetching fails
     return {
       title:
-        "खाद्यान्न बालीको प्रकार अनुसार उत्पादन र बिक्री | खजुरा गाउँपालिका डिजिटल प्रोफाइल",
+        "खाद्यान्न बालीको प्रकार अनुसार उत्पादन र बिक्री | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
       description:
         "पालिका स्तरीय खाद्यान्न बालीको प्रकार अनुसारको उत्पादन, बिक्री र आम्दानीको विश्लेषण।",
     };
@@ -332,7 +332,7 @@ export default async function MunicipalityWideFoodCropsPage() {
               src="/images/food-crops.svg"
               width={1200}
               height={400}
-              alt="खाद्यान्न बालीको प्रकार अनुसार उत्पादन र बिक्री - खजुरा गाउँपालिका (Food Crops by Production and Sales - Khajura Rural Municipality)"
+              alt="खाद्यान्न बालीको प्रकार अनुसार उत्पादन र बिक्री - परिवर्तन गाउँपालिका (Food Crops by Production and Sales - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -340,20 +340,21 @@ export default async function MunicipalityWideFoodCropsPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा खाद्यान्न बालीको प्रकार अनुसार उत्पादन र बिक्री
+              परिवर्तन गाउँपालिकामा खाद्यान्न बालीको प्रकार अनुसार उत्पादन र
+              बिक्री
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              खाद्यान्न बाली खजुरा गाउँपालिकाको प्रमुख कृषि उत्पादनहरू मध्ये एक
-              हो। यसका प्रमुख बालीहरूमा धान, मकै, गहुँ, कोदो, जौ, फापर जस्ता
+              खाद्यान्न बाली परिवर्तन गाउँपालिकाको प्रमुख कृषि उत्पादनहरू मध्ये
+              एक हो। यसका प्रमुख बालीहरूमा धान, मकै, गहुँ, कोदो, जौ, फापर जस्ता
               अन्नबाली पर्दछन्। यी खाद्यान्नहरूले पालिकाको खाद्य सुरक्षा र
               आर्थिक स्थितिमा महत्त्वपूर्ण भूमिका खेल्दछन्।
             </p>
             <p>
-              खजुरा गाउँपालिकाको खाद्यान्न बाली सम्बन्धी तथ्याङ्क अनुसार, यस
+              परिवर्तन गाउँपालिकाको खाद्यान्न बाली सम्बन्धी तथ्याङ्क अनुसार, यस
               क्षेत्रमा वार्षिक कुल{" "}
               {localizeNumber(totalProduction.toFixed(2), "ne")} मेट्रिक टन
               खाद्यान्न उत्पादन हुन्छ, जसमध्ये सबैभन्दा बढी{" "}
@@ -380,7 +381,7 @@ export default async function MunicipalityWideFoodCropsPage() {
               प्रमुख खाद्यान्न बालीहरू
             </h2>
             <p>
-              खजुरा गाउँपालिकामा उत्पादित प्रमुख खाद्यान्न बालीहरू र तिनको
+              परिवर्तन गाउँपालिकामा उत्पादित प्रमुख खाद्यान्न बालीहरू र तिनको
               उत्पादन परिमाण निम्नानुसार रहेको छ:
             </p>
 
@@ -399,9 +400,9 @@ export default async function MunicipalityWideFoodCropsPage() {
             </ul>
 
             <p>
-              खाद्यान्न बालीको विश्लेषण गर्दा, खजुरा गाउँपालिकामा उत्पादित कुल
-              खाद्यान्न मध्ये {localizeNumber(soldPercentage, "ne")}% बिक्रीका
-              लागि बजारमा जान्छ, जबकि{" "}
+              खाद्यान्न बालीको विश्लेषण गर्दा, परिवर्तन गाउँपालिकामा उत्पादित
+              कुल खाद्यान्न मध्ये {localizeNumber(soldPercentage, "ne")}%
+              बिक्रीका लागि बजारमा जान्छ, जबकि{" "}
               {localizeNumber(selfConsumptionPercentage, "ne")}% घरायसी उपभोगमा
               खर्च हुन्छ। यसबाट वार्षिक रु.{" "}
               {localizeNumber((totalRevenue / 1000000).toFixed(2), "ne")} मिलियन
@@ -443,7 +444,7 @@ export default async function MunicipalityWideFoodCropsPage() {
               खाद्य सुरक्षा र चुनौतीहरू
             </h2>
             <p>
-              खजुरा गाउँपालिकामा खाद्यान्न बालीको उत्पादनले खाद्य सुरक्षामा
+              परिवर्तन गाउँपालिकामा खाद्यान्न बालीको उत्पादनले खाद्य सुरक्षामा
               महत्त्वपूर्ण भूमिका खेल्दछ। कुल{" "}
               {localizeNumber(totalProduction.toFixed(2), "ne")} मेट्रिक टन
               खाद्यान्न उत्पादन मध्ये{" "}
@@ -453,10 +454,10 @@ export default async function MunicipalityWideFoodCropsPage() {
             </p>
 
             <p>
-              खजुरा गाउँपालिकाको प्रमुख खाद्यान्न बालीको उत्पादकत्व र बजारीकरणको
-              विश्लेषण गर्दा {overallSummary[0]?.typeName || ""} सबैभन्दा
-              प्रभावकारी खाद्यान्न बाली रहेको देखिन्छ, जसले कुल खाद्यान्न
-              उत्पादनको{" "}
+              परिवर्तन गाउँपालिकाको प्रमुख खाद्यान्न बालीको उत्पादकत्व र
+              बजारीकरणको विश्लेषण गर्दा {overallSummary[0]?.typeName || ""}{" "}
+              सबैभन्दा प्रभावकारी खाद्यान्न बाली रहेको देखिन्छ, जसले कुल
+              खाद्यान्न उत्पादनको{" "}
               {localizeNumber(
                 totalProduction > 0
                   ? (
@@ -491,7 +492,7 @@ export default async function MunicipalityWideFoodCropsPage() {
             </h2>
 
             <p>
-              खजुरा गाउँपालिकाको खाद्यान्न बालीको अवस्थाको विश्लेषणबाट निम्न
+              परिवर्तन गाउँपालिकाको खाद्यान्न बालीको अवस्थाको विश्लेषणबाट निम्न
               निष्कर्ष र सिफारिसहरू गर्न सकिन्छ:
             </p>
 
@@ -541,10 +542,10 @@ export default async function MunicipalityWideFoodCropsPage() {
             </div>
 
             <p className="mt-6">
-              खजुरा गाउँपालिकामा खाद्यान्न बालीको वर्तमान अवस्थाले अझै पनि कृषि
-              क्षेत्रमा सुधार गर्नुपर्ने आवश्यकता देखाउँछ। उत्पादकत्व वृद्धि,
-              मूल्य श्रृंखला विकास, व्यावसायीकरण र आधुनिकीकरण मार्फत खाद्य
-              सुरक्षा र आर्थिक समृद्धि हासिल गर्न सकिनेछ।
+              परिवर्तन गाउँपालिकामा खाद्यान्न बालीको वर्तमान अवस्थाले अझै पनि
+              कृषि क्षेत्रमा सुधार गर्नुपर्ने आवश्यकता देखाउँछ। उत्पादकत्व
+              वृद्धि, मूल्य श्रृंखला विकास, व्यावसायीकरण र आधुनिकीकरण मार्फत
+              खाद्य सुरक्षा र आर्थिक समृद्धि हासिल गर्न सकिनेछ।
             </p>
           </div>
         </section>

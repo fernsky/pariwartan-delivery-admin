@@ -39,11 +39,11 @@ export default function OccupationSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Occupational Distribution of Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Occupational Distribution of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Occupational distribution data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total population of ${totalPopulation.toLocaleString()} people.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Occupational distribution",
         "Employment statistics",
         "Ward-wise occupation data",

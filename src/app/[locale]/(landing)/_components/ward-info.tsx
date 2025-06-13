@@ -39,7 +39,7 @@ const WardInfo: React.FC<WardInfoProps> = ({
   wardData,
   isLoading,
   lng,
-  municipalityName = "खजुरा गाउँपालिका",
+  municipalityName = "परिवर्तन गाउँपालिका",
 }) => {
   // State to track selected ward for mobile view
   const [selectedWard, setSelectedWard] = useState<number | null>(null);
@@ -192,8 +192,6 @@ const WardInfo: React.FC<WardInfoProps> = ({
         }}
       />
 
-     
-
       <div className="py-16 relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Compact Header */}
         <motion.div
@@ -313,15 +311,17 @@ const WardInfo: React.FC<WardInfoProps> = ({
                         </td>
                       </motion.tr>
                     ))}
-                    
+
                     {/* Totals Row */}
-                    <motion.tr 
+                    <motion.tr
                       variants={itemVariants}
                       className="bg-[#123772]/10 font-medium"
                     >
                       <td className="py-3 px-4 border-t border-[#123772]/20">
                         <div className="flex items-center gap-2">
-                          <div className="text-[#0b1f42] font-semibold">जम्मा</div>
+                          <div className="text-[#0b1f42] font-semibold">
+                            जम्मा
+                          </div>
                         </div>
                       </td>
                       <td className="py-3 px-4 border-t border-[#123772]/20 text-[#0b1f42] font-semibold">
@@ -337,16 +337,10 @@ const WardInfo: React.FC<WardInfoProps> = ({
                         )}
                       </td>
                       <td className="py-3 px-4 border-t border-[#123772]/20 text-[#0b1f42] font-semibold">
-                        {localizeNumber(
-                          wardTotals.totalArea.toFixed(2),
-                          "ne",
-                        )}
+                        {localizeNumber(wardTotals.totalArea.toFixed(2), "ne")}
                       </td>
                       <td className="py-3 px-4 border-t border-[#123772]/20 text-[#0b1f42] font-semibold">
-                        {localizeNumber(
-                          wardTotals.avgDensity.toFixed(2),
-                          "ne",
-                        )}
+                        {localizeNumber(wardTotals.avgDensity.toFixed(2), "ne")}
                       </td>
                       <td className="py-3 px-4 border-t border-[#123772]/20 text-[#0b1f42] font-semibold">
                         {localizeNumber(

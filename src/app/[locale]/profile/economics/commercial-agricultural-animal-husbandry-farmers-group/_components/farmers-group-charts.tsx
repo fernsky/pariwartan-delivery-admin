@@ -4,18 +4,18 @@ import BusinessTypePieChart from "./charts/business-type-pie-chart";
 import WardDistributionBarChart from "./charts/ward-distribution-bar-chart";
 import PopularBusinessByWardChart from "./charts/popular-business-by-ward-chart";
 import BusinessTrendChart from "./charts/business-trend-chart";
-import { 
-  BarChart3, 
-  PieChart, 
-  TrendingUp, 
-  Users, 
-  Home, 
-  Building, 
-  Target, 
+import {
+  BarChart3,
+  PieChart,
+  TrendingUp,
+  Users,
+  Home,
+  Building,
+  Target,
   Award,
   Map,
   BarChart,
-  LineChart 
+  LineChart,
 } from "lucide-react";
 
 interface FarmersGroupChartsProps {
@@ -70,7 +70,7 @@ export default function FarmersGroupCharts({
 }: FarmersGroupChartsProps) {
   // Format data for pie chart (business type distribution)
   const businessPieChartData = businessSummary
-    .filter(item => item.count > 0)
+    .filter((item) => item.count > 0)
     .map((item) => ({
       name: item.typeName,
       value: item.count,
@@ -79,7 +79,7 @@ export default function FarmersGroupCharts({
 
   // Format data for bar chart (ward distribution)
   const wardBarChartData = farmsByWard
-    .filter(ward => ward.farmCount > 0)
+    .filter((ward) => ward.farmCount > 0)
     .map((ward) => ({
       name: `वडा ${localizeNumber(ward.wardNumber.toString(), "ne")}`,
       value: ward.farmCount,
@@ -90,25 +90,28 @@ export default function FarmersGroupCharts({
   // Simulate historical trend data (for demonstration)
   const generateHistoricalData = () => {
     // Get top 4 business types
-    const topBusinessTypes = businessSummary.slice(0, 4).map(b => b.type);
-    
+    const topBusinessTypes = businessSummary.slice(0, 4).map((b) => b.type);
+
     // Years (2075-2080)
     const years = ["२०७५", "२०७६", "२०७७", "२०७८", "२०७९", "२०८०"];
-    
+
     // Generate trend data
     return years.map((year, index) => {
       // Base data point
       const dataPoint: any = { year };
-      
+
       // Add counts for each business type
       // This simulates growth over the years
-      topBusinessTypes.forEach(type => {
-        const currentCount = businessSummary.find(b => b.type === type)?.count || 0;
+      topBusinessTypes.forEach((type) => {
+        const currentCount =
+          businessSummary.find((b) => b.type === type)?.count || 0;
         // Create a growth pattern (fewer in past years)
-        const growthFactor = 0.6 + (0.4 * (index / (years.length - 1)));
-        dataPoint[type] = Math.round(currentCount * growthFactor * (0.9 + Math.random() * 0.2));
+        const growthFactor = 0.6 + 0.4 * (index / (years.length - 1));
+        dataPoint[type] = Math.round(
+          currentCount * growthFactor * (0.9 + Math.random() * 0.2),
+        );
       });
-      
+
       return dataPoint;
     });
   };
@@ -124,7 +127,8 @@ export default function FarmersGroupCharts({
             व्यवसायको प्रकार अनुसारको वितरण
           </h2>
           <p className="text-muted-foreground">
-            कृषि तथा पशुपालन व्यवसायको प्रकार अनुसार समूहहरूको वितरण र मुख्य तथ्यहरू
+            कृषि तथा पशुपालन व्यवसायको प्रकार अनुसार समूहहरूको वितरण र मुख्य
+            तथ्यहरू
           </p>
         </div>
 
@@ -156,9 +160,7 @@ export default function FarmersGroupCharts({
                   <li className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
                     <Users className="w-5 h-5 text-blue-600 mt-0.5" />
                     <div>
-                      <span className="font-medium">
-                        कुल कृषि समूहहरू
-                      </span>
+                      <span className="font-medium">कुल कृषि समूहहरू</span>
                       <div className="text-xl font-bold text-blue-600">
                         {localizeNumber(totalGroups.toString(), "ne")}
                       </div>
@@ -172,10 +174,11 @@ export default function FarmersGroupCharts({
                           सबैभन्दा धेरै व्यवसाय
                         </span>
                         <div className="text-lg font-bold text-amber-600">
-                          {businessSummary[0].typeName} {businessSummary[0].icon} (
+                          {businessSummary[0].typeName}{" "}
+                          {businessSummary[0].icon} (
                           {localizeNumber(
                             businessSummary[0].percentage.toFixed(1),
-                            "ne"
+                            "ne",
                           )}
                           %)
                         </div>
@@ -187,7 +190,8 @@ export default function FarmersGroupCharts({
                     <div>
                       <span className="font-medium">सक्रिय वडाहरू</span>
                       <div className="text-lg font-bold text-green-600">
-                        {localizeNumber(statistics.totalWards.toString(), "ne")}/९
+                        {localizeNumber(statistics.totalWards.toString(), "ne")}
+                        /९
                       </div>
                     </div>
                   </li>
@@ -196,7 +200,11 @@ export default function FarmersGroupCharts({
                     <div>
                       <span className="font-medium">औसत प्रति वडा</span>
                       <div className="text-lg font-bold text-purple-600">
-                        {localizeNumber(statistics.avgGroupsPerWard.toFixed(1), "ne")} समूह
+                        {localizeNumber(
+                          statistics.avgGroupsPerWard.toFixed(1),
+                          "ne",
+                        )}{" "}
+                        समूह
                       </div>
                     </div>
                   </li>
@@ -226,9 +234,7 @@ export default function FarmersGroupCharts({
                 वडा अनुसार कृषि समूहहरूको वितरण
               </h3>
               <div className="h-[350px]">
-                <WardDistributionBarChart
-                  data={wardBarChartData}
-                />
+                <WardDistributionBarChart data={wardBarChartData} />
               </div>
             </CardContent>
           </Card>
@@ -241,7 +247,7 @@ export default function FarmersGroupCharts({
               </h3>
               <div className="h-[350px]">
                 <PopularBusinessByWardChart
-                  data={popularBusinessByWard.filter(item => item.count > 0)}
+                  data={popularBusinessByWard.filter((item) => item.count > 0)}
                   BUSINESS_COLORS={BUSINESS_COLORS}
                 />
               </div>
@@ -258,10 +264,18 @@ export default function FarmersGroupCharts({
                   सबैभन्दा बढी समूह भएको वडा
                 </h3>
                 <p className="text-3xl font-bold text-blue-600">
-                  वडा नं. {localizeNumber(statistics.wardWithMostGroups.toString(), "ne")}
+                  वडा नं.{" "}
+                  {localizeNumber(
+                    statistics.wardWithMostGroups.toString(),
+                    "ne",
+                  )}
                 </p>
                 <p className="text-sm mt-2">
-                  {localizeNumber(statistics.maximumGroupsInAWard.toString(), "ne")} समूहहरू
+                  {localizeNumber(
+                    statistics.maximumGroupsInAWard.toString(),
+                    "ne",
+                  )}{" "}
+                  समूहहरू
                 </p>
               </div>
             </CardContent>
@@ -275,8 +289,15 @@ export default function FarmersGroupCharts({
                   वडा १-९ समूह अनुपात
                 </h3>
                 <p className="text-3xl font-bold text-green-600">
-                  {localizeNumber(farmsByWard.filter(ward => ward.farmCount > 0).length, "ne")}:
-                  {localizeNumber(farmsByWard.filter(ward => ward.farmCount === 0).length, "ne")}
+                  {localizeNumber(
+                    farmsByWard.filter((ward) => ward.farmCount > 0).length,
+                    "ne",
+                  )}
+                  :
+                  {localizeNumber(
+                    farmsByWard.filter((ward) => ward.farmCount === 0).length,
+                    "ne",
+                  )}
                 </p>
                 <p className="text-sm mt-2">सक्रिय:निष्क्रिय वडा अनुपात</p>
               </div>
@@ -293,10 +314,12 @@ export default function FarmersGroupCharts({
                 <p className="text-3xl font-bold text-purple-600">
                   {localizeNumber(
                     (
-                      (statistics.maximumGroupsInAWard / statistics.avgGroupsPerWard).toFixed(1)
-                    ),
-                    "ne"
-                  )}x
+                      statistics.maximumGroupsInAWard /
+                      statistics.avgGroupsPerWard
+                    ).toFixed(1),
+                    "ne",
+                  )}
+                  x
                 </p>
                 <p className="text-sm mt-2">अधिकतम/औसत अनुपात</p>
               </div>
@@ -325,7 +348,7 @@ export default function FarmersGroupCharts({
             <div className="h-[400px]">
               <BusinessTrendChart
                 data={trendData}
-                businessTypes={businessSummary.slice(0, 4).map(b => b.type)}
+                businessTypes={businessSummary.slice(0, 4).map((b) => b.type)}
                 BUSINESS_TYPES={BUSINESS_TYPES}
                 BUSINESS_COLORS={BUSINESS_COLORS}
               />
@@ -341,17 +364,17 @@ export default function FarmersGroupCharts({
             </h4>
             <div className="prose prose-sm">
               <p>
-                पछिल्ला वर्षहरूमा खजुरा गाउँपालिकामा व्यावसायिक कृषि तथा पशुपालन
-                समूहहरूको संख्यामा क्रमिक वृद्धि भएको देखिन्छ। विशेषगरी{" "}
+                पछिल्ला वर्षहरूमा परिवर्तन गाउँपालिकामा व्यावसायिक कृषि तथा
+                पशुपालन समूहहरूको संख्यामा क्रमिक वृद्धि भएको देखिन्छ। विशेषगरी{" "}
                 {businessSummary[0]?.typeName || ""} र{" "}
-                {businessSummary[1]?.typeName || ""} जस्ता व्यवसायहरूमा उल्लेखनीय
-                वृद्धि देखिएको छ।
+                {businessSummary[1]?.typeName || ""} जस्ता व्यवसायहरूमा
+                उल्लेखनीय वृद्धि देखिएको छ।
               </p>
               <p className="mt-2">
                 यो प्रवृत्तिले स्थानीय कृषकहरूको व्यावसायिक कृषि प्रतिको बढ्दो
                 आकर्षण र पालिकाले लिएको कृषि प्रवर्द्धन नीतिको सफलता दर्शाउँछ।
-                भविष्यमा यस क्षेत्रमा थप लगानी र प्रविधि हस्तान्तरण गर्न सके कृषि
-                क्षेत्रको योगदान थप बढ्ने देखिन्छ।
+                भविष्यमा यस क्षेत्रमा थप लगानी र प्रविधि हस्तान्तरण गर्न सके
+                कृषि क्षेत्रको योगदान थप बढ्ने देखिन्छ।
               </p>
             </div>
           </CardContent>

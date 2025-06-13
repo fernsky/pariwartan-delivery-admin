@@ -149,9 +149,7 @@ export default function SpiceCharts({
                   <li className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
                     <BarChart3 className="w-5 h-5 text-blue-600 mt-0.5" />
                     <div>
-                      <span className="font-medium">
-                        कुल मसलाबाली उत्पादन
-                      </span>
+                      <span className="font-medium">कुल मसलाबाली उत्पादन</span>
                       <div className="text-xl font-bold text-blue-600">
                         {localizeNumber(totalProduction.toFixed(2), "ne")}{" "}
                         मेट्रिक टन
@@ -487,14 +485,14 @@ export default function SpiceCharts({
             <div className="prose prose-sm">
               <p>
                 पछिल्ला वर्षहरूमा लसुन उत्पादनमा क्रमिक वृद्धि भएको देखिन्छ。
-                २०७८ मा {localizeNumber("15.3", "ne")} मेट्रिक टन उत्पादन
-                भएकोमा २०८० मा बढेर {localizeNumber("17.63", "ne")} मेट्रिक टन
-                पुगेको छ。
+                २०७८ मा {localizeNumber("15.3", "ne")} मेट्रिक टन उत्पादन भएकोमा
+                २०८० मा बढेर {localizeNumber("17.63", "ne")} मेट्रिक टन पुगेको
+                छ。
               </p>
               <p className="mt-2">
                 त्यसैगरी, खुर्सानी र धनिया उत्पादनमा पनि निरन्तर वृद्धि भएको
-                देखिन्छ। यो तथ्याङ्कले खजुरा गाउँपालिकामा मसलाबालीको क्षेत्रमा
-                सकारात्मक विकास भइरहेको संकेत गर्दछ。
+                देखिन्छ। यो तथ्याङ्कले परिवर्तन गाउँपालिकामा मसलाबालीको
+                क्षेत्रमा सकारात्मक विकास भइरहेको संकेत गर्दछ。
               </p>
             </div>
           </CardContent>

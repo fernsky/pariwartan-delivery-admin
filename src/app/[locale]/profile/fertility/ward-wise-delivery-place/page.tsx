@@ -49,7 +49,7 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     const deliveryPlaceData =
       await api.profile.fertility.wardWiseDeliveryPlaces.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Group by ward number
     const wardGroups = deliveryPlaceData.reduce((acc: any, curr: any) => {
@@ -66,8 +66,10 @@ export async function generateMetadata(): Promise<Metadata> {
     Object.values(wardGroups).forEach((wardData: any) => {
       wardData.forEach((item: any) => {
         totalDeliveries += item.population;
-        if (item.deliveryPlace === "GOVERNMENTAL_HEALTH_INSTITUTION" || 
-            item.deliveryPlace === "PRIVATE_HEALTH_INSTITUTION") {
+        if (
+          item.deliveryPlace === "GOVERNMENTAL_HEALTH_INSTITUTION" ||
+          item.deliveryPlace === "PRIVATE_HEALTH_INSTITUTION"
+        ) {
           institutionalDeliveries += item.population;
         }
         if (item.deliveryPlace === "HOUSE") {
@@ -77,12 +79,17 @@ export async function generateMetadata(): Promise<Metadata> {
     });
 
     // Calculate percentages for SEO description
-    const institutionalPercentage = ((institutionalDeliveries / totalDeliveries) * 100).toFixed(2);
-    const homePercentage = ((homeDeliveries / totalDeliveries) * 100).toFixed(2);
+    const institutionalPercentage = (
+      (institutionalDeliveries / totalDeliveries) *
+      100
+    ).toFixed(2);
+    const homePercentage = ((homeDeliveries / totalDeliveries) * 100).toFixed(
+      2,
+    );
 
     // Create rich keywords
     const keywordsNP = [
-      "खजुरा गाउँपालिका प्रसूती स्थान",
+      "परिवर्तन गाउँपालिका प्रसूती स्थान",
       "संस्थागत प्रसूती",
       "वडागत प्रसूती स्थान तथ्याङ्क",
       "घरमा हुने प्रसूती दर",
@@ -100,7 +107,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create description
-    const descriptionNP = `खजुरा गाउँपालिकामा प्रसूती स्थान सम्बन्धी विश्लेषण। कुल ${localizeNumber(totalDeliveries.toLocaleString(), "ne")} प्रसूती मध्ये ${localizeNumber(institutionalPercentage, "ne")}% (${localizeNumber(institutionalDeliveries.toLocaleString(), "ne")}) संस्थागत प्रसूती र ${localizeNumber(homePercentage, "ne")}% (${localizeNumber(homeDeliveries.toLocaleString(), "ne")}) घरमा भएका प्रसूती रहेका छन्।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकामा प्रसूती स्थान सम्बन्धी विश्लेषण। कुल ${localizeNumber(totalDeliveries.toLocaleString(), "ne")} प्रसूती मध्ये ${localizeNumber(institutionalPercentage, "ne")}% (${localizeNumber(institutionalDeliveries.toLocaleString(), "ne")}) संस्थागत प्रसूती र ${localizeNumber(homePercentage, "ne")}% (${localizeNumber(homeDeliveries.toLocaleString(), "ne")}) घरमा भएका प्रसूती रहेका छन्।`;
 
     const descriptionEN = `Analysis of childbirth locations in Khajura Rural Municipality. Out of a total of ${totalDeliveries.toLocaleString()} deliveries, ${institutionalPercentage}% (${institutionalDeliveries.toLocaleString()}) were institutional deliveries and ${homePercentage}% (${homeDeliveries.toLocaleString()}) were home deliveries.`;
 
@@ -132,7 +139,7 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "प्रसूती स्थानको अवस्था | खजुरा गाउँपालिका डिजिटल प्रोफाइल",
+      title: "प्रसूती स्थानको अवस्था | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
       description: "वडा अनुसार प्रसूती स्थानको अवस्था र विश्लेषण।",
     };
   }
@@ -140,10 +147,26 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const toc = [
   { level: 2, text: "परिचय", slug: "introduction" },
-  { level: 2, text: "प्रसूती स्थानको वितरण", slug: "distribution-of-delivery-places" },
-  { level: 2, text: "वडा अनुसार प्रसूती स्थान", slug: "ward-wise-delivery-places" },
-  { level: 2, text: "प्रसूती स्थानको विश्लेषण", slug: "delivery-places-analysis" },
-  { level: 2, text: "संस्थागत प्रसूती प्रवर्धन रणनीति", slug: "institutional-delivery-promotion-strategy" },
+  {
+    level: 2,
+    text: "प्रसूती स्थानको वितरण",
+    slug: "distribution-of-delivery-places",
+  },
+  {
+    level: 2,
+    text: "वडा अनुसार प्रसूती स्थान",
+    slug: "ward-wise-delivery-places",
+  },
+  {
+    level: 2,
+    text: "प्रसूती स्थानको विश्लेषण",
+    slug: "delivery-places-analysis",
+  },
+  {
+    level: 2,
+    text: "संस्थागत प्रसूती प्रवर्धन रणनीति",
+    slug: "institutional-delivery-promotion-strategy",
+  },
 ];
 
 export default async function WardWiseDeliveryPlacePage() {
@@ -169,7 +192,7 @@ export default async function WardWiseDeliveryPlacePage() {
 
   // Create a mapping of deliveryPlace to its human-readable name
   const placeMap: Record<string, string> = {};
-  deliveryPlaceOptions.forEach(option => {
+  deliveryPlaceOptions.forEach((option) => {
     placeMap[option.value] = option.label.split(" (")[0];
   });
 
@@ -179,14 +202,14 @@ export default async function WardWiseDeliveryPlacePage() {
     GOVERNMENTAL_HEALTH_INSTITUTION: 0,
     PRIVATE_HEALTH_INSTITUTION: 0,
     HOUSE: 0,
-    OTHER: 0
+    OTHER: 0,
   };
 
   Object.values(wardGroups).forEach((wardData: any) => {
     wardData.forEach((item: any) => {
       // Add to total deliveries
       totalDeliveries += item.population;
-      
+
       // Add to delivery category totals
       if (deliveryCategoryTotals[item.deliveryPlace] !== undefined) {
         deliveryCategoryTotals[item.deliveryPlace] += item.population;
@@ -196,70 +219,98 @@ export default async function WardWiseDeliveryPlacePage() {
 
   // Calculate percentages
   const deliveryCategoryPercentages: Record<string, number> = {};
-  Object.keys(deliveryCategoryTotals).forEach(category => {
-    deliveryCategoryPercentages[category] = parseFloat(((deliveryCategoryTotals[category] / totalDeliveries) * 100).toFixed(2));
+  Object.keys(deliveryCategoryTotals).forEach((category) => {
+    deliveryCategoryPercentages[category] = parseFloat(
+      ((deliveryCategoryTotals[category] / totalDeliveries) * 100).toFixed(2),
+    );
   });
 
   // Get unique ward numbers
-  const wardNumbers = Object.keys(wardGroups).map(Number).sort((a, b) => a - b);
+  const wardNumbers = Object.keys(wardGroups)
+    .map(Number)
+    .sort((a, b) => a - b);
 
-  // Process data for pie chart 
-  const pieChartData = Object.keys(DELIVERY_PLACE_CATEGORIES).map(categoryKey => {
-    return {
-      name: DELIVERY_PLACE_CATEGORIES[categoryKey as keyof typeof DELIVERY_PLACE_CATEGORIES].name,
-      nameEn: DELIVERY_PLACE_CATEGORIES[categoryKey as keyof typeof DELIVERY_PLACE_CATEGORIES].nameEn,
-      value: deliveryCategoryTotals[categoryKey],
-      percentage: deliveryCategoryPercentages[categoryKey].toFixed(2),
-      color: DELIVERY_PLACE_CATEGORIES[categoryKey as keyof typeof DELIVERY_PLACE_CATEGORIES].color,
-    };
-  });
+  // Process data for pie chart
+  const pieChartData = Object.keys(DELIVERY_PLACE_CATEGORIES).map(
+    (categoryKey) => {
+      return {
+        name: DELIVERY_PLACE_CATEGORIES[
+          categoryKey as keyof typeof DELIVERY_PLACE_CATEGORIES
+        ].name,
+        nameEn:
+          DELIVERY_PLACE_CATEGORIES[
+            categoryKey as keyof typeof DELIVERY_PLACE_CATEGORIES
+          ].nameEn,
+        value: deliveryCategoryTotals[categoryKey],
+        percentage: deliveryCategoryPercentages[categoryKey].toFixed(2),
+        color:
+          DELIVERY_PLACE_CATEGORIES[
+            categoryKey as keyof typeof DELIVERY_PLACE_CATEGORIES
+          ].color,
+      };
+    },
+  );
 
   // Process data for ward-wise visualization
-  const wardWiseData = wardNumbers.map((wardNumber) => {
-    const wardData = wardGroups[wardNumber];
-    
-    if (!wardData) return null;
-    
-    const totalWardDeliveries = wardData.reduce((sum: number, item: any) => sum + item.population, 0);
-    
-    // Calculate ward-level totals for each delivery place category
-    const wardDeliveryCategories: Record<string, number> = {};
-    Object.keys(DELIVERY_PLACE_CATEGORIES).forEach(categoryKey => {
-      const category = DELIVERY_PLACE_CATEGORIES[categoryKey as keyof typeof DELIVERY_PLACE_CATEGORIES];
-      const categoryTotal = wardData
-        .filter((item: any) => item.deliveryPlace === categoryKey)
-        .reduce((sum: number, item: any) => sum + item.population, 0);
-      
-      wardDeliveryCategories[category.name] = categoryTotal;
-    });
-    
-    return {
-      ward: `वडा ${wardNumber}`,
-      wardNumber,
-      ...wardDeliveryCategories,
-      total: totalWardDeliveries,
-    };
-  }).filter(Boolean);
+  const wardWiseData = wardNumbers
+    .map((wardNumber) => {
+      const wardData = wardGroups[wardNumber];
+
+      if (!wardData) return null;
+
+      const totalWardDeliveries = wardData.reduce(
+        (sum: number, item: any) => sum + item.population,
+        0,
+      );
+
+      // Calculate ward-level totals for each delivery place category
+      const wardDeliveryCategories: Record<string, number> = {};
+      Object.keys(DELIVERY_PLACE_CATEGORIES).forEach((categoryKey) => {
+        const category =
+          DELIVERY_PLACE_CATEGORIES[
+            categoryKey as keyof typeof DELIVERY_PLACE_CATEGORIES
+          ];
+        const categoryTotal = wardData
+          .filter((item: any) => item.deliveryPlace === categoryKey)
+          .reduce((sum: number, item: any) => sum + item.population, 0);
+
+        wardDeliveryCategories[category.name] = categoryTotal;
+      });
+
+      return {
+        ward: `वडा ${wardNumber}`,
+        wardNumber,
+        ...wardDeliveryCategories,
+        total: totalWardDeliveries,
+      };
+    })
+    .filter(Boolean);
 
   // Calculate institutional delivery percentage (gov + private) for each ward
   const wardInstitutionalPercentages = wardWiseData.map((ward: any) => {
-    const institutionalDeliveries = 
-      (ward[DELIVERY_PLACE_CATEGORIES.GOVERNMENTAL_HEALTH_INSTITUTION.name] || 0) + 
+    const institutionalDeliveries =
+      (ward[DELIVERY_PLACE_CATEGORIES.GOVERNMENTAL_HEALTH_INSTITUTION.name] ||
+        0) +
       (ward[DELIVERY_PLACE_CATEGORIES.PRIVATE_HEALTH_INSTITUTION.name] || 0);
-    const institutionalPercentage = (institutionalDeliveries / ward.total) * 100;
+    const institutionalPercentage =
+      (institutionalDeliveries / ward.total) * 100;
     return {
       wardNumber: ward.wardNumber,
-      percentage: institutionalPercentage
+      percentage: institutionalPercentage,
     };
   });
-  
-  const bestWard = [...wardInstitutionalPercentages].sort((a, b) => b.percentage - a.percentage)[0];
-  const worstWard = [...wardInstitutionalPercentages].sort((a, b) => a.percentage - b.percentage)[0];
+
+  const bestWard = [...wardInstitutionalPercentages].sort(
+    (a, b) => b.percentage - a.percentage,
+  )[0];
+  const worstWard = [...wardInstitutionalPercentages].sort(
+    (a, b) => a.percentage - b.percentage,
+  )[0];
 
   // Calculate institutional delivery index (0-100, higher is better)
-  const institutionalDeliveryIndex = 
-    (deliveryCategoryPercentages.GOVERNMENTAL_HEALTH_INSTITUTION) + 
-    (deliveryCategoryPercentages.PRIVATE_HEALTH_INSTITUTION);
+  const institutionalDeliveryIndex =
+    deliveryCategoryPercentages.GOVERNMENTAL_HEALTH_INSTITUTION +
+    deliveryCategoryPercentages.PRIVATE_HEALTH_INSTITUTION;
 
   return (
     <DocsLayout toc={<TableOfContents toc={toc} />}>
@@ -283,7 +334,7 @@ export default async function WardWiseDeliveryPlacePage() {
               src="/images/delivery-place-statistics.svg"
               width={1200}
               height={400}
-              alt="प्रसूती स्थानको अवस्था - खजुरा गाउँपालिका (Delivery Place Statistics - Khajura Rural Municipality)"
+              alt="प्रसूती स्थानको अवस्था - परिवर्तन गाउँपालिका (Delivery Place Statistics - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -291,22 +342,42 @@ export default async function WardWiseDeliveryPlacePage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा प्रसूती स्थानको अवस्था
+              परिवर्तन गाउँपालिकामा प्रसूती स्थानको अवस्था
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              प्रसूती स्थानको चयनले आमा र शिशुको स्वास्थ्य र सुरक्षामा महत्वपूर्ण भूमिका निर्वाह गर्दछ। संस्थागत प्रसूती (अस्पताल वा स्वास्थ्य केन्द्रमा हुने प्रसूती) ले 
-              मातृ तथा शिशु मृत्युदर कम गर्न मद्दत गर्दछ। यस खण्डमा खजुरा गाउँपालिकाको विभिन्न वडाहरूमा प्रसूती स्थानको अवस्था र त्यसको विश्लेषण 
-              प्रस्तुत गरिएको छ।
+              प्रसूती स्थानको चयनले आमा र शिशुको स्वास्थ्य र सुरक्षामा
+              महत्वपूर्ण भूमिका निर्वाह गर्दछ। संस्थागत प्रसूती (अस्पताल वा
+              स्वास्थ्य केन्द्रमा हुने प्रसूती) ले मातृ तथा शिशु मृत्युदर कम
+              गर्न मद्दत गर्दछ। यस खण्डमा परिवर्तन गाउँपालिकाको विभिन्न वडाहरूमा
+              प्रसूती स्थानको अवस्था र त्यसको विश्लेषण प्रस्तुत गरिएको छ।
             </p>
             <p>
-              खजुरा गाउँपालिकामा कुल {localizeNumber(totalDeliveries.toLocaleString(), "ne")} प्रसूती मध्ये 
-              {localizeNumber(deliveryCategoryPercentages.GOVERNMENTAL_HEALTH_INSTITUTION.toFixed(2), "ne")}% सरकारी स्वास्थ्य संस्थामा, 
-              {localizeNumber(deliveryCategoryPercentages.PRIVATE_HEALTH_INSTITUTION.toFixed(2), "ne")}% निजी स्वास्थ्य संस्थामा, र 
-              {localizeNumber(deliveryCategoryPercentages.HOUSE.toFixed(2), "ne")}% घरमा भएका छन्।
+              परिवर्तन गाउँपालिकामा कुल{" "}
+              {localizeNumber(totalDeliveries.toLocaleString(), "ne")} प्रसूती
+              मध्ये
+              {localizeNumber(
+                deliveryCategoryPercentages.GOVERNMENTAL_HEALTH_INSTITUTION.toFixed(
+                  2,
+                ),
+                "ne",
+              )}
+              % सरकारी स्वास्थ्य संस्थामा,
+              {localizeNumber(
+                deliveryCategoryPercentages.PRIVATE_HEALTH_INSTITUTION.toFixed(
+                  2,
+                ),
+                "ne",
+              )}
+              % निजी स्वास्थ्य संस्थामा, र
+              {localizeNumber(
+                deliveryCategoryPercentages.HOUSE.toFixed(2),
+                "ne",
+              )}
+              % घरमा भएका छन्।
             </p>
 
             <h2
@@ -316,7 +387,7 @@ export default async function WardWiseDeliveryPlacePage() {
               प्रसूती स्थानको वितरण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा प्रसूती स्थानको वितरण निम्नानुसार रहेको छ:
+              परिवर्तन गाउँपालिकामा प्रसूती स्थानको वितरण निम्नानुसार रहेको छ:
             </p>
           </div>
 
@@ -335,15 +406,26 @@ export default async function WardWiseDeliveryPlacePage() {
           />
 
           <div className="prose prose-slate dark:prose-invert max-w-none mt-8">
-            <h2 id="delivery-places-analysis" className="scroll-m-20 border-b pb-2">
+            <h2
+              id="delivery-places-analysis"
+              className="scroll-m-20 border-b pb-2"
+            >
               प्रसूती स्थानको विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा प्रसूती स्थानको विश्लेषण गर्दा, समग्रमा 
-              {localizeNumber((deliveryCategoryPercentages.GOVERNMENTAL_HEALTH_INSTITUTION + deliveryCategoryPercentages.PRIVATE_HEALTH_INSTITUTION).toFixed(2), "ne")}% 
-              प्रसूती संस्थागत रूपमा भएका छन्। वडागत रूपमा हेर्दा वडा नं. {localizeNumber(bestWard.wardNumber.toString(), "ne")} मा 
-              सबैभन्दा धेरै संस्थागत प्रसूती भएको छ, जहाँ {localizeNumber(bestWard.percentage.toFixed(2), "ne")}% 
-              प्रसूती संस्थागत रूपमा भएका छन्।
+              परिवर्तन गाउँपालिकामा प्रसूती स्थानको विश्लेषण गर्दा, समग्रमा
+              {localizeNumber(
+                (
+                  deliveryCategoryPercentages.GOVERNMENTAL_HEALTH_INSTITUTION +
+                  deliveryCategoryPercentages.PRIVATE_HEALTH_INSTITUTION
+                ).toFixed(2),
+                "ne",
+              )}
+              % प्रसूती संस्थागत रूपमा भएका छन्। वडागत रूपमा हेर्दा वडा नं.{" "}
+              {localizeNumber(bestWard.wardNumber.toString(), "ne")} मा सबैभन्दा
+              धेरै संस्थागत प्रसूती भएको छ, जहाँ{" "}
+              {localizeNumber(bestWard.percentage.toFixed(2), "ne")}% प्रसूती
+              संस्थागत रूपमा भएका छन्।
             </p>
 
             <WardWiseDeliveryPlaceAnalysisSection
@@ -365,47 +447,57 @@ export default async function WardWiseDeliveryPlacePage() {
             </h2>
 
             <p>
-              खजुरा गाउँपालिकामा संस्थागत प्रसूती प्रवर्धनका लागि निम्न रणनीतिहरू 
-              अवलम्बन गर्न सकिन्छ:
+              परिवर्तन गाउँपालिकामा संस्थागत प्रसूती प्रवर्धनका लागि निम्न
+              रणनीतिहरू अवलम्बन गर्न सकिन्छ:
             </p>
 
             <div className="pl-6 space-y-4">
               <div className="flex">
                 <span className="font-bold mr-2">१.</span>
                 <div>
-                  <strong>जनचेतना अभिवृद्धि:</strong> घरमा प्रसूती गर्दा हुनसक्ने जोखिमहरू बारे जनचेतना अभिवृद्धि गर्ने तथा संस्थागत प्रसूतीका फाइदाहरू बारे प्रचार प्रसार गर्ने।
+                  <strong>जनचेतना अभिवृद्धि:</strong> घरमा प्रसूती गर्दा
+                  हुनसक्ने जोखिमहरू बारे जनचेतना अभिवृद्धि गर्ने तथा संस्थागत
+                  प्रसूतीका फाइदाहरू बारे प्रचार प्रसार गर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">२.</span>
                 <div>
-                  <strong>स्वास्थ्य संस्था सुदृढीकरण:</strong> वडा नं. {localizeNumber(worstWard.wardNumber.toString(), "ne")} मा संस्थागत प्रसूती दर कम देखिएकोले
-                  त्यहाँ थप प्रसूती सेवा विस्तार र स्वास्थ्य संस्था सुदृढीकरण गर्ने।
+                  <strong>स्वास्थ्य संस्था सुदृढीकरण:</strong> वडा नं.{" "}
+                  {localizeNumber(worstWard.wardNumber.toString(), "ne")} मा
+                  संस्थागत प्रसूती दर कम देखिएकोले त्यहाँ थप प्रसूती सेवा
+                  विस्तार र स्वास्थ्य संस्था सुदृढीकरण गर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">३.</span>
                 <div>
-                  <strong>यातायात सेवा:</strong> टाढाका वडाहरूमा गर्भवती महिलाहरूलाई प्रसूती सेवाका लागि यातायात सेवा प्रदान गर्ने।
+                  <strong>यातायात सेवा:</strong> टाढाका वडाहरूमा गर्भवती
+                  महिलाहरूलाई प्रसूती सेवाका लागि यातायात सेवा प्रदान गर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">४.</span>
                 <div>
-                  <strong>प्रोत्साहन कार्यक्रम:</strong> संस्थागत प्रसूतीका लागि प्रोत्साहन स्वरूप नगद सहायता वा अन्य सुविधाहरू प्रदान गर्ने।
+                  <strong>प्रोत्साहन कार्यक्रम:</strong> संस्थागत प्रसूतीका लागि
+                  प्रोत्साहन स्वरूप नगद सहायता वा अन्य सुविधाहरू प्रदान गर्ने।
                 </div>
               </div>
               <div className="flex">
                 <span className="font-bold mr-2">५.</span>
                 <div>
-                  <strong>प्रसूती सेवा विकेन्द्रीकरण:</strong> दुर्गम क्षेत्रमा बर्थिङ सेन्टरहरू स्थापना गरी गर्भवती महिलाहरूलाई नजिकैबाट सेवा उपलब्ध गराउने।
+                  <strong>प्रसूती सेवा विकेन्द्रीकरण:</strong> दुर्गम क्षेत्रमा
+                  बर्थिङ सेन्टरहरू स्थापना गरी गर्भवती महिलाहरूलाई नजिकैबाट सेवा
+                  उपलब्ध गराउने।
                 </div>
               </div>
             </div>
 
             <p className="mt-6">
-              यसरी खजुरा गाउँपालिकामा प्रसूती स्थानको अवस्थाको विश्लेषणले स्वास्थ्य सेवा विस्तार र मातृ शिशु स्वास्थ्य नीति निर्माणमा महत्वपूर्ण भूमिका खेल्दछ। 
-              वडागत आवश्यकता अनुसार लक्षित कार्यक्रम र सेवा विस्तार गरेर संस्थागत प्रसूती दरमा सुधार ल्याउन आवश्यक छ। 
+              यसरी परिवर्तन गाउँपालिकामा प्रसूती स्थानको अवस्थाको विश्लेषणले
+              स्वास्थ्य सेवा विस्तार र मातृ शिशु स्वास्थ्य नीति निर्माणमा
+              महत्वपूर्ण भूमिका खेल्दछ। वडागत आवश्यकता अनुसार लक्षित कार्यक्रम र
+              सेवा विस्तार गरेर संस्थागत प्रसूती दरमा सुधार ल्याउन आवश्यक छ।
             </p>
           </div>
         </section>

@@ -37,20 +37,27 @@ export default function MigratedHouseholdSEO({
     }));
 
     // Find most common migration origin
-    const mostCommonMigratedFrom = overallSummary.length > 0 ? overallSummary[0] : null;
-    const mostCommonMigratedFromEN = mostCommonMigratedFrom ? (MIGRATED_FROM_NAMES_EN[mostCommonMigratedFrom.migratedFrom] || mostCommonMigratedFrom.migratedFrom) : "";
-    const mostCommonMigratedFromPercentage = mostCommonMigratedFrom && totalHouseholds > 0 
-      ? ((mostCommonMigratedFrom.households / totalHouseholds) * 100).toFixed(2)
-      : "0";
+    const mostCommonMigratedFrom =
+      overallSummary.length > 0 ? overallSummary[0] : null;
+    const mostCommonMigratedFromEN = mostCommonMigratedFrom
+      ? MIGRATED_FROM_NAMES_EN[mostCommonMigratedFrom.migratedFrom] ||
+        mostCommonMigratedFrom.migratedFrom
+      : "";
+    const mostCommonMigratedFromPercentage =
+      mostCommonMigratedFrom && totalHouseholds > 0
+        ? ((mostCommonMigratedFrom.households / totalHouseholds) * 100).toFixed(
+            2,
+          )
+        : "0";
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Migrated Households in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Migrated Households in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Migrated household data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} migrated households. The most common origin is ${mostCommonMigratedFromEN} with ${mostCommonMigratedFrom?.households.toLocaleString()} households (${mostCommonMigratedFromPercentage}%).`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Migrated households",
         "Migration distribution",
         "Ward-wise migration data",
@@ -59,7 +66,9 @@ export default function MigratedHouseholdSEO({
         ...Object.values(MIGRATED_FROM_NAMES_EN).map(
           (name) => `${name} households statistics`,
         ),
-        ...Object.values(MIGRATED_FROM_NAMES).map((name) => `${name} घरपरिवार तथ्याङ्क`),
+        ...Object.values(MIGRATED_FROM_NAMES).map(
+          (name) => `${name} घरपरिवार तथ्याङ्क`,
+        ),
       ],
       url: "https://digital.khajuramun.gov.np/profile/demographics/ward-wise-migrated-households",
       creator: {
@@ -89,7 +98,7 @@ export default function MigratedHouseholdSEO({
           name: "Total Migrated Households",
           unitText: "households",
           value: totalHouseholds,
-        }
+        },
       ],
       observation: migrationStats,
     };

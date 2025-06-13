@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const householdChoresData =
       await api.profile.economics.wardTimeWiseHouseholdChores.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalPopulation = householdChoresData.reduce(
@@ -67,16 +67,16 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // Create rich keywords with actual data
     const keywordsNP = [
-      "खजुरा गाउँपालिका घरायसी कामकाज",
+      "परिवर्तन गाउँपालिका घरायसी कामकाज",
       "घरायसी कामकाजमा समय वितरण",
-      `खजुरा ${TIME_SPENT_NAMES_NP[topTimeCategories[0]]} घरायसी काम`,
+      `परिवर्तन ${TIME_SPENT_NAMES_NP[topTimeCategories[0]]} घरायसी काम`,
       ...topTimeCategories.map(
         (t) => `${TIME_SPENT_NAMES_NP[t]} घरायसी कामकाज`,
       ),
       "वडा अनुसार घरायसी काम",
       "घरायसी काममा समय वितरण",
       "घरायसी काम सम्बन्धी तथ्याङ्क",
-      `खजुरा जनसंख्या घरायसी काम ${totalPopulation}`,
+      `परिवर्तन जनसंख्या घरायसी काम ${totalPopulation}`,
     ];
 
     const keywordsEN = [
@@ -93,7 +93,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data
-    const descriptionNP = `खजुरा गाउँपालिकाको वडा अनुसार घरायसी कामकाजमा बिताइने समयको वितरण र विश्लेषण। कुल ${totalPopulation} जनसंख्या मध्ये ${TIME_SPENT_NAMES_NP[topTimeCategories[0]]} (${timeSpentCounts[topTimeCategories[0]]}) सबैभन्दा धेरै अपनाइएको समय अवधि हो, त्यसपछि ${TIME_SPENT_NAMES_NP[topTimeCategories[1]]} (${timeSpentCounts[topTimeCategories[1]]}) र ${TIME_SPENT_NAMES_NP[topTimeCategories[2]]} (${timeSpentCounts[topTimeCategories[2]]})। घरायसी कामकाजमा खर्चिने समय सम्बन्धी विस्तृत तथ्याङ्क र विश्लेषण।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार घरायसी कामकाजमा बिताइने समयको वितरण र विश्लेषण। कुल ${totalPopulation} जनसंख्या मध्ये ${TIME_SPENT_NAMES_NP[topTimeCategories[0]]} (${timeSpentCounts[topTimeCategories[0]]}) सबैभन्दा धेरै अपनाइएको समय अवधि हो, त्यसपछि ${TIME_SPENT_NAMES_NP[topTimeCategories[1]]} (${timeSpentCounts[topTimeCategories[1]]}) र ${TIME_SPENT_NAMES_NP[topTimeCategories[2]]} (${timeSpentCounts[topTimeCategories[2]]})। घरायसी कामकाजमा खर्चिने समय सम्बन्धी विस्तृत तथ्याङ्क र विश्लेषण।`;
 
     const descriptionEN = `Ward-wise time distribution and analysis of household chores in Khajura Rural Municipality. Out of total ${totalPopulation} population, ${TIME_SPENT_NAMES_EN[topTimeCategories[0]]} (${timeSpentCounts[topTimeCategories[0]]}) is the most common time spent, followed by ${TIME_SPENT_NAMES_EN[topTimeCategories[1]]} (${timeSpentCounts[topTimeCategories[1]]}) and ${TIME_SPENT_NAMES_EN[topTimeCategories[2]]} (${timeSpentCounts[topTimeCategories[2]]})। Detailed statistics and analysis on time spent on household chores.`;
 
@@ -248,7 +248,7 @@ export default async function WardHouseholdChoresPage() {
               src="/images/household-chores.svg"
               width={1200}
               height={400}
-              alt="घरायसी कामकाज - खजुरा गाउँपालिका (Household Chores - Khajura Rural Municipality)"
+              alt="घरायसी कामकाज - परिवर्तन गाउँपालिका (Household Chores - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -256,21 +256,21 @@ export default async function WardHouseholdChoresPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा घरायसी कामकाजमा खर्चिने समय
+              परिवर्तन गाउँपालिकामा घरायसी कामकाजमा खर्चिने समय
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              यस खण्डमा खजुरा गाउँपालिकाको विभिन्न वडाहरूमा घरायसी कामकाजमा
+              यस खण्डमा परिवर्तन गाउँपालिकाको विभिन्न वडाहरूमा घरायसी कामकाजमा
               खर्चिने समयको वितरण र विश्लेषण प्रस्तुत गरिएको छ। यो तथ्याङ्कले
               घरायसी कामकाजको बोझ, श्रम विभाजन, र समयको उपयोगिता बुझ्न सहयोग
               गर्दछ।
             </p>
             <p>
-              खजुरा गाउँपालिकामा कुल {totalPopulation.toLocaleString()} जनसंख्या
-              मध्ये सबैभन्दा बढी{" "}
+              परिवर्तन गाउँपालिकामा कुल {totalPopulation.toLocaleString()}{" "}
+              जनसंख्या मध्ये सबैभन्दा बढी{" "}
               {overallSummary.sort((a, b) => b.population - a.population)[0]
                 ?.timeSpentName || ""}{" "}
               समय घरायसी कामकाजमा खर्च गर्ने जनसंख्या रहेको देखिन्छ। घरायसी
@@ -283,7 +283,7 @@ export default async function WardHouseholdChoresPage() {
               समय अनुसार जनसंख्या वितरण
             </h2>
             <p>
-              घरायसी कामकाजमा खर्चिने समय अनुसार खजुरा गाउँपालिकाको जनसंख्या
+              घरायसी कामकाजमा खर्चिने समय अनुसार परिवर्तन गाउँपालिकाको जनसंख्या
               वितरण निम्नानुसार छ:
             </p>
           </div>
@@ -304,7 +304,7 @@ export default async function WardHouseholdChoresPage() {
               विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा घरायसी कामकाजमा खर्चिने समयको विश्लेषण गर्दा
+              परिवर्तन गाउँपालिकामा घरायसी कामकाजमा खर्चिने समयको विश्लेषण गर्दा
               निम्न प्रवृत्तिहरू देखिन्छन्। अधिकांश जनसंख्या (
               {(
                 ((overallSummary.sort((a, b) => b.population - a.population)[0]
@@ -331,7 +331,7 @@ export default async function WardHouseholdChoresPage() {
               तथ्याङ्क स्रोत
             </h2>
             <p>
-              माथि प्रस्तुत गरिएका तथ्याङ्कहरू खजुरा गाउँपालिकाको आर्थिक
+              माथि प्रस्तुत गरिएका तथ्याङ्कहरू परिवर्तन गाउँपालिकाको आर्थिक
               सर्वेक्षण र परिवार समयको उपयोग सम्बन्धी अध्ययनबाट संकलन गरिएको हो।
               यी तथ्याङ्कहरूको महत्व निम्न अनुसार छ:
             </p>

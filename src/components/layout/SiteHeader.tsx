@@ -41,7 +41,7 @@ export function SiteHeader() {
             </div>
             <div className="flex flex-col">
               <span className="font-bold tracking-tight text-gray-900">
-                खजुरा
+                परिवर्तन
               </span>
               <Badge
                 variant="outline"
@@ -70,7 +70,7 @@ export function SiteHeader() {
               href="/profile"
               className={cn(
                 buttonVariants({ variant: "outline", size: "sm" }),
-                "hidden md:flex text-[#123772] border-[#123772]/20 hover:bg-[#123772]/5 hover:text-[#123772]"
+                "hidden md:flex text-[#123772] border-[#123772]/20 hover:bg-[#123772]/5 hover:text-[#123772]",
               )}
             >
               प्रोफाइल

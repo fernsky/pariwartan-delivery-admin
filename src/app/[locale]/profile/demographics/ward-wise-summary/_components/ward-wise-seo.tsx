@@ -38,7 +38,7 @@ export default function WardWiseSEO({
     // Convert ward stats to structured data format
     const wardObservations = processedWardData.map((ward) => ({
       "@type": "Observation",
-      name: `खजुरा गाउँपालिका वडा ${ward.wardNumber} demographics`,
+      name: `परिवर्तन गाउँपालिका वडा ${ward.wardNumber} demographics`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: [
         {
@@ -76,7 +76,7 @@ export default function WardWiseSEO({
           value: ward.sexRatio,
         },
       ],
-      description: `खजुरा गाउँपालिका वडा ${localizeNumber(
+      description: `परिवर्तन गाउँपालिका वडा ${localizeNumber(
         ward.wardNumber,
         "ne",
       )} मा जनसंख्या ${localizeNumber(
@@ -97,8 +97,8 @@ export default function WardWiseSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "खजुरा गाउँपालिका - वडागत जनसांख्यिकी तथ्याङ्क",
-      description: `खजुरा गाउँपालिकाको ${localizeNumber(
+      name: "परिवर्तन गाउँपालिका - वडागत जनसांख्यिकी तथ्याङ्क",
+      description: `परिवर्तन गाउँपालिकाको ${localizeNumber(
         processedWardData.length,
         "ne",
       )} वडाहरूको जनसंख्या वितरण, जसमा कुल जनसंख्या ${localizeNumber(
@@ -109,20 +109,20 @@ export default function WardWiseSEO({
         "ne",
       )} घरधुरी रहेका छन्।`,
       keywords: [
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Khajura Rural Municipality",
         "वडागत जनसांख्यिकी",
-        "खजुरा वडा जनसंख्या",
+        "परिवर्तन वडा जनसंख्या",
         "नेपाल जनगणना",
-        "खजुरा जनसंख्या वितरण",
-        "खजुरा लैङ्गिक अनुपात",
-        "खजुरा घरधुरी तथ्याङ्क",
+        "परिवर्तन जनसंख्या वितरण",
+        "परिवर्तन लैङ्गिक अनुपात",
+        "परिवर्तन घरधुरी तथ्याङ्क",
         "बाँके जिल्ला जनसंख्या",
       ],
       url: "https://digital.khajuramun.gov.np/profile/demographics/ward-wise-summary",
       creator: {
         "@type": "Organization",
-        name: "खजुरा गाउँपालिका",
+        name: "परिवर्तन गाउँपालिका",
         url: "https://digital.khajuramun.gov.np",
       },
       temporalCoverage: "2021/2023",

@@ -43,7 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const ownershipData =
       await api.profile.economics.wardWiseHouseOwnership.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalHouseholds = ownershipData.reduce(
@@ -69,19 +69,20 @@ export async function generateMetadata(): Promise<Metadata> {
       }
     });
 
-    const mostCommonPercentage = totalHouseholds > 0
-      ? ((mostCommonCount / totalHouseholds) * 100).toFixed(2)
-      : "0";
+    const mostCommonPercentage =
+      totalHouseholds > 0
+        ? ((mostCommonCount / totalHouseholds) * 100).toFixed(2)
+        : "0";
 
     // Create rich keywords with actual data
     const keywordsNP = [
-      "खजुरा गाउँपालिका घर स्वामित्व",
-      "खजुरा घर स्वामित्व वितरण",
+      "परिवर्तन गाउँपालिका घर स्वामित्व",
+      "परिवर्तन घर स्वामित्व वितरण",
       "वडा अनुसार घर स्वामित्व",
       "घर स्वामित्व विवरण",
-      "निजी घर स्वामित्व खजुरा",
+      "निजी घर स्वामित्व परिवर्तन",
       "भाडामा बस्नेको संख्या",
-      `खजुरा घर स्वामित्व संख्या ${localizeNumber(totalHouseholds.toString(), "ne")}`,
+      `परिवर्तन घर स्वामित्व संख्या ${localizeNumber(totalHouseholds.toString(), "ne")}`,
     ];
 
     const keywordsEN = [
@@ -95,7 +96,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data
-    const descriptionNP = `खजुरा गाउँपालिकाको वडा अनुसार घर स्वामित्वको वितरण र विश्लेषण। कुल घरधुरी संख्या ${localizeNumber(totalHouseholds.toString(), "ne")} मध्ये ${localizeNumber(mostCommonPercentage, "ne")}% (${localizeNumber(mostCommonCount.toString(), "ne")}) ${OWNERSHIP_TYPE_NAMES[mostCommonType] || mostCommonType} स्वामित्वमा रहेका छन्। विभिन्न वडाहरूमा घर स्वामित्वको विस्तृत विश्लेषण।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार घर स्वामित्वको वितरण र विश्लेषण। कुल घरधुरी संख्या ${localizeNumber(totalHouseholds.toString(), "ne")} मध्ये ${localizeNumber(mostCommonPercentage, "ne")}% (${localizeNumber(mostCommonCount.toString(), "ne")}) ${OWNERSHIP_TYPE_NAMES[mostCommonType] || mostCommonType} स्वामित्वमा रहेका छन्। विभिन्न वडाहरूमा घर स्वामित्वको विस्तृत विश्लेषण।`;
 
     const descriptionEN = `Ward-wise distribution and analysis of house ownership in Khajura Rural Municipality. Out of a total of ${totalHouseholds} households, ${mostCommonPercentage}% (${mostCommonCount}) are under ${OWNERSHIP_TYPE_NAMES_EN[mostCommonType] || mostCommonType}. Detailed analysis of house ownership across various wards.`;
 
@@ -127,9 +128,8 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "घर स्वामित्वको वितरण | खजुरा गाउँपालिका डिजिटल प्रोफाइल",
-      description:
-        "वडा अनुसार घर स्वामित्वको वितरण र विश्लेषण।",
+      title: "घर स्वामित्वको वितरण | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
+      description: "वडा अनुसार घर स्वामित्वको वितरण र विश्लेषण।",
     };
   }
 }
@@ -137,7 +137,11 @@ export async function generateMetadata(): Promise<Metadata> {
 const toc = [
   { level: 2, text: "परिचय", slug: "introduction" },
   { level: 2, text: "घर स्वामित्वका प्रकार", slug: "house-ownership-types" },
-  { level: 2, text: "वडा अनुसार घर स्वामित्व", slug: "ward-wise-house-ownership" },
+  {
+    level: 2,
+    text: "वडा अनुसार घर स्वामित्व",
+    slug: "ward-wise-house-ownership",
+  },
   { level: 2, text: "घर स्वामित्व विश्लेषण", slug: "house-ownership-analysis" },
 ];
 
@@ -166,8 +170,9 @@ export default async function WardWiseHouseOwnershipPage() {
     .map(([ownershipType, households]) => ({
       ownershipType,
       ownershipTypeName:
-        OWNERSHIP_TYPE_NAMES[ownershipType as keyof typeof OWNERSHIP_TYPE_NAMES] ||
-        ownershipType,
+        OWNERSHIP_TYPE_NAMES[
+          ownershipType as keyof typeof OWNERSHIP_TYPE_NAMES
+        ] || ownershipType,
       households,
     }))
     .sort((a, b) => b.households - a.households); // Sort by households descending
@@ -178,7 +183,7 @@ export default async function WardWiseHouseOwnershipPage() {
     0,
   );
 
-  // Create data for pie chart 
+  // Create data for pie chart
   const pieChartData = overallSummary.map((item) => ({
     name: item.ownershipTypeName,
     value: item.households,
@@ -201,8 +206,9 @@ export default async function WardWiseHouseOwnershipPage() {
     // Add ownership types
     wardData.forEach((item) => {
       result[
-        OWNERSHIP_TYPE_NAMES[item.ownershipType as keyof typeof OWNERSHIP_TYPE_NAMES] ||
-          item.ownershipType
+        OWNERSHIP_TYPE_NAMES[
+          item.ownershipType as keyof typeof OWNERSHIP_TYPE_NAMES
+        ] || item.ownershipType
       ] = item.households;
     });
 
@@ -214,29 +220,44 @@ export default async function WardWiseHouseOwnershipPage() {
     const wardData = ownershipData.filter(
       (item) => item.wardNumber === wardNumber,
     );
-    
+
     const wardTotalHouseholds = wardData.reduce(
-      (sum, item) => sum + (item.households || 0), 
-      0
+      (sum, item) => sum + (item.households || 0),
+      0,
     );
-    
-    const mostCommonType = wardData.reduce((prev, current) => {
-      return (prev.households || 0) > (current.households || 0) ? prev : current;
-    }, { ownershipType: "", households: 0 });
-    
-    const privateOwnership = wardData.find(item => item.ownershipType === "PRIVATE");
-    const privatePercentage = wardTotalHouseholds > 0 && privateOwnership 
-      ? ((privateOwnership.households || 0) / wardTotalHouseholds * 100).toFixed(2)
-      : "0";
-    
+
+    const mostCommonType = wardData.reduce(
+      (prev, current) => {
+        return (prev.households || 0) > (current.households || 0)
+          ? prev
+          : current;
+      },
+      { ownershipType: "", households: 0 },
+    );
+
+    const privateOwnership = wardData.find(
+      (item) => item.ownershipType === "PRIVATE",
+    );
+    const privatePercentage =
+      wardTotalHouseholds > 0 && privateOwnership
+        ? (
+            ((privateOwnership.households || 0) / wardTotalHouseholds) *
+            100
+          ).toFixed(2)
+        : "0";
+
     return {
       wardNumber,
       totalHouseholds: wardTotalHouseholds,
       mostCommonType: mostCommonType.ownershipType,
       mostCommonTypeHouseholds: mostCommonType.households || 0,
-      mostCommonTypePercentage: wardTotalHouseholds > 0 
-        ? ((mostCommonType.households || 0) / wardTotalHouseholds * 100).toFixed(2)
-        : "0",
+      mostCommonTypePercentage:
+        wardTotalHouseholds > 0
+          ? (
+              ((mostCommonType.households || 0) / wardTotalHouseholds) *
+              100
+            ).toFixed(2)
+          : "0",
       privateHouseholds: privateOwnership?.households || 0,
       privatePercentage,
     };
@@ -260,7 +281,7 @@ export default async function WardWiseHouseOwnershipPage() {
               src="/images/house-ownership.svg"
               width={1200}
               height={400}
-              alt="घर स्वामित्वको वितरण - खजुरा गाउँपालिका (House Ownership Distribution - Khajura Rural Municipality)"
+              alt="घर स्वामित्वको वितरण - परिवर्तन गाउँपालिका (House Ownership Distribution - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -268,24 +289,31 @@ export default async function WardWiseHouseOwnershipPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              खजुरा गाउँपालिकामा घर स्वामित्वको वितरण
+              परिवर्तन गाउँपालिकामा घर स्वामित्वको वितरण
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              घर स्वामित्वको आधारमा जनसंख्याको वर्गीकरण र विश्लेषण गर्दा थुप्रै आर्थिक तथा 
-              सामाजिक सूचकहरू प्राप्त हुन्छन्। यस खण्डमा खजुरा
-              गाउँपालिकामा घर स्वामित्वका प्रमुख प्रकारहरू र तिनको वडागत वितरणको विश्लेषण
-              प्रस्तुत गरिएको छ।
+              घर स्वामित्वको आधारमा जनसंख्याको वर्गीकरण र विश्लेषण गर्दा थुप्रै
+              आर्थिक तथा सामाजिक सूचकहरू प्राप्त हुन्छन्। यस खण्डमा परिवर्तन
+              गाउँपालिकामा घर स्वामित्वका प्रमुख प्रकारहरू र तिनको वडागत वितरणको
+              विश्लेषण प्रस्तुत गरिएको छ।
             </p>
             <p>
-              खजुरा गाउँपालिकामा घर स्वामित्वको
-              तथ्याङ्क हेर्दा, कुल घरधुरी {localizeNumber(totalHouseholds.toLocaleString(), "ne")} 
-              मध्ये सबैभन्दा बढी {overallSummary[0]?.ownershipTypeName || ""} 
-              स्वामित्वमा {localizeNumber(((overallSummary[0]?.households || 0) / totalHouseholds * 100).toFixed(1), "ne")}% 
-              घरहरू रहेका देखिन्छन्।
+              परिवर्तन गाउँपालिकामा घर स्वामित्वको तथ्याङ्क हेर्दा, कुल घरधुरी{" "}
+              {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
+              मध्ये सबैभन्दा बढी {overallSummary[0]?.ownershipTypeName || ""}
+              स्वामित्वमा{" "}
+              {localizeNumber(
+                (
+                  ((overallSummary[0]?.households || 0) / totalHouseholds) *
+                  100
+                ).toFixed(1),
+                "ne",
+              )}
+              % घरहरू रहेका देखिन्छन्।
             </p>
 
             <h2
@@ -295,8 +323,8 @@ export default async function WardWiseHouseOwnershipPage() {
               घर स्वामित्वका प्रकार
             </h2>
             <p>
-              खजुरा गाउँपालिकामा घर स्वामित्वका प्रमुख प्रकारहरू र तिनको वितरण निम्नानुसार
-              रहेको छ:
+              परिवर्तन गाउँपालिकामा घर स्वामित्वका प्रमुख प्रकारहरू र तिनको
+              वितरण निम्नानुसार रहेको छ:
             </p>
           </div>
 
@@ -313,15 +341,25 @@ export default async function WardWiseHouseOwnershipPage() {
           />
 
           <div className="prose prose-slate dark:prose-invert max-w-none mt-8">
-            <h2 id="house-ownership-analysis" className="scroll-m-20 border-b pb-2">
+            <h2
+              id="house-ownership-analysis"
+              className="scroll-m-20 border-b pb-2"
+            >
               घर स्वामित्व विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा घर स्वामित्वको विश्लेषण गर्दा, 
-              {OWNERSHIP_TYPE_NAMES[overallSummary[0]?.ownershipType || ''] || overallSummary[0]?.ownershipType} 
-              स्वामित्वमा रहेका घरहरू सबैभन्दा बढी 
-              {localizeNumber(((overallSummary[0]?.households || 0) / totalHouseholds * 100).toFixed(2), "ne")}% 
-              रहेको पाइन्छ।
+              परिवर्तन गाउँपालिकामा घर स्वामित्वको विश्लेषण गर्दा,
+              {OWNERSHIP_TYPE_NAMES[overallSummary[0]?.ownershipType || ""] ||
+                overallSummary[0]?.ownershipType}
+              स्वामित्वमा रहेका घरहरू सबैभन्दा बढी
+              {localizeNumber(
+                (
+                  ((overallSummary[0]?.households || 0) / totalHouseholds) *
+                  100
+                ).toFixed(2),
+                "ne",
+              )}
+              % रहेको पाइन्छ।
             </p>
 
             <HouseOwnershipAnalysisSection

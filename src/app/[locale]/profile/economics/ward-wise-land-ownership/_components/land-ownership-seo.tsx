@@ -40,25 +40,31 @@ export default function LandOwnershipSEO({
 
     // Find most common land ownership type
     const mostCommonType = overallSummary.length > 0 ? overallSummary[0] : null;
-    const mostCommonTypeEN = mostCommonType ? (LAND_OWNERSHIP_TYPES_EN[mostCommonType.type] || mostCommonType.type) : "";
-    const mostCommonTypePercentage = mostCommonType && totalHouseholds > 0 
-      ? ((mostCommonType.households / totalHouseholds) * 100).toFixed(2)
-      : "0";
+    const mostCommonTypeEN = mostCommonType
+      ? LAND_OWNERSHIP_TYPES_EN[mostCommonType.type] || mostCommonType.type
+      : "";
+    const mostCommonTypePercentage =
+      mostCommonType && totalHouseholds > 0
+        ? ((mostCommonType.households / totalHouseholds) * 100).toFixed(2)
+        : "0";
 
     // Find public/eilani land data
-    const publicLandData = overallSummary.find(item => item.type === "PUBLIC_EILANI");
-    const publicLandPercentage = publicLandData && totalHouseholds > 0
-      ? ((publicLandData.households / totalHouseholds) * 100).toFixed(2)
-      : "0";
+    const publicLandData = overallSummary.find(
+      (item) => item.type === "PUBLIC_EILANI",
+    );
+    const publicLandPercentage =
+      publicLandData && totalHouseholds > 0
+        ? ((publicLandData.households / totalHouseholds) * 100).toFixed(2)
+        : "0";
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Land Ownership Types in Khajura Rural Municipality (खजुरा गाउँपालिका)",
+      name: "Land Ownership Types in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
       description: `Land ownership statistics across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. The most common land ownership type is ${mostCommonTypeEN} with ${mostCommonType?.households.toLocaleString()} households (${mostCommonTypePercentage}%). Public/Eilani land accounts for ${publicLandPercentage}% of all households. Land security score is ${securityScore}%.`,
       keywords: [
         "Khajura Rural Municipality",
-        "खजुरा गाउँपालिका",
+        "परिवर्तन गाउँपालिका",
         "Land ownership",
         "Land ownership types",
         "Private land",
@@ -69,7 +75,9 @@ export default function LandOwnershipSEO({
         ...Object.values(LAND_OWNERSHIP_TYPES_EN).map(
           (name) => `${name} households statistics`,
         ),
-        ...Object.values(LAND_OWNERSHIP_TYPES).map((name) => `${name} घरपरिवार संख्या`),
+        ...Object.values(LAND_OWNERSHIP_TYPES).map(
+          (name) => `${name} घरपरिवार संख्या`,
+        ),
       ],
       url: "https://digital.khajuramun.gov.np/profile/economics/ward-wise-land-ownership",
       creator: {
@@ -105,7 +113,7 @@ export default function LandOwnershipSEO({
           name: "Land Security Score",
           unitText: "percentage",
           value: securityScore,
-        }
+        },
       ],
       observation: landOwnershipStats,
     };

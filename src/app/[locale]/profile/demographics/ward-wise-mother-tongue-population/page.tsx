@@ -45,8 +45,9 @@ const LANGUAGE_NAMES: Record<string, string> = {
 export async function generateMetadata(): Promise<Metadata> {
   try {
     // Fetch data for SEO using tRPC
-    const languageData = await api.profile.demographics.wardWiseMotherTonguePopulation.getAll.query();
-    const municipalityName = "खजुरा गाउँपालिका"; // Khajura Rural Municipality
+    const languageData =
+      await api.profile.demographics.wardWiseMotherTonguePopulation.getAll.query();
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalPopulation = languageData.reduce(
@@ -90,23 +91,21 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // Create rich keywords with actual data using localized numbers
     const keywordsNP = [
-      "खजुरा गाउँपालिका मातृभाषा जनसंख्या",
-      "खजुरा भाषिक विविधता",
-      `खजुरा ${LANGUAGE_NAMES[topLanguages[0]]} भाषी जनसंख्या`,
-      ...topLanguages.map((l) => `${LANGUAGE_NAMES[l]} भाषी खजुरा`),
+      "परिवर्तन गाउँपालिका मातृभाषा जनसंख्या",
+      "परिवर्तन भाषिक विविधता",
+      `परिवर्तन ${LANGUAGE_NAMES[topLanguages[0]]} भाषी जनसंख्या`,
+      ...topLanguages.map((l) => `${LANGUAGE_NAMES[l]} भाषी परिवर्तन`),
       "वडा अनुसार मातृभाषा जनसंख्या",
       "भाषिक विविधता तथ्याङ्क",
-      "मातृभाषा जनगणना खजुरा",
-      `खजुरा कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")}`,
+      "मातृभाषा जनगणना परिवर्तन",
+      `परिवर्तन कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")}`,
     ];
 
     const keywordsEN = [
       "Khajura Rural Municipality mother tongue population",
       "Khajura linguistic diversity",
       `Khajura ${LANGUAGE_NAMES_EN[topLanguages[0]]} speakers population`,
-      ...topLanguages.map(
-        (l) => `${LANGUAGE_NAMES_EN[l]} speakers in Khajura`,
-      ),
+      ...topLanguages.map((l) => `${LANGUAGE_NAMES_EN[l]} speakers in Khajura`),
       "Ward-wise mother tongue demographics",
       "Linguistic diversity statistics",
       "Language census Khajura",
@@ -114,12 +113,12 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     // Create detailed description with actual data using localized numbers
-    const descriptionNP = `खजुरा गाउँपालिकाको वडा अनुसार मातृभाषा जनसंख्या वितरण, प्रवृत्ति र विश्लेषण। कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")} मध्ये ${LANGUAGE_NAMES[topLanguages[0]]} (${localizeNumber(languageCounts[topLanguages[0]].toString(), "ne")}) सबैभन्दा ठूलो भाषिक समूह हो, त्यसपछि ${LANGUAGE_NAMES[topLanguages[1]]} (${localizeNumber(languageCounts[topLanguages[1]].toString(), "ne")}) र ${LANGUAGE_NAMES[topLanguages[2]]} (${localizeNumber(languageCounts[topLanguages[2]].toString(), "ne")})। विभिन्न भाषाभाषीहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार मातृभाषा जनसंख्या वितरण, प्रवृत्ति र विश्लेषण। कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")} मध्ये ${LANGUAGE_NAMES[topLanguages[0]]} (${localizeNumber(languageCounts[topLanguages[0]].toString(), "ne")}) सबैभन्दा ठूलो भाषिक समूह हो, त्यसपछि ${LANGUAGE_NAMES[topLanguages[1]]} (${localizeNumber(languageCounts[topLanguages[1]].toString(), "ne")}) र ${LANGUAGE_NAMES[topLanguages[2]]} (${localizeNumber(languageCounts[topLanguages[2]].toString(), "ne")})। विभिन्न भाषाभाषीहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
 
     const descriptionEN = `Ward-wise mother tongue population distribution, trends and analysis for Khajura Rural Municipality. Out of a total population of ${totalPopulation}, ${LANGUAGE_NAMES_EN[topLanguages[0]]} (${languageCounts[topLanguages[0]]}) is the largest language group, followed by ${LANGUAGE_NAMES_EN[topLanguages[1]]} (${languageCounts[topLanguages[1]]}) and ${LANGUAGE_NAMES_EN[topLanguages[2]]} (${languageCounts[topLanguages[2]]})। Detailed statistics and visualizations of various linguistic communities.`;
 
     return {
-      title: "खजुरा गाउँपालिकामा मातृभाषा अनुसार जनसंख्या | पालिका प्रोफाइल",
+      title: "परिवर्तन गाउँपालिकामा मातृभाषा अनुसार जनसंख्या | पालिका प्रोफाइल",
       description: descriptionNP,
       keywords: [...keywordsNP, ...keywordsEN],
       alternates: {
@@ -146,9 +145,9 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "खजुरा गाउँपालिकामा मातृभाषा अनुसार जनसंख्या | पालिका प्रोफाइल",
+      title: "परिवर्तन गाउँपालिकामा मातृभाषा अनुसार जनसंख्या | पालिका प्रोफाइल",
       description:
-        "खजुरा गाउँपालिकामा वडा अनुसार मातृभाषा जनसंख्या वितरण, प्रवृत्ति र विश्लेषण। विभिन्न भाषाभाषीहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।",
+        "परिवर्तन गाउँपालिकामा वडा अनुसार मातृभाषा जनसंख्या वितरण, प्रवृत्ति र विश्लेषण। विभिन्न भाषाभाषीहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।",
     };
   }
 }
@@ -162,12 +161,14 @@ const toc = [
 
 export default async function WardWiseMotherTonguePopulationPage() {
   // Fetch all mother tongue population data from your tRPC route
-  const languageData = await api.profile.demographics.wardWiseMotherTonguePopulation.getAll.query();
+  const languageData =
+    await api.profile.demographics.wardWiseMotherTonguePopulation.getAll.query();
 
   // Fetch summary statistics if available
   let summaryData = null;
   try {
-    summaryData = await api.profile.demographics.wardWiseMotherTonguePopulation.summary.query();
+    summaryData =
+      await api.profile.demographics.wardWiseMotherTonguePopulation.summary.query();
   } catch (error) {
     console.error("Could not fetch summary data", error);
   }
@@ -272,7 +273,7 @@ export default async function WardWiseMotherTonguePopulationPage() {
               src="/images/language-diversity.svg"
               width={1200}
               height={400}
-              alt="भाषिक विविधता - खजुरा गाउँपालिका (Linguistic Diversity - Khajura Rural Municipality)"
+              alt="भाषिक विविधता - परिवर्तन गाउँपालिका (Linguistic Diversity - Khajura Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />
@@ -280,22 +281,23 @@ export default async function WardWiseMotherTonguePopulationPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              <span className="font-bold">खजुरा गाउँपालिकामा</span> मातृभाषा अनुसार जनसंख्या
+              <span className="font-bold">परिवर्तन गाउँपालिकामा</span> मातृभाषा
+              अनुसार जनसंख्या
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              यस खण्डमा खजुरा गाउँपालिकाको विभिन्न वडाहरूमा बोलिने मातृभाषाहरू र
-              तिनका वक्ताहरूको जनसंख्या सम्बन्धी विस्तृत तथ्याङ्क प्रस्तुत
-              गरिएको छ। यो तथ्याङ्कले भाषिक विविधता, सांस्कृतिक पहिचान र स्थानीय
-              समुदायको भाषिक स्वरूपलाई प्रतिबिम्बित गर्दछ।
+              यस खण्डमा परिवर्तन गाउँपालिकाको विभिन्न वडाहरूमा बोलिने
+              मातृभाषाहरू र तिनका वक्ताहरूको जनसंख्या सम्बन्धी विस्तृत तथ्याङ्क
+              प्रस्तुत गरिएको छ। यो तथ्याङ्कले भाषिक विविधता, सांस्कृतिक पहिचान
+              र स्थानीय समुदायको भाषिक स्वरूपलाई प्रतिबिम्बित गर्दछ।
             </p>
             <p>
-              खजुरा गाउँपालिका विभिन्न भाषाभाषी समुदायहरूको सद्भाव र सहिष्णुताको
-              नमूना हो, र यस पालिकामा पनि विविध भाषिक समुदायहरूको बसोबास रहेको
-              छ। कुल जनसंख्या{" "}
+              परिवर्तन गाउँपालिका विभिन्न भाषाभाषी समुदायहरूको सद्भाव र
+              सहिष्णुताको नमूना हो, र यस पालिकामा पनि विविध भाषिक समुदायहरूको
+              बसोबास रहेको छ। कुल जनसंख्या{" "}
               {localizeNumber(totalPopulation.toLocaleString(), "ne")} मध्ये{" "}
               {overallSummary[0]?.languageName || ""} भाषा बोल्ने व्यक्तिहरू{" "}
               {localizeNumber(
@@ -303,7 +305,7 @@ export default async function WardWiseMotherTonguePopulationPage() {
                   ((overallSummary[0]?.population || 0) / totalPopulation) *
                   100
                 ).toFixed(1),
-                "ne"
+                "ne",
               )}
               % रहेका छन्। यस तथ्याङ्कले भाषिक नीति, भाषिक संरक्षण र सामाजिक
               समानतामा सहयोग पुर्‍याउँछ।
@@ -316,7 +318,7 @@ export default async function WardWiseMotherTonguePopulationPage() {
               मातृभाषा अनुसार जनसंख्या
             </h2>
             <p>
-              खजुरा गाउँपालिकामा विभिन्न मातृभाषी वक्ताहरूको कुल जनसंख्या
+              परिवर्तन गाउँपालिकामा विभिन्न मातृभाषी वक्ताहरूको कुल जनसंख्या
               निम्नानुसार छ:
             </p>
           </div>
@@ -337,7 +339,7 @@ export default async function WardWiseMotherTonguePopulationPage() {
               प्रमुख भाषाहरूको विश्लेषण
             </h2>
             <p>
-              खजुरा गाउँपालिकामा निम्न भाषाहरू प्रमुख रूपमा बोलिन्छन्। यी
+              परिवर्तन गाउँपालिकामा निम्न भाषाहरू प्रमुख रूपमा बोलिन्छन्। यी
               भाषाहरूमध्ये{" "}
               {LANGUAGE_NAMES[overallSummary[0]?.language] || "नेपाली"}
               सबैभन्दा धेरै व्यक्तिहरूले बोल्ने भाषा हो, जसलाई कुल जनसंख्याको{" "}
@@ -346,7 +348,7 @@ export default async function WardWiseMotherTonguePopulationPage() {
                   ((overallSummary[0]?.population || 0) / totalPopulation) *
                   100
                 ).toFixed(2),
-                "ne"
+                "ne",
               )}
               % ले बोल्छन्।
             </p>
