@@ -23,7 +23,7 @@ export default function WardAgePopulationPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const { data, isLoading, error } =
-    api.profile.demographics.wardAgeWisePopulation.getAll.useQuery();
+    api.profile.demographics.ageWisePopulation.getAll.useQuery();
 
   const handleAddNew = () => {
     setEditingId(null);
@@ -88,13 +88,13 @@ export default function WardAgePopulationPage() {
           <TabsTrigger value="chart">चार्ट दृश्य</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="table" className="mt-6">
+        {/* <TabsContent value="table" className="mt-6">
           <WardAgeWisePopulationTable data={data || []} onEdit={handleEdit} />
-        </TabsContent>
+        </TabsContent> */}
 
-        <TabsContent value="chart" className="mt-6">
+        {/* <TabsContent value="chart" className="mt-6">
           <WardAgeWisePopulationChart data={data || []} />
-        </TabsContent>
+        </TabsContent> */}
       </Tabs>
 
       <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>

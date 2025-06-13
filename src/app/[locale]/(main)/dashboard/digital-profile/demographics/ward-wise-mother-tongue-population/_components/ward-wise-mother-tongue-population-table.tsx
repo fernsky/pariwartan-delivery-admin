@@ -83,10 +83,10 @@ export default function WardWiseMotherTonguePopulationTable({
 
   const utils = api.useContext();
   const deleteWardWiseMotherTonguePopulation =
-    api.profile.demographics.wardWiseMotherTonguePopulation.delete.useMutation({
+    api.profile.demographics.motherTonguePopulation.delete.useMutation({
       onSuccess: () => {
         toast.success("डाटा सफलतापूर्वक मेटियो");
-        utils.profile.demographics.wardWiseMotherTonguePopulation.getAll.invalidate();
+        utils.profile.demographics.motherTonguePopulation.getAll.invalidate();
       },
       onError: (err) => {
         toast.error(`त्रुटि: ${err.message}`);

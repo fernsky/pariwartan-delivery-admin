@@ -4,12 +4,14 @@
  * Types specific to the demographics domain
  */
 
-// Ward-wise religion population response
+// Religion population response (updated structure without ward)
 export interface WardWiseReligionPopulationResponse {
   id: string;
-  wardNumber: number;
   religionType: ReligionType;
-  population: number;
+  malePopulation: number;
+  femalePopulation: number;
+  totalPopulation: number;
+  percentage: number;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -26,24 +28,27 @@ export interface ReligionPopulationSummaryResponse {
   totalPopulation: number;
 }
 
-// Filter criteria for ward-wise religion population
+// Filter criteria for religion population
 export interface WardWiseReligionPopulationFilter {
-  wardNumber?: number;
   religionType?: ReligionType;
 }
 
-// Create DTO
+// Create DTO (updated structure)
 export interface CreateWardWiseReligionPopulationDto {
-  wardNumber: number;
   religionType: ReligionType;
-  population: number;
+  malePopulation: number;
+  femalePopulation: number;
+  totalPopulation: number;
+  percentage: number;
 }
 
-// Update DTO
+// Update DTO (updated structure)
 export interface UpdateWardWiseReligionPopulationDto {
-  wardNumber: number;
   religionType: ReligionType;
-  population: number;
+  malePopulation: number;
+  femalePopulation: number;
+  totalPopulation: number;
+  percentage: number;
 }
 
 // Religion enum type matching the backend

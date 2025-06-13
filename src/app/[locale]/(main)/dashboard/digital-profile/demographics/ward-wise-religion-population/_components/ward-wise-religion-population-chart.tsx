@@ -23,155 +23,111 @@ import {
   type ReligionType,
 } from "@/server/api/routers/profile/demographics/ward-wise-religion-population.schema";
 
-interface WardWiseReligionPopulationData {
+interface ReligionPopulationData {
   id: string;
-  wardNumber: number;
   religionType: ReligionType;
-  population: number;
-  percentage?: string | null;
+  malePopulation: number;
+  femalePopulation: number;
+  totalPopulation: number;
+  percentage?: number | null;
 }
 
 interface WardWiseReligionPopulationChartProps {
-  data: WardWiseReligionPopulationData[];
+  data: ReligionPopulationData[];
 }
 
 export default function WardWiseReligionPopulationChart({
   data,
 }: WardWiseReligionPopulationChartProps) {
-  const [selectedMetric, setSelectedMetric] = useState<string>("population");
-  const [selectedWard, setSelectedWard] = useState<string>("all");
-
-  // Get unique wards
-  const uniqueWards = useMemo(() => {
-    return Array.from(
-      new Set(data.map((item) => item.wardNumber.toString())),
-    ).sort((a, b) => Number(a) - Number(b));
-  }, [data]);
+  const [selectedMetric, setSelectedMetric] =
+    useState<string>("totalPopulation");
 
   // Get unique religions
   const uniqueReligions = useMemo(() => {
     return Array.from(new Set(data.map((item) => item.religionType))).sort();
   }, [data]);
 
-  // Filter by selected ward
-  const filteredData = useMemo(() => {
-    if (selectedWard === "all") return data;
-    return data.filter((item) => item.wardNumber.toString() === selectedWard);
-  }, [data, selectedWard]);
+  // Get religion display name
+  const getReligionDisplayName = (religionType: ReligionType) => {
+    const religionNames: Record<ReligionType, string> = {
+      HINDU: "हिन्दु",
+      BUDDHIST: "बौद्ध",
+      KIRANT: "किरात",
+      CHRISTIAN: "क्रिश्चियन",
+      ISLAM: "इस्लाम",
+      NATURE: "प्रकृति",
+      BON: "बोन",
+      JAIN: "जैन",
+      BAHAI: "बहाई",
+      SIKH: "सिख",
+      OTHER: "अन्य",
+    };
+    return religionNames[religionType] || religionType;
+  };
 
-  // Group by ward and aggregate religions for bar chart
+  // Prepare bar chart data - show all religions with their populations
   const barChartData = useMemo(() => {
-    if (selectedWard !== "all") {
-      // For a single ward, show all religions
-      return filteredData
-        .sort((a, b) => {
-          // Handle percentage correctly by converting to number
-          const valueA =
-            selectedMetric === "percentage"
-              ? parseFloat(a.percentage || "0")
-              : (a[selectedMetric as keyof typeof a] as number) || 0;
+    return data
+      .sort((a, b) => {
+        const valueA =
+          selectedMetric === "percentage"
+            ? a.percentage || 0
+            : (a[selectedMetric as keyof ReligionPopulationData] as number) ||
+              0;
 
-          const valueB =
-            selectedMetric === "percentage"
-              ? parseFloat(b.percentage || "0")
-              : (b[selectedMetric as keyof typeof b] as number) || 0;
+        const valueB =
+          selectedMetric === "percentage"
+            ? b.percentage || 0
+            : (b[selectedMetric as keyof ReligionPopulationData] as number) ||
+              0;
 
-          return valueB - valueA;
-        })
-        .map((item, index) => {
-          // Generate consistent colors based on index
-          const hue = (index * 137.5) % 360;
-          return {
-            religion: item.religionType,
-            [selectedMetric]:
-              selectedMetric === "percentage"
-                ? parseFloat(item.percentage || "0")
-                : item[selectedMetric as keyof typeof item] || 0,
-            color: `hsl(${hue}, 70%, 50%)`,
-          };
-        });
-    } else {
-      // For all wards, group by religion type instead of ward
-      const religionGroups = uniqueReligions.reduce(
-        (acc, religionType) => {
-          acc[religionType] = {
-            totalValue: 0,
-            count: 0,
-          };
-          return acc;
-        },
-        {} as Record<string, { totalValue: number; count: number }>,
-      );
+        return valueB - valueA;
+      })
+      .map((item, index) => {
+        const hue = (index * 137.5) % 360;
+        const value =
+          selectedMetric === "percentage"
+            ? item.percentage || 0
+            : (item[
+                selectedMetric as keyof ReligionPopulationData
+              ] as number) || 0;
 
-      // Calculate total for each religion
-      filteredData.forEach((item) => {
-        if (item.religionType) {
-          if (selectedMetric === "percentage") {
-            if (item.percentage !== null && item.percentage !== undefined) {
-              religionGroups[item.religionType].totalValue += parseFloat(
-                item.percentage || "0",
-              );
-              religionGroups[item.religionType].count++;
-            }
-          } else {
-            religionGroups[item.religionType].totalValue +=
-              (item[selectedMetric as keyof typeof item] as number) || 0;
-            religionGroups[item.religionType].count++;
-          }
-        }
+        return {
+          religion: getReligionDisplayName(item.religionType),
+          [selectedMetric]: value,
+          color: `hsl(${hue}, 70%, 50%)`,
+        };
       });
-
-      // Create chart data from religion groups
-      return Object.keys(religionGroups)
-        .map((religionType, index) => {
-          const hue = (index * 137.5) % 360;
-          const value =
-            selectedMetric === "percentage"
-              ? religionGroups[religionType].count > 0
-                ? religionGroups[religionType].totalValue /
-                  religionGroups[religionType].count
-                : 0
-              : religionGroups[religionType].totalValue;
-
-          return {
-            religion: religionType,
-            [selectedMetric]: value,
-            color: `hsl(${hue}, 70%, 50%)`,
-          };
-        })
-        .sort((a, b) => Number(b[selectedMetric]) - Number(a[selectedMetric]));
-    }
-  }, [filteredData, selectedMetric, selectedWard, uniqueReligions]);
+  }, [data, selectedMetric]);
 
   // Prepare pie chart data
   const pieChartData = useMemo(() => {
-    const religionGroups = uniqueReligions
-      .map((religionName) => {
-        const religionData = filteredData.filter(
-          (item) => item.religionType === religionName,
-        );
-        const total = religionData.reduce(
-          (sum, item) =>
-            sum + ((item[selectedMetric as keyof typeof item] as number) || 0),
-          0,
-        );
+    const religionGroups = data
+      .map((item) => {
+        const value =
+          selectedMetric === "percentage"
+            ? item.percentage || 0
+            : (item[
+                selectedMetric as keyof ReligionPopulationData
+              ] as number) || 0;
 
         return {
-          id: religionName,
-          label: religionName,
-          value: total,
+          id: item.religionType,
+          label: getReligionDisplayName(item.religionType),
+          value: value,
           color: `hsl(${Math.floor(Math.random() * 360)}, 70%, 50%)`,
         };
       })
       .filter((item) => item.value > 0);
 
-    // Sort by value for better visualization
     return religionGroups.sort((a, b) => b.value - a.value);
-  }, [filteredData, uniqueReligions, selectedMetric]);
+  }, [data, selectedMetric]);
 
   // Define metrics options
   const metrics = [
-    { value: "population", label: "जनसंख्या" },
+    { value: "totalPopulation", label: "कुल जनसंख्या" },
+    { value: "malePopulation", label: "पुरुष जनसंख्या" },
+    { value: "femalePopulation", label: "महिला जनसंख्या" },
     { value: "percentage", label: "प्रतिशत" },
   ];
 
@@ -186,7 +142,7 @@ export default function WardWiseReligionPopulationChart({
     return (
       <div className="text-center py-12">
         <p className="text-gray-500 text-lg">
-          कुनै डाटा उपलब्ध छैन। पहिले वडा धर्म जनसंख्या डाटा थप्नुहोस्।
+          कुनै डाटा उपलब्ध छैन। पहिले धर्म जनसंख्या डाटा थप्नुहोस्।
         </p>
       </div>
     );
@@ -195,10 +151,8 @@ export default function WardWiseReligionPopulationChart({
   return (
     <Card className="mb-6">
       <CardHeader>
-        <CardTitle>वडा अनुसार धर्म जनसंख्या विश्लेषण</CardTitle>
-        <CardDescription>
-          वडा र धर्म अनुसार जनसंख्या डाटा हेर्नुहोस्
-        </CardDescription>
+        <CardTitle>धर्म जनसंख्या विश्लेषण</CardTitle>
+        <CardDescription>धर्म अनुसार जनसंख्या डाटा हेर्नुहोस्</CardDescription>
 
         <div className="flex flex-wrap gap-4 mt-4">
           <div>
@@ -213,25 +167,6 @@ export default function WardWiseReligionPopulationChart({
                 {metrics.map((metric) => (
                   <SelectItem key={metric.value} value={metric.value}>
                     {metric.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <label className="text-sm font-medium mb-1 block">
-              वडा चयन गर्नुहोस्:
-            </label>
-            <Select value={selectedWard} onValueChange={setSelectedWard}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="वडा चयन गर्नुहोस्" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">सबै वडा</SelectItem>
-                {uniqueWards.map((wardNumber) => (
-                  <SelectItem key={wardNumber} value={wardNumber}>
-                    वडा {wardNumber}
                   </SelectItem>
                 ))}
               </SelectContent>

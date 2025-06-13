@@ -75,10 +75,10 @@ export default function WardAgeWisePopulationTable({
   const utils = api.useContext();
 
   const deleteWardAgeWisePopulation =
-    api.profile.demographics.wardAgeWisePopulation.delete.useMutation({
+    api.profile.demographics.ageWisePopulation.delete.useMutation({
       onSuccess: () => {
         toast.success("डाटा सफलतापूर्वक मेटियो");
-        utils.profile.demographics.wardAgeWisePopulation.getAll.invalidate();
+        utils.profile.demographics.ageWisePopulation.getAll.invalidate();
       },
       onError: (err) => {
         toast.error(`त्रुटि: ${err.message}`);

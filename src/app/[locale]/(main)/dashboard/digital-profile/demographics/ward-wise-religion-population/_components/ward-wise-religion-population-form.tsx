@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -30,14 +31,14 @@ import type { ReligionType } from "@/server/api/routers/profile/demographics/war
 // Create a schema for the form that matches the backend schema
 const formSchema = z.object({
   id: z.string().optional(),
-  wardNumber: z.coerce.number().int().positive("वडा नम्बर आवश्यक छ"),
-  wardName: z.string().optional(), // For display only, not sent to backend
   religionType: ReligionTypeEnum,
-  population: z.coerce.number().int().nonnegative().default(0),
-  percentage: z.string().optional(), // For display only, not sent to backend
+  malePopulation: z.coerce.number().int().nonnegative().default(0),
+  femalePopulation: z.coerce.number().int().nonnegative().default(0),
+  totalPopulation: z.coerce.number().int().nonnegative().default(0),
+  percentage: z.coerce.number().nonnegative().optional(),
 });
 
-interface WardWiseReligionPopulationFormProps {
+interface ReligionPopulationFormProps {
   editId: string | null;
   onClose: () => void;
   existingData: any[];
@@ -45,30 +46,34 @@ interface WardWiseReligionPopulationFormProps {
 
 // Helper function to get religion display names
 const getReligionOptions = () => {
+  const religionNames: Record<string, string> = {
+    HINDU: "हिन्दु",
+    BUDDHIST: "बौद्ध",
+    KIRANT: "किरात",
+    CHRISTIAN: "क्रिश्चियन",
+    ISLAM: "इस्लाम",
+    NATURE: "प्रकृति",
+    BON: "बोन",
+    JAIN: "जैन",
+    BAHAI: "बहाई",
+    SIKH: "सिख",
+    OTHER: "अन्य",
+  };
+
   return Object.values(ReligionTypeEnum.Values).map((value) => ({
     value,
-    label: value, // Using the enum value directly as label
+    label: religionNames[value] || value,
   }));
 };
 
-export default function WardWiseReligionPopulationForm({
+export default function ReligionPopulationForm({
   editId,
   onClose,
   existingData,
-}: WardWiseReligionPopulationFormProps) {
+}: ReligionPopulationFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const utils = api.useContext();
   const religionOptions = getReligionOptions();
-
-  // Get unique wards from existing data
-  const uniqueWards = Array.from(
-    new Set(
-      existingData.map((item) => ({
-        wardNumber: item.wardNumber || parseInt(item.wardId),
-        name: item.wardName || "",
-      })),
-    ),
-  ).sort((a, b) => a.wardNumber - b.wardNumber);
 
   // Get the existing record if editing
   const { data: editingData, isLoading: isLoadingEditData } =
@@ -111,11 +116,11 @@ export default function WardWiseReligionPopulationForm({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      wardNumber: 0,
-      wardName: "",
       religionType: ReligionTypeEnum.Values.HINDU,
-      population: 0,
-      percentage: "",
+      malePopulation: 0,
+      femalePopulation: 0,
+      totalPopulation: 0,
+      percentage: 0,
     },
   });
 
@@ -126,30 +131,35 @@ export default function WardWiseReligionPopulationForm({
       if (recordToEdit) {
         form.reset({
           id: recordToEdit.id,
-          wardNumber: recordToEdit.wardNumber,
-          wardName: (recordToEdit as any).wardName || "",
           religionType: recordToEdit.religionType as ReligionType,
-          population: recordToEdit.population || 0,
-          percentage: (recordToEdit as any).percentage || "",
+          malePopulation: recordToEdit.malePopulation || 0,
+          femalePopulation: recordToEdit.femalePopulation || 0,
+          totalPopulation: recordToEdit.totalPopulation || 0,
+          percentage: recordToEdit.percentage || 0,
         });
       }
     }
   }, [editId, editingData, form]);
 
+  // Auto-calculate total population when male or female population changes
+  const malePopulation = form.watch("malePopulation");
+  const femalePopulation = form.watch("femalePopulation");
+
+  useEffect(() => {
+    const total = (malePopulation || 0) + (femalePopulation || 0);
+    form.setValue("totalPopulation", total);
+  }, [malePopulation, femalePopulation, form]);
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
 
-    // Check if a record already exists with this ward and religion (for new records)
+    // Check if a record already exists with this religion (for new records)
     if (!editId) {
       const duplicate = existingData.find(
-        (item) =>
-          item.wardNumber === values.wardNumber &&
-          item.religionType === values.religionType,
+        (item) => item.religionType === values.religionType,
       );
       if (duplicate) {
-        toast.error(
-          `वडा ${values.wardNumber} को लागि ${values.religionType} धर्मको डाटा पहिले नै अवस्थित छ`,
-        );
+        toast.error(`${values.religionType} धर्मको डाटा पहिले नै अवस्थित छ`);
         setIsSubmitting(false);
         return;
       }
@@ -158,9 +168,11 @@ export default function WardWiseReligionPopulationForm({
     // Prepare data that matches the backend schema
     const dataToSubmit = {
       id: values.id,
-      wardNumber: values.wardNumber,
       religionType: values.religionType,
-      population: values.population,
+      malePopulation: values.malePopulation,
+      femalePopulation: values.femalePopulation,
+      totalPopulation: values.totalPopulation,
+      percentage: values.percentage,
     };
 
     if (editId) {
@@ -182,77 +194,8 @@ export default function WardWiseReligionPopulationForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="wardNumber"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>वडा नम्बर</FormLabel>
-                <FormControl>
-                  <Select
-                    value={field.value?.toString() || ""}
-                    onValueChange={(value) => {
-                      field.onChange(parseInt(value));
-                      // Find matching ward for name
-                      const selectedWard = uniqueWards.find(
-                        (ward) => ward.wardNumber === parseInt(value),
-                      );
-                      if (selectedWard) {
-                        form.setValue("wardName", selectedWard.name);
-                      }
-                    }}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="वडा चयन गर्नुहोस्" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {uniqueWards.map((ward) => (
-                        <SelectItem
-                          key={ward.wardNumber}
-                          value={ward.wardNumber.toString()}
-                        >
-                          वडा {ward.wardNumber}
-                        </SelectItem>
-                      ))}
-                      {/* Allow adding new wards */}
-                      {Array.from({ length: 32 }, (_, i) => i + 1)
-                        .filter(
-                          (num) =>
-                            !uniqueWards.some(
-                              (ward) => ward.wardNumber === num,
-                            ),
-                        )
-                        .map((num) => (
-                          <SelectItem key={`new-${num}`} value={num.toString()}>
-                            वडा {num} (नयाँ)
-                          </SelectItem>
-                        ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="wardName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>वडाको नाम</FormLabel>
-                <FormControl>
-                  <Input placeholder="परिवर्तन वडा १" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
         <div className="border-t pt-4">
-          <h3 className="text-lg font-medium mb-4">धर्म विवरण</h3>
+          <h3 className="text-lg font-medium mb-4">धर्म जनसंख्या विवरण</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
               control={form.control}
@@ -261,7 +204,11 @@ export default function WardWiseReligionPopulationForm({
                 <FormItem>
                   <FormLabel>धर्म</FormLabel>
                   <FormControl>
-                    <Select value={field.value} onValueChange={field.onChange}>
+                    <Select
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={!!editId} // Disable religion selection when editing
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="धर्म चयन गर्नुहोस्" />
                       </SelectTrigger>
@@ -284,13 +231,64 @@ export default function WardWiseReligionPopulationForm({
 
             <FormField
               control={form.control}
-              name="population"
+              name="malePopulation"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>जनसंख्या</FormLabel>
+                  <FormLabel>पुरुष जनसंख्या</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="0" {...field} />
+                    <Input
+                      type="number"
+                      placeholder="पुरुष जनसंख्या"
+                      {...field}
+                      onChange={(e) =>
+                        field.onChange(parseInt(e.target.value) || 0)
+                      }
+                    />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="femalePopulation"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>महिला जनसंख्या</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="महिला जनसंख्या"
+                      {...field}
+                      onChange={(e) =>
+                        field.onChange(parseInt(e.target.value) || 0)
+                      }
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="totalPopulation"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>कुल जनसंख्या</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="कुल जनसंख्या"
+                      {...field}
+                      disabled // Auto-calculated
+                      className="bg-muted"
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    यो स्वचालित रूपमा गणना गरिन्छ
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -301,9 +299,17 @@ export default function WardWiseReligionPopulationForm({
               name="percentage"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>प्रतिशत (%)</FormLabel>
+                  <FormLabel>प्रतिशत</FormLabel>
                   <FormControl>
-                    <Input type="text" placeholder="0.00%" {...field} />
+                    <Input
+                      type="number"
+                      step="0.01"
+                      placeholder="प्रतिशत"
+                      {...field}
+                      onChange={(e) =>
+                        field.onChange(parseFloat(e.target.value) || 0)
+                      }
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -325,7 +331,7 @@ export default function WardWiseReligionPopulationForm({
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                सबमिट गर्दै...
+                {editId ? "अपडेट गर्दै..." : "सेभ गर्दै..."}
               </>
             ) : editId ? (
               "अपडेट गर्नुहोस्"

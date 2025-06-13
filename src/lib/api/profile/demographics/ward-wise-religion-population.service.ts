@@ -19,11 +19,7 @@ export class WardWiseReligionPopulationService {
    */
   public async getAll(filter?: WardWiseReligionPopulationFilter): Promise<WardWiseReligionPopulationResponse[]> {
     const queryParams = new URLSearchParams();
-    
-    if (filter?.wardNumber) {
-      queryParams.append('wardNumber', filter.wardNumber.toString());
-    }
-    
+   
     if (filter?.religionType) {
       queryParams.append('religionType', filter.religionType);
     }

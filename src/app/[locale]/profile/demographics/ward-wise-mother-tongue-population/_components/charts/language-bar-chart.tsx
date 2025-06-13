@@ -81,7 +81,9 @@ export default function LanguageBarChart({
           tick={{ fontSize: 12 }}
           tickFormatter={(value) => localizeNumber(value.toString(), "ne")}
         />
-        <YAxis tickFormatter={(value) => localizeNumber(value.toString(), "ne")} />
+        <YAxis
+          tickFormatter={(value) => localizeNumber(value.toString(), "ne")}
+        />
         <Tooltip content={CustomTooltip} />
         <Legend
           wrapperStyle={{ paddingTop: 20 }}
@@ -122,10 +124,16 @@ export default function LanguageBarChart({
                 <Cell
                   key={`cell-${entryIndex}`}
                   fill={
-                    LANGUAGE_COLORS[languageKey as keyof typeof LANGUAGE_COLORS] ||
-                    LANGUAGE_COLOR_PALETTE[index % LANGUAGE_COLOR_PALETTE.length]
+                    LANGUAGE_COLORS[
+                      languageKey as keyof typeof LANGUAGE_COLORS
+                    ] ||
+                    LANGUAGE_COLOR_PALETTE[
+                      index % LANGUAGE_COLOR_PALETTE.length
+                    ]
                   }
-                  fillOpacity={0.8 + (0.2 * index) / Object.keys(LANGUAGE_NAMES).length}
+                  fillOpacity={
+                    0.8 + (0.2 * index) / Object.keys(LANGUAGE_NAMES).length
+                  }
                 />
               ))}
             </Bar>

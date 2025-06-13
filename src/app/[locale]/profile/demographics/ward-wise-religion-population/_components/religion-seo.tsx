@@ -1,22 +1,29 @@
 import Script from "next/script";
 
 interface ReligionSEOProps {
-  overallSummary: Array<{
-    religion: string;
-    religionName: string;
-    population: number;
+  religionData: Array<{
+    id?: string;
+    religionType: string;
+    malePopulation: number;
+    femalePopulation: number;
+    totalPopulation: number;
+    percentage: number;
+    updatedAt?: string;
+    createdAt?: string;
   }>;
-  totalPopulation: number;
   RELIGION_NAMES: Record<string, string>;
-  wardNumbers: number[];
 }
 
 export default function ReligionSEO({
-  overallSummary,
-  totalPopulation,
+  religionData,
   RELIGION_NAMES,
-  wardNumbers,
 }: ReligionSEOProps) {
+  // Calculate total population
+  const totalPopulation = religionData.reduce(
+    (sum, item) => sum + item.totalPopulation,
+    0,
+  );
+
   // Create structured data for SEO
   const generateStructuredData = () => {
     // Define English names for religions
@@ -35,29 +42,29 @@ export default function ReligionSEO({
     };
 
     // Convert religion stats to structured data format
-    const religionStats = overallSummary.map((item) => ({
+    const religionStats = religionData.map((item) => ({
       "@type": "Observation",
-      name: `${RELIGION_NAMES_EN[item.religion] || item.religion} population in Khajura Rural Municipality`,
+      name: `${RELIGION_NAMES_EN[item.religionType] || item.religionType} population in Khajura Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
-        name: `${RELIGION_NAMES_EN[item.religion] || item.religion} adherents`,
+        name: `${RELIGION_NAMES_EN[item.religionType] || item.religionType} adherents`,
         unitText: "people",
       },
-      measuredValue: item.population,
-      description: `${item.population.toLocaleString()} people in Khajura Rural Municipality follow ${RELIGION_NAMES_EN[item.religion] || item.religion} religion (${((item.population / totalPopulation) * 100).toFixed(2)}% of total population)`,
+      measuredValue: item.totalPopulation,
+      description: `${item.totalPopulation.toLocaleString()} people in Khajura Rural Municipality follow ${RELIGION_NAMES_EN[item.religionType] || item.religionType} religion (${(item.percentage / 100).toFixed(2)}% of total population)`,
     }));
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
       name: "Religious Demographics of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Religious population distribution data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total population of ${totalPopulation.toLocaleString()} people.`,
+      description: `Religious population distribution data for Khajura Rural Municipality with a total population of ${totalPopulation.toLocaleString()} people.`,
       keywords: [
         "Khajura Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Religious demographics",
-        "Ward-wise religion data",
+        "Religion data",
         "Nepal census",
         ...Object.values(RELIGION_NAMES_EN).map((name) => `${name} population`),
         ...Object.values(RELIGION_NAMES).map((name) => `${name} जनसंख्या`),
@@ -78,11 +85,11 @@ export default function ReligionSEO({
           longitude: "81.6314",
         },
       },
-      variableMeasured: overallSummary.map((item) => ({
+      variableMeasured: religionData.map((item) => ({
         "@type": "PropertyValue",
-        name: `${RELIGION_NAMES_EN[item.religion] || item.religion} population`,
+        name: `${RELIGION_NAMES_EN[item.religionType] || item.religionType} population`,
         unitText: "people",
-        value: item.population,
+        value: item.totalPopulation,
       })),
       observation: religionStats,
     };

@@ -16,13 +16,13 @@ import { PlusCircle, UsersIcon } from "lucide-react";
 import { ContentLayout } from "@/components/admin-panel/content-layout";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function WardWiseReligionPopulationPage() {
+export default function ReligionPopulationPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
 
-  // Fetch ward-wise religion population data
+  // Fetch religion population data
   const {
-    data: wardWiseReligionData,
+    data: religionPopulationData,
     isLoading,
     isError,
   } = api.profile.demographics.wardWiseReligionPopulation.getAll.useQuery(
@@ -45,8 +45,8 @@ export default function WardWiseReligionPopulationPage() {
   if (isLoading) {
     return (
       <ContentLayout
-        title="Ward-wise Religion Population"
-        subtitle="Ward-wise religion population details"
+        title="Religion Population"
+        subtitle="Religion population details"
         icon={<UsersIcon className="h-6 w-6 text-primary" />}
       >
         <div className="space-y-2">
@@ -61,8 +61,8 @@ export default function WardWiseReligionPopulationPage() {
   if (isError) {
     return (
       <ContentLayout
-        title="Ward-wise Religion Population"
-        subtitle="Ward-wise religion population details"
+        title="Religion Population"
+        subtitle="Religion population details"
         icon={<UsersIcon className="h-6 w-6 text-primary" />}
       >
         <div className="text-center text-red-500 py-10">
@@ -74,8 +74,8 @@ export default function WardWiseReligionPopulationPage() {
 
   return (
     <ContentLayout
-      title="वडा अनुसार धर्म जनसंख्या"
-      subtitle="वडा अनुसार धर्म जनसंख्याको विवरण"
+      title="धर्म जनसंख्या"
+      subtitle="धर्म अनुसार जनसंख्याको विवरण"
       icon={<UsersIcon className="h-6 w-6 text-primary" />}
       actions={
         <Button
@@ -87,18 +87,18 @@ export default function WardWiseReligionPopulationPage() {
         </Button>
       }
     >
-      {wardWiseReligionData && wardWiseReligionData.length > 0 ? (
+      {religionPopulationData && religionPopulationData.length > 0 ? (
         <>
-          <WardWiseReligionPopulationChart data={wardWiseReligionData} />
+          <WardWiseReligionPopulationChart data={religionPopulationData} />
           <WardWiseReligionPopulationTable
-            data={wardWiseReligionData}
+            data={religionPopulationData}
             onEdit={handleEdit}
           />
         </>
       ) : (
         <div className="text-center py-12">
           <p className="text-lg text-gray-500">
-            कुनै डाटा उपलब्ध छैन। कृपया वडा अनुसार धर्म जनसंख्या थप्नुहोस्।
+            कुनै डाटा उपलब्ध छैन। कृपया धर्म जनसंख्या थप्नुहोस्।
           </p>
           <Button onClick={() => setIsFormOpen(true)} className="mt-4">
             <PlusCircle className="h-4 w-4 mr-2" />
@@ -119,7 +119,7 @@ export default function WardWiseReligionPopulationPage() {
           <WardWiseReligionPopulationForm
             editId={editingId}
             onClose={handleFormClose}
-            existingData={wardWiseReligionData || []}
+            existingData={religionPopulationData || []}
           />
         </DialogContent>
       </Dialog>

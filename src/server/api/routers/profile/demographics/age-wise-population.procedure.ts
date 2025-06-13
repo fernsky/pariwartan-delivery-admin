@@ -3,7 +3,7 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "@/server/api/trpc";
-import { ageWisePopulation } from "@/server/db/schema/profile/demographics/ward-age-wise-population";
+import { ageWisePopulation } from "@/server/db/schema/profile/demographics/age-wise-population";
 import { eq, and, desc, sql } from "drizzle-orm";
 import {
   ageWisePopulationSchema,
@@ -11,7 +11,7 @@ import {
   updateAgeWisePopulationSchema,
   AgeGroup,
   Gender,
-} from "./ward-age-wise-population.schema";
+} from "./age-wise-population.schema";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";

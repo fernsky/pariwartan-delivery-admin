@@ -1,9 +1,9 @@
-import { pgTable } from "../../../schema/basic";
+import { pgTable } from "../../basic";
 import { integer, timestamp, varchar } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
 // Define the age wise population table (removed ward dependency)
-export const ageWisePopulation = pgTable("acme_age_wise_population", {
+export const ageWisePopulation = pgTable("age_wise_population", {
   id: varchar("id", { length: 36 }).primaryKey(),
   ageGroup: varchar("age_group")
     .notNull()

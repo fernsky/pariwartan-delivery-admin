@@ -6,7 +6,7 @@ export * from "./ward-wise-caste-population";
 export * from "./ward-wise-demographic-summary";
 export * from "./ward-wise-househead-gender";
 export * from "./ward-wise-mother-tongue-population";
-export * from "./ward-age-wise-population";
+export * from "./age-wise-population";
 export * from "./ward-wise-religion-population";
 // Major Occupation
 export * from "./ward-wise-major-occupation";

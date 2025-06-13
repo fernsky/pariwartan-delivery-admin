@@ -25,6 +25,9 @@ const LANGUAGE_NAMES: Record<string, string> = {
   NEPALI: "नेपाली",
   MAITHILI: "मैथिली",
   BHOJPURI: "भोजपुरी",
+  MAGAR_KHAM: "मगर खाम",
+  MAGAR_DHUT: "मगर धुत",
+  DOTELI: "डोटेली",
   THARU: "थारू",
   TAMANG: "तामाङ",
   NEWARI: "नेवारी",
@@ -36,7 +39,7 @@ const LANGUAGE_NAMES: Record<string, string> = {
   RAI: "राई",
   GURUNG: "गुरुङ",
   SHERPA: "शेर्पा",
-  DOTELI: "डोटेली",
+
   AWADI: "अवधी",
   OTHER: "अन्य",
 };
@@ -46,7 +49,7 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     // Fetch data for SEO using tRPC
     const languageData =
-      await api.profile.demographics.wardWiseMotherTonguePopulation.getAll.query();
+      await api.profile.demographics.motherTonguePopulation.getAll.query();
     const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
@@ -162,13 +165,13 @@ const toc = [
 export default async function WardWiseMotherTonguePopulationPage() {
   // Fetch all mother tongue population data from your tRPC route
   const languageData =
-    await api.profile.demographics.wardWiseMotherTonguePopulation.getAll.query();
+    await api.profile.demographics.motherTonguePopulation.getAll.query();
 
   // Fetch summary statistics if available
   let summaryData = null;
   try {
     summaryData =
-      await api.profile.demographics.wardWiseMotherTonguePopulation.summary.query();
+      await api.profile.demographics.motherTonguePopulation.summary.query();
   } catch (error) {
     console.error("Could not fetch summary data", error);
   }

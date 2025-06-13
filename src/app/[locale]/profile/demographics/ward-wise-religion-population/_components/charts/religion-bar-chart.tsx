@@ -30,13 +30,18 @@ const RELIGION_COLOR_PALETTE = [
 ];
 
 interface ReligionBarChartProps {
-  wardWiseData: Array<Record<string, any>>;
+  religionData: Array<{
+    religion: string;
+    पुरुष: number;
+    महिला: number;
+    जम्मा: number;
+  }>;
   RELIGION_COLORS: Record<string, string>;
   RELIGION_NAMES: Record<string, string>;
 }
 
 export default function ReligionBarChart({
-  wardWiseData,
+  religionData,
   RELIGION_COLORS,
   RELIGION_NAMES,
 }: ReligionBarChartProps) {
@@ -45,7 +50,7 @@ export default function ReligionBarChart({
     if (active && payload && payload.length) {
       return (
         <div className="bg-background p-3 border shadow-sm rounded-md">
-          <p className="font-medium">{localizeNumber(label, "ne")}</p>
+          <p className="font-medium">{label}</p>
           <div className="space-y-1 mt-2">
             {payload.map((entry: any, index: number) => (
               <div key={index} className="flex items-center gap-2">
@@ -53,7 +58,7 @@ export default function ReligionBarChart({
                   className="w-2 h-2 rounded-full"
                   style={{ backgroundColor: entry.color }}
                 ></div>
-                <span>{entry.name}: </span>
+                <span>{entry.dataKey}: </span>
                 <span className="font-medium">
                   {localizeNumber(entry.value?.toLocaleString() || "0", "ne")}
                 </span>
@@ -69,19 +74,23 @@ export default function ReligionBarChart({
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart
-        data={wardWiseData}
-        margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
-        barSize={20}
+        data={religionData}
+        margin={{ top: 20, right: 10, left: 10, bottom: 60 }}
+        barSize={30}
       >
         <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
         <XAxis
-          dataKey="ward"
+          dataKey="religion"
           scale="point"
-          padding={{ left: 10, right: 10 }}
+          padding={{ left: 70, right: 5 }}
           tick={{ fontSize: 12 }}
+          angle={-45}
+          textAnchor="end"
+          height={80}
+        />
+        <YAxis
           tickFormatter={(value) => localizeNumber(value.toString(), "ne")}
         />
-        <YAxis tickFormatter={(value) => localizeNumber(value.toString(), "ne")} />
         <Tooltip content={CustomTooltip} />
         <Legend
           wrapperStyle={{ paddingTop: 20 }}
@@ -89,48 +98,10 @@ export default function ReligionBarChart({
           verticalAlign="bottom"
           align="center"
         />
-        {/* Dynamically generate bars based on available religions in wardWiseData */}
-        {Object.keys(
-          wardWiseData.reduce(
-            (acc, ward) => {
-              Object.keys(ward).forEach((key) => {
-                if (key !== "ward") acc[key] = true;
-              });
-              return acc;
-            },
-            {} as Record<string, boolean>,
-          ),
-        ).map((religion, index) => {
-          // Find the religion key for color mapping
-          const religionKey =
-            Object.keys(RELIGION_NAMES).find(
-              (key) => RELIGION_NAMES[key] === religion,
-            ) || "OTHER";
-
-          return (
-            <Bar
-              key={religion}
-              dataKey={religion}
-              stackId="a"
-              name={religion}
-              fill={
-                RELIGION_COLORS[religionKey as keyof typeof RELIGION_COLORS] ||
-                RELIGION_COLOR_PALETTE[index % RELIGION_COLOR_PALETTE.length]
-              }
-            >
-              {wardWiseData.map((entry, entryIndex) => (
-                <Cell
-                  key={`cell-${entryIndex}`}
-                  fill={
-                    RELIGION_COLORS[religionKey as keyof typeof RELIGION_COLORS] ||
-                    RELIGION_COLOR_PALETTE[index % RELIGION_COLOR_PALETTE.length]
-                  }
-                  fillOpacity={0.8 + (0.2 * index) / Object.keys(RELIGION_NAMES).length}
-                />
-              ))}
-            </Bar>
-          );
-        })}
+        {/* Bars for Male, Female, and Total */}
+        <Bar dataKey="पुरुष" name="पुरुष" fill="#3B82F6" fillOpacity={0.8} />
+        <Bar dataKey="महिला" name="महिला" fill="#EC4899" fillOpacity={0.8} />
+        <Bar dataKey="जम्मा" name="जम्मा" fill="#10B981" fillOpacity={0.8} />
       </BarChart>
     </ResponsiveContainer>
   );

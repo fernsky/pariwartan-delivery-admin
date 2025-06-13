@@ -27,7 +27,7 @@ import { Loader2 } from "lucide-react";
 import {
   ageGroupEnum,
   genderEnum,
-} from "@/server/api/routers/profile/demographics/ward-age-wise-population.schema";
+} from "@/server/api/routers/profile/demographics/age-wise-population.schema";
 
 type AgeGroup = z.infer<typeof ageGroupEnum>;
 type Gender = z.infer<typeof genderEnum>;
@@ -60,13 +60,13 @@ export default function WardAgeWisePopulationForm({
 
   // Get the existing record if editing
   const { data: allData, isLoading: isLoadingEditData } =
-    api.profile.demographics.wardAgeWisePopulation.getAll.useQuery();
+    api.profile.demographics.ageWisePopulation.getAll.useQuery();
 
   const createMutation =
-    api.profile.demographics.wardAgeWisePopulation.create.useMutation({
+    api.profile.demographics.ageWisePopulation.create.useMutation({
       onSuccess: () => {
         toast.success("नयाँ उमेर अनुसार जनसंख्या डाटा सफलतापूर्वक थपियो");
-        utils.profile.demographics.wardAgeWisePopulation.getAll.invalidate();
+        utils.profile.demographics.ageWisePopulation.getAll.invalidate();
         setIsSubmitting(false);
         onClose();
       },
@@ -77,10 +77,10 @@ export default function WardAgeWisePopulationForm({
     });
 
   const updateMutation =
-    api.profile.demographics.wardAgeWisePopulation.update.useMutation({
+    api.profile.demographics.ageWisePopulation.update.useMutation({
       onSuccess: () => {
         toast.success("उमेर अनुसार जनसंख्या डाटा सफलतापूर्वक अपडेट गरियो");
-        utils.profile.demographics.wardAgeWisePopulation.getAll.invalidate();
+        utils.profile.demographics.ageWisePopulation.getAll.invalidate();
         setIsSubmitting(false);
         onClose();
       },
@@ -108,7 +108,6 @@ export default function WardAgeWisePopulationForm({
       if (recordToEdit) {
         form.reset({
           id: recordToEdit.id,
-          wardNumber: recordToEdit.wardNumber,
           ageGroup: recordToEdit.ageGroup,
           gender: recordToEdit.gender,
           population: recordToEdit.population,
@@ -179,6 +178,8 @@ export default function WardAgeWisePopulationForm({
         return "७०-७४ वर्ष";
       case "AGE_75_AND_ABOVE":
         return "७५+ वर्ष";
+      default:
+        return "अज्ञात उमेर समूह";
     }
   };
 

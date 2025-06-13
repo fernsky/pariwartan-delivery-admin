@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { genderEnum, ageGroupEnum } from "./ward-age-wise-population.schema";
+import { genderEnum, ageGroupEnum } from "./age-wise-population.schema";
 
 // Reusing the gender and age group enums from ward-age-wise-population.schema.ts
 

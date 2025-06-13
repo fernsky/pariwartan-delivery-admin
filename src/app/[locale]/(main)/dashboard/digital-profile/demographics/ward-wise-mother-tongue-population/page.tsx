@@ -24,7 +24,7 @@ export default function WardWiseMotherTonguePopulationPage() {
     data: wardMotherTongueData,
     isLoading,
     isError,
-  } = api.profile.demographics.wardWiseMotherTonguePopulation.getAll.useQuery();
+  } = api.profile.demographics.motherTonguePopulation.getAll.useQuery();
 
   const handleEdit = (id: string) => {
     setEditId(id);

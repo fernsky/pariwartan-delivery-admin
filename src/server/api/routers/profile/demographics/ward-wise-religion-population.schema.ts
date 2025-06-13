@@ -16,28 +16,38 @@ export const ReligionTypeEnum = z.enum([
 ]);
 export type ReligionType = z.infer<typeof ReligionTypeEnum>;
 
-// Schema for ward-wise religion population data
-export const wardWiseReligionPopulationSchema = z.object({
+// Schema for religion population data
+export const religionPopulationSchema = z.object({
   id: z.string().optional(),
-  wardNumber: z.number().int().positive(),
   religionType: ReligionTypeEnum,
-  population: z.number().int().nonnegative(),
+  malePopulation: z.number().nonnegative().default(0),
+  femalePopulation: z.number().nonnegative().default(0),
+  totalPopulation: z.number().nonnegative().default(0),
+  percentage: z.number().nonnegative().optional(),
 });
 
-// Schema for filtering ward-wise religion population data
-export const wardWiseReligionPopulationFilterSchema = z.object({
-  wardNumber: z.number().int().positive().optional(),
+// Schema for filtering religion population data
+export const religionPopulationFilterSchema = z.object({
   religionType: ReligionTypeEnum.optional(),
 });
 
-export const updateWardWiseReligionPopulationSchema =
-  wardWiseReligionPopulationSchema;
+export const updateReligionPopulationSchema = religionPopulationSchema;
 
-export type WardWiseReligionPopulationData = z.infer<
-  typeof wardWiseReligionPopulationSchema
->;
-export type UpdateWardWiseReligionPopulationData =
-  WardWiseReligionPopulationData;
-export type WardWiseReligionPopulationFilter = z.infer<
-  typeof wardWiseReligionPopulationFilterSchema
->;
+export type ReligionPopulationData = z.infer<typeof religionPopulationSchema>;
+export type UpdateReligionPopulationData = ReligionPopulationData;
+export type ReligionPopulationFilter = z.infer<typeof religionPopulationFilterSchema>;
+
+// Legacy exports for backward compatibility
+export const genderWiseReligionPopulationSchema = religionPopulationSchema;
+export const genderWiseReligionPopulationFilterSchema = religionPopulationFilterSchema;
+export const updateGenderWiseReligionPopulationSchema = updateReligionPopulationSchema;
+export const wardWiseReligionPopulationSchema = religionPopulationSchema;
+export const wardWiseReligionPopulationFilterSchema = religionPopulationFilterSchema;
+export const updateWardWiseReligionPopulationSchema = updateReligionPopulationSchema;
+
+export type GenderWiseReligionPopulationData = ReligionPopulationData;
+export type UpdateGenderWiseReligionPopulationData = UpdateReligionPopulationData;
+export type GenderWiseReligionPopulationFilter = ReligionPopulationFilter;
+export type WardWiseReligionPopulationData = ReligionPopulationData;
+export type UpdateWardWiseReligionPopulationData = UpdateReligionPopulationData;
+export type WardWiseReligionPopulationFilter = ReligionPopulationFilter;

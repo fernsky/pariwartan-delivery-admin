@@ -151,8 +151,11 @@ export default function MotherTongueCharts({
                             <span>{item.languageName}</span>
                             <span className="font-medium">
                               {localizeNumber(
-                                ((item.population / totalPopulation) * 100).toFixed(1),
-                                "ne"
+                                (
+                                  (item.population / totalPopulation) *
+                                  100
+                                ).toFixed(1),
+                                "ne",
                               )}
                               %
                             </span>
@@ -206,8 +209,10 @@ export default function MotherTongueCharts({
                       </td>
                       <td className="border p-2 text-right">
                         {localizeNumber(
-                          ((item.population / totalPopulation) * 100).toFixed(2),
-                          "ne"
+                          ((item.population / totalPopulation) * 100).toFixed(
+                            2,
+                          ),
+                          "ne",
                         )}
                         %
                       </td>
@@ -229,7 +234,6 @@ export default function MotherTongueCharts({
                 </tfoot>
               </table>
             </div>
-           
           </TabsContent>
         </Tabs>
       </div>
@@ -249,16 +253,16 @@ export default function MotherTongueCharts({
           content="Mother tongue distribution across wards in Khajura"
         />
 
-        <div className="border-b px-4 py-3">
+        {/* <div className="border-b px-4 py-3">
           <h3 className="text-xl font-semibold" itemProp="headline">
             वडा अनुसार मातृभाषा वितरण
           </h3>
           <p className="text-sm text-muted-foreground">
             वडा र मातृभाषा अनुसार जनसंख्या वितरण
           </p>
-        </div>
+        </div> */}
 
-        <div className="p-6">
+        {/* <div className="p-6">
           <div className="h-[500px]">
             <LanguageBarChart
               wardWiseData={wardWiseData}
@@ -266,7 +270,7 @@ export default function MotherTongueCharts({
               LANGUAGE_NAMES={LANGUAGE_NAMES}
             />
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Detailed ward analysis */}
@@ -284,16 +288,16 @@ export default function MotherTongueCharts({
           content="Detailed linguistic composition of each ward in Khajura"
         />
 
-        <div className="border-b px-4 py-3">
+        {/* <div className="border-b px-4 py-3">
           <h3 className="text-xl font-semibold" itemProp="headline">
             वडा अनुसार विस्तृत भाषिक विश्लेषण
           </h3>
           <p className="text-sm text-muted-foreground">
             प्रत्येक वडाको विस्तृत भाषिक संरचना
           </p>
-        </div>
+        </div> */}
 
-        <Tabs defaultValue="table" className="w-full">
+        {/* <Tabs defaultValue="table" className="w-full">
           <div className="border-b bg-muted/40">
             <div className="container">
               <TabsList className="h-10 bg-transparent">
@@ -330,16 +334,16 @@ export default function MotherTongueCharts({
                 <tbody>
                   {wardIds.map((wardNumber, i) => {
                     const wardItems = languageData.filter(
-                      (item) => item.wardNumber === wardNumber
+                      (item) => item.wardNumber === wardNumber,
                     );
                     const wardTotal = wardItems.reduce(
                       (sum, item) => sum + (item.population || 0),
-                      0
+                      0,
                     );
 
                     // Sort by population to find primary and secondary languages
                     const sortedItems = [...wardItems].sort(
-                      (a, b) => (b.population || 0) - (a.population || 0)
+                      (a, b) => (b.population || 0) - (a.population || 0),
                     );
                     const primaryLanguage = sortedItems[0];
                     const secondaryLanguage = sortedItems[1];
@@ -359,7 +363,7 @@ export default function MotherTongueCharts({
                           {primaryLanguage?.population
                             ? localizeNumber(
                                 primaryLanguage.population.toLocaleString(),
-                                "ne"
+                                "ne",
                               )
                             : "०"}
                         </td>
@@ -370,7 +374,7 @@ export default function MotherTongueCharts({
                                   (primaryLanguage.population / wardTotal) *
                                   100
                                 ).toFixed(2),
-                                "ne"
+                                "ne",
                               ) + "%"
                             : "०%"}
                         </td>
@@ -384,7 +388,7 @@ export default function MotherTongueCharts({
                           {secondaryLanguage?.population
                             ? localizeNumber(
                                 secondaryLanguage.population.toLocaleString(),
-                                "ne"
+                                "ne",
                               )
                             : "०"}
                         </td>
@@ -395,7 +399,7 @@ export default function MotherTongueCharts({
                                   (secondaryLanguage.population / wardTotal) *
                                   100
                                 ).toFixed(2),
-                                "ne"
+                                "ne",
                               ) + "%"
                             : "०%"}
                         </td>
@@ -405,7 +409,6 @@ export default function MotherTongueCharts({
                 </tbody>
               </table>
             </div>
-           
           </TabsContent>
 
           <TabsContent value="chart" className="p-6">
@@ -416,7 +419,7 @@ export default function MotherTongueCharts({
               LANGUAGE_COLORS={LANGUAGE_COLORS}
             />
           </TabsContent>
-        </Tabs>
+        </Tabs> */}
       </div>
     </>
   );

@@ -3,32 +3,10 @@ import { z } from "zod";
 // Define the language type enum to match the database enum
 export const LanguageTypeEnum = z.enum([
   "NEPALI",
-  "LIMBU",
-  "RAI",
-  "HINDI",
-  "NEWARI",
-  "SHERPA",
-  "TAMANG",
-  "MAITHILI",
   "BHOJPURI",
-  "THARU",
-  "BAJJIKA",
-  "MAGAR",
+  "MAGAR_DHUT",
   "DOTELI",
-  "URDU",
-  "AWADI",
-  "GURUNG",
-  "BAITADELI",
-  "AACHAMI",
-  "BANTAWA",
-  "RAJBANSHI",
-  "CHAMLING",
-  "BAJHANGI",
-  "SANTHALI",
-  "CHEPANG",
-  "DANUWAR",
-  "SUNUWAR",
-  "MAGAHI",
+  "MAGAR_KHAM",
   "URAUN",
   "KULUNG",
   "KHAM",
@@ -129,28 +107,22 @@ export const LanguageTypeEnum = z.enum([
 ]);
 export type LanguageType = z.infer<typeof LanguageTypeEnum>;
 
-// Schema for ward-wise mother tongue population data
-export const wardWiseMotherTonguePopulationSchema = z.object({
+// Schema for mother tongue population data
+export const motherTonguePopulationSchema = z.object({
   id: z.string().optional(),
-  wardNumber: z.number().int().positive(),
   languageType: LanguageTypeEnum,
   population: z.number().int().nonnegative(),
+  percentage: z.number().min(0).max(100).optional(),
 });
 
-// Schema for filtering ward-wise mother tongue population data
-export const wardWiseMotherTonguePopulationFilterSchema = z.object({
-  wardNumber: z.number().int().positive().optional(),
+// Schema for filtering mother tongue population data
+export const motherTonguePopulationFilterSchema = z.object({
   languageType: LanguageTypeEnum.optional(),
 });
 
-export const updateWardWiseMotherTonguePopulationSchema =
-  wardWiseMotherTonguePopulationSchema;
+export const updateMotherTonguePopulationSchema = motherTonguePopulationSchema;
 
-export type WardWiseMotherTonguePopulationData = z.infer<
-  typeof wardWiseMotherTonguePopulationSchema
->;
-export type UpdateWardWiseMotherTonguePopulationData =
-  WardWiseMotherTonguePopulationData;
-export type WardWiseMotherTonguePopulationFilter = z.infer<
-  typeof wardWiseMotherTonguePopulationFilterSchema
->;
+export type MotherTonguePopulationData = z.infer<typeof motherTonguePopulationSchema>;
+export type UpdateMotherTonguePopulationData = MotherTonguePopulationData;
+export type MotherTonguePopulationFilter = z.infer<typeof motherTonguePopulationFilterSchema>;
+

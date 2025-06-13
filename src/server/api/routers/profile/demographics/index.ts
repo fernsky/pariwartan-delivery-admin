@@ -5,9 +5,9 @@ import {wardAgeWiseEconomicallyActivePopulationRouter} from "./ward-age-wise-eco
 import { wardTimeSeriesRouter } from "./ward-time-series.procedure";
 import { wardWiseDemographicSummaryRouter } from "./ward-wise-demographic-summary.procedure";
 import { wardWiseCastePopulationRouter } from "./ward-wise-caste-population.procedure";
-import {ageWisePopulationRouter} from "./ward-age-wise-population.procedure";
+import {ageWisePopulationRouter} from "./age-wise-population.procedure";
 import { wardWiseHouseHeadGenderRouter } from "./ward-wise-househead-gender.procedure";
-import { wardWiseMotherTonguePopulationRouter } from "./ward-wise-mother-tongue-population.procedure";
+import { motherTonguePopulationRouter } from "./ward-wise-mother-tongue-population.procedure";
 import { wardWiseReligionPopulationRouter } from "./ward-wise-religion-population.procedure";
 import { wardAgeWiseMaritalStatusRouter } from "./ward-age-wise-marital-status.procedure";
 import { wardAgeGenderWiseMarriedAgeRouter } from "./ward-age-gender-wise-married-age.procedure";
@@ -32,7 +32,7 @@ export const demographicsRouter = createTRPCRouter({
   ageWisePopulation: ageWisePopulationRouter,
   wardWiseCastePopulation: wardWiseCastePopulationRouter,
   wardWiseHouseHeadGender: wardWiseHouseHeadGenderRouter,
-  wardWiseMotherTonguePopulation: wardWiseMotherTonguePopulationRouter,
+  motherTonguePopulation: motherTonguePopulationRouter,
   wardWiseReligionPopulation: wardWiseReligionPopulationRouter,
   wardAgeWiseMaritalStatus: wardAgeWiseMaritalStatusRouter,
   wardAgeGenderWiseMarriedAge: wardAgeGenderWiseMarriedAgeRouter,

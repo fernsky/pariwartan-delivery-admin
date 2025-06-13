@@ -65,7 +65,7 @@ const demographicCategories = [
     title: "उमेर अनुसार जनसंख्या",
     description:
       "परिवर्तन गाउँपालिकामा उमेर समूह अनुसार जनसंख्या वितरण र वडागत विश्लेषण।",
-    href: "/profile/demographics/ward-age-wise-population",
+    href: "/profile/demographics/age-wise-population",
     icon: <Users className="h-5 w-5" />,
   },
   {

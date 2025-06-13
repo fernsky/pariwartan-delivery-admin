@@ -10,7 +10,7 @@ import {
   wardAgeGenderWiseDeceasedPopulationFilterSchema,
   updateWardAgeGenderWiseDeceasedPopulationSchema,
 } from "./ward-age-gender-wise-deceased-population.schema";
-import { AgeGroup, Gender } from "./ward-age-wise-population.schema";
+import { AgeGroup, Gender } from "./age-wise-population.schema";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";

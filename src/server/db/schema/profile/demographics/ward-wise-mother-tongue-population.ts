@@ -1,35 +1,13 @@
 import { pgTable } from "../../../schema/basic";
-import { integer, timestamp, varchar, pgEnum } from "drizzle-orm/pg-core";
+import { integer, timestamp, varchar, pgEnum, decimal } from "drizzle-orm/pg-core";
 
-// Define language type enum
+// Define language type enum based on actual data - extended version
 export const languageTypeEnum = pgEnum("language_type", [
   "NEPALI",
-  "LIMBU",
-  "RAI",
-  "HINDI",
-  "NEWARI",
-  "SHERPA",
-  "TAMANG",
-  "MAITHILI",
-  "BHOJPURI",
-  "THARU",
-  "BAJJIKA",
-  "MAGAR",
+  "BHOJPURI", 
+  "MAGAR_DHUT",
   "DOTELI",
-  "URDU",
-  "AWADI",
-  "GURUNG",
-  "BAITADELI",
-  "AACHAMI",
-  "BANTAWA",
-  "RAJBANSHI",
-  "CHAMLING",
-  "BAJHANGI",
-  "SANTHALI",
-  "CHEPANG",
-  "DANUWAR",
-  "SUNUWAR",
-  "MAGAHI",
+  "MAGAR_KHAM",
   "URAUN",
   "KULUNG",
   "KHAM",
@@ -126,21 +104,22 @@ export const languageTypeEnum = pgEnum("language_type", [
   "SPANISH",
   "NAGAMIJ",
   "ARABI",
-  "OTHER",
+  "OTHER"
 ]);
 
-export const wardWiseMotherTonguePopulation = pgTable(
-  "ward_wise_mother_tongue_population",
+export const motherTonguePopulation = pgTable(
+  "mother_tongue_population",
   {
     id: varchar("id", { length: 36 }).primaryKey(),
-
-    wardNumber: integer("ward_number").notNull(),
 
     // Language category
     languageType: languageTypeEnum("language_type").notNull(),
 
-    // Number of people speaking the specified language in the ward
+    // Number of people speaking the specified language
     population: integer("population").notNull(),
+
+    // Percentage of total population
+    percentage: decimal("percentage", { precision: 5, scale: 2 }),
 
     // Metadata
     updatedAt: timestamp("updated_at")
@@ -150,7 +129,6 @@ export const wardWiseMotherTonguePopulation = pgTable(
   },
 );
 
-export type WardWiseMotherTonguePopulation =
-  typeof wardWiseMotherTonguePopulation.$inferSelect;
-export type NewWardWiseMotherTonguePopulation =
-  typeof wardWiseMotherTonguePopulation.$inferInsert;
+export type MotherTonguePopulation = typeof motherTonguePopulation.$inferSelect;
+export type NewMotherTonguePopulation = typeof motherTonguePopulation.$inferInsert;
+

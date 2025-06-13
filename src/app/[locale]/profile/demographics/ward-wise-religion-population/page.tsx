@@ -5,14 +5,16 @@ import Image from "next/image";
 import ReligionCharts from "./_components/religion-charts";
 import ReligionAnalysisSection from "./_components/religion-analysis-section";
 import ReligionSEO from "./_components/religion-seo";
-import { ReligionType } from "@/lib/api";
-import { wardWiseReligionPopulationService } from "@/lib/api";
+import { api } from "@/trpc/server";
 import { localizeNumber } from "@/lib/utils/localize-number";
+
+// Force dynamic rendering since we're using tRPC which relies on headers
+export const dynamic = "force-dynamic";
 
 // Define the locales for which this page should be statically generated
 export async function generateStaticParams() {
   // Generate the page for 'en' and 'ne' locales
-  return [{ locale: "en" }, { locale: "ne" }];
+  return [{ locale: "en" }];
 }
 
 // Optional: Add revalidation period if you want to update the static pages periodically
@@ -21,22 +23,22 @@ export const revalidate = 86400; // Revalidate once per day (in seconds)
 // This function will generate metadata dynamically based on the actual data
 export async function generateMetadata(): Promise<Metadata> {
   try {
-    // Fetch data for SEO using our API service (not tRPC)
-    const religionData = await wardWiseReligionPopulationService.getAll();
+    // Fetch data for SEO using tRPC
+    const religionData =
+      await api.profile.demographics.wardWiseReligionPopulation.getAll.query();
     const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
     const totalPopulation = religionData.reduce(
-      (sum, item) => sum + (item.population || 0),
+      (sum, item) => sum + (item.totalPopulation || 0),
       0,
     );
-
     // Group by religion type and calculate totals
     const religionCounts: Record<string, number> = {};
     religionData.forEach((item) => {
       if (!religionCounts[item.religionType])
         religionCounts[item.religionType] = 0;
-      religionCounts[item.religionType] += item.population || 0;
+      religionCounts[item.religionType] += item.totalPopulation || 0;
     });
 
     // Get top 3 religions for keywords
@@ -78,11 +80,10 @@ export async function generateMetadata(): Promise<Metadata> {
     const keywordsNP = [
       "परिवर्तन गाउँपालिका धार्मिक जनसंख्या",
       "परिवर्तन धार्मिक विविधता",
-      `परिवर्तन ${RELIGION_NAMES_NP[topReligions[0] as ReligionType]} जनसंख्या`,
+      `परिवर्तन ${RELIGION_NAMES_NP[topReligions[0]]} जनसंख्या`,
       ...topReligions.map(
-        (r) => `${RELIGION_NAMES_NP[r as ReligionType]} धर्मावलम्बी परिवर्तन`,
+        (r) => `${RELIGION_NAMES_NP[r]} धर्मावलम्बी परिवर्तन`,
       ),
-      "वडा अनुसार धार्मिक जनसंख्या",
       "धार्मिक विविधता तथ्याङ्क",
       "धार्मिक जनगणना परिवर्तन",
       `परिवर्तन कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")}`,
@@ -91,20 +92,19 @@ export async function generateMetadata(): Promise<Metadata> {
     const keywordsEN = [
       "Khajura Rural Municipality religious population",
       "Khajura religious diversity",
-      `Khajura ${RELIGION_NAMES_EN[topReligions[0] as ReligionType]} population`,
+      `Khajura ${RELIGION_NAMES_EN[topReligions[0]]} population`,
       ...topReligions.map(
-        (r) => `${RELIGION_NAMES_EN[r as ReligionType]} population in Khajura`,
+        (r) => `${RELIGION_NAMES_EN[r]} population in Khajura`,
       ),
-      "Ward-wise religious demographics",
       "Religious diversity statistics",
       "Religious census Khajura",
       `Khajura total population ${totalPopulation}`,
     ];
 
     // Create detailed description with actual data using localized numbers
-    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार धार्मिक जनसंख्या वितरण, प्रवृत्ति र विश्लेषण। कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")} मध्ये ${RELIGION_NAMES_NP[topReligions[0] as ReligionType]} (${localizeNumber(religionCounts[topReligions[0]].toString(), "ne")}) सबैभन्दा ठूलो समूह हो, त्यसपछि ${RELIGION_NAMES_NP[topReligions[1] as ReligionType]} (${localizeNumber(religionCounts[topReligions[1]].toString(), "ne")}) र ${RELIGION_NAMES_NP[topReligions[2] as ReligionType]} (${localizeNumber(religionCounts[topReligions[2]].toString(), "ne")})। विभिन्न धर्मावलम्बीहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको धार्मिक जनसंख्या वितरण, प्रवृत्ति र विश्लेषण। कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")} मध्ये ${RELIGION_NAMES_NP[topReligions[0]]} (${localizeNumber(religionCounts[topReligions[0]].toString(), "ne")}) सबैभन्दा ठूलो समूह हो, त्यसपछि ${RELIGION_NAMES_NP[topReligions[1]]} (${localizeNumber(religionCounts[topReligions[1]].toString(), "ne")}) र ${RELIGION_NAMES_NP[topReligions[2]]} (${localizeNumber(religionCounts[topReligions[2]].toString(), "ne")})। विभिन्न धर्मावलम्बीहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
 
-    const descriptionEN = `Ward-wise religious population distribution, trends and analysis for Khajura Rural Municipality. Out of a total population of ${totalPopulation}, ${RELIGION_NAMES_EN[topReligions[0] as ReligionType]} (${religionCounts[topReligions[0]]}) is the largest group, followed by ${RELIGION_NAMES_EN[topReligions[1] as ReligionType]} (${religionCounts[topReligions[1]]}) and ${RELIGION_NAMES_EN[topReligions[2] as ReligionType]} (${religionCounts[topReligions[2]]})। Detailed statistics and visualizations of various religious communities.`;
+    const descriptionEN = `Religious population distribution, trends and analysis for Khajura Rural Municipality. Out of a total population of ${totalPopulation}, ${RELIGION_NAMES_EN[topReligions[0]]} (${religionCounts[topReligions[0]]}) is the largest group, followed by ${RELIGION_NAMES_EN[topReligions[1]]} (${religionCounts[topReligions[1]]}) and ${RELIGION_NAMES_EN[topReligions[2]]} (${religionCounts[topReligions[2]]})। Detailed statistics and visualizations of various religious communities.`;
 
     return {
       title: `परिवर्तन गाउँपालिका | धर्म अनुसार जनसंख्या | डिजिटल प्रोफाइल`,
@@ -118,25 +118,25 @@ export async function generateMetadata(): Promise<Metadata> {
         },
       },
       openGraph: {
-        title: `परिवर्तन गाउँपालिका | धर्म अनुसार जनसंख्या`,
+        title: `धर्म अनुसार जनसंख्या | ${municipalityName}`,
         description: descriptionNP,
         type: "article",
         locale: "ne_NP",
         alternateLocale: "en_US",
-        siteName: `परिवर्तन गाउँपालिका डिजिटल प्रोफाइल`,
+        siteName: `${municipalityName} डिजिटल प्रोफाइल`,
       },
       twitter: {
         card: "summary_large_image",
-        title: `परिवर्तन गाउँपालिका | धर्म अनुसार जनसंख्या`,
+        title: `धर्म अनुसार जनसंख्या | ${municipalityName}`,
         description: descriptionNP,
       },
     };
   } catch (error) {
     // Fallback metadata if data fetching fails
     return {
-      title: "परिवर्तन गाउँपालिका | धर्म अनुसार जनसंख्या | डिजिटल प्रोफाइल",
+      title: "परिवर्तन गाउँपालिकामा धर्म अनुसार जनसंख्या | पालिका प्रोफाइल",
       description:
-        "परिवर्तन गाउँपालिकाको प्रत्येक वडाको धार्मिक विवरण, धर्मावलम्बीहरूको संख्या र धार्मिक विविधताको विश्लेषण।",
+        "परिवर्तन गाउँपालिकामा धर्म अनुसार जनसंख्या वितरण, प्रवृत्ति र विश्लेषण। विभिन्न धर्मावलम्बीहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।",
     };
   }
 }
@@ -144,7 +144,6 @@ export async function generateMetadata(): Promise<Metadata> {
 const toc = [
   { level: 2, text: "परिचय", slug: "introduction" },
   { level: 2, text: "धर्म अनुसार जनसंख्या", slug: "religion-distribution" },
-  { level: 2, text: "वडा अनुसार धार्मिक विविधता", slug: "ward-wise-religion" },
   { level: 2, text: "प्रमुख धर्महरूको विश्लेषण", slug: "major-religions" },
 ];
 
@@ -164,51 +163,38 @@ const RELIGION_NAMES: Record<string, string> = {
 };
 
 export default async function WardWiseReligionPopulationPage() {
-  // Fetch all religion population data using our API service (not tRPC)
-  const religionData = await wardWiseReligionPopulationService.getAll();
+  // Fetch all religion population data from your tRPC route
+  const religionData =
+    await api.profile.demographics.wardWiseReligionPopulation.getAll.query();
 
-  // Try to fetch summary data
+  // Fetch summary statistics if available
   let summaryData = null;
   try {
-    summaryData = await wardWiseReligionPopulationService.getReligionSummary();
+    summaryData =
+      await api.profile.demographics.wardWiseReligionPopulation.summary.query();
   } catch (error) {
     console.error("Could not fetch summary data", error);
   }
 
-  // Process data for overall summary
-  const overallSummary = Object.entries(
-    religionData.reduce((acc: Record<string, number>, item) => {
-      if (!acc[item.religionType]) acc[item.religionType] = 0;
-      acc[item.religionType] += item.population || 0;
-      return acc;
-    }, {}),
-  )
-    .map(([religion, population]) => ({
-      religion,
-      religionName: RELIGION_NAMES[religion] || religion,
-      population,
-    }))
-    .sort((a, b) => b.population - a.population);
-
-  // Calculate total population for percentages
-  const totalPopulation = overallSummary.reduce(
-    (sum, item) => sum + item.population,
+  // Calculate total population from the new structure
+  const totalPopulation = religionData.reduce(
+    (sum, item) => sum + (item.totalPopulation || 0),
     0,
   );
 
   // Take top 10 religions for pie chart, group others
-  const topReligions = overallSummary.slice(0, 10);
-  const otherReligions = overallSummary.slice(10);
+  const topReligions = religionData.slice(0, 10);
+  const otherReligions = religionData.slice(10);
 
   const otherTotalPopulation = otherReligions.reduce(
-    (sum, item) => sum + item.population,
+    (sum, item) => sum + (item.totalPopulation || 0),
     0,
   );
 
   let pieChartData = topReligions.map((item) => ({
-    name: item.religionName,
-    value: item.population,
-    percentage: ((item.population / totalPopulation) * 100).toFixed(2),
+    name: RELIGION_NAMES[item.religionType] || item.religionType,
+    value: item.totalPopulation,
+    percentage: (item.percentage / 100).toFixed(2), // Convert from integer percentage
   }));
 
   // Add "Other" category if there are more than 10 religions
@@ -220,52 +206,12 @@ export default async function WardWiseReligionPopulationPage() {
     });
   }
 
-  // Get unique ward numbers
-  const wardNumbers = Array.from(
-    new Set(religionData.map((item) => item.wardNumber)),
-  ).sort((a, b) => a - b); // Sort numerically
-
-  // Process data for ward-wise visualization (top 5 religions per ward + others)
-  const wardWiseData = wardNumbers.map((wardNumber) => {
-    const wardData = religionData.filter(
-      (item) => item.wardNumber === wardNumber,
-    );
-
-    // Sort ward data by population
-    wardData.sort((a, b) => (b.population || 0) - (a.population || 0));
-
-    // Take top 5 religions for this ward
-    const topWardReligions = wardData.slice(0, 5);
-    const otherWardReligions = wardData.slice(5);
-    const otherWardTotal = otherWardReligions.reduce(
-      (sum, item) => sum + (item.population || 0),
-      0,
-    );
-
-    const result: Record<string, any> = { ward: `वडा ${wardNumber}` };
-
-    // Add top religions
-    topWardReligions.forEach((item) => {
-      result[RELIGION_NAMES[item.religionType] || item.religionType] =
-        item.population;
-    });
-
-    // Add "Other" category if needed
-    if (otherWardReligions.length > 0) {
-      result["अन्य"] = otherWardTotal;
-    }
-
-    return result;
-  });
-
   return (
     <DocsLayout toc={<TableOfContents toc={toc} />}>
       {/* Add structured data for SEO */}
       <ReligionSEO
-        overallSummary={overallSummary}
-        totalPopulation={totalPopulation}
+        religionData={religionData}
         RELIGION_NAMES={RELIGION_NAMES}
-        wardNumbers={wardNumbers}
       />
 
       <div className="flex flex-col gap-8">
@@ -283,17 +229,18 @@ export default async function WardWiseReligionPopulationPage() {
 
           <div className="prose prose-slate dark:prose-invert max-w-none">
             <h1 className="scroll-m-20 tracking-tight mb-6">
-              परिवर्तन गाउँपालिका | धर्म अनुसार जनसंख्या विश्लेषण
+              <span className="font-bold">परिवर्तन गाउँपालिकामा</span> धर्म
+              अनुसार जनसंख्या
             </h1>
 
             <h2 id="introduction" className="scroll-m-20">
               परिचय
             </h2>
             <p>
-              यस खण्डमा परिवर्तन गाउँपालिकाको विभिन्न वडाहरूमा अवलम्बन गरिने
-              धर्महरू र धर्मावलम्बीहरूको जनसंख्या सम्बन्धी विस्तृत तथ्याङ्क
-              प्रस्तुत गरिएको छ। यो तथ्याङ्कले परिवर्तन गाउँपालिकाको धार्मिक
-              विविधता, सांस्कृतिक पहिचान र स्थानीय समुदायको धार्मिक स्वरूपलाई
+              यस खण्डमा परिवर्तन गाउँपालिकामा अवलम्बन गरिने धर्महरू र
+              धर्मावलम्बीहरूको जनसंख्या सम्बन्धी विस्तृत तथ्याङ्क प्रस्तुत
+              गरिएको छ। यो तथ्याङ्कले परिवर्तन गाउँपालिकाको धार्मिक विविधता,
+              सांस्कृतिक पहिचान र स्थानीय समुदायको धार्मिक स्वरूपलाई
               प्रतिबिम्बित गर्दछ।
             </p>
             <p>
@@ -301,12 +248,10 @@ export default async function WardWiseReligionPopulationPage() {
               सहिष्णुताको नमूना हो, र यस पालिकामा पनि विविध धार्मिक समुदायहरूको
               बसोबास रहेको छ। कुल जनसंख्या{" "}
               {localizeNumber(totalPopulation.toLocaleString(), "ne")} मध्ये{" "}
-              {overallSummary[0]?.religionName || ""} धर्म मान्ने व्यक्तिहरू{" "}
+              {RELIGION_NAMES[religionData[0]?.religionType] || ""} धर्म मान्ने
+              व्यक्तिहरू{" "}
               {localizeNumber(
-                (
-                  ((overallSummary[0]?.population || 0) / totalPopulation) *
-                  100
-                ).toFixed(1),
+                ((religionData[0]?.percentage || 0) / 100).toFixed(1),
                 "ne",
               )}
               % रहेका छन्। यस तथ्याङ्कले परिवर्तन गाउँपालिकाको धार्मिक नीति,
@@ -317,7 +262,7 @@ export default async function WardWiseReligionPopulationPage() {
               id="religion-distribution"
               className="scroll-m-20 border-b pb-2"
             >
-              परिवर्तन गाउँपालिकामा धर्म अनुसार जनसंख्या
+              धर्म अनुसार जनसंख्या
             </h2>
             <p>
               परिवर्तन गाउँपालिकामा विभिन्न धर्मावलम्बीहरूको कुल जनसंख्या
@@ -327,29 +272,21 @@ export default async function WardWiseReligionPopulationPage() {
 
           {/* Client component for charts */}
           <ReligionCharts
-            overallSummary={overallSummary}
-            totalPopulation={totalPopulation}
-            pieChartData={pieChartData}
-            wardWiseData={wardWiseData}
-            wardNumbers={wardNumbers}
             religionData={religionData}
             RELIGION_NAMES={RELIGION_NAMES}
           />
 
           <div className="prose prose-slate dark:prose-invert max-w-none mt-8">
             <h2 id="major-religions" className="scroll-m-20 border-b pb-2">
-              परिवर्तन गाउँपालिकाको प्रमुख धर्महरूको विश्लेषण
+              प्रमुख धर्महरूको विश्लेषण
             </h2>
             <p>
               परिवर्तन गाउँपालिकामा निम्न धर्महरू प्रमुख रूपमा अवलम्बन गरिन्छन्।
               यी धर्महरूमध्ये{" "}
-              {RELIGION_NAMES[overallSummary[0]?.religion] || "हिन्दू"}
+              {RELIGION_NAMES[religionData[0]?.religionType] || "हिन्दू"}
               सबैभन्दा धेरै व्यक्तिहरूले मान्ने धर्म हो, जसलाई कुल जनसंख्याको{" "}
               {localizeNumber(
-                (
-                  ((overallSummary[0]?.population || 0) / totalPopulation) *
-                  100
-                ).toFixed(2),
+                ((religionData[0]?.percentage || 0) / 100).toFixed(2),
                 "ne",
               )}
               % ले अवलम्बन गर्दछन्।
@@ -357,8 +294,7 @@ export default async function WardWiseReligionPopulationPage() {
 
             {/* Client component for religion analysis section */}
             <ReligionAnalysisSection
-              overallSummary={overallSummary}
-              totalPopulation={totalPopulation}
+              religionData={religionData}
               RELIGION_NAMES={RELIGION_NAMES}
             />
           </div>

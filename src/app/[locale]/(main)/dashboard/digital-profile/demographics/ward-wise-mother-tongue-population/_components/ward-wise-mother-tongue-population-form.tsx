@@ -76,18 +76,15 @@ export default function WardWiseMotherTonguePopulationForm({
 
   // Get the existing record if editing
   const { data: editingData, isLoading: isLoadingEditData } =
-    api.profile.demographics.wardWiseMotherTonguePopulation.getAll.useQuery(
-      undefined,
-      {
-        enabled: !!editId,
-      },
-    );
+    api.profile.demographics.motherTonguePopulation.getAll.useQuery(undefined, {
+      enabled: !!editId,
+    });
 
   const createMutation =
-    api.profile.demographics.wardWiseMotherTonguePopulation.create.useMutation({
+    api.profile.demographics.motherTonguePopulation.create.useMutation({
       onSuccess: () => {
         toast.success("नयाँ मातृभाषा जनसंख्या डाटा सफलतापूर्वक थपियो");
-        utils.profile.demographics.wardWiseMotherTonguePopulation.getAll.invalidate();
+        utils.profile.demographics.motherTonguePopulation.getAll.invalidate();
         setIsSubmitting(false);
         onClose();
       },
@@ -98,10 +95,10 @@ export default function WardWiseMotherTonguePopulationForm({
     });
 
   const updateMutation =
-    api.profile.demographics.wardWiseMotherTonguePopulation.update.useMutation({
+    api.profile.demographics.motherTonguePopulation.update.useMutation({
       onSuccess: () => {
         toast.success("मातृभाषा जनसंख्या डाटा सफलतापूर्वक अपडेट गरियो");
-        utils.profile.demographics.wardWiseMotherTonguePopulation.getAll.invalidate();
+        utils.profile.demographics.motherTonguePopulation.getAll.invalidate();
         setIsSubmitting(false);
         onClose();
       },
