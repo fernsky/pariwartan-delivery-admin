@@ -42,7 +42,7 @@ export const navItems: NavItem[] = [
       },
       {
         title: "जात/जनजाति अनुसार जनसंख्या",
-        href: "/profile/demographics/ward-wise-caste-population",
+        href: "/profile/demographics/caste-population",
       },
       {
         title: "घरमुलीको लिङ्ग अनुसार घरधुरी",

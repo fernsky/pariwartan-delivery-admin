@@ -10,23 +10,33 @@ import {
 } from "recharts";
 import { localizeNumber } from "@/lib/utils/localize-number";
 
-interface CastePieChartProps {
-  pieChartData: Array<{
-    name: string;
-    value: number;
-    percentage: string;
-    casteType?: string; // Optional, might be present for direct casteType reference
-  }>;
-  CASTE_NAMES: Record<string, string>;
-  CASTE_COLORS: Record<string, string>;
+interface GenderPieChartProps {
+  totalMale: number;
+  totalFemale: number;
 }
 
-export default function CastePieChart({
-  pieChartData,
-  CASTE_NAMES,
-  CASTE_COLORS,
-}: CastePieChartProps) {
-  // Custom tooltip component for better presentation with Nepali numbers
+export default function GenderPieChart({
+  totalMale,
+  totalFemale,
+}: GenderPieChartProps) {
+  const total = totalMale + totalFemale;
+
+  const pieData = [
+    {
+      name: "पुरुष",
+      value: totalMale,
+      percentage: ((totalMale / total) * 100).toFixed(1),
+      color: "#3B82F6",
+    },
+    {
+      name: "महिला",
+      value: totalFemale,
+      percentage: ((totalFemale / total) * 100).toFixed(1),
+      color: "#EC4899",
+    },
+  ];
+
+  // Custom tooltip component
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const { name, value, payload: originalPayload } = payload[0];
@@ -52,59 +62,33 @@ export default function CastePieChart({
     return null;
   };
 
-  // Helper function to get consistent color for a caste
-  const getCasteColor = (casteName: string): string => {
-    // First try to find by looking up in reverse casteType
-    const casteKey = Object.keys(CASTE_NAMES).find(
-      (key) => CASTE_NAMES[key] === casteName,
-    );
-
-    if (casteKey && CASTE_COLORS[casteKey]) {
-      return CASTE_COLORS[casteKey];
-    }
-
-    // If the entry already has a casteType, use it directly
-    const entry = pieChartData.find((item) => item.name === casteName);
-    if (entry?.casteType && CASTE_COLORS[entry.casteType]) {
-      return CASTE_COLORS[entry.casteType];
-    }
-
-    // Fallback to OTHER or random color
-    return CASTE_COLORS.OTHER || "#64748B";
-  };
-
-  // Enhance pieChartData with colors
-  const enhancedPieData = pieChartData.map((item) => ({
-    ...item,
-    color: getCasteColor(item.name),
-  }));
-
   return (
     <ResponsiveContainer width="100%" height="100%">
       <PieChart>
         <Pie
-          data={enhancedPieData}
+          data={pieData}
           cx="50%"
           cy="50%"
           labelLine={true}
           outerRadius={140}
           fill="#8884d8"
           dataKey="value"
+          label={({ name, percentage }) =>
+            `${name}: ${localizeNumber(percentage, "ne")}%`
+          }
         >
-          {enhancedPieData.map((entry, index) => (
+          {pieData.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={entry.color} />
           ))}
         </Pie>
         <Tooltip content={CustomTooltip} />
         <Legend
           formatter={(value) => value}
-          payload={
-            enhancedPieData.map((item) => ({
-              value: item.name,
-              type: "circle",
-              color: item.color,
-            }))
-          }
+          payload={pieData.map((item) => ({
+            value: item.name,
+            type: "circle",
+            color: item.color,
+          }))}
         />
       </PieChart>
     </ResponsiveContainer>

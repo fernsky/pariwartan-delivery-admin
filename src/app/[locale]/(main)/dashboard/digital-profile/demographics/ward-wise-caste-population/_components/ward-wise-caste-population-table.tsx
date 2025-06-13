@@ -88,7 +88,7 @@ export default function WardWiseCastePopulationTable({
     api.profile.demographics.wardWiseCastePopulation.delete.useMutation({
       onSuccess: () => {
         toast.success("डाटा सफलतापूर्वक मेटियो");
-        utils.profile.demographics.wardWiseCastePopulation.getAll.invalidate();
+        utils.profile.demographics.castePopulation.getAll.invalidate();
       },
       onError: (err) => {
         toast.error(`त्रुटि: ${err.message}`);

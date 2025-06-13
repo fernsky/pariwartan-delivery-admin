@@ -24,7 +24,7 @@ export default function WardWiseCastePopulationPage() {
     data: wardCasteData,
     isLoading,
     isError,
-  } = api.profile.demographics.wardWiseCastePopulation.getAll.useQuery();
+  } = api.profile.demographics.castePopulation.getAll.useQuery();
 
   const handleEdit = (id: string) => {
     setEditId(id);

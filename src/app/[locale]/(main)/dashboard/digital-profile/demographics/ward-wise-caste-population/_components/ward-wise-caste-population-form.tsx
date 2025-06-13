@@ -59,18 +59,15 @@ export default function WardWiseCastePopulationForm({
 
   // Get the existing record if editing
   const { data: editingData, isLoading: isLoadingEditData } =
-    api.profile.demographics.wardWiseCastePopulation.getAll.useQuery(
-      undefined,
-      {
-        enabled: !!editId,
-      },
-    );
+    api.profile.demographics.castePopulation.getAll.useQuery(undefined, {
+      enabled: !!editId,
+    });
 
   const createMutation =
     api.profile.demographics.wardWiseCastePopulation.create.useMutation({
       onSuccess: () => {
         toast.success("नयाँ जात/जनजाति जनसंख्या डाटा सफलतापूर्वक थपियो");
-        utils.profile.demographics.wardWiseCastePopulation.getAll.invalidate();
+        utils.profile.demographics.castePopulation.getAll.invalidate();
         setIsSubmitting(false);
         onClose();
       },
@@ -84,7 +81,7 @@ export default function WardWiseCastePopulationForm({
     api.profile.demographics.wardWiseCastePopulation.update.useMutation({
       onSuccess: () => {
         toast.success("जात/जनजाति जनसंख्या डाटा सफलतापूर्वक अपडेट गरियो");
-        utils.profile.demographics.wardWiseCastePopulation.getAll.invalidate();
+        utils.profile.demographics.castePopulation.getAll.invalidate();
         setIsSubmitting(false);
         onClose();
       },
