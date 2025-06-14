@@ -1,6 +1,6 @@
 import { createTRPCRouter } from "@/server/api/trpc";
 import { demographicSummaryRouter } from "./demographic-summary.procedure";
-import { wardWiseMajorOccupationRouter } from "../demographics/ward-wise-major-occupation.procedure";
+import { familyMainOccupationRouter } from "../demographics/ward-wise-major-occupation.procedure";
 import {wardAgeWiseEconomicallyActivePopulationRouter} from "./ward-age-wise-economically-active-population.procedure";
 import { wardTimeSeriesRouter } from "./ward-time-series.procedure";
 import { wardWiseDemographicSummaryRouter } from "./ward-wise-demographic-summary.procedure";
@@ -42,9 +42,7 @@ export const demographicsRouter = createTRPCRouter({
   ageGroupHouseHeadGender:ageHouseHeadGenderRouter,
   wardWiseMajorSubject: wardWiseMajorSubjectRouter,
   wardWiseSchoolDropout: wardWiseSchoolDropoutRouter,
-  wardWiseMajorOccupation: wardWiseMajorOccupationRouter,
-  wardAgeWiseEconomicallyActivePopulation:
-    wardAgeWiseEconomicallyActivePopulationRouter,
+  familyMainOccupation: familyMainOccupationRouter,
   wardWiseDisabilityCause: wardWiseDisabilityCauseRouter,
   wardWiseBirthplaceHouseholds: wardWiseBirthplaceHouseholdsRouter,
   wardWiseMigratedHouseholds: wardWiseMigratedHouseholdsRouter,

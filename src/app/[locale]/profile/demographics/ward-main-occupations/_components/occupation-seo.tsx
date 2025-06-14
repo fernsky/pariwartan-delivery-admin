@@ -1,57 +1,95 @@
 import Script from "next/script";
 import { localizeNumber } from "@/lib/utils/localize-number";
+import { familyMainOccupationLabels } from "@/server/api/routers/profile/demographics/ward-wise-major-occupation.schema";
 
 interface OccupationSEOProps {
-  overallSummary: Array<{
+  occupationData: Array<{
+    id?: string;
     occupation: string;
-    occupationName: string;
-    population: number;
+    age15_19: number;
+    age20_24: number;
+    age25_29: number;
+    age30_34: number;
+    age35_39: number;
+    age40_44: number;
+    age45_49: number;
+    totalPopulation: number;
+    percentage: number;
   }>;
   totalPopulation: number;
-  OCCUPATION_NAMES: Record<string, string>;
-  OCCUPATION_NAMES_EN: Record<string, string>;
-  wardNumbers: number[];
 }
 
 export default function OccupationSEO({
-  overallSummary,
+  occupationData,
   totalPopulation,
-  OCCUPATION_NAMES,
-  OCCUPATION_NAMES_EN,
-  wardNumbers,
 }: OccupationSEOProps) {
   // Create structured data for SEO
   const generateStructuredData = () => {
     // Convert occupation stats to structured data format
-    const occupationStats = overallSummary.map((item) => ({
+    const occupationStats = occupationData.map((item) => ({
       "@type": "Observation",
-      name: `${OCCUPATION_NAMES_EN[item.occupation] || item.occupation} in Khajura Rural Municipality`,
+      name: `${familyMainOccupationLabels[item.occupation] || item.occupation} in Khajura Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
-        name: `${OCCUPATION_NAMES_EN[item.occupation] || item.occupation} workers`,
+        name: `${familyMainOccupationLabels[item.occupation] || item.occupation} workers`,
         unitText: "people",
       },
-      measuredValue: item.population,
-      description: `${item.population.toLocaleString()} people in Khajura Rural Municipality work in ${OCCUPATION_NAMES_EN[item.occupation] || item.occupation} (${((item.population / totalPopulation) * 100).toFixed(2)}% of total population)`,
+      measuredValue: item.totalPopulation,
+      description: `${item.totalPopulation.toLocaleString()} people in Khajura Rural Municipality work in ${familyMainOccupationLabels[item.occupation] || item.occupation} (${item.percentage.toFixed(2)}% of total population)`,
+      additionalProperty: [
+        {
+          "@type": "PropertyValue",
+          name: "Age 15-19",
+          value: item.age15_19,
+        },
+        {
+          "@type": "PropertyValue",
+          name: "Age 20-24",
+          value: item.age20_24,
+        },
+        {
+          "@type": "PropertyValue",
+          name: "Age 25-29",
+          value: item.age25_29,
+        },
+        {
+          "@type": "PropertyValue",
+          name: "Age 30-34",
+          value: item.age30_34,
+        },
+        {
+          "@type": "PropertyValue",
+          name: "Age 35-39",
+          value: item.age35_39,
+        },
+        {
+          "@type": "PropertyValue",
+          name: "Age 40-44",
+          value: item.age40_44,
+        },
+        {
+          "@type": "PropertyValue",
+          name: "Age 45-49",
+          value: item.age45_49,
+        },
+      ],
     }));
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Occupational Distribution of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Occupational distribution data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total population of ${totalPopulation.toLocaleString()} people.`,
+      name: "Family Main Occupation Distribution of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Family main occupation distribution data of Khajura Rural Municipality with a total population of ${totalPopulation.toLocaleString()} people across different age groups.`,
       keywords: [
         "Khajura Rural Municipality",
         "परिवर्तन गाउँपालिका",
-        "Occupational distribution",
+        "Family main occupation",
         "Employment statistics",
-        "Ward-wise occupation data",
+        "Age-wise occupation data",
         "Nepal workforce",
-        ...Object.values(OCCUPATION_NAMES_EN).map(
-          (name) => `${name} statistics`,
-        ),
-        ...Object.values(OCCUPATION_NAMES).map((name) => `${name} तथ्याङ्क`),
+        "Occupational distribution",
+        ...Object.values(familyMainOccupationLabels),
       ],
       url: "https://digital.khajuramun.gov.np/profile/demographics/ward-main-occupations",
       creator: {
@@ -69,11 +107,11 @@ export default function OccupationSEO({
           longitude: "81.6314",
         },
       },
-      variableMeasured: overallSummary.map((item) => ({
+      variableMeasured: occupationData.map((item) => ({
         "@type": "PropertyValue",
-        name: `${OCCUPATION_NAMES_EN[item.occupation] || item.occupation} population`,
+        name: `${familyMainOccupationLabels[item.occupation] || item.occupation} population`,
         unitText: "people",
-        value: item.population,
+        value: item.totalPopulation,
       })),
       observation: occupationStats,
     };

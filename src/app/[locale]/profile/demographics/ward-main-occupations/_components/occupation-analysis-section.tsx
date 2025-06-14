@@ -1,353 +1,317 @@
 "use client";
 
-import Link from "next/link";
-import { useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { localizeNumber } from "@/lib/utils/localize-number";
+import { familyMainOccupationLabels } from "@/server/api/routers/profile/demographics/ward-wise-major-occupation.schema";
 
-interface OccupationAnalysisSectionProps {
-  overallSummary: Array<{
-    occupation: string;
-    occupationName: string;
-    population: number;
-  }>;
+interface OccupationAnalysisProps {
+  occupationData:
+    | Array<{
+        id?: string;
+        occupation: string;
+        age15_19: number;
+        age20_24: number;
+        age25_29: number;
+        age30_34: number;
+        age35_39: number;
+        age40_44: number;
+        age45_49: number;
+        totalPopulation: number;
+        percentage: number;
+      }>
+    | null
+    | undefined;
   totalPopulation: number;
-  OCCUPATION_NAMES: Record<string, string>;
-  OCCUPATION_NAMES_EN: Record<string, string>;
 }
 
 export default function OccupationAnalysisSection({
-  overallSummary,
+  occupationData,
   totalPopulation,
-  OCCUPATION_NAMES,
-  OCCUPATION_NAMES_EN,
-}: OccupationAnalysisSectionProps) {
-  // Updated modern aesthetic color palette for occupations
-  const OCCUPATION_COLORS = {
-    GOVERNMENT_SERVICE: "#6366F1", // Indigo
-    NON_GOVERNMENT_SERVICE: "#8B5CF6", // Purple
-    DAILY_WAGE: "#EC4899", // Pink
-    FOREIGN_EMPLOYMENT: "#F43F5E", // Rose
-    BUSINESS: "#10B981", // Emerald
-    OTHERS: "#14B8A6", // Teal
-    STUDENT: "#06B6D4", // Cyan
-    HOUSEHOLD_WORK: "#3B82F6", // Blue
-    UNEMPLOYED: "#F59E0B", // Amber
-    INDUSTRY_WORK: "#84CC16", // Lime
-    ANIMAL_HUSBANDRY: "#9333EA", // Fuchsia
-    SELF_EMPLOYED: "#EF4444", // Red
-  };
+}: OccupationAnalysisProps) {
+  // Add null checks and ensure occupationData is a valid array
+  if (
+    !occupationData ||
+    !Array.isArray(occupationData) ||
+    occupationData.length === 0
+  ) {
+    return (
+      <div className="mt-8 p-6 bg-muted/50 rounded-lg text-center">
+        <p className="text-muted-foreground">पेशागत तथ्याङ्क उपलब्ध छैन।</p>
+      </div>
+    );
+  }
 
-  // Calculate employment categories
-  const employedCategories = [
-    "GOVERNMENT_SERVICE",
-    "NON_GOVERNMENT_SERVICE",
-    "DAILY_WAGE",
-    "FOREIGN_EMPLOYMENT",
-    "BUSINESS",
-    "INDUSTRY_WORK",
-    "ANIMAL_HUSBANDRY",
-    "SELF_EMPLOYED",
-    "OTHERS",
-  ];
-
-  const unemployedCategories = ["STUDENT", "HOUSEHOLD_WORK", "UNEMPLOYED"];
-
-  const employedPopulation = overallSummary
-    .filter((item) => employedCategories.includes(item.occupation))
-    .reduce((sum, item) => sum + item.population, 0);
-
-  const unemployedPopulation = overallSummary
-    .filter((item) => unemployedCategories.includes(item.occupation))
-    .reduce((sum, item) => sum + item.population, 0);
-
-  const employmentRate = ((employedPopulation / totalPopulation) * 100).toFixed(
-    2,
+  // Find the most populous occupation
+  const mostPopulousOccupation = occupationData.reduce((prev, current) =>
+    prev.totalPopulation > current.totalPopulation ? prev : current,
   );
-  const unemploymentRate = (
-    (unemployedPopulation / totalPopulation) *
-    100
-  ).toFixed(2);
 
-  // Calculate top two occupations ratio if both exist
-  const topOccupation = overallSummary[0];
-  const secondOccupation = overallSummary[1];
+  // Find occupation with highest youth participation (15-24 age group)
+  const youthOccupation = occupationData.reduce((prev, current) => {
+    const prevYouth = prev.age15_19 + prev.age20_24;
+    const currentYouth = current.age15_19 + current.age20_24;
+    return prevYouth > currentYouth ? prev : current;
+  });
 
-  const topTwoOccupationRatio =
-    topOccupation && secondOccupation && secondOccupation.population > 0
-      ? (topOccupation.population / secondOccupation.population).toFixed(2)
-      : "N/A";
+  // Calculate age group totals
+  const totalYouth = occupationData.reduce(
+    (sum, item) => sum + item.age15_19 + item.age20_24,
+    0,
+  );
+  const totalMiddleAge = occupationData.reduce(
+    (sum, item) => sum + item.age25_29 + item.age30_34 + item.age35_39,
+    0,
+  );
+  const totalMature = occupationData.reduce(
+    (sum, item) => sum + item.age40_44 + item.age45_49,
+    0,
+  );
 
-  // Add SEO-friendly data attributes to enhance crawler understanding
-  useEffect(() => {
-    // Add data to document.body for SEO (will be crawled but not visible to users)
-    if (document && document.body) {
-      document.body.setAttribute(
-        "data-municipality",
-        "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
-      );
-      document.body.setAttribute(
-        "data-total-population",
-        totalPopulation.toString(),
-      );
+  // Find economically active vs inactive
+  const economicallyActive = occupationData.filter(
+    (item) =>
+      item.occupation !== "ECONOMICALLY_INACTIVE" &&
+      item.occupation !== "NOT_SPECIFIED",
+  );
+  const economicallyInactive = occupationData.filter(
+    (item) => item.occupation === "ECONOMICALLY_INACTIVE",
+  );
 
-      // Add main occupation data
-      if (topOccupation) {
-        const occupationNameEN =
-          OCCUPATION_NAMES_EN[topOccupation.occupation] ||
-          topOccupation.occupation;
-        document.body.setAttribute(
-          "data-main-occupation",
-          `${occupationNameEN} / ${topOccupation.occupationName}`,
-        );
-        document.body.setAttribute(
-          "data-main-occupation-population",
-          topOccupation.population.toString(),
-        );
-        document.body.setAttribute(
-          "data-main-occupation-percentage",
-          ((topOccupation.population / totalPopulation) * 100).toFixed(2),
-        );
-      }
-
-      // Add employment/unemployment data
-      document.body.setAttribute("data-employment-rate", employmentRate);
-      document.body.setAttribute("data-unemployment-rate", unemploymentRate);
-      document.body.setAttribute(
-        "data-employed-population",
-        employedPopulation.toString(),
-      );
-      document.body.setAttribute(
-        "data-unemployed-population",
-        unemployedPopulation.toString(),
-      );
-    }
-  }, [
-    overallSummary,
-    totalPopulation,
-    topOccupation,
-    employmentRate,
-    unemploymentRate,
-    employedPopulation,
-    unemployedPopulation,
-    OCCUPATION_NAMES_EN,
-  ]);
+  const activePopulation = economicallyActive.reduce(
+    (sum, item) => sum + item.totalPopulation,
+    0,
+  );
+  const inactivePopulation = economicallyInactive.reduce(
+    (sum, item) => sum + item.totalPopulation,
+    0,
+  );
 
   return (
     <>
-      <div className="mt-6 flex flex-wrap gap-4 justify-center">
-        {overallSummary.slice(0, 6).map((item, index) => {
-          // Calculate percentage
-          const percentage = (
-            (item.population / totalPopulation) *
-            100
-          ).toFixed(2);
-
-          return (
-            <div
-              key={index}
-              className="bg-muted/50 rounded-lg p-4 text-center min-w-[200px] relative overflow-hidden"
-              // Add data attributes for SEO crawlers
-              data-occupation={`${OCCUPATION_NAMES_EN[item.occupation] || item.occupation} / ${item.occupationName}`}
-              data-population={item.population}
-              data-percentage={percentage}
-            >
-              <div
-                className="absolute bottom-0 left-0 right-0"
-                style={{
-                  height: `${Math.min(
-                    (item.population / overallSummary[0].population) * 100,
-                    100,
-                  )}%`,
-                  backgroundColor:
-                    OCCUPATION_COLORS[
-                      item.occupation as keyof typeof OCCUPATION_COLORS
-                    ] || "#888",
-                  opacity: 0.2,
-                  zIndex: 0,
-                }}
-              />
-              <div className="relative z-10">
-                <h3 className="text-lg font-medium mb-2">
-                  {item.occupationName}
-                  {/* Hidden span for SEO with English name */}
-                  <span className="sr-only">
-                    {OCCUPATION_NAMES_EN[item.occupation] || item.occupation}
-                  </span>
-                </h3>
-                <p className="text-2xl font-bold">
-                  {localizeNumber(percentage, "ne")}%
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {localizeNumber(item.population.toLocaleString(), "ne")}{" "}
-                  व्यक्ति
-                  <span className="sr-only">
-                    ({item.population.toLocaleString()} people)
-                  </span>
-                </p>
-              </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              कुल जनसंख्या
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {localizeNumber(totalPopulation.toLocaleString(), "ne")}
             </div>
-          );
-        })}
+            <div className="text-xs text-muted-foreground">
+              {occupationData.length} पेशा वर्ग
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              प्रमुख पेशा
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-lg font-bold">
+              {familyMainOccupationLabels[mostPopulousOccupation.occupation]}
+            </div>
+            <div className="text-sm text-muted-foreground">
+              {localizeNumber(
+                mostPopulousOccupation.totalPopulation.toLocaleString(),
+                "ne",
+              )}{" "}
+              व्यक्ति
+            </div>
+            <div className="text-xs text-muted-foreground">
+              {localizeNumber(
+                mostPopulousOccupation.percentage.toFixed(1),
+                "ne",
+              )}
+              %
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              आर्थिक सक्रियता दर
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {localizeNumber(
+                ((activePopulation / totalPopulation) * 100).toFixed(1),
+                "ne",
+              )}
+              %
+            </div>
+            <div className="text-xs text-muted-foreground">
+              {localizeNumber(activePopulation.toLocaleString(), "ne")} व्यक्ति
+              सक्रिय
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              युवा बहुल पेशा
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-lg font-bold">
+              {familyMainOccupationLabels[youthOccupation.occupation]}
+            </div>
+            <div className="text-xs text-muted-foreground">
+              {localizeNumber(
+                (
+                  youthOccupation.age15_19 + youthOccupation.age20_24
+                ).toLocaleString(),
+                "ne",
+              )}{" "}
+              युवा
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
-      <div className="bg-muted/50 p-4 rounded-lg mt-8">
-        <h3 className="text-xl font-medium mb-4">
-          पेशागत विश्लेषण
-          <span className="sr-only">Occupational Analysis of Khajura</span>
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div
-            className="bg-card p-4 rounded border"
-            data-analysis-type="employment-rate"
-            data-percentage={employmentRate}
-          >
-            <h4 className="font-medium mb-2">
-              रोजगारी दर
-              <span className="sr-only">
-                Employment Rate in Khajura Rural Municipality
-              </span>
-            </h4>
-            <p className="text-3xl font-bold">
-              {localizeNumber(employmentRate, "ne")}%
-            </p>
-            <p className="text-sm text-muted-foreground mt-2">
-              {localizeNumber(employedPopulation.toLocaleString(), "ne")}{" "}
-              व्यक्ति कुनै न कुनै पेशामा संलग्न
-              <span className="sr-only">
-                {employedPopulation.toLocaleString()} people are engaged in some
-                form of employment
-              </span>
-            </p>
+      <div className="bg-muted/50 p-6 rounded-lg mt-8">
+        <h4 className="text-lg font-semibold mb-4">
+          पेशागत र उमेर समूह विश्लेषण
+        </h4>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <h5 className="font-medium mb-3 text-blue-700">
+              युवा समूह (१५-२४ वर्ष)
+            </h5>
+            <div className="space-y-2">
+              {occupationData
+                .map((item) => ({
+                  ...item,
+                  youthCount: item.age15_19 + item.age20_24,
+                }))
+                .sort((a, b) => b.youthCount - a.youthCount)
+                .slice(0, 5)
+                .map((occupation) => (
+                  <div
+                    key={occupation.id || occupation.occupation}
+                    className="flex items-center justify-between"
+                  >
+                    <span className="text-sm">
+                      {familyMainOccupationLabels[occupation.occupation] ||
+                        occupation.occupation}
+                    </span>
+                    <Badge variant="secondary" className="text-xs">
+                      {localizeNumber(
+                        occupation.youthCount.toLocaleString(),
+                        "ne",
+                      )}{" "}
+                      व्यक्ति
+                    </Badge>
+                  </div>
+                ))}
+            </div>
           </div>
 
-          <div
-            className="bg-card p-4 rounded border"
-            data-analysis-type="occupation-diversity"
-            data-primary-occupation={topOccupation?.occupation}
-            data-secondary-occupation={secondOccupation?.occupation}
-            data-ratio={topTwoOccupationRatio}
-          >
-            <h4 className="font-medium mb-2">
-              पेशागत विविधता
-              <span className="sr-only">Occupational Diversity in Khajura</span>
-            </h4>
-            <p className="text-lg">
-              {topOccupation && secondOccupation
-                ? `हरेक ${localizeNumber(topTwoOccupationRatio, "ne")} ${topOccupation.occupationName} कर्मचारीका लागि १ ${secondOccupation.occupationName}`
-                : ""}
-              <span className="sr-only">
-                {topOccupation && secondOccupation
-                  ? `For every ${topTwoOccupationRatio} ${OCCUPATION_NAMES_EN[topOccupation.occupation]} workers, there is 1 ${OCCUPATION_NAMES_EN[secondOccupation.occupation]} worker in Khajura Rural Municipality`
-                  : ""}
-              </span>
-            </p>
-            <p className="text-sm text-muted-foreground mt-2">
-              {localizeNumber(overallSummary.length.toString(), "ne")} विभिन्न
-              पेशाहरू अभिलेख गरिएको
-            </p>
+          <div>
+            <h5 className="font-medium mb-3 text-green-700">
+              मध्यम उमेर (२५-३९ वर्ष)
+            </h5>
+            <div className="space-y-2">
+              {occupationData
+                .map((item) => ({
+                  ...item,
+                  middleAgeCount: item.age25_29 + item.age30_34 + item.age35_39,
+                }))
+                .sort((a, b) => b.middleAgeCount - a.middleAgeCount)
+                .slice(0, 5)
+                .map((occupation) => (
+                  <div
+                    key={occupation.id || occupation.occupation}
+                    className="flex items-center justify-between"
+                  >
+                    <span className="text-sm">
+                      {familyMainOccupationLabels[occupation.occupation] ||
+                        occupation.occupation}
+                    </span>
+                    <Badge variant="secondary" className="text-xs">
+                      {localizeNumber(
+                        occupation.middleAgeCount.toLocaleString(),
+                        "ne",
+                      )}{" "}
+                      व्यक्ति
+                    </Badge>
+                  </div>
+                ))}
+            </div>
+          </div>
+
+          <div>
+            <h5 className="font-medium mb-3 text-purple-700">
+              परिपक्व उमेर (४०-४९ वर्ष)
+            </h5>
+            <div className="space-y-2">
+              {occupationData
+                .map((item) => ({
+                  ...item,
+                  matureCount: item.age40_44 + item.age45_49,
+                }))
+                .sort((a, b) => b.matureCount - a.matureCount)
+                .slice(0, 5)
+                .map((occupation) => (
+                  <div
+                    key={occupation.id || occupation.occupation}
+                    className="flex items-center justify-between"
+                  >
+                    <span className="text-sm">
+                      {familyMainOccupationLabels[occupation.occupation] ||
+                        occupation.occupation}
+                    </span>
+                    <Badge variant="secondary" className="text-xs">
+                      {localizeNumber(
+                        occupation.matureCount.toLocaleString(),
+                        "ne",
+                      )}{" "}
+                      व्यक्ति
+                    </Badge>
+                  </div>
+                ))}
+            </div>
           </div>
         </div>
 
-        <div className="mt-4 bg-card p-4 rounded border">
-          <h4 className="font-medium mb-2">
-            पेशा वर्गीकरण
-            <span className="sr-only">Occupational Classification</span>
-          </h4>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <h5 className="text-sm font-medium">सरकारी/निजी क्षेत्र</h5>
-              <p className="text-sm text-muted-foreground">
-                {localizeNumber(
-                  (
-                    (overallSummary.find(
-                      (item) => item.occupation === "GOVERNMENT_SERVICE",
-                    )?.population || 0) +
-                    (overallSummary.find(
-                      (item) => item.occupation === "NON_GOVERNMENT_SERVICE",
-                    )?.population || 0)
-                  ).toLocaleString(),
-                  "ne",
-                )}{" "}
-                (
-                {localizeNumber(
-                  (
-                    (((overallSummary.find(
-                      (item) => item.occupation === "GOVERNMENT_SERVICE",
-                    )?.population || 0) +
-                      (overallSummary.find(
-                        (item) => item.occupation === "NON_GOVERNMENT_SERVICE",
-                      )?.population || 0)) /
-                      totalPopulation) *
-                    100
-                  ).toFixed(1),
-                  "ne",
-                )}
-                %)
-              </p>
-            </div>
-            <div>
-              <h5 className="text-sm font-medium">स्वरोजगार</h5>
-              <p className="text-sm text-muted-foreground">
-                {localizeNumber(
-                  (
-                    (overallSummary.find(
-                      (item) => item.occupation === "BUSINESS",
-                    )?.population || 0) +
-                    (overallSummary.find(
-                      (item) => item.occupation === "INDUSTRY_WORK",
-                    )?.population || 0) +
-                    (overallSummary.find(
-                      (item) => item.occupation === "SELF_EMPLOYED",
-                    )?.population || 0)
-                  ).toLocaleString(),
-                  "ne",
-                )}{" "}
-                (
-                {localizeNumber(
-                  (
-                    (((overallSummary.find(
-                      (item) => item.occupation === "BUSINESS",
-                    )?.population || 0) +
-                      (overallSummary.find(
-                        (item) => item.occupation === "INDUSTRY_WORK",
-                      )?.population || 0) +
-                      (overallSummary.find(
-                        (item) => item.occupation === "SELF_EMPLOYED",
-                      )?.population || 0)) /
-                      totalPopulation) *
-                    100
-                  ).toFixed(1),
-                  "ne",
-                )}
-                %)
-              </p>
-            </div>
-            <div>
-              <h5 className="text-sm font-medium">कृषि तथा पशुपालन</h5>
-              <p className="text-sm text-muted-foreground">
-                {localizeNumber(
-                  (
-                    overallSummary.find(
-                      (item) => item.occupation === "ANIMAL_HUSBANDRY",
-                    )?.population || 0
-                  ).toLocaleString(),
-                  "ne",
-                )}{" "}
-                (
-                {localizeNumber(
-                  (
-                    ((overallSummary.find(
-                      (item) => item.occupation === "ANIMAL_HUSBANDRY",
-                    )?.population || 0) /
-                      totalPopulation) *
-                    100
-                  ).toFixed(1),
-                  "ne",
-                )}
-                %)
-              </p>
-            </div>
-          </div>
+        <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+          <h5 className="font-medium text-blue-800 mb-2">मुख्य निष्कर्षहरू:</h5>
+          <ul className="text-sm text-blue-700 space-y-1">
+            <li>
+              • {familyMainOccupationLabels[mostPopulousOccupation.occupation]}{" "}
+              सबैभन्दा बढी व्यक्तिले अपनाएको पेशा हो (
+              {localizeNumber(
+                mostPopulousOccupation.percentage.toFixed(1),
+                "ne",
+              )}
+              %)
+            </li>
+            <li>
+              • आर्थिक रूपमा सक्रिय जनसंख्या{" "}
+              {localizeNumber(
+                ((activePopulation / totalPopulation) * 100).toFixed(1),
+                "ne",
+              )}
+              % छ
+            </li>
+            <li>
+              • युवाहरू मुख्यतः{" "}
+              {familyMainOccupationLabels[youthOccupation.occupation]} पेशामा
+              संलग्न छन्
+            </li>
+            <li>
+              • कुल {occupationData.length} फरक पेशा वर्गहरू पहिचान गरिएको छ
+            </li>
+          </ul>
         </div>
       </div>
     </>

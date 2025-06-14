@@ -1,56 +1,38 @@
 import { Metadata } from "next";
+import { api } from "@/trpc/server";
 import { DocsLayout } from "@/components/layout/DocsLayout";
 import { TableOfContents } from "@/components/TableOfContents";
-import Image from "next/image";
 import OccupationCharts from "./_components/occupation-charts";
 import OccupationAnalysisSection from "./_components/occupation-analysis-section";
 import OccupationSEO from "./_components/occupation-seo";
-import { api } from "@/trpc/server";
-import { OccupationType } from "@/server/api/routers/profile/demographics/ward-wise-major-occupation.schema";
 import { localizeNumber } from "@/lib/utils/localize-number";
+import { familyMainOccupationLabels } from "@/server/api/routers/profile/demographics/ward-wise-major-occupation.schema";
+
+// Define type for occupation data
+type OccupationDataType = {
+  id?: string;
+  occupation: string;
+  age15_19: number;
+  age20_24: number;
+  age25_29: number;
+  age30_34: number;
+  age35_39: number;
+  age40_44: number;
+  age45_49: number;
+  totalPopulation: number;
+  percentage: number;
+};
 
 // Force dynamic rendering since we're using tRPC which relies on headers
 export const dynamic = "force-dynamic";
 
 // Define the locales for which this page should be statically generated
 export async function generateStaticParams() {
-  // Generate the page for 'en' and 'ne' locales
   return [{ locale: "en" }];
 }
 
 // Optional: Add revalidation period if you want to update the static pages periodically
 export const revalidate = 86400; // Revalidate once per day (in seconds)
-// Define Nepali names for occupations
-const OCCUPATION_NAMES: Record<string, string> = {
-  GOVERNMENT_SERVICE: "सरकारी नोकरी / जागिर",
-  NON_GOVERNMENT_SERVICE: "गैरसरकारी नोकरी / जागिर",
-  DAILY_WAGE: "ज्याला/ मजदुरी",
-  FOREIGN_EMPLOYMENT: "वैदेशिक रोजगारी",
-  BUSINESS: "व्यापार",
-  OTHERS: "अन्य",
-  STUDENT: "विद्यार्थी",
-  HOUSEHOLD_WORK: "गृहणी",
-  UNEMPLOYED: "बेरोजगार",
-  INDUSTRY_WORK: "उद्योग, व्यापार, कृषि",
-  ANIMAL_HUSBANDRY: "पशुपालन",
-  SELF_EMPLOYED: "स्वरोजगार",
-};
-
-// Define English names for occupations (for SEO)
-const OCCUPATION_NAMES_EN: Record<string, string> = {
-  GOVERNMENT_SERVICE: "Government Service",
-  NON_GOVERNMENT_SERVICE: "Non-Government Service",
-  DAILY_WAGE: "Daily Wage/Labor",
-  FOREIGN_EMPLOYMENT: "Foreign Employment",
-  BUSINESS: "Business",
-  OTHERS: "Others",
-  STUDENT: "Student",
-  HOUSEHOLD_WORK: "Household Work",
-  UNEMPLOYED: "Unemployed",
-  INDUSTRY_WORK: "Industry Work",
-  ANIMAL_HUSBANDRY: "Animal Husbandry",
-  SELF_EMPLOYED: "Self-Employed",
-};
 
 // This function will generate metadata dynamically based on the actual data
 export async function generateMetadata(): Promise<Metadata> {
@@ -58,312 +40,269 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const occupationData =
       await api.profile.demographics.wardWiseMajorOccupation.getAll.query();
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका";
+
+    // Ensure occupationData is a valid array
+    if (!occupationData || !Array.isArray(occupationData)) {
+      return {
+        title: `मुख्य पेशागत वितरण - ${municipalityName}`,
+        description: `${municipalityName}को मुख्य पेशागत वितरणको विस्तृत तथ्याङ्क।`,
+      };
+    }
 
     // Process data for SEO
     const totalPopulation = occupationData.reduce(
-      (sum, item) => sum + (item.population || 0),
+      (sum, item) => sum + (item.totalPopulation || 0),
       0,
     );
 
-    // Group by occupation and calculate totals
-    const occupationCounts: Record<string, number> = {};
-    occupationData.forEach((item) => {
-      if (!occupationCounts[item.occupation])
-        occupationCounts[item.occupation] = 0;
-      occupationCounts[item.occupation] += item.population || 0;
-    });
-
     // Get top 3 occupations for keywords
-    const topOccupations = Object.entries(occupationCounts)
-      .sort(([, a], [, b]) => b - a)
-      .slice(0, 3)
-      .map(([type]) => type);
+    const topOccupations = occupationData.slice(0, 3);
 
-    // Create rich keywords with actual data
-    const keywordsNP = [
-      "परिवर्तन गाउँपालिका मुख्य पेशा",
-      "परिवर्तन पेशागत वितरण",
-      `परिवर्तन ${OCCUPATION_NAMES[topOccupations[0] as OccupationType]} जनसंख्या`,
-      ...topOccupations.map(
-        (r) => `${OCCUPATION_NAMES[r as OccupationType]} पेशा परिवर्तन`,
-      ),
-      "वडा अनुसार पेशागत वितरण",
-      "आर्थिक गतिविधि तथ्याङ्क",
-      "पेशागत सर्वेक्षण परिवर्तन",
-      `परिवर्तन कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")}`,
-    ];
-
-    const keywordsEN = [
-      "Khajura Rural Municipality main occupations",
-      "Khajura occupational distribution",
-      `Khajura ${OCCUPATION_NAMES_EN[topOccupations[0] as OccupationType]} population`,
-      ...topOccupations.map(
-        (r) =>
-          `${OCCUPATION_NAMES_EN[r as OccupationType]} occupation in Khajura`,
-      ),
-      "Ward-wise occupational distribution",
-      "Economic activity statistics",
-      "Occupational survey Khajura",
-      `Khajura total population ${totalPopulation}`,
-    ];
-
-    // Create detailed description with actual data
-    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार मुख्य पेशागत वितरण, प्रवृत्ति र विश्लेषण। कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")} मध्ये ${OCCUPATION_NAMES[topOccupations[0] as OccupationType]} (${localizeNumber(occupationCounts[topOccupations[0]].toString(), "ne")}) सबैभन्दा ठूलो समूह हो, त्यसपछि ${OCCUPATION_NAMES[topOccupations[1] as OccupationType]} (${localizeNumber(occupationCounts[topOccupations[1]].toString(), "ne")}) र ${OCCUPATION_NAMES[topOccupations[2] as OccupationType]} (${localizeNumber(occupationCounts[topOccupations[2]].toString(), "ne")})। विभिन्न पेशाहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
-
-    const descriptionEN = `Ward-wise main occupation distribution, trends and analysis for Khajura Rural Municipality. Out of a total population of ${totalPopulation}, ${OCCUPATION_NAMES_EN[topOccupations[0] as OccupationType]} (${occupationCounts[topOccupations[0]]}) is the largest group, followed by ${OCCUPATION_NAMES_EN[topOccupations[1] as OccupationType]} (${occupationCounts[topOccupations[1]]}) and ${OCCUPATION_NAMES_EN[topOccupations[2] as OccupationType]} (${occupationCounts[topOccupations[2]]})। Detailed statistics and visualizations of various occupational categories.`;
+    const title = `मुख्य पेशागत वितरण - ${municipalityName}`;
+    const description = `${municipalityName}को मुख्य पेशागत वितरणको विस्तृत तथ्याङ्क। कुल जनसंख्या: ${totalPopulation.toLocaleString()} व्यक्ति। मुख्य पेशाहरू: ${topOccupations.map((c) => familyMainOccupationLabels[c.occupation] || c.occupation).join(", ")}।`;
 
     return {
-      title: `मुख्य पेशागत वितरण | ${municipalityName} डिजिटल प्रोफाइल`,
-      description: descriptionNP,
-      keywords: [...keywordsNP, ...keywordsEN],
-      alternates: {
-        canonical: "/profile/economics/ward-main-occupations",
-        languages: {
-          en: "/en/profile/economics/ward-main-occupations",
-          ne: "/ne/profile/economics/ward-main-occupations",
-        },
-      },
+      title,
+      description,
+      keywords: [
+        "मुख्य पेशागत वितरण",
+        "परिवर्तन गाउँपालिका",
+        "पेशा तथ्याङ्क",
+        "उमेर अनुसार पेशा",
+        "Main occupation distribution",
+        "Khajura Rural Municipality",
+        "Occupation statistics",
+        "Age-wise occupation",
+        ...occupationData.map((c) => familyMainOccupationLabels[c.occupation]),
+      ],
       openGraph: {
-        title: `मुख्य पेशागत वितरण | ${municipalityName}`,
-        description: descriptionNP,
-        type: "article",
+        title,
+        description,
+        type: "website",
         locale: "ne_NP",
-        alternateLocale: "en_US",
-        siteName: `${municipalityName} डिजिटल प्रोफाइल`,
       },
       twitter: {
         card: "summary_large_image",
-        title: `मुख्य पेशागत वितरण | ${municipalityName}`,
-        description: descriptionNP,
+        title,
+        description,
       },
     };
   } catch (error) {
-    // Fallback metadata if data fetching fails
+    console.error("Error generating metadata:", error);
     return {
-      title: "मुख्य पेशागत वितरण | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
+      title: "मुख्य पेशागत वितरण - परिवर्तन गाउँपालिका",
       description:
-        "वडा अनुसार मुख्य पेशागत वितरण, प्रवृत्ति र विश्लेषण। विभिन्न पेशाहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।",
+        "परिवर्तन गाउँपालिकाको मुख्य पेशागत वितरणको विस्तृत तथ्याङ्क।",
     };
   }
 }
 
 const toc = [
   { level: 2, text: "परिचय", slug: "introduction" },
+  {
+    level: 2,
+    text: "उमेर अनुसार पेशागत वितरण",
+    slug: "age-occupation-distribution",
+  },
   { level: 2, text: "पेशा अनुसार जनसंख्या", slug: "occupation-distribution" },
-  { level: 2, text: "वडा अनुसार पेशागत विविधता", slug: "ward-wise-occupation" },
-  { level: 2, text: "प्रमुख पेशाहरूको विश्लेषण", slug: "major-occupations" },
+  { level: 2, text: "पेशागत विश्लेषण", slug: "occupation-analysis" },
 ];
 
 export default async function WardMainOccupationsPage() {
-  // Fetch all occupation data using tRPC
-  const occupationData =
-    await api.profile.demographics.wardWiseMajorOccupation.getAll.query();
+  // Fetch all occupation data from your tRPC route
+  let occupationData: OccupationDataType[] = [];
+  try {
+    const fetchedData =
+      await api.profile.demographics.wardWiseMajorOccupation.getAll.query();
+    occupationData = fetchedData || [];
+  } catch (error) {
+    console.error("Error fetching occupation data:", error);
+    occupationData = [];
+  }
 
-  // Try to fetch summary data
-  let summaryData = null;
+  // Ensure occupationData is a valid array
+  if (!occupationData || !Array.isArray(occupationData)) {
+    occupationData = [];
+  }
+
+  // Fetch summary statistics
+  let summaryData;
   try {
     summaryData =
       await api.profile.demographics.wardWiseMajorOccupation.summary.query();
   } catch (error) {
-    console.error("Could not fetch summary data", error);
+    console.error("Error fetching summary:", error);
   }
 
-  // Process data for overall summary
-  const overallSummary = Object.entries(
-    occupationData.reduce((acc: Record<string, number>, item) => {
-      if (!acc[item.occupation]) acc[item.occupation] = 0;
-      acc[item.occupation] += item.population || 0;
-      return acc;
-    }, {}),
-  )
-    .map(([occupation, population]) => ({
-      occupation,
-      occupationName:
-        OCCUPATION_NAMES[occupation as keyof typeof OCCUPATION_NAMES] ||
-        occupation,
-      population,
-    }))
-    .sort((a, b) => b.population - a.population);
-
-  // Calculate total population for percentages
-  const totalPopulation = overallSummary.reduce(
-    (sum, item) => sum + item.population,
+  // Calculate totals from the data
+  const totalPopulation = occupationData.reduce(
+    (sum, item) => sum + (item.totalPopulation || 0),
     0,
   );
 
-  // Take top 7 occupations for pie chart, group others
-  const topOccupations = overallSummary.slice(0, 7);
-  const otherOccupations = overallSummary.slice(7);
-
-  const otherTotalPopulation = otherOccupations.reduce(
-    (sum, item) => sum + item.population,
+  // Calculate age group totals
+  const totalAge15_19 = occupationData.reduce(
+    (sum, item) => sum + (item.age15_19 || 0),
+    0,
+  );
+  const totalAge20_24 = occupationData.reduce(
+    (sum, item) => sum + (item.age20_24 || 0),
+    0,
+  );
+  const totalAge25_29 = occupationData.reduce(
+    (sum, item) => sum + (item.age25_29 || 0),
+    0,
+  );
+  const totalAge30Plus = occupationData.reduce(
+    (sum, item) =>
+      sum +
+      (item.age30_34 || 0) +
+      (item.age35_39 || 0) +
+      (item.age40_44 || 0) +
+      (item.age45_49 || 0),
     0,
   );
 
-  let pieChartData = topOccupations.map((item) => ({
-    name: item.occupationName,
-    value: item.population,
-    percentage: ((item.population / totalPopulation) * 100).toFixed(2),
-  }));
-
-  // Add "Other" category if there are more than 7 occupations
-  if (otherOccupations.length > 0) {
-    pieChartData.push({
-      name: "अन्य",
-      value: otherTotalPopulation,
-      percentage: ((otherTotalPopulation / totalPopulation) * 100).toFixed(2),
-    });
-  }
-
-  // Get unique ward numbers
-  const wardNumbers = Array.from(
-    new Set(occupationData.map((item) => item.wardNumber)),
-  ).sort((a, b) => a - b); // Sort numerically
-
-  // Process data for ward-wise visualization (top 5 occupations per ward + others)
-  const wardWiseData = wardNumbers.map((wardNumber) => {
-    const wardData = occupationData.filter(
-      (item) => item.wardNumber === wardNumber,
-    );
-
-    // Sort ward data by population
-    wardData.sort((a, b) => (b.population || 0) - (a.population || 0));
-
-    // Take top 5 occupations for this ward
-    const topWardOccupations = wardData.slice(0, 5);
-    const otherWardOccupations = wardData.slice(5);
-    const otherWardTotal = otherWardOccupations.reduce(
-      (sum, item) => sum + (item.population || 0),
-      0,
-    );
-
-    const result: Record<string, any> = { ward: `वडा ${wardNumber}` };
-
-    // Add top occupations
-    topWardOccupations.forEach((item) => {
-      result[
-        OCCUPATION_NAMES[item.occupation as keyof typeof OCCUPATION_NAMES] ||
-          item.occupation
-      ] = item.population;
-    });
-
-    // Add "Other" category if needed
-    if (otherWardOccupations.length > 0) {
-      result["अन्य"] = otherWardTotal;
-    }
-
-    return result;
-  });
+  // Find economically active population (excluding economically inactive)
+  const economicallyActivePopulation = occupationData
+    .filter((item) => item.occupation !== "ECONOMICALLY_INACTIVE")
+    .reduce((sum, item) => sum + (item.totalPopulation || 0), 0);
 
   return (
-    <DocsLayout toc={<TableOfContents toc={toc} />}>
-      {/* Add structured data for SEO */}
-      <OccupationSEO
-        overallSummary={overallSummary}
-        totalPopulation={totalPopulation}
-        OCCUPATION_NAMES={OCCUPATION_NAMES}
-        OCCUPATION_NAMES_EN={OCCUPATION_NAMES_EN}
-        wardNumbers={wardNumbers}
-      />
-
-      <div className="flex flex-col gap-8">
-        <section>
-          <div className="relative rounded-lg overflow-hidden mb-8">
-            <Image
-              src="/images/occupation-diversity.svg"
-              width={1200}
-              height={400}
-              alt="मुख्य पेशागत वितरण - परिवर्तन गाउँपालिका (Main Occupational Distribution - Khajura Rural Municipality)"
-              className="w-full h-[250px] object-cover rounded-sm"
-              priority
-            />
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex gap-8">
+        {/* Table of Contents - Sidebar */}
+        <aside className="hidden lg:block w-64 flex-shrink-0">
+          <div className="sticky top-8">
+            <TableOfContents toc={toc} />
           </div>
+        </aside>
 
-          <div className="prose prose-slate dark:prose-invert max-w-none">
-            <h1 className="scroll-m-20 tracking-tight mb-6">
-              परिवर्तन गाउँपालिकामा मुख्य पेशागत वितरण
-            </h1>
-
-            <h2 id="introduction" className="scroll-m-20">
-              परिचय
-            </h2>
-            <p>
-              यस खण्डमा परिवर्तन गाउँपालिकाको विभिन्न वडाहरूमा बसोबास गर्ने
-              नागरिकहरूको मुख्य पेशा सम्बन्धी विस्तृत तथ्याङ्क प्रस्तुत गरिएको
-              छ। यो तथ्याङ्कले आर्थिक गतिविधि, रोजगारीको अवस्था र श्रम बजारको
-              संरचनालाई प्रतिबिम्बित गर्दछ।
-            </p>
-            <p>
-              परिवर्तन गाउँपालिकामा विभिन्न प्रकारका पेशाहरूमा मानिसहरू संलग्न
-              छन्। कुल जनसंख्या{" "}
-              {localizeNumber(totalPopulation.toLocaleString(), "ne")} मध्ये{" "}
-              {overallSummary[0]?.occupationName || ""} गर्ने व्यक्तिहरू{" "}
-              {localizeNumber(
-                (
-                  ((overallSummary[0]?.population || 0) / totalPopulation) *
-                  100
-                ).toFixed(1),
-                "ne",
-              )}
-              % रहेका छन्। यस तथ्याङ्कले रोजगारी सृजना, सीप विकास र आर्थिक
-              योजनामा महत्वपूर्ण भूमिका खेल्दछ।
-            </p>
-
-            <h2
-              id="occupation-distribution"
-              className="scroll-m-20 border-b pb-2"
-            >
-              पेशा अनुसार जनसंख्या
-            </h2>
-            <p>
-              परिवर्तन गाउँपालिकामा विभिन्न पेशामा संलग्न व्यक्तिहरूको संख्या
-              निम्नानुसार छ:
-            </p>
-          </div>
-
-          {/* Client component for charts */}
-          <OccupationCharts
-            overallSummary={overallSummary}
-            totalPopulation={totalPopulation}
-            pieChartData={pieChartData}
-            wardWiseData={wardWiseData}
-            wardNumbers={wardNumbers}
+        {/* Main Content */}
+        <main className="flex-1 min-w-0">
+          {/* SEO Component */}
+          <OccupationSEO
             occupationData={occupationData}
-            OCCUPATION_NAMES={OCCUPATION_NAMES}
+            totalPopulation={totalPopulation}
           />
 
-          <div className="prose prose-slate dark:prose-invert max-w-none mt-8">
-            <h2 id="major-occupations" className="scroll-m-20 border-b pb-2">
-              प्रमुख पेशाहरूको विश्लेषण
-            </h2>
-            <p>
-              परिवर्तन गाउँपालिकामा निम्न पेशाहरू प्रमुख रूपमा देखिन्छन्। यी
-              पेशाहरू मध्ये{" "}
-              {OCCUPATION_NAMES[
-                overallSummary[0]?.occupation as keyof typeof OCCUPATION_NAMES
-              ] || "कृषि"}{" "}
-              सबैभन्दा धेरै व्यक्तिहरूले अपनाएको पेशा हो, जसमा कुल जनसंख्याको{" "}
-              {localizeNumber(
-                (
-                  ((overallSummary[0]?.population || 0) / totalPopulation) *
-                  100
-                ).toFixed(2),
-                "ne",
-              )}
-              % संलग्न छन्।
+          {/* Header Section */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold mb-4" id="introduction">
+              मुख्य पेशागत वितरण
+            </h1>
+            <p className="text-muted-foreground leading-relaxed">
+              परिवर्तन गाउँपालिकाको मुख्य पेशागत वितरणको विस्तृत विश्लेषण। यहाँ
+              विभिन्न उमेर समूहका व्यक्तिहरूको पेशागत संरचनाको तथ्याङ्क प्रस्तुत
+              गरिएको छ। यो तथ्याङ्कले रोजगारी, आर्थिक गतिविधि र श्रम बजारको
+              संरचनालाई प्रतिबिम्बित गर्दछ।
             </p>
 
-            {/* Client component for occupation analysis section */}
-            <OccupationAnalysisSection
-              overallSummary={overallSummary}
-              totalPopulation={totalPopulation}
-              OCCUPATION_NAMES={OCCUPATION_NAMES}
-              OCCUPATION_NAMES_EN={OCCUPATION_NAMES_EN}
-            />
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+              <div className="bg-blue-50 p-4 rounded-lg border">
+                <div className="text-2xl font-bold text-blue-600">
+                  {localizeNumber(totalPopulation.toLocaleString(), "ne")}
+                </div>
+                <div className="text-sm text-blue-600">कुल जनसंख्या</div>
+              </div>
+              <div className="bg-green-50 p-4 rounded-lg border">
+                <div className="text-2xl font-bold text-green-600">
+                  {localizeNumber(
+                    (totalAge15_19 + totalAge20_24).toLocaleString(),
+                    "ne",
+                  )}
+                </div>
+                <div className="text-sm text-green-600">युवा (१५-२४)</div>
+              </div>
+              <div className="bg-pink-50 p-4 rounded-lg border">
+                <div className="text-2xl font-bold text-pink-600">
+                  {localizeNumber(
+                    economicallyActivePopulation.toLocaleString(),
+                    "ne",
+                  )}
+                </div>
+                <div className="text-sm text-pink-600">आर्थिक रूपमा सक्रिय</div>
+              </div>
+              <div className="bg-purple-50 p-4 rounded-lg border">
+                <div className="text-2xl font-bold text-purple-600">
+                  {localizeNumber(occupationData.length.toString(), "ne")}
+                </div>
+                <div className="text-sm text-purple-600">पेशा वर्गहरू</div>
+              </div>
+            </div>
           </div>
-        </section>
+
+          {/* Charts Section */}
+          <OccupationCharts
+            occupationData={occupationData}
+            totalPopulation={totalPopulation}
+          />
+
+          {/* Analysis Section */}
+          <section id="occupation-analysis">
+            <OccupationAnalysisSection
+              occupationData={occupationData}
+              totalPopulation={totalPopulation}
+            />
+          </section>
+
+          {/* Additional Information */}
+          <div className="mt-12 bg-gray-50 p-6 rounded-lg">
+            <h3 className="text-lg font-semibold mb-4">डेटा स्रोत र नोट</h3>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>
+                • यो तथ्याङ्क राष्ट्रिय जनगणना र स्थानीय सर्वेक्षणमा आधारित छ
+              </li>
+              <li>
+                • पेशागत तथ्याङ्कमा १५ देखि ४९ वर्ष उमेरका व्यक्तिहरू समावेश छन्
+              </li>
+              <li>
+                • पेशागत वर्गीकरण अन्तर्राष्ट्रिय श्रम संगठन (ILO) को मापदण्ड
+                अनुसार गरिएको छ
+              </li>
+              <li>
+                • यो डेटा रोजगार नीति निर्माण र आर्थिक विकास योजनाका लागि उपयोगी
+                छ
+              </li>
+              <li>
+                • आर्थिक रूपमा सक्रिय जनसंख्याले कुनै न कुनै आर्थिक गतिविधिमा
+                संलग्न व्यक्तिहरूलाई जनाउँछ
+              </li>
+            </ul>
+          </div>
+
+          {/* Key Insights Section */}
+          <div className="mt-8 bg-blue-50 p-6 rounded-lg border border-blue-200">
+            <h3 className="text-lg font-semibold mb-4 text-blue-800">
+              मुख्य निष्कर्षहरू
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <h4 className="font-medium text-blue-700 mb-2">
+                  पेशागत संरचना
+                </h4>
+                <ul className="text-sm text-blue-700 space-y-1">
+                  <li>• कृषि क्षेत्रमा सबैभन्दा बढी रोजगारी</li>
+                  <li>• युवाहरूमा विविध पेशागत रुझान</li>
+                  <li>• शिक्षा र स्वास्थ्य क्षेत्रमा बढ्दो सहभागिता</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-medium text-blue-700 mb-2">
+                  उमेर समूह विश्लेषण
+                </h4>
+                <ul className="text-sm text-blue-700 space-y-1">
+                  <li>• २५-३९ वर्ष उमेर समूहमा सबैभन्दा बढी आर्थिक सक्रियता</li>
+                  <li>• युवाहरूमा शिक्षा र सीप विकासको आवश्यकता</li>
+                  <li>• प्रौढ उमेरमा अनुभवजन्य पेशाहरूको प्राधान्यता</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
-    </DocsLayout>
+    </div>
   );
 }
