@@ -25,10 +25,6 @@ export const navItems: NavItem[] = [
     icon: <Users className="w-4 h-4" />,
     items: [
       {
-        title: "जनसंख्याको सारांश",
-        href: "/profile/demographics/ward-wise-summary",
-      },
-      {
         title: "उमेर र लिङ्ग अनुसार जनसंख्या",
         href: "/profile/demographics/age-wise-population",
       },
@@ -71,10 +67,6 @@ export const navItems: NavItem[] = [
       {
         title: "विगत १२ महिनामा मृत्यु भएकाको विवरण",
         href: "/profile/demographics/ward-age-gender-wise-deceased-population",
-      },
-      {
-        title: "मृत्युको कारण अनुसार मृतकको संख्या",
-        href: "/profile/demographics/ward-death-causes",
       },
     ],
   },

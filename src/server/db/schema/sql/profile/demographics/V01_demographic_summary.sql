@@ -2,7 +2,7 @@
 DO $$
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_tables WHERE tablename = 'demographic_summary') THEN
-        CREATE TABLE acme_demographic_summary (
+        CREATE TABLE demographic_summary (
             id VARCHAR(36) PRIMARY KEY DEFAULT 'singleton',
             total_population INTEGER,
             population_male INTEGER,
@@ -33,16 +33,12 @@ $$;
 DO $$
 BEGIN
     -- Only insert if the singleton record doesn't exist
-    IF NOT EXISTS (SELECT 1 FROM acme_demographic_summary WHERE id = 'singleton') THEN
-        INSERT INTO acme_demographic_summary (
+    IF NOT EXISTS (SELECT 1 FROM demographic_summary WHERE id = 'singleton') THEN
+        INSERT INTO demographic_summary (
             id,
             total_population,
             population_male,
             population_female,
-            population_other,
-            population_male_absentee,
-            population_female_absentee,
-            population_absentee_total,
             sex_ratio,
             total_households,
             average_household_size,
@@ -54,22 +50,26 @@ BEGIN
             literacy_rate_above_15
         ) VALUES (
             'singleton',
-            64908,                 -- अक्सर बसोबास गर्ने जम्मा जनसंख्या
-            27877,                 -- अक्सर बसोबास गर्ने पुरुष
-            30978,                 -- अक्सर बसोबास गर्ने महिला
-            3,                     -- अक्सर बसोबास गर्ने अन्य जनसंख्या
-            5050,                  -- अनुपस्थित पुरुष
-            1000,                  -- अनुपस्थित महिला
-            6050,                  -- अनुपस्थित जम्मा जनसंख्या
-            89.98,                 -- लैंगिक दर (पुरुष प्रति १०० महिला)
-            15530,                 -- जम्मा घरधुरी (cleaned from टद्ध,ढण्ड - used estimated value)
-            4,                     -- औषत परिवार आकार
+            64908,                 -- जम्मा जनसंख्या (combining both datasets)
+            30515,                 -- जम्मा पुरुष (Total Male)
+            34393,                 -- जम्मा महिला (Total Female)
+            89.98,                 -- लैंगिक दर (प्रति १०० महिलामा पुरुषको संख्या)
+            15530,                 -- कुल परिवार (Total Households)
+            4.0,                   -- औषत परिवार आकार (Average Household Size)
             636.91,                -- जनघनत्व (प्रतिवर्ग कि.मी.)
-            16467,                 -- ०–१४ वर्ष उमेरसमूहका जनसंख्या (cleaned from 16,467)
-            42697,                 -- १५–५९ वर्ष उमेरसमूहका जनसंख्या (cleaned from 42,697)
-            5744,                  -- ६० वर्षभन्दा बढी उमेरसमूहका जनसंख्या (cleaned from 5, 744)
+            16467,                 -- ०–१४ वर्ष उमेरसमूहका जनसंख्या
+            42697,                 -- १५–५९ वर्ष उमेरसमूहका जनसंख्या
+            5744,                  -- ६० वर्षभन्दा बढी उमेरसमूहका जनसंख्या
             2.74,                  -- वार्षिक जनसंख्या वृद्धिदर (प्रतिशत)
-            68.32                  -- साक्षरता दर (५ वर्ष र सोभन्दा बढी उमेरसमूह) (cleaned from ६८.३२ प्रतिशत)
+            68.32                  -- साक्षरता दर (५ वर्ष र सोभन्दा बढी उमेरसमूह)
+        );
+
+        RAISE NOTICE 'Demographic summary data inserted successfully';
+    ELSE
+        RAISE NOTICE 'Demographic summary data already exists, skipping insertion';
+    END IF;
+END
+$$;
         );
 
         RAISE NOTICE 'Demographic summary data inserted successfully';

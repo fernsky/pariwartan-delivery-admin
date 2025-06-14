@@ -1,179 +1,117 @@
-import Script from "next/script";
+"use client";
+
 import { localizeNumber } from "@/lib/utils/localize-number";
 
-interface WardData {
-  wardNumber: number;
-  wardName: string;
-  totalPopulation: number;
-  malePopulation: number;
-  femalePopulation: number;
-  otherPopulation: number;
-  totalHouseholds: number;
-  averageHouseholdSize: number;
-  sexRatio: number;
-}
-
 interface WardWiseSEOProps {
-  processedWardData: WardData[];
-  municipalityStats: {
+  demographicData: {
     totalPopulation: number;
-    malePopulation: number;
-    femalePopulation: number;
-    otherPopulation: number;
+    populationMale: number;
+    populationFemale: number;
     totalHouseholds: number;
-  };
-  municipalityAverages: {
     averageHouseholdSize: number;
     sexRatio: number;
+    annualGrowthRate: number;
+    literacyRate: number;
+    populationDensity: number;
+    dataYear: string;
+    dataYearEnglish: string;
   };
+  wardCount: number;
 }
 
 export default function WardWiseSEO({
-  processedWardData,
-  municipalityStats,
-  municipalityAverages,
+  demographicData,
+  wardCount,
 }: WardWiseSEOProps) {
-  // Create structured data for SEO
-  const generateStructuredData = () => {
-    // Convert ward stats to structured data format
-    const wardObservations = processedWardData.map((ward) => ({
-      "@type": "Observation",
-      name: `परिवर्तन गाउँपालिका वडा ${ward.wardNumber} demographics`,
-      observationDate: new Date().toISOString().split("T")[0],
-      measuredProperty: [
-        {
-          "@type": "PropertyValue",
-          name: "Total Population",
-          unitText: "people",
-          value: ward.totalPopulation,
-        },
-        {
-          "@type": "PropertyValue",
-          name: "Male Population",
-          unitText: "people",
-          value: ward.malePopulation,
-        },
-        {
-          "@type": "PropertyValue",
-          name: "Female Population",
-          unitText: "people",
-          value: ward.femalePopulation,
-        },
-        {
-          "@type": "PropertyValue",
-          name: "Total Households",
-          unitText: "households",
-          value: ward.totalHouseholds,
-        },
-        {
-          "@type": "PropertyValue",
-          name: "Average Household Size",
-          value: ward.averageHouseholdSize,
-        },
-        {
-          "@type": "PropertyValue",
-          name: "Sex Ratio",
-          value: ward.sexRatio,
-        },
-      ],
-      description: `परिवर्तन गाउँपालिका वडा ${localizeNumber(
-        ward.wardNumber,
-        "ne",
-      )} मा जनसंख्या ${localizeNumber(
-        ward.totalPopulation.toLocaleString(),
-        "ne",
-      )} जना छन्, जसमा ${localizeNumber(
-        ward.malePopulation.toLocaleString(),
-        "ne",
-      )} पुरुष र ${localizeNumber(
-        ward.femalePopulation.toLocaleString(),
-        "ne",
-      )} महिला रहेका छन्, साथै यस वडामा ${localizeNumber(
-        ward.totalHouseholds.toLocaleString(),
-        "ne",
-      )} घरधुरी छन्।`,
-    }));
-
-    return {
-      "@context": "https://schema.org",
-      "@type": "Dataset",
-      name: "परिवर्तन गाउँपालिका - वडागत जनसांख्यिकी तथ्याङ्क",
-      description: `परिवर्तन गाउँपालिकाको ${localizeNumber(
-        processedWardData.length,
-        "ne",
-      )} वडाहरूको जनसंख्या वितरण, जसमा कुल जनसंख्या ${localizeNumber(
-        municipalityStats.totalPopulation.toLocaleString(),
-        "ne",
-      )} र कुल ${localizeNumber(
-        municipalityStats.totalHouseholds.toLocaleString(),
-        "ne",
-      )} घरधुरी रहेका छन्।`,
-      keywords: [
-        "परिवर्तन गाउँपालिका",
-        "Khajura Rural Municipality",
-        "वडागत जनसांख्यिकी",
-        "परिवर्तन वडा जनसंख्या",
-        "नेपाल जनगणना",
-        "परिवर्तन जनसंख्या वितरण",
-        "परिवर्तन लैङ्गिक अनुपात",
-        "परिवर्तन घरधुरी तथ्याङ्क",
-        "बाँके जिल्ला जनसंख्या",
-      ],
-      url: "https://digital.khajuramun.gov.np/profile/demographics/ward-wise-summary",
-      creator: {
-        "@type": "Organization",
-        name: "परिवर्तन गाउँपालिका",
-        url: "https://digital.khajuramun.gov.np",
-      },
-      temporalCoverage: "2021/2023",
-      spatialCoverage: {
-        "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
-        geo: {
-          "@type": "GeoCoordinates",
-          latitude: "28.1356",
-          longitude: "81.6314",
-        },
-      },
-      variableMeasured: [
-        {
-          "@type": "PropertyValue",
-          name: "Total Population",
-          unitText: "people",
-          value: municipalityStats.totalPopulation,
-        },
-        {
-          "@type": "PropertyValue",
-          name: "Total Households",
-          unitText: "households",
-          value: municipalityStats.totalHouseholds,
-        },
-        {
-          "@type": "PropertyValue",
-          name: "Average Household Size",
-          value: municipalityAverages.averageHouseholdSize,
-        },
-        {
-          "@type": "PropertyValue",
-          name: "Sex Ratio",
-          value: municipalityAverages.sexRatio,
-        },
-      ],
-      observation: wardObservations,
-    };
-  };
-
-  const structuredData = generateStructuredData();
-
   return (
     <>
-      <Script
-        id="ward-demographics-jsonld"
+      {/* Structured Data for SEO */}
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData),
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Dataset",
+            name: "Ward-wise Demographics Summary - Pariwartan Rural Municipality",
+            description: `Comprehensive demographic statistics for all ${wardCount} wards of Pariwartan Rural Municipality including population distribution, gender ratios, and household information.`,
+            url: typeof window !== "undefined" ? window.location.href : "",
+            keywords: [
+              "demographics",
+              "population statistics",
+              "ward-wise data",
+              "Pariwartan Rural Municipality",
+              "Nepal census data",
+              "gender distribution",
+              "household statistics",
+            ],
+            creator: {
+              "@type": "Organization",
+              name: "Pariwartan Rural Municipality",
+              url: "https://pariwartan.gov.np",
+            },
+            spatialCoverage: {
+              "@type": "Place",
+              name: "Pariwartan Rural Municipality, Bagmati Province, Nepal",
+            },
+            temporalCoverage: demographicData.dataYearEnglish,
+            variableMeasured: [
+              {
+                "@type": "PropertyValue",
+                name: "Total Population",
+                value: demographicData.totalPopulation,
+                unitText: "persons",
+              },
+              {
+                "@type": "PropertyValue",
+                name: "Total Households",
+                value: demographicData.totalHouseholds,
+                unitText: "households",
+              },
+              {
+                "@type": "PropertyValue",
+                name: "Average Household Size",
+                value: demographicData.averageHouseholdSize,
+                unitText: "persons per household",
+              },
+              {
+                "@type": "PropertyValue",
+                name: "Sex Ratio",
+                value: demographicData.sexRatio,
+                unitText: "males per 100 females",
+              },
+              {
+                "@type": "PropertyValue",
+                name: "Literacy Rate",
+                value: demographicData.literacyRate,
+                unitText: "percent",
+              },
+            ],
+          }),
         }}
       />
+
+      {/* Additional meta tags for better SEO */}
+      <meta name="geo.region" content="NP-P3" />
+      <meta name="geo.placename" content="Pariwartan Rural Municipality" />
+      <meta
+        name="DC.title"
+        content="Ward-wise Demographics Summary - Pariwartan Rural Municipality"
+      />
+      <meta name="DC.creator" content="Pariwartan Rural Municipality" />
+      <meta
+        name="DC.subject"
+        content="Demographics, Population Statistics, Ward Analysis"
+      />
+      <meta
+        name="DC.description"
+        content={`Comprehensive demographic analysis of ${wardCount} wards with total population of ${localizeNumber(demographicData.totalPopulation.toLocaleString(), "en")}`}
+      />
+      <meta name="DC.publisher" content="Pariwartan Rural Municipality" />
+      <meta name="DC.date" content={demographicData.dataYearEnglish} />
+      <meta name="DC.type" content="Dataset" />
+      <meta name="DC.format" content="text/html" />
+      <meta name="DC.language" content="ne-NP" />
+      <meta name="DC.coverage" content="Pariwartan Rural Municipality, Nepal" />
     </>
   );
 }
