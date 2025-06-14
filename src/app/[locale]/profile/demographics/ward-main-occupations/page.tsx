@@ -39,7 +39,7 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     // Fetch data for SEO using tRPC
     const occupationData =
-      await api.profile.demographics.wardWiseMajorOccupation.getAll.query();
+      await api.profile.demographics.familyMainOccupation.getAll.query();
     const municipalityName = "परिवर्तन गाउँपालिका";
 
     // Ensure occupationData is a valid array
@@ -114,7 +114,7 @@ export default async function WardMainOccupationsPage() {
   let occupationData: OccupationDataType[] = [];
   try {
     const fetchedData =
-      await api.profile.demographics.wardWiseMajorOccupation.getAll.query();
+      await api.profile.demographics.familyMainOccupation.getAll.query();
     occupationData = fetchedData || [];
   } catch (error) {
     console.error("Error fetching occupation data:", error);
@@ -130,7 +130,7 @@ export default async function WardMainOccupationsPage() {
   let summaryData;
   try {
     summaryData =
-      await api.profile.demographics.wardWiseMajorOccupation.summary.query();
+      await api.profile.demographics.familyMainOccupation.summary.query();
   } catch (error) {
     console.error("Error fetching summary:", error);
   }
