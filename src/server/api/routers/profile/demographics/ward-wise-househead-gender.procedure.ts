@@ -3,53 +3,44 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "@/server/api/trpc";
-import { wardWiseHouseHeadGender } from "@/server/db/schema/profile/demographics/ward-wise-househead-gender";
+import { ageGroupHousehead } from "@/server/db/schema/profile/demographics/ward-wise-househead-gender";
 import { eq, and, desc, sql } from "drizzle-orm";
 import {
-  wardWiseHouseHeadGenderSchema,
-  wardWiseHouseHeadGenderFilterSchema,
-  updateWardWiseHouseHeadGenderSchema,
+  ageGroupHouseHeadSchema,
+  ageGroupHouseHeadFilterSchema,
+  updateAgeGroupHouseHeadSchema,
 } from "./ward-wise-househead-gender.schema";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 
-// Get all ward-wise house head gender data with optional filtering
-export const getAllWardWiseHouseHeadGender = publicProcedure
-  .input(wardWiseHouseHeadGenderFilterSchema.optional())
+// Get all age-group-wise house head data with optional filtering
+export const getAllAgeGroupHouseHead = publicProcedure
+  .input(ageGroupHouseHeadFilterSchema.optional())
   .query(async ({ ctx, input }) => {
     try {
       // Set UTF-8 encoding explicitly before running query
       await ctx.db.execute(sql`SET client_encoding = 'UTF8'`);
 
       // Build query with conditions
-      const baseQuery = ctx.db.select().from(wardWiseHouseHeadGender);
+      const baseQuery = ctx.db.select().from(ageGroupHousehead);
 
       let conditions = [];
 
-      if (input?.wardNumber) {
-        conditions.push(
-          eq(wardWiseHouseHeadGender.wardNumber, input.wardNumber),
-        );
-      }
-
-      if (input?.gender) {
-        conditions.push(eq(wardWiseHouseHeadGender.gender, input.gender));
+      if (input?.ageGroup) {
+        conditions.push(eq(ageGroupHousehead.ageGroup, input.ageGroup));
       }
 
       const queryWithFilters = conditions.length
         ? baseQuery.where(and(...conditions))
         : baseQuery;
 
-      // Sort by ward number
-      const data = await queryWithFilters.orderBy(
-        wardWiseHouseHeadGender.wardNumber,
-        wardWiseHouseHeadGender.gender,
-      );
+      // Sort by age group (custom order)
+      const data = await queryWithFilters.orderBy(ageGroupHousehead.ageGroup);
 
       return data;
     } catch (error) {
-      console.error("Error fetching ward-wise house head gender data:", error);
+      console.error("Error fetching age-group house head data:", error);
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Failed to retrieve data",
@@ -57,73 +48,66 @@ export const getAllWardWiseHouseHeadGender = publicProcedure
     }
   });
 
-// Get data for a specific ward
-export const getWardWiseHouseHeadGenderByWard = publicProcedure
-  .input(z.object({ wardNumber: z.number().int().min(1) }))
+// Get data for a specific age group
+export const getAgeGroupHouseHeadByGroup = publicProcedure
+  .input(z.object({ ageGroup: z.string() }))
   .query(async ({ ctx, input }) => {
     const data = await ctx.db
       .select()
-      .from(wardWiseHouseHeadGender)
-      .where(eq(wardWiseHouseHeadGender.wardNumber, input.wardNumber))
-      .orderBy(wardWiseHouseHeadGender.gender);
+      .from(ageGroupHousehead)
+      .where(eq(ageGroupHousehead.ageGroup, input.ageGroup))
+      .limit(1);
 
-    return data;
+    return data[0] || null;
   });
 
-// Create a new ward-wise house head gender entry
-export const createWardWiseHouseHeadGender = protectedProcedure
-  .input(wardWiseHouseHeadGenderSchema)
+// Create a new age-group house head entry
+export const createAgeGroupHouseHead = protectedProcedure
+  .input(ageGroupHouseHeadSchema)
   .mutation(async ({ ctx, input }) => {
     // Check if user has appropriate permissions
     if (ctx.user.role !== "superadmin") {
       throw new TRPCError({
         code: "UNAUTHORIZED",
-        message:
-          "Only administrators can create ward-wise house head gender data",
+        message: "Only administrators can create age-group house head data",
       });
     }
 
-    // Check if entry already exists for this ward and gender
+    // Check if entry already exists for this age group
     const existing = await ctx.db
-      .select({ id: wardWiseHouseHeadGender.id })
-      .from(wardWiseHouseHeadGender)
-      .where(
-        and(
-          eq(wardWiseHouseHeadGender.wardNumber, input.wardNumber),
-          eq(wardWiseHouseHeadGender.gender, input.gender),
-        ),
-      )
+      .select({ id: ageGroupHousehead.id })
+      .from(ageGroupHousehead)
+      .where(eq(ageGroupHousehead.ageGroup, input.ageGroup))
       .limit(1);
 
     if (existing.length > 0) {
       throw new TRPCError({
         code: "CONFLICT",
-        message: `Data for Ward ${input.wardNumber} and gender ${input.gender} already exists`,
+        message: `Data for age group ${input.ageGroup} already exists`,
       });
     }
 
     // Create new record
-    await ctx.db.insert(wardWiseHouseHeadGender).values({
+    await ctx.db.insert(ageGroupHousehead).values({
       id: input.id || uuidv4(),
-      wardNumber: input.wardNumber,
-      wardName: input.wardName,
-      gender: input.gender,
-      population: input.population,
+      ageGroup: input.ageGroup,
+      maleHeads: input.maleHeads,
+      femaleHeads: input.femaleHeads,
+      totalFamilies: input.totalFamilies,
     });
 
     return { success: true };
   });
 
-// Update an existing ward-wise house head gender entry
-export const updateWardWiseHouseHeadGender = protectedProcedure
-  .input(updateWardWiseHouseHeadGenderSchema)
+// Update an existing age-group house head entry
+export const updateAgeGroupHouseHead = protectedProcedure
+  .input(updateAgeGroupHouseHeadSchema)
   .mutation(async ({ ctx, input }) => {
     // Check if user has appropriate permissions
     if (ctx.user.role !== "superadmin") {
       throw new TRPCError({
         code: "UNAUTHORIZED",
-        message:
-          "Only administrators can update ward-wise house head gender data",
+        message: "Only administrators can update age-group house head data",
       });
     }
 
@@ -136,9 +120,9 @@ export const updateWardWiseHouseHeadGender = protectedProcedure
 
     // Check if the record exists
     const existing = await ctx.db
-      .select({ id: wardWiseHouseHeadGender.id })
-      .from(wardWiseHouseHeadGender)
-      .where(eq(wardWiseHouseHeadGender.id, input.id))
+      .select({ id: ageGroupHousehead.id })
+      .from(ageGroupHousehead)
+      .where(eq(ageGroupHousehead.id, input.id))
       .limit(1);
 
     if (existing.length === 0) {
@@ -150,75 +134,73 @@ export const updateWardWiseHouseHeadGender = protectedProcedure
 
     // Update the record
     await ctx.db
-      .update(wardWiseHouseHeadGender)
+      .update(ageGroupHousehead)
       .set({
-        wardNumber: input.wardNumber,
-        wardName: input.wardName,
-        gender: input.gender,
-        population: input.population,
+        ageGroup: input.ageGroup,
+        maleHeads: input.maleHeads,
+        femaleHeads: input.femaleHeads,
+        totalFamilies: input.totalFamilies,
       })
-      .where(eq(wardWiseHouseHeadGender.id, input.id));
+      .where(eq(ageGroupHousehead.id, input.id));
 
     return { success: true };
   });
 
-// Delete a ward-wise house head gender entry
-export const deleteWardWiseHouseHeadGender = protectedProcedure
+// Delete an age-group house head entry
+export const deleteAgeGroupHouseHead = protectedProcedure
   .input(z.object({ id: z.string() }))
   .mutation(async ({ ctx, input }) => {
     // Check if user has appropriate permissions
     if (ctx.user.role !== "superadmin") {
       throw new TRPCError({
         code: "UNAUTHORIZED",
-        message:
-          "Only administrators can delete ward-wise house head gender data",
+        message: "Only administrators can delete age-group house head data",
       });
     }
 
     // Delete the record
     await ctx.db
-      .delete(wardWiseHouseHeadGender)
-      .where(eq(wardWiseHouseHeadGender.id, input.id));
+      .delete(ageGroupHousehead)
+      .where(eq(ageGroupHousehead.id, input.id));
 
     return { success: true };
   });
 
 // Get summary statistics
-export const getWardWiseHouseHeadGenderSummary = publicProcedure.query(
+export const getAgeGroupHouseHeadSummary = publicProcedure.query(
   async ({ ctx }) => {
     try {
-      // Get total counts by gender across all wards
+      // Get totals (excluding the 'जम्मा' row to avoid double counting)
       const summarySql = sql`
         SELECT 
-          gender, 
-          SUM(population) as total_population
+          SUM(male_heads) as total_male_heads,
+          SUM(female_heads) as total_female_heads,
+          SUM(total_families) as total_families
         FROM 
-          ward_wise_househead_gender
-        GROUP BY 
-          gender
-        ORDER BY 
-          gender
+          acme_age_group_househead
+        WHERE 
+          age_group != 'जम्मा'
       `;
 
       const summaryData = await ctx.db.execute(summarySql);
 
       return summaryData;
     } catch (error) {
-      console.error("Error in getWardWiseHouseHeadGenderSummary:", error);
+      console.error("Error in getAgeGroupHouseHeadSummary:", error);
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to retrieve ward-wise house head gender summary",
+        message: "Failed to retrieve age-group house head summary",
       });
     }
   },
 );
 
-// Export the router with all procedures
-export const wardWiseHouseHeadGenderRouter = createTRPCRouter({
-  getAll: getAllWardWiseHouseHeadGender,
-  getByWard: getWardWiseHouseHeadGenderByWard,
-  create: createWardWiseHouseHeadGender,
-  update: updateWardWiseHouseHeadGender,
-  delete: deleteWardWiseHouseHeadGender,
-  summary: getWardWiseHouseHeadGenderSummary,
+// Export the router with the correct name to match the page usage
+export const ageHouseHeadGenderRouter = createTRPCRouter({
+  getAll: getAllAgeGroupHouseHead,
+  getByGroup: getAgeGroupHouseHeadByGroup,
+  create: createAgeGroupHouseHead,
+  update: updateAgeGroupHouseHead,
+  delete: deleteAgeGroupHouseHead,
+  summary: getAgeGroupHouseHeadSummary,
 });

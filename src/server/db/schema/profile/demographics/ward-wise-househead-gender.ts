@@ -1,23 +1,22 @@
 import { pgTable } from "../../../schema/basic";
-import { integer, varchar, pgEnum } from "drizzle-orm/pg-core";
-import { genderEnum } from "./common";
+import { integer, varchar } from "drizzle-orm/pg-core";
 
-// Define the ward wise house head gender table
-export const wardWiseHouseHeadGender = pgTable("ward_wise_househead_gender", {
+// Define the age group house head table (matches SQL table name)
+export const ageGroupHousehead = pgTable("age_group_househead", {
   id: varchar("id", { length: 36 }).primaryKey(),
 
-  // Ward information
-  wardNumber: integer("ward_number").notNull(),
-  wardName: varchar("ward_name", { length: 100 }),
+  // Age group information
+  ageGroup: varchar("age_group", { length: 50 }).notNull().unique(),
 
-  // Gender of the household head
-  gender: genderEnum("gender").notNull(),
+  // Count of male household heads
+  maleHeads: integer("male_heads").notNull().default(0),
 
-  // Count of households with this gender as head
-  population: integer("population").notNull().default(0),
+  // Count of female household heads
+  femaleHeads: integer("female_heads").notNull().default(0),
+
+  // Total number of families in this age group
+  totalFamilies: integer("total_families").notNull().default(0),
 });
 
-export type WardWiseHouseHeadGender =
-  typeof wardWiseHouseHeadGender.$inferSelect;
-export type NewWardWiseHouseHeadGender =
-  typeof wardWiseHouseHeadGender.$inferInsert;
+export type AgeGroupHousehead = typeof ageGroupHousehead.$inferSelect;
+export type NewAgeGroupHousehead = typeof ageGroupHousehead.$inferInsert;

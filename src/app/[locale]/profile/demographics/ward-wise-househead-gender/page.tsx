@@ -1,19 +1,27 @@
 import { Metadata } from "next";
-import { DocsLayout } from "@/components/layout/DocsLayout";
-import { TableOfContents } from "@/components/TableOfContents";
-import Image from "next/image";
-import { localizeNumber } from "@/lib/utils/localize-number";
-import HouseheadGenderCharts from "./_components/househead-gender-charts";
-import GenderSEO from "./_components/gender-seo";
-import GenderAnalysisSection from "./_components/gender-analysis-section";
 import { api } from "@/trpc/server";
+import { TableOfContents } from "@/components/TableOfContents";
+import HouseheadGenderCharts from "./_components/househead-gender-charts";
+import GenderAnalysisSection from "./_components/gender-analysis-section";
+import GenderSEO from "./_components/gender-seo";
+import { localizeNumber } from "@/lib/utils/localize-number";
+
+// Define type for age group househead data
+type AgeGroupHouseheadType = {
+  id?: string;
+  ageGroup: string;
+  maleHeads: number;
+  femaleHeads: number;
+  totalFamilies: number;
+  updatedAt?: Date;
+  createdAt?: Date;
+};
 
 // Force dynamic rendering since we're using tRPC which relies on headers
 export const dynamic = "force-dynamic";
 
 // Define the locales for which this page should be statically generated
 export async function generateStaticParams() {
-  // Generate the page for 'en' and 'ne' locales
   return [{ locale: "en" }];
 }
 
@@ -24,231 +32,223 @@ export const revalidate = 86400; // Revalidate once per day (in seconds)
 export async function generateMetadata(): Promise<Metadata> {
   try {
     // Fetch data for SEO using tRPC
-    const genderData =
-      await api.profile.demographics.wardWiseHouseHeadGender.getAll.query();
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+    const househeadData =
+      await api.profile.demographics.ageGroupHouseHeadGender.getAll.query();
+    const municipalityName = "परिवर्तन गाउँपालिका";
 
-    // Process data for SEO
-    const totalPopulation = genderData.reduce(
-      (sum, item) => sum + (item.population || 0),
+    // Ensure househeadData is a valid array
+    if (!househeadData || !Array.isArray(househeadData)) {
+      return {
+        title: `उमेर समूह अनुसार घरमूली लिङ्ग वितरण - ${municipalityName}`,
+        description: `${municipalityName}को उमेर समूह अनुसार घरमूली लिङ्ग वितरणको विस्तृत तथ्याङ्क।`,
+      };
+    }
+
+    // Process data for SEO (exclude the 'जम्मा' row)
+    const dataWithoutTotal = househeadData.filter(
+      (item) => item.ageGroup !== "जम्मा",
+    );
+    const totalFamilies = dataWithoutTotal.reduce(
+      (sum, item) => sum + (item.totalFamilies || 0),
       0,
     );
 
-    // Group by gender and calculate totals
-    const genderCounts: Record<string, number> = {};
-    genderData.forEach((item) => {
-      if (!genderCounts[item.gender]) genderCounts[item.gender] = 0;
-      genderCounts[item.gender] += item.population || 0;
-    });
+    // Get top 3 age groups for keywords
+    const topAgeGroups = dataWithoutTotal.slice(0, 3);
 
-    // Create rich keywords with actual data using localized numbers
-    const keywordsNP = [
-      "परिवर्तन गाउँपालिका घरमूली लिङ्ग वितरण",
-      "परिवर्तन वडागत घरमूली विश्लेषण",
-      "घरमूली महिला पुरुष अनुपात परिवर्तन",
-      "वडा अनुसार घरमूली संख्या",
-      "घरमूली लैङ्गिक विविधता",
-      `परिवर्तन कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")}`,
-    ];
-
-    // Create detailed description with actual data using localized numbers
-    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार घरमूली लिङ्ग वितरण, प्रवृत्ति र विश्लेषण। कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")} मध्ये पुरुष घरमूली ${localizeNumber(genderCounts["MALE"]?.toString() || "0", "ne")} र महिला घरमूली ${localizeNumber(genderCounts["FEMALE"]?.toString() || "0", "ne")} रहेका छन्। विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
+    const title = `उमेर समूह अनुसार घरमूली लिङ्ग वितरण - ${municipalityName}`;
+    const description = `${municipalityName}को उमेर समूह अनुसार घरमूली लिङ्ग वितरणको विस्तृत तथ्याङ्क। कुल परिवार: ${totalFamilies.toLocaleString()} परिवार। मुख्य उमेर समूहहरू: ${topAgeGroups.map((a) => a.ageGroup).join(", ")}।`;
 
     return {
-      title: `परिवर्तन गाउँपालिका | वडागत घरमूली लिङ्ग वितरण | डिजिटल प्रोफाइल`,
-      description: descriptionNP,
-      keywords: keywordsNP,
-      alternates: {
-        canonical: "/profile/demographics/ward-wise-househead-gender",
-        languages: {
-          en: "/en/profile/demographics/ward-wise-househead-gender",
-          ne: "/ne/profile/demographics/ward-wise-househead-gender",
-        },
-      },
+      title,
+      description,
+      keywords: [
+        "घरमूली लिङ्ग वितरण",
+        "उमेर समूह घरमूली",
+        "परिवर्तन गाउँपालिका",
+        "परिवार तथ्याङ्क",
+        "Household head gender distribution",
+        "Age group household heads",
+        "Pariwartan Rural Municipality",
+        "Family statistics",
+        ...dataWithoutTotal.map((a) => a.ageGroup),
+      ],
       openGraph: {
-        title: `परिवर्तन गाउँपालिका | वडागत घरमूली लिङ्ग वितरण`,
-        description: descriptionNP,
-        type: "article",
+        title,
+        description,
+        type: "website",
         locale: "ne_NP",
-        alternateLocale: "en_US",
-        siteName: `परिवर्तन गाउँपालिका डिजिटल प्रोफाइल`,
       },
       twitter: {
         card: "summary_large_image",
-        title: `परिवर्तन गाउँपालिका | वडागत घरमूली लिङ्ग वितरण`,
-        description: descriptionNP,
+        title,
+        description,
       },
     };
   } catch (error) {
-    // Fallback metadata if data fetching fails
+    console.error("Error generating metadata:", error);
     return {
-      title: "परिवर्तन गाउँपालिका | वडागत घरमूली लिङ्ग वितरण | डिजिटल प्रोफाइल",
+      title: "उमेर समूह अनुसार घरमूली लिङ्ग वितरण - परिवर्तन गाउँपालिका",
       description:
-        "परिवर्तन गाउँपालिकाको वडागत घरमूली लिङ्ग वितरण, प्रवृत्ति र विश्लेषण।",
+        "परिवर्तन गाउँपालिकाको उमेर समूह अनुसार घरमूली लिङ्ग वितरणको विस्तृत तथ्याङ्क।",
     };
   }
 }
 
 const toc = [
   { level: 2, text: "परिचय", slug: "introduction" },
+  { level: 2, text: "लिङ्ग अनुसार घरमूली", slug: "gender-distribution" },
+  { level: 2, text: "उमेर समूह अनुसार घरमूली", slug: "age-group-distribution" },
   {
     level: 2,
-    text: "घरमूली लिङ्ग अनुसार जनसंख्या",
-    slug: "gender-distribution",
+    text: "उमेर समूह र लैंगिक वितरण",
+    slug: "age-gender-distribution",
   },
-  { level: 2, text: "वडागत विश्लेषण", slug: "ward-analysis" },
+  {
+    level: 2,
+    text: "घरमूली लैंगिक विश्लेषण",
+    slug: "househead-gender-analysis",
+  },
 ];
 
-// Define Nepali names for gender
-const GENDER_NAMES: Record<string, string> = {
-  MALE: "पुरुष",
-  FEMALE: "महिला",
-  OTHER: "अन्य",
-};
-
 export default async function WardWiseHouseheadGenderPage() {
-  // Fetch all househead gender data using tRPC
-  const genderData =
-    await api.profile.demographics.wardWiseHouseHeadGender.getAll.query();
-
-  // Try to fetch summary data
-  let summaryData = null;
+  // Fetch all age group househead data from your tRPC route
+  let househeadData: AgeGroupHouseheadType[] = [];
   try {
-    summaryData =
-      await api.profile.demographics.wardWiseHouseHeadGender.summary.query();
+    const fetchedData =
+      await api.profile.demographics.ageGroupHouseHeadGender.getAll.query();
+    househeadData = fetchedData || [];
   } catch (error) {
-    console.error("Could not fetch summary data", error);
+    console.error("Error fetching househead data:", error);
+    househeadData = [];
   }
 
-  // Process data for overall summary
-  const overallSummary = Object.entries(
-    genderData.reduce((acc: Record<string, number>, item) => {
-      if (!acc[item.gender]) acc[item.gender] = 0;
-      acc[item.gender] += item.population || 0;
-      return acc;
-    }, {}),
-  )
-    .map(([gender, population]) => ({
-      gender,
-      genderName: GENDER_NAMES[gender] || gender,
-      population,
-    }))
-    .sort((a, b) => b.population - a.population);
+  // Ensure househeadData is a valid array
+  if (!househeadData || !Array.isArray(househeadData)) {
+    househeadData = [];
+  }
 
-  // Calculate total population for percentages
-  const totalPopulation = overallSummary.reduce(
-    (sum, item) => sum + item.population,
+  // Fetch summary statistics
+  let summaryData;
+  try {
+    summaryData =
+      await api.profile.demographics.ageGroupHouseHeadGender.summary.query();
+  } catch (error) {
+    console.error("Error fetching summary:", error);
+  }
+
+  // Filter out the 'जम्मा' row for calculations to avoid double counting
+  const dataWithoutTotal = househeadData.filter(
+    (item) => item.ageGroup !== "जम्मा",
+  );
+
+  // Calculate totals from the filtered data
+  const totalMaleHeads = dataWithoutTotal.reduce(
+    (sum, item) => sum + (item.maleHeads || 0),
+    0,
+  );
+  const totalFemaleHeads = dataWithoutTotal.reduce(
+    (sum, item) => sum + (item.femaleHeads || 0),
+    0,
+  );
+  const totalFamilies = dataWithoutTotal.reduce(
+    (sum, item) => sum + (item.totalFamilies || 0),
     0,
   );
 
-  // Create data for pie chart
-  const pieChartData = overallSummary.map((item) => ({
-    name: item.genderName,
-    value: item.population,
-    percentage: ((item.population / totalPopulation) * 100).toFixed(2),
-  }));
-
-  // Get unique ward numbers
-  const wardNumbers = Array.from(
-    new Set(genderData.map((item) => item.wardNumber)),
-  ).sort((a, b) => a - b); // Sort numerically
-
-  // Process data for ward-wise visualization
-  const wardWiseData = wardNumbers.map((wardNumber) => {
-    const wardData = genderData.filter(
-      (item) => item.wardNumber === wardNumber,
-    );
-
-    const result: Record<string, any> = {
-      ward: `वडा ${localizeNumber(wardNumber.toString(), "ne")}`,
-    };
-
-    // Add gender data
-    wardData.forEach((item) => {
-      result[GENDER_NAMES[item.gender] || item.gender] = item.population;
-    });
-
-    return result;
-  });
-
   return (
-    <DocsLayout toc={<TableOfContents toc={toc} />}>
-      {/* Add structured data for SEO */}
+    <div className="container mx-auto px-4 py-8">
       <GenderSEO
-        overallSummary={overallSummary}
-        totalPopulation={totalPopulation}
-        GENDER_NAMES={GENDER_NAMES}
-        wardNumbers={wardNumbers}
+        ageGroupData={househeadData}
+        totalMaleHeads={totalMaleHeads}
+        totalFemaleHeads={totalFemaleHeads}
+        totalFamilies={totalFamilies}
       />
 
-      <div className="flex flex-col gap-8">
-        <section>
-          <div className="relative rounded-lg overflow-hidden mb-8">
-            <Image
-              src="/images/househead-gender.svg"
-              width={1200}
-              height={400}
-              alt="घरमूली लिङ्ग वितरण"
-              className="w-full h-[250px] object-cover rounded-sm"
-              priority
-            />
+      <div className="flex gap-8">
+        {/* Table of Contents - Sidebar */}
+        <aside className="hidden lg:block w-64 flex-shrink-0">
+          <div className="sticky top-8">
+            <TableOfContents toc={toc} />
           </div>
+        </aside>
 
-          <div className="prose prose-slate dark:prose-invert max-w-none">
-            <h1 className="scroll-m-20 tracking-tight mb-6">
-              <span className="font-bold">परिवर्तन गाउँपालिकामा</span> वडागत
-              घरमूली लिङ्ग वितरण
+        {/* Main Content */}
+        <main className="flex-1 min-w-0">
+          {/* Header Section */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold mb-4" id="introduction">
+              उमेर समूह अनुसार घरमूली लिङ्ग वितरण
             </h1>
-
-            <h2 id="introduction" className="scroll-m-20">
-              परिचय
-            </h2>
-            <p>
-              यस खण्डमा <strong>परिवर्तन गाउँपालिका</strong>को विभिन्न वडाहरूमा
-              घरमूलीको लिङ्ग अनुसार जनसंख्या सम्बन्धी विस्तृत तथ्याङ्क प्रस्तुत
-              गरिएको छ। घरमूली भनेको घरपरिवारको प्रमुख व्यक्ति हो, जसले घरायसी
-              निर्णयहरूमा प्रमुख भूमिका निर्वाह गर्दछ।
-            </p>
-            <p>
-              यो तथ्याङ्कले लैङ्गिक समानता, सामाजिक संरचना र परिवारको नेतृत्वमा
-              महिला सहभागिताको अवस्था बुझ्न मद्दत गर्दछ। यसले{" "}
-              <strong>परिवर्तन गाउँपालिका</strong>लाई लैङ्गिक समानता सम्बन्धी
-              नीति तथा कार्यक्रमहरू तर्जुमा गर्न महत्त्वपूर्ण आधार प्रदान गर्दछ।
+            <p className="text-muted-foreground leading-relaxed">
+              परिवर्तन गाउँपालिकाको उमेर समूह अनुसार घरमूली लिङ्ग वितरणको
+              विस्तृत विश्लेषण। यहाँ विभिन्न उमेर समूहका पुरुष र महिला
+              घरमूलीहरूको तथ्याङ्क प्रस्तुत गरिएको छ।
             </p>
 
-            <h2 id="gender-distribution" className="scroll-m-20 border-b pb-2">
-              घरमूली लिङ्ग अनुसार जनसंख्या
-            </h2>
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+              <div className="bg-blue-50 p-4 rounded-lg border">
+                <div className="text-2xl font-bold text-blue-600">
+                  {localizeNumber(totalFamilies.toLocaleString(), "ne")}
+                </div>
+                <div className="text-sm text-blue-600">कुल परिवार</div>
+              </div>
+              <div className="bg-green-50 p-4 rounded-lg border">
+                <div className="text-2xl font-bold text-green-600">
+                  {localizeNumber(totalMaleHeads.toLocaleString(), "ne")}
+                </div>
+                <div className="text-sm text-green-600">पुरुष घरमूली</div>
+              </div>
+              <div className="bg-pink-50 p-4 rounded-lg border">
+                <div className="text-2xl font-bold text-pink-600">
+                  {localizeNumber(totalFemaleHeads.toLocaleString(), "ne")}
+                </div>
+                <div className="text-sm text-pink-600">महिला घरमूली</div>
+              </div>
+              <div className="bg-purple-50 p-4 rounded-lg border">
+                <div className="text-2xl font-bold text-purple-600">
+                  {localizeNumber(dataWithoutTotal.length.toString(), "ne")}
+                </div>
+                <div className="text-sm text-purple-600">उमेर समूह</div>
+              </div>
+            </div>
           </div>
+
+          {/* Charts Section */}
           <HouseheadGenderCharts
-            overallSummary={overallSummary}
-            totalPopulation={totalPopulation}
-            pieChartData={pieChartData}
-            wardWiseData={wardWiseData}
-            wardNumbers={wardNumbers}
-            genderData={genderData}
-            GENDER_NAMES={GENDER_NAMES}
+            ageGroupData={househeadData}
+            totalMaleHeads={totalMaleHeads}
+            totalFemaleHeads={totalFemaleHeads}
+            totalFamilies={totalFamilies}
           />
 
-          <div className="prose prose-slate dark:prose-invert max-w-none mt-8">
-            <h2 id="ward-analysis" className="scroll-m-20 border-b pb-2">
-              <strong>परिवर्तन गाउँपालिका</strong>को वडागत विश्लेषण
-            </h2>
-            <p>
-              <strong>परिवर्तन गाउँपालिका</strong>को वडा अनुसार घरमूली लिङ्ग
-              वितरणको विश्लेषण निम्नानुसार रहेको छ:
-            </p>
+          {/* Analysis Section */}
+          <section id="househead-gender-analysis">
+            <GenderAnalysisSection
+              ageGroupData={househeadData}
+              totalMaleHeads={totalMaleHeads}
+              totalFemaleHeads={totalFemaleHeads}
+              totalFamilies={totalFamilies}
+            />
+          </section>
+
+          {/* Additional Information */}
+          <div className="mt-12 bg-gray-50 p-6 rounded-lg">
+            <h3 className="text-lg font-semibold mb-4">डेटा स्रोत र नोट</h3>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>
+                • यो तथ्याङ्क राष्ट्रिय जनगणना र स्थानीय सर्वेक्षणमा आधारित छ
+              </li>
+              <li>• घरमूली तथ्याङ्कमा सबै उमेरका घरमूलीहरू समावेश छन्</li>
+              <li>
+                • उमेर समूह वर्गीकरण मानक जनसांख्यिकीय मापदण्ड अनुसार गरिएको छ
+              </li>
+              <li>• यो डेटा नीति निर्माण र विकास योजनाका लागि उपयोगी छ</li>
+            </ul>
           </div>
-
-          <GenderAnalysisSection
-            overallSummary={overallSummary}
-            totalPopulation={totalPopulation}
-            GENDER_NAMES={GENDER_NAMES}
-            wardNumbers={wardNumbers}
-            genderData={genderData}
-          />
-        </section>
+        </main>
       </div>
-    </DocsLayout>
+    </div>
   );
 }
