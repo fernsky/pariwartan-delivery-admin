@@ -1,12 +1,35 @@
 import { z } from "zod";
-import { genderEnum, ageGroupEnum } from "./age-wise-population.schema";
 
-// Reusing the gender and age group enums from ward-age-wise-population.schema.ts
+// Define the specific age groups from the SQL data
+export const deceasedAgeGroupEnum = z.enum([
+  "AGE_1_YEAR",
+  "AGE_1_4_YEARS",
+  "AGE_5_9_YEARS",
+  "AGE_10_14_YEARS",
+  "AGE_15_19_YEARS",
+  "AGE_20_24_YEARS",
+  "AGE_25_29_YEARS",
+  "AGE_30_34_YEARS",
+  "AGE_35_39_YEARS",
+  "AGE_40_44_YEARS",
+  "AGE_45_49_YEARS",
+  "AGE_50_54_YEARS",
+  "AGE_55_59_YEARS",
+  "AGE_60_64_YEARS",
+  "AGE_65_69_YEARS",
+  "AGE_70_74_YEARS",
+  "AGE_75_79_YEARS",
+  "AGE_80_AND_ABOVE",
+]);
 
-export const wardAgeGenderWiseDeceasedPopulationSchema = z.object({
+export const genderEnum = z.enum(["MALE", "FEMALE", "OTHER"]);
+
+export type DeceasedAgeGroup = z.infer<typeof deceasedAgeGroupEnum>;
+export type Gender = z.infer<typeof genderEnum>;
+
+export const ageGenderWiseDeceasedPopulationSchema = z.object({
   id: z.string().optional(),
-  wardNumber: z.number().int().min(1, "वडा नम्बर आवश्यक छ"),
-  ageGroup: ageGroupEnum,
+  ageGroup: deceasedAgeGroupEnum,
   gender: genderEnum,
   deceasedPopulation: z
     .number()
@@ -14,20 +37,20 @@ export const wardAgeGenderWiseDeceasedPopulationSchema = z.object({
     .nonnegative("मृत्यु संख्या शून्य वा त्यो भन्दा बढी हुनुपर्छ"),
 });
 
-export const wardAgeGenderWiseDeceasedPopulationFilterSchema = z.object({
-  wardNumber: z.number().int().min(1).optional(),
-  ageGroup: ageGroupEnum.optional(),
+export const ageGenderWiseDeceasedPopulationFilterSchema = z.object({
+  ageGroup: deceasedAgeGroupEnum.optional(),
   gender: genderEnum.optional(),
 });
 
-export const updateWardAgeGenderWiseDeceasedPopulationSchema =
-  wardAgeGenderWiseDeceasedPopulationSchema;
+export const updateAgeGenderWiseDeceasedPopulationSchema =
+  ageGenderWiseDeceasedPopulationSchema;
 
-export type WardAgeGenderWiseDeceasedPopulationData = z.infer<
-  typeof wardAgeGenderWiseDeceasedPopulationSchema
+export type AgeGenderWiseDeceasedPopulationData = z.infer<
+  typeof ageGenderWiseDeceasedPopulationSchema
 >;
-export type UpdateWardAgeGenderWiseDeceasedPopulationData =
-  WardAgeGenderWiseDeceasedPopulationData;
-export type WardAgeGenderWiseDeceasedPopulationFilter = z.infer<
-  typeof wardAgeGenderWiseDeceasedPopulationFilterSchema
+export type UpdateAgeGenderWiseDeceasedPopulationData =
+  AgeGenderWiseDeceasedPopulationData;
+export type AgeGenderWiseDeceasedPopulationFilter = z.infer<
+  typeof ageGenderWiseDeceasedPopulationFilterSchema
 >;
+  

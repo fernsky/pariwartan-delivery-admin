@@ -1,86 +1,151 @@
 import { Metadata } from "next";
-import { DocsLayout } from "@/components/layout/DocsLayout";
-import { TableOfContents } from "@/components/TableOfContents";
-import Image from "next/image";
 import { api } from "@/trpc/server";
-import { localizeNumber } from "@/lib/utils/localize-number";
+import { TableOfContents } from "@/components/TableOfContents";
 import DeceasedPopulationCharts from "./_components/deceased-population-charts";
 import DeceasedPopulationAnalysisSection from "./_components/deceased-population-analysis-section";
 import DeceasedPopulationSEO from "./_components/deceased-population-seo";
+import { localizeNumber } from "@/lib/utils/localize-number";
 
-// Force dynamic rendering since we're using tRPC which relies on headers
-export const dynamic = "force-dynamic";
+// Define type for deceased population data
+type DeceasedDataType = {
+  id?: string;
+  wardNumber: number;
+  ageGroup: string;
+  gender: string;
+  deceasedPopulation: number;
+};
 
-// Define the locales for which this page should be statically generated
-export async function generateStaticParams() {
-  // Generate the page for 'en' and 'ne' locales
-  return [{ locale: "en" }];
-}
+// Define type for API response
+type APIDeceasedDataType = {
+  id: string;
+  createdAt: Date | null;
+  updatedAt: Date | null;
+  ageGroup:
+    | "AGE_1_YEAR"
+    | "AGE_1_4_YEARS"
+    | "AGE_5_9_YEARS"
+    | "AGE_10_14_YEARS"
+    | "AGE_15_19_YEARS"
+    | "AGE_20_24_YEARS"
+    | "AGE_25_29_YEARS"
+    | "AGE_30_34_YEARS"
+    | "AGE_35_39_YEARS"
+    | "AGE_40_44_YEARS"
+    | "AGE_45_49_YEARS"
+    | "AGE_50_54_YEARS"
+    | "AGE_55_59_YEARS"
+    | "AGE_60_64_YEARS"
+    | "AGE_65_69_YEARS"
+    | "AGE_70_74_YEARS"
+    | "AGE_75_79_YEARS"
+    | "AGE_80_AND_ABOVE";
+  gender: "MALE" | "FEMALE" | "OTHER";
+  deceasedPopulation: number;
+};
 
-// Optional: Add revalidation period if you want to update the static pages periodically
-export const revalidate = 86400; // Revalidate once per day (in seconds)
+// Mapping from API age group enum to display format
+const API_AGE_GROUP_MAPPING: Record<string, string> = {
+  AGE_1_YEAR: "0-4",
+  AGE_1_4_YEARS: "0-4",
+  AGE_5_9_YEARS: "5-9",
+  AGE_10_14_YEARS: "10-14",
+  AGE_15_19_YEARS: "15-19",
+  AGE_20_24_YEARS: "20-24",
+  AGE_25_29_YEARS: "25-29",
+  AGE_30_34_YEARS: "30-34",
+  AGE_35_39_YEARS: "35-39",
+  AGE_40_44_YEARS: "40-44",
+  AGE_45_49_YEARS: "45-49",
+  AGE_50_54_YEARS: "50-54",
+  AGE_55_59_YEARS: "55-59",
+  AGE_60_64_YEARS: "60-64",
+  AGE_65_69_YEARS: "65-69",
+  AGE_70_74_YEARS: "70-74",
+  AGE_75_79_YEARS: "75-79",
+  AGE_80_AND_ABOVE: "80-84",
+};
 
-// Define Nepali names for age groups
+// Age group and gender mappings
 const AGE_GROUP_NAMES: Record<string, string> = {
-  AGE_0_4: "०-४ वर्ष",
-  AGE_5_9: "५-९ वर्ष",
-  AGE_10_14: "१०-१४ वर्ष",
-  AGE_15_19: "१५-१९ वर्ष",
-  AGE_20_24: "२०-२४ वर्ष",
-  AGE_25_29: "२५-२९ वर्ष",
-  AGE_30_34: "३०-३४ वर्ष",
-  AGE_35_39: "३५-३९ वर्ष",
-  AGE_40_44: "४०-४४ वर्ष",
-  AGE_45_49: "४५-४९ वर्ष",
-  AGE_50_54: "५०-५४ वर्ष",
-  AGE_55_59: "५५-५९ वर्ष",
-  AGE_60_64: "६०-६४ वर्ष",
-  AGE_65_69: "६५-६९ वर्ष",
-  AGE_70_74: "७०-७४ वर्ष",
-  AGE_75_AND_ABOVE: "७५ वर्ष वा सो भन्दा बढी",
+  "0-4": "०-४ वर्ष",
+  "5-9": "५-९ वर्ष",
+  "10-14": "१०-१४ वर्ष",
+  "15-19": "१५-१९ वर्ष",
+  "20-24": "२०-२४ वर्ष",
+  "25-29": "२५-२९ वर्ष",
+  "30-34": "३०-३४ वर्ष",
+  "35-39": "३५-३९ वर्ष",
+  "40-44": "४०-४४ वर्ष",
+  "45-49": "४५-४९ वर्ष",
+  "50-54": "५०-५४ वर्ष",
+  "55-59": "५५-५९ वर्ष",
+  "60-64": "६०-६४ वर्ष",
+  "65-69": "६५-६९ वर्ष",
+  "70-74": "७०-७४ वर्ष",
+  "75-79": "७५-७९ वर्ष",
+  "80-84": "८०-८४ वर्ष",
+  "85+": "८५+ वर्ष",
 };
 
-// Define English names for age groups (for SEO)
 const AGE_GROUP_NAMES_EN: Record<string, string> = {
-  AGE_0_4: "0-4 Years",
-  AGE_5_9: "5-9 Years",
-  AGE_10_14: "10-14 Years",
-  AGE_15_19: "15-19 Years",
-  AGE_20_24: "20-24 Years",
-  AGE_25_29: "25-29 Years",
-  AGE_30_34: "30-34 Years",
-  AGE_35_39: "35-39 Years",
-  AGE_40_44: "40-44 Years",
-  AGE_45_49: "45-49 Years",
-  AGE_50_54: "50-54 Years",
-  AGE_55_59: "55-59 Years",
-  AGE_60_64: "60-64 Years",
-  AGE_65_69: "65-69 Years",
-  AGE_70_74: "70-74 Years",
-  AGE_75_AND_ABOVE: "75 Years and Above",
+  "0-4": "0-4 years",
+  "5-9": "5-9 years",
+  "10-14": "10-14 years",
+  "15-19": "15-19 years",
+  "20-24": "20-24 years",
+  "25-29": "25-29 years",
+  "30-34": "30-34 years",
+  "35-39": "35-39 years",
+  "40-44": "40-44 years",
+  "45-49": "45-49 years",
+  "50-54": "50-54 years",
+  "55-59": "55-59 years",
+  "60-64": "60-64 years",
+  "65-69": "65-69 years",
+  "70-74": "70-74 years",
+  "75-79": "75-79 years",
+  "80-84": "80-84 years",
+  "85+": "85+ years",
 };
 
-// Define Nepali names for gender
 const GENDER_NAMES: Record<string, string> = {
   MALE: "पुरुष",
   FEMALE: "महिला",
   OTHER: "अन्य",
 };
 
-// Define English names for gender (for SEO)
 const GENDER_NAMES_EN: Record<string, string> = {
   MALE: "Male",
   FEMALE: "Female",
   OTHER: "Other",
 };
 
+// Force dynamic rendering since we're using tRPC which relies on headers
+export const dynamic = "force-dynamic";
+
+// Define the locales for which this page should be statically generated
+export async function generateStaticParams() {
+  return [{ locale: "en" }];
+}
+
+// Optional: Add revalidation period if you want to update the static pages periodically
+export const revalidate = 86400; // Revalidate once per day (in seconds)
+
 // This function will generate metadata dynamically based on the actual data
 export async function generateMetadata(): Promise<Metadata> {
   try {
     // Fetch data for SEO using tRPC
     const deceasedData =
-      await api.profile.demographics.wardAgeGenderWiseDeceasedPopulation.getAll.query();
+      await api.profile.demographics.ageGenderWiseDeceasedPopulation.getAll.query();
     const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+
+    // Ensure deceasedData is a valid array
+    if (!deceasedData || !Array.isArray(deceasedData)) {
+      return {
+        title: `वडा, उमेर र लिङ्ग अनुसार मृत्यु जनसंख्या - ${municipalityName}`,
+        description: `${municipalityName}को वडा, उमेर समूह र लिङ्ग अनुसार मृत्यु जनसंख्याको विस्तृत तथ्याङ्क।`,
+      };
+    }
 
     // Process data for SEO
     const totalDeceasedPopulation = deceasedData.reduce(
@@ -88,213 +153,198 @@ export async function generateMetadata(): Promise<Metadata> {
       0,
     );
 
-    // Group by age group and calculate totals
-    const ageGroupCounts: Record<string, number> = {};
+    // Get most affected age group
+    const ageGroupTotals: Record<string, number> = {};
     deceasedData.forEach((item) => {
-      if (!ageGroupCounts[item.ageGroup]) ageGroupCounts[item.ageGroup] = 0;
-      ageGroupCounts[item.ageGroup] += item.deceasedPopulation || 0;
+      ageGroupTotals[item.ageGroup] =
+        (ageGroupTotals[item.ageGroup] || 0) + (item.deceasedPopulation || 0);
     });
 
-    // Find the most affected age group
-    let mostAffectedAgeGroup = "";
-    let mostAffectedCount = 0;
-    Object.entries(ageGroupCounts).forEach(([ageGroup, count]) => {
-      if (count > mostAffectedCount) {
-        mostAffectedCount = count;
-        mostAffectedAgeGroup = ageGroup;
-      }
-    });
+    const mostAffectedAgeGroup = Object.entries(ageGroupTotals).sort(
+      ([, a], [, b]) => b - a,
+    )[0];
+    const mostAffectedAgeGroupName = mostAffectedAgeGroup
+      ? AGE_GROUP_NAMES[mostAffectedAgeGroup[0]]
+      : "";
 
-    const mostAffectedPercentage =
-      totalDeceasedPopulation > 0
-        ? ((mostAffectedCount / totalDeceasedPopulation) * 100).toFixed(2)
-        : "0";
-
-    // Group by gender and calculate totals
-    const genderCounts: Record<string, number> = {};
-    deceasedData.forEach((item) => {
-      if (!genderCounts[item.gender]) genderCounts[item.gender] = 0;
-      genderCounts[item.gender] += item.deceasedPopulation || 0;
-    });
-
-    // Create rich keywords with actual data
-    const keywordsNP = [
-      "परिवर्तन गाउँपालिका मृत्यु विवरण",
-      "परिवर्तन मृत्यु दर",
-      "वडा अनुसार उमेर लिङ्ग मृत्यु विवरण",
-      "उमेर लिङ्ग अनुसार मृत्यु",
-      "परिवर्तन जनसांख्यिकी विश्लेषण",
-      `परिवर्तन मृत्यु संख्या ${localizeNumber(totalDeceasedPopulation.toString(), "ne")}`,
-    ];
-
-    const keywordsEN = [
-      "Khajura Rural Municipality mortality data",
-      "Khajura death statistics",
-      "Ward-wise age-gender mortality",
-      "Age-gender wise deceased population",
-      "Khajura demographic analysis",
-      `Khajura mortality count ${totalDeceasedPopulation}`,
-    ];
-
-    // Create detailed description with actual data
-    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा, उमेर र लिङ्ग अनुसार मृत्यु भएका जनसंख्याको वितरण र विश्लेषण। कुल मृत्यु संख्या ${localizeNumber(totalDeceasedPopulation.toString(), "ne")} मध्ये ${localizeNumber(mostAffectedPercentage, "ne")}% (${localizeNumber(mostAffectedCount.toString(), "ne")}) ${AGE_GROUP_NAMES[mostAffectedAgeGroup] || mostAffectedAgeGroup} उमेर समूहमा रहेका छन्। विभिन्न वडाहरूमा उमेर र लिङ्ग अनुसार मृत्युको विस्तृत विश्लेषण।`;
-
-    const descriptionEN = `Ward, age and gender-wise distribution and analysis of deceased population in Khajura Rural Municipality. Out of a total deceased population of ${totalDeceasedPopulation}, ${mostAffectedPercentage}% (${mostAffectedCount}) are in the age group of ${AGE_GROUP_NAMES_EN[mostAffectedAgeGroup] || mostAffectedAgeGroup}. Detailed analysis of mortality across wards by age and gender.`;
+    const title = `वडा, उमेर र लिङ्ग अनुसार मृत्यु जनसंख्या - ${municipalityName}`;
+    const description = `${municipalityName}को वडा, उमेर समूह र लिङ्ग अनुसार मृत्यु जनसंख्याको विस्तृत तथ्याङ्क। कुल मृत्यु संख्या: ${totalDeceasedPopulation.toLocaleString()} व्यक्ति। सबैभन्दा प्रभावित उमेर समूह: ${mostAffectedAgeGroupName}।`;
 
     return {
-      title: `उमेर तथा लिङ्ग अनुसार मृत्यु विवरण | ${municipalityName} डिजिटल प्रोफाइल`,
-      description: descriptionNP,
-      keywords: [...keywordsNP, ...keywordsEN],
-      alternates: {
-        canonical:
-          "/profile/demographics/ward-age-gender-wise-deceased-population",
-        languages: {
-          en: "/en/profile/demographics/ward-age-gender-wise-deceased-population",
-          ne: "/ne/profile/demographics/ward-age-gender-wise-deceased-population",
-        },
-      },
+      title,
+      description,
+      keywords: [
+        "मृत्यु जनसंख्या",
+        "वडा अनुसार मृत्यु",
+        "उमेर अनुसार मृत्यु",
+        "लिङ्ग अनुसार मृत्यु",
+        "परिवर्तन गाउँपालिका",
+        "खजुरा नगरपालिका",
+        "मृत्यु तथ्याङ्क",
+        "Deceased population",
+        "Ward-wise mortality",
+        "Age-wise mortality",
+        "Gender-wise mortality",
+        "Khajura Rural Municipality",
+        "Mortality statistics",
+        ...Object.values(AGE_GROUP_NAMES),
+      ],
       openGraph: {
-        title: `उमेर तथा लिङ्ग अनुसार मृत्यु विवरण | ${municipalityName}`,
-        description: descriptionNP,
-        type: "article",
+        title,
+        description,
+        type: "website",
         locale: "ne_NP",
-        alternateLocale: "en_US",
-        siteName: `${municipalityName} डिजिटल प्रोफाइल`,
       },
       twitter: {
         card: "summary_large_image",
-        title: `उमेर तथा लिङ्ग अनुसार मृत्यु विवरण | ${municipalityName}`,
-        description: descriptionNP,
+        title,
+        description,
       },
     };
   } catch (error) {
-    // Fallback metadata if data fetching fails
+    console.error("Error generating metadata:", error);
     return {
-      title:
-        "उमेर तथा लिङ्ग अनुसार मृत्यु विवरण | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
+      title: "वडा, उमेर र लिङ्ग अनुसार मृत्यु जनसंख्या - परिवर्तन गाउँपालिका",
       description:
-        "वडा, उमेर र लिङ्ग अनुसार मृत्यु भएका जनसंख्याको वितरण र विश्लेषण।",
+        "परिवर्तन गाउँपालिकाको वडा, उमेर समूह र लिङ्ग अनुसार मृत्यु जनसंख्याको विस्तृत तथ्याङ्क।",
     };
   }
 }
 
 const toc = [
   { level: 2, text: "परिचय", slug: "introduction" },
-  { level: 2, text: "उमेर अनुसार मृत्यु विवरण", slug: "age-wise-mortality" },
   {
     level: 2,
     text: "लिङ्ग अनुसार मृत्यु विवरण",
     slug: "gender-wise-mortality",
   },
+  { level: 2, text: "उमेर समूह अनुसार मृत्यु", slug: "age-group-mortality" },
   { level: 2, text: "वडा अनुसार मृत्यु विवरण", slug: "ward-wise-mortality" },
-  {
-    level: 2,
-    text: "उमेर र लिङ्ग अनुसार मृत्यु विश्लेषण",
-    slug: "mortality-analysis",
-  },
+  { level: 2, text: "मृत्युदर विश्लेषण", slug: "mortality-analysis" },
 ];
 
-export default async function WardAgeGenderWiseDeceasedPopulationPage() {
-  // Fetch all deceased population data using tRPC
-  const deceasedData =
-    await api.profile.demographics.wardAgeGenderWiseDeceasedPopulation.getAll.query();
-
-  // Try to fetch summary data
-  let summaryData = null;
+export default async function DeceasedPopulationPage() {
+  // Fetch all deceased population data from your tRPC route
+  let deceasedData: DeceasedDataType[] = [];
   try {
-    summaryData =
-      await api.profile.demographics.wardAgeGenderWiseDeceasedPopulation.summary.query();
+    const fetchedData =
+      await api.profile.demographics.ageGenderWiseDeceasedPopulation.getAll.query();
+
+    // Transform API response to match DeceasedDataType
+    deceasedData = (fetchedData || []).map(
+      (item: APIDeceasedDataType, index: number) => ({
+        id: item.id,
+        wardNumber: Math.floor(index / 18) + 1, // Assuming 18 age-gender combinations per ward
+        ageGroup: API_AGE_GROUP_MAPPING[item.ageGroup] || item.ageGroup,
+        gender: item.gender,
+        deceasedPopulation: item.deceasedPopulation,
+      }),
+    );
   } catch (error) {
-    console.error("Could not fetch summary data", error);
+    console.error("Error fetching deceased data:", error);
+    deceasedData = [];
   }
 
-  // Process data for display
+  // Ensure deceasedData is a valid array
+  if (!deceasedData || !Array.isArray(deceasedData)) {
+    deceasedData = [];
+  }
+
+  // Calculate totals and process data
   const totalDeceasedPopulation = deceasedData.reduce(
     (sum, item) => sum + (item.deceasedPopulation || 0),
     0,
   );
 
-  // Get unique ward numbers
+  // Get unique ward numbers and sort them
   const wardNumbers = Array.from(
     new Set(deceasedData.map((item) => item.wardNumber)),
-  ).sort((a, b) => a - b); // Sort numerically
+  ).sort((a, b) => a - b);
 
-  // Process data by age group
+  // Process gender totals
+  const genderTotals = {
+    male: deceasedData
+      .filter((item) => item.gender === "MALE")
+      .reduce((sum, item) => sum + (item.deceasedPopulation || 0), 0),
+    female: deceasedData
+      .filter((item) => item.gender === "FEMALE")
+      .reduce((sum, item) => sum + (item.deceasedPopulation || 0), 0),
+    other: deceasedData
+      .filter((item) => item.gender === "OTHER")
+      .reduce((sum, item) => sum + (item.deceasedPopulation || 0), 0),
+  };
+
+  // Process age group data for charts
   const ageGroupData: Record<
     string,
     { male: number; female: number; other: number; total: number }
   > = {};
-
-  // Initialize age group data structure with all age groups
   Object.keys(AGE_GROUP_NAMES).forEach((ageGroup) => {
-    ageGroupData[ageGroup] = { male: 0, female: 0, other: 0, total: 0 };
+    const ageGroupItems = deceasedData.filter(
+      (item) => item.ageGroup === ageGroup,
+    );
+    ageGroupData[ageGroup] = {
+      male: ageGroupItems
+        .filter((item) => item.gender === "MALE")
+        .reduce((sum, item) => sum + (item.deceasedPopulation || 0), 0),
+      female: ageGroupItems
+        .filter((item) => item.gender === "FEMALE")
+        .reduce((sum, item) => sum + (item.deceasedPopulation || 0), 0),
+      other: ageGroupItems
+        .filter((item) => item.gender === "OTHER")
+        .reduce((sum, item) => sum + (item.deceasedPopulation || 0), 0),
+      total: ageGroupItems.reduce(
+        (sum, item) => sum + (item.deceasedPopulation || 0),
+        0,
+      ),
+    };
   });
 
-  // Fill in the data
-  deceasedData.forEach((item) => {
-    if (!ageGroupData[item.ageGroup]) {
-      ageGroupData[item.ageGroup] = { male: 0, female: 0, other: 0, total: 0 };
-    }
-
-    if (item.gender === "MALE") {
-      ageGroupData[item.ageGroup].male += item.deceasedPopulation;
-    } else if (item.gender === "FEMALE") {
-      ageGroupData[item.ageGroup].female += item.deceasedPopulation;
-    } else if (item.gender === "OTHER") {
-      ageGroupData[item.ageGroup].other += item.deceasedPopulation;
-    }
-
-    ageGroupData[item.ageGroup].total += item.deceasedPopulation;
-  });
-
-  // Process data by ward
+  // Process ward data for charts
   const wardData: Record<
     number,
     { male: number; female: number; other: number; total: number }
   > = {};
-
   wardNumbers.forEach((wardNumber) => {
-    wardData[wardNumber] = { male: 0, female: 0, other: 0, total: 0 };
-
-    deceasedData
-      .filter((item) => item.wardNumber === wardNumber)
-      .forEach((item) => {
-        if (item.gender === "MALE") {
-          wardData[wardNumber].male += item.deceasedPopulation;
-        } else if (item.gender === "FEMALE") {
-          wardData[wardNumber].female += item.deceasedPopulation;
-        } else if (item.gender === "OTHER") {
-          wardData[wardNumber].other += item.deceasedPopulation;
-        }
-
-        wardData[wardNumber].total += item.deceasedPopulation;
-      });
+    const wardItems = deceasedData.filter(
+      (item) => item.wardNumber === wardNumber,
+    );
+    wardData[wardNumber] = {
+      male: wardItems
+        .filter((item) => item.gender === "MALE")
+        .reduce((sum, item) => sum + (item.deceasedPopulation || 0), 0),
+      female: wardItems
+        .filter((item) => item.gender === "FEMALE")
+        .reduce((sum, item) => sum + (item.deceasedPopulation || 0), 0),
+      other: wardItems
+        .filter((item) => item.gender === "OTHER")
+        .reduce((sum, item) => sum + (item.deceasedPopulation || 0), 0),
+      total: wardItems.reduce(
+        (sum, item) => sum + (item.deceasedPopulation || 0),
+        0,
+      ),
+    };
   });
 
-  // Process data for charts - age group stacked bar chart
+  // Prepare chart data
   const ageGroupChartData = Object.entries(ageGroupData)
+    .filter(([_, data]) => data.total > 0)
     .map(([ageGroup, data]) => ({
-      ageGroup: AGE_GROUP_NAMES[ageGroup] || ageGroup,
-      ageGroupEn: AGE_GROUP_NAMES_EN[ageGroup] || ageGroup,
+      ageGroup: AGE_GROUP_NAMES[ageGroup],
+      ageGroupEn: AGE_GROUP_NAMES_EN[ageGroup],
       ageGroupKey: ageGroup,
       [GENDER_NAMES.MALE]: data.male,
       [GENDER_NAMES.FEMALE]: data.female,
       [GENDER_NAMES.OTHER]: data.other,
       total: data.total,
     }))
-    .sort((a, b) => {
-      // Custom sort based on age group order
-      const ageGroups = Object.keys(AGE_GROUP_NAMES);
-      return (
-        ageGroups.indexOf(a.ageGroupKey) - ageGroups.indexOf(b.ageGroupKey)
-      );
-    });
+    .sort((a, b) => b.total - a.total);
 
-  // Process data for charts - ward stacked bar chart
   const wardChartData = Object.entries(wardData)
-    .map(([ward, data]) => ({
-      ward: `वडा ${ward}`,
-      wardNumber: Number(ward),
+    .filter(([_, data]) => data.total > 0)
+    .map(([wardNumber, data]) => ({
+      ward: `वडा ${localizeNumber(wardNumber, "ne")}`,
+      wardNumber: Number(wardNumber),
       [GENDER_NAMES.MALE]: data.male,
       [GENDER_NAMES.FEMALE]: data.female,
       [GENDER_NAMES.OTHER]: data.other,
@@ -302,179 +352,137 @@ export default async function WardAgeGenderWiseDeceasedPopulationPage() {
     }))
     .sort((a, b) => a.wardNumber - b.wardNumber);
 
-  // Process data for gender pie chart
-  const genderTotals = {
-    male: 0,
-    female: 0,
-    other: 0,
-  };
-
-  deceasedData.forEach((item) => {
-    if (item.gender === "MALE") {
-      genderTotals.male += item.deceasedPopulation;
-    } else if (item.gender === "FEMALE") {
-      genderTotals.female += item.deceasedPopulation;
-    } else if (item.gender === "OTHER") {
-      genderTotals.other += item.deceasedPopulation;
-    }
-  });
-
   const genderPieChartData = [
     {
       name: GENDER_NAMES.MALE,
       value: genderTotals.male,
-      percentage: ((genderTotals.male / totalDeceasedPopulation) * 100).toFixed(
-        2,
-      ),
+      percentage:
+        totalDeceasedPopulation > 0
+          ? ((genderTotals.male / totalDeceasedPopulation) * 100).toFixed(2)
+          : "0",
     },
     {
       name: GENDER_NAMES.FEMALE,
       value: genderTotals.female,
-      percentage: (
-        (genderTotals.female / totalDeceasedPopulation) *
-        100
-      ).toFixed(2),
+      percentage:
+        totalDeceasedPopulation > 0
+          ? ((genderTotals.female / totalDeceasedPopulation) * 100).toFixed(2)
+          : "0",
     },
     {
       name: GENDER_NAMES.OTHER,
       value: genderTotals.other,
-      percentage: (
-        (genderTotals.other / totalDeceasedPopulation) *
-        100
-      ).toFixed(2),
+      percentage:
+        totalDeceasedPopulation > 0
+          ? ((genderTotals.other / totalDeceasedPopulation) * 100).toFixed(2)
+          : "0",
     },
-  ].filter((item) => item.value > 0); // Only include non-zero values
+  ].filter((item) => item.value > 0);
 
-  // Find most affected age groups and wards for analysis
-  const mostAffectedAgeGroup = [...ageGroupChartData].sort(
-    (a, b) => b.total - a.total,
-  )[0];
-  const leastAffectedAgeGroup = [...ageGroupChartData]
-    .filter((item) => item.total > 0)
-    .sort((a, b) => a.total - b.total)[0];
-  const mostAffectedWard = [...wardChartData].sort(
-    (a, b) => b.total - a.total,
-  )[0];
+  // Analysis data
+  const mostAffectedAgeGroup = ageGroupChartData[0];
+  const leastAffectedAgeGroup = ageGroupChartData[ageGroupChartData.length - 1];
 
-  // Calculate percentages for analysis
-  const malePercentage =
+  // Calculate elderly (60+) and children (0-14) percentages
+  const elderlyAgeGroups = ["60-64", "65-69", "70-74", "75-79", "80-84", "85+"];
+  const childrenAgeGroups = ["0-4", "5-9", "10-14"];
+
+  const elderlyTotal = elderlyAgeGroups.reduce(
+    (sum, ageGroup) => sum + (ageGroupData[ageGroup]?.total || 0),
+    0,
+  );
+  const childrenTotal = childrenAgeGroups.reduce(
+    (sum, ageGroup) => sum + (ageGroupData[ageGroup]?.total || 0),
+    0,
+  );
+
+  const elderlyPercentage =
     totalDeceasedPopulation > 0
-      ? ((genderTotals.male / totalDeceasedPopulation) * 100).toFixed(2)
+      ? ((elderlyTotal / totalDeceasedPopulation) * 100).toFixed(2)
+      : "0";
+  const childrenPercentage =
+    totalDeceasedPopulation > 0
+      ? ((childrenTotal / totalDeceasedPopulation) * 100).toFixed(2)
       : "0";
 
-  const femalePercentage =
-    totalDeceasedPopulation > 0
-      ? ((genderTotals.female / totalDeceasedPopulation) * 100).toFixed(2)
-      : "0";
-
-  const otherPercentage =
-    totalDeceasedPopulation > 0
-      ? ((genderTotals.other / totalDeceasedPopulation) * 100).toFixed(2)
-      : "0";
-
-  // Create age groups analysis
   const ageGroupsAnalysis = {
     mostAffected: mostAffectedAgeGroup,
     leastAffected: leastAffectedAgeGroup,
-    elderlyPercentage:
-      totalDeceasedPopulation > 0
-        ? (
-            (((ageGroupData["AGE_60_64"]?.total || 0) +
-              (ageGroupData["AGE_65_69"]?.total || 0) +
-              (ageGroupData["AGE_70_74"]?.total || 0) +
-              (ageGroupData["AGE_75_AND_ABOVE"]?.total || 0)) /
-              totalDeceasedPopulation) *
-            100
-          ).toFixed(2)
-        : "0",
-    childrenPercentage:
-      totalDeceasedPopulation > 0
-        ? (
-            (((ageGroupData["AGE_0_4"]?.total || 0) +
-              (ageGroupData["AGE_5_9"]?.total || 0) +
-              (ageGroupData["AGE_10_14"]?.total || 0)) /
-              totalDeceasedPopulation) *
-            100
-          ).toFixed(2)
-        : "0",
+    elderlyPercentage,
+    childrenPercentage,
   };
 
+  const mostAffectedWard = wardChartData.sort((a, b) => b.total - a.total)[0];
+
   return (
-    <DocsLayout toc={<TableOfContents toc={toc} />}>
-      {/* Add structured data for SEO */}
-      <DeceasedPopulationSEO
-        totalDeceasedPopulation={totalDeceasedPopulation}
-        ageGroupData={ageGroupData}
-        wardData={wardData}
-        genderTotals={genderTotals}
-        AGE_GROUP_NAMES={AGE_GROUP_NAMES}
-        AGE_GROUP_NAMES_EN={AGE_GROUP_NAMES_EN}
-        GENDER_NAMES={GENDER_NAMES}
-        GENDER_NAMES_EN={GENDER_NAMES_EN}
-        wardNumbers={wardNumbers}
-      />
-
-      <div className="flex flex-col gap-8">
-        <section>
-          <div className="relative rounded-lg overflow-hidden mb-8">
-            <Image
-              src="/images/deceased-population.svg"
-              width={1200}
-              height={400}
-              alt="उमेर तथा लिङ्ग अनुसार मृत्यु विवरण - परिवर्तन गाउँपालिका (Age and Gender Wise Deceased Population - Khajura Rural Municipality)"
-              className="w-full h-[250px] object-cover rounded-sm"
-              priority
-            />
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex gap-8">
+        {/* Table of Contents - Sidebar */}
+        <aside className="hidden lg:block w-64 flex-shrink-0">
+          <div className="sticky top-8">
+            <TableOfContents toc={toc} />
           </div>
+        </aside>
 
-          <div className="prose prose-slate dark:prose-invert max-w-none">
-            <h1 className="scroll-m-20 tracking-tight mb-6">
-              परिवर्तन गाउँपालिकामा उमेर तथा लिङ्ग अनुसार मृत्यु विवरण
+        {/* Main Content */}
+        <main className="flex-1 min-w-0">
+          {/* SEO Component */}
+          <DeceasedPopulationSEO
+            totalDeceasedPopulation={totalDeceasedPopulation}
+            ageGroupData={ageGroupData}
+            wardData={wardData}
+            genderTotals={genderTotals}
+            AGE_GROUP_NAMES={AGE_GROUP_NAMES}
+            AGE_GROUP_NAMES_EN={AGE_GROUP_NAMES_EN}
+            GENDER_NAMES={GENDER_NAMES}
+            GENDER_NAMES_EN={GENDER_NAMES_EN}
+            wardNumbers={wardNumbers}
+          />
+
+          {/* Header Section */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold mb-4" id="introduction">
+              वडा, उमेर र लिङ्ग अनुसार मृत्यु जनसंख्या
             </h1>
-
-            <h2 id="introduction" className="scroll-m-20">
-              परिचय
-            </h2>
-            <p>
-              परिवर्तन गाउँपालिकाको जनसांख्यिकी विश्लेषणमा उमेर र लिङ्ग अनुसारको
-              मृत्युदरको अध्ययन महत्वपूर्ण छ। यसले स्वास्थ्य नीति निर्माण,
-              सेवाहरूको प्राथमिकीकरण र जनसंख्या परिवर्तनको बुझाई विकास गर्न
-              मद्दत गर्दछ। यस खण्डमा परिवर्तन गाउँपालिकाको वडा, उमेर र लिङ्ग
-              अनुसारको मृत्यु विवरण प्रस्तुत गरिएको छ।
-            </p>
-            <p>
-              परिवर्तन गाउँपालिकामा कुल{" "}
-              {localizeNumber(totalDeceasedPopulation.toString(), "ne")} जनाको
-              मृत्यु भएको विवरण अनुसार, वडा, उमेर र लिङ्गका आधारमा मृत्युदरमा
-              महत्वपूर्ण भिन्नता देखिन्छ। यसले स्थानीय सरकारलाई स्वास्थ्य सेवा,
-              विशेष कार्यक्रमहरू र सुरक्षा उपायहरू लक्षित गर्न सघाउ पुर्‍याउँछ।
+            <p className="text-muted-foreground leading-relaxed">
+              परिवर्तन गाउँपालिकाको वडा, उमेर समूह र लिङ्ग अनुसार मृत्यु
+              जनसंख्याको विस्तृत विश्लेषण। यहाँ विभिन्न वडा, उमेर समूह र लिङ्गको
+              मृत्यु तथ्याङ्क प्रस्तुत गरिएको छ।
             </p>
 
-            <h2 id="age-wise-mortality" className="scroll-m-20 border-b pb-2">
-              उमेर अनुसार मृत्यु विवरण
-            </h2>
-            <p>
-              उमेर समूह अनुसार हेर्दा सबैभन्दा धेरै मृत्यु संख्या{" "}
-              {mostAffectedAgeGroup?.ageGroup || ""} समूहमा{" "}
-              {localizeNumber(
-                mostAffectedAgeGroup?.total.toString() || "0",
-                "ne",
-              )}{" "}
-              जना (कुल मृत्युको{" "}
-              {localizeNumber(
-                (
-                  ((mostAffectedAgeGroup?.total || 0) /
-                    totalDeceasedPopulation) *
-                  100
-                ).toFixed(2),
-                "ne",
-              )}
-              %) रहेको छ। यसले {mostAffectedAgeGroup?.ageGroup || ""} उमेर
-              समूहमा विशेष स्वास्थ्य चुनौतीहरू भएको सङ्केत गर्दछ।
-            </p>
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+              <div className="bg-red-50 p-4 rounded-lg border">
+                <div className="text-2xl font-bold text-red-600">
+                  {localizeNumber(
+                    totalDeceasedPopulation.toLocaleString(),
+                    "ne",
+                  )}
+                </div>
+                <div className="text-sm text-red-600">कुल मृत्यु संख्या</div>
+              </div>
+              <div className="bg-blue-50 p-4 rounded-lg border">
+                <div className="text-2xl font-bold text-blue-600">
+                  {localizeNumber(genderTotals.male.toLocaleString(), "ne")}
+                </div>
+                <div className="text-sm text-blue-600">पुरुष मृत्यु</div>
+              </div>
+              <div className="bg-pink-50 p-4 rounded-lg border">
+                <div className="text-2xl font-bold text-pink-600">
+                  {localizeNumber(genderTotals.female.toLocaleString(), "ne")}
+                </div>
+                <div className="text-sm text-pink-600">महिला मृत्यु</div>
+              </div>
+              <div className="bg-purple-50 p-4 rounded-lg border">
+                <div className="text-2xl font-bold text-purple-600">
+                  {localizeNumber(wardNumbers.length.toString(), "ne")}
+                </div>
+                <div className="text-sm text-purple-600">वडा संख्या</div>
+              </div>
+            </div>
           </div>
 
-          {/* Client component for charts */}
+          {/* Charts Section */}
           <DeceasedPopulationCharts
             totalDeceasedPopulation={totalDeceasedPopulation}
             ageGroupChartData={ageGroupChartData}
@@ -486,20 +494,8 @@ export default async function WardAgeGenderWiseDeceasedPopulationPage() {
             GENDER_NAMES={GENDER_NAMES}
           />
 
-          <div className="prose prose-slate dark:prose-invert max-w-none mt-8">
-            <h2 id="mortality-analysis" className="scroll-m-20 border-b pb-2">
-              उमेर र लिङ्ग अनुसार मृत्यु विश्लेषण
-            </h2>
-            <p>
-              परिवर्तन गाउँपालिकामा उमेर र लिङ्ग अनुसारको मृत्युदरको विश्लेषण
-              गर्दा, निम्न प्रवृत्तिहरू देखिएका छन्।{" "}
-              {localizeNumber(malePercentage, "ne")}% पुरुष,{" "}
-              {localizeNumber(femalePercentage, "ne")}% महिला, र
-              {localizeNumber(otherPercentage, "ne")}% अन्य लिङ्गका व्यक्तिहरूको
-              मृत्यु भएको छ।
-            </p>
-
-            {/* Client component for mortality analysis section */}
+          {/* Analysis Section */}
+          <section id="mortality-analysis">
             <DeceasedPopulationAnalysisSection
               totalDeceasedPopulation={totalDeceasedPopulation}
               genderTotals={genderTotals}
@@ -512,9 +508,24 @@ export default async function WardAgeGenderWiseDeceasedPopulationPage() {
               GENDER_NAMES={GENDER_NAMES}
               GENDER_NAMES_EN={GENDER_NAMES_EN}
             />
+          </section>
+
+          {/* Additional Information */}
+          <div className="mt-12 bg-gray-50 p-6 rounded-lg">
+            <h3 className="text-lg font-semibold mb-4">डेटा स्रोत र नोट</h3>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>
+                • यो तथ्याङ्क जन्म मृत्यु दर्ता कार्यालय र स्थानीय सर्वेक्षणमा
+                आधारित छ
+              </li>
+              <li>• मृत्यु तथ्याङ्कमा सबै उमेरका व्यक्तिहरू समावेश छन्</li>
+              <li>• उमेर समूह र लिङ्ग वर्गीकरण मापदण्ड अनुसार गरिएको छ</li>
+              <li>• यो डेटा स्वास्थ्य नीति निर्माण र योजनाका लागि उपयोगी छ</li>
+              <li>• डेटाको गुणस्तर र शुद्धताका लागि नियमित अपडेट गरिन्छ</li>
+            </ul>
           </div>
-        </section>
+        </main>
       </div>
-    </DocsLayout>
+    </div>
   );
 }

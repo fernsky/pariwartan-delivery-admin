@@ -1,17 +1,41 @@
 -- Set UTF-8 encoding for this script
 SET client_encoding = 'UTF8';
 
--- Using existing age_group enum type from V04_ward_age_wise_population.sql
--- Using existing gender enum type from previous migrations
-
--- Create ward_age_gender_wise_deceased_population table if not exists
+-- Create deceased age group enum type
 DO $$
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM pg_tables WHERE tablename = 'acme_ward_age_gender_wise_deceased_population') THEN
-        CREATE TABLE acme_ward_age_gender_wise_deceased_population (
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'deceased_age_group') THEN
+        CREATE TYPE deceased_age_group AS ENUM (
+            'AGE_1_YEAR',
+            'AGE_1_4_YEARS',
+            'AGE_5_9_YEARS',
+            'AGE_10_14_YEARS',
+            'AGE_15_19_YEARS',
+            'AGE_20_24_YEARS',
+            'AGE_25_29_YEARS',
+            'AGE_30_34_YEARS',
+            'AGE_35_39_YEARS',
+            'AGE_40_44_YEARS',
+            'AGE_45_49_YEARS',
+            'AGE_50_54_YEARS',
+            'AGE_55_59_YEARS',
+            'AGE_60_64_YEARS',
+            'AGE_65_69_YEARS',
+            'AGE_70_74_YEARS',
+            'AGE_75_79_YEARS',
+            'AGE_80_AND_ABOVE'
+        );
+    END IF;
+END
+$$;
+
+-- Create age_gender_wise_deceased_population table if not exists
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_tables WHERE tablename = 'acme_age_gender_wise_deceased_population') THEN
+        CREATE TABLE acme_age_gender_wise_deceased_population (
             id VARCHAR(36) PRIMARY KEY,
-            ward_number INTEGER NOT NULL,
-            age_group age_group NOT NULL,
+            age_group deceased_age_group NOT NULL,
             gender gender NOT NULL,
             deceased_population INTEGER NOT NULL DEFAULT 0,
             updated_at TIMESTAMP DEFAULT NOW(),
@@ -19,88 +43,64 @@ BEGIN
         );
         
         -- Create indexes for faster lookups
-        CREATE INDEX idx_deceased_ward_age_gender ON acme_ward_age_gender_wise_deceased_population(ward_number, age_group, gender);
+        CREATE INDEX idx_deceased_age_gender ON acme_age_gender_wise_deceased_population(age_group, gender);
+        CREATE UNIQUE INDEX idx_deceased_unique_age_gender ON acme_age_gender_wise_deceased_population(age_group, gender);
     END IF;
 END
 $$;
 
--- Insert real ward-wise age deceased population data based on provided information
+-- Insert real age-gender-wise deceased population data
 DO $$
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM acme_ward_age_gender_wise_deceased_population WHERE ward_number = 1 LIMIT 1) THEN
-        -- Ward 1 data
-        INSERT INTO acme_ward_age_gender_wise_deceased_population (id, ward_number, age_group, gender, deceased_population)
+    IF NOT EXISTS (SELECT 1 FROM acme_age_gender_wise_deceased_population LIMIT 1) THEN
+        INSERT INTO acme_age_gender_wise_deceased_population (id, age_group, gender, deceased_population)
         VALUES
-            -- Ward 1 Male data
-            (gen_random_uuid(), 1, 'AGE_0_4', 'MALE', 0),
-            (gen_random_uuid(), 1, 'AGE_5_9', 'MALE', 0),
-            (gen_random_uuid(), 1, 'AGE_10_14', 'MALE', 0),
-            (gen_random_uuid(), 1, 'AGE_15_19', 'MALE', 0),
-            (gen_random_uuid(), 1, 'AGE_20_24', 'MALE', 0),
-            (gen_random_uuid(), 1, 'AGE_25_29', 'MALE', 0),
-            (gen_random_uuid(), 1, 'AGE_30_34', 'MALE', 2),
-            (gen_random_uuid(), 1, 'AGE_35_39', 'MALE', 1),
-            (gen_random_uuid(), 1, 'AGE_40_44', 'MALE', 0),
-            (gen_random_uuid(), 1, 'AGE_45_49', 'MALE', 0),
-            (gen_random_uuid(), 1, 'AGE_50_54', 'MALE', 0),
-            (gen_random_uuid(), 1, 'AGE_55_59', 'MALE', 1),
-            (gen_random_uuid(), 1, 'AGE_60_64', 'MALE', 1),
-            (gen_random_uuid(), 1, 'AGE_65_69', 'MALE', 0),
-            (gen_random_uuid(), 1, 'AGE_70_74', 'MALE', 1),
-            (gen_random_uuid(), 1, 'AGE_75_AND_ABOVE', 'MALE', 9), -- Sum of 75-79(4) + 80-84(4) + 85-89(0) + 90-94(0) + 95-99(1) + 100+(0)
+            -- Male data
+            (gen_random_uuid(), 'AGE_1_YEAR', 'MALE', 2),
+            (gen_random_uuid(), 'AGE_1_4_YEARS', 'MALE', 1),
+            (gen_random_uuid(), 'AGE_5_9_YEARS', 'MALE', 0),
+            (gen_random_uuid(), 'AGE_10_14_YEARS', 'MALE', 1),
+            (gen_random_uuid(), 'AGE_15_19_YEARS', 'MALE', 1),
+            (gen_random_uuid(), 'AGE_20_24_YEARS', 'MALE', 0),
+            (gen_random_uuid(), 'AGE_25_29_YEARS', 'MALE', 3),
+            (gen_random_uuid(), 'AGE_30_34_YEARS', 'MALE', 3),
+            (gen_random_uuid(), 'AGE_35_39_YEARS', 'MALE', 3),
+            (gen_random_uuid(), 'AGE_40_44_YEARS', 'MALE', 6),
+            (gen_random_uuid(), 'AGE_45_49_YEARS', 'MALE', 3),
+            (gen_random_uuid(), 'AGE_50_54_YEARS', 'MALE', 1),
+            (gen_random_uuid(), 'AGE_55_59_YEARS', 'MALE', 6),
+            (gen_random_uuid(), 'AGE_60_64_YEARS', 'MALE', 2),
+            (gen_random_uuid(), 'AGE_65_69_YEARS', 'MALE', 7),
+            (gen_random_uuid(), 'AGE_70_74_YEARS', 'MALE', 9),
+            (gen_random_uuid(), 'AGE_75_79_YEARS', 'MALE', 5),
+            (gen_random_uuid(), 'AGE_80_AND_ABOVE', 'MALE', 10),
 
-            -- Ward 1 Female data
-            (gen_random_uuid(), 1, 'AGE_0_4', 'FEMALE', 0),
-            (gen_random_uuid(), 1, 'AGE_5_9', 'FEMALE', 0),
-            (gen_random_uuid(), 1, 'AGE_10_14', 'FEMALE', 0),
-            (gen_random_uuid(), 1, 'AGE_15_19', 'FEMALE', 0),
-            (gen_random_uuid(), 1, 'AGE_20_24', 'FEMALE', 0),
-            (gen_random_uuid(), 1, 'AGE_25_29', 'FEMALE', 0),
-            (gen_random_uuid(), 1, 'AGE_30_34', 'FEMALE', 0),
-            (gen_random_uuid(), 1, 'AGE_35_39', 'FEMALE', 1),
-            (gen_random_uuid(), 1, 'AGE_40_44', 'FEMALE', 0),
-            (gen_random_uuid(), 1, 'AGE_45_49', 'FEMALE', 0),
-            (gen_random_uuid(), 1, 'AGE_50_54', 'FEMALE', 0),
-            (gen_random_uuid(), 1, 'AGE_55_59', 'FEMALE', 0),
-            (gen_random_uuid(), 1, 'AGE_60_64', 'FEMALE', 1),
-            (gen_random_uuid(), 1, 'AGE_65_69', 'FEMALE', 2),
-            (gen_random_uuid(), 1, 'AGE_70_74', 'FEMALE', 0),
-            (gen_random_uuid(), 1, 'AGE_75_AND_ABOVE', 'FEMALE', 6), -- Sum of 75-79(3) + 80-84(2) + 85-89(0) + 90-94(1) + 95-99(0) + 100+(0)
+            -- Female data
+            (gen_random_uuid(), 'AGE_1_YEAR', 'FEMALE', 1),
+            (gen_random_uuid(), 'AGE_1_4_YEARS', 'FEMALE', 0),
+            (gen_random_uuid(), 'AGE_5_9_YEARS', 'FEMALE', 1),
+            (gen_random_uuid(), 'AGE_10_14_YEARS', 'FEMALE', 0),
+            (gen_random_uuid(), 'AGE_15_19_YEARS', 'FEMALE', 3),
+            (gen_random_uuid(), 'AGE_20_24_YEARS', 'FEMALE', 0),
+            (gen_random_uuid(), 'AGE_25_29_YEARS', 'FEMALE', 0),
+            (gen_random_uuid(), 'AGE_30_34_YEARS', 'FEMALE', 1),
+            (gen_random_uuid(), 'AGE_35_39_YEARS', 'FEMALE', 1),
+            (gen_random_uuid(), 'AGE_40_44_YEARS', 'FEMALE', 1),
+            (gen_random_uuid(), 'AGE_45_49_YEARS', 'FEMALE', 2),
+            (gen_random_uuid(), 'AGE_50_54_YEARS', 'FEMALE', 2),
+            (gen_random_uuid(), 'AGE_55_59_YEARS', 'FEMALE', 3),
+            (gen_random_uuid(), 'AGE_60_64_YEARS', 'FEMALE', 7),
+            (gen_random_uuid(), 'AGE_65_69_YEARS', 'FEMALE', 0),
+            (gen_random_uuid(), 'AGE_70_74_YEARS', 'FEMALE', 2),
+            (gen_random_uuid(), 'AGE_75_79_YEARS', 'FEMALE', 4),
+            (gen_random_uuid(), 'AGE_80_AND_ABOVE', 'FEMALE', 10);
 
-            -- Ward 2 Male data
-            (gen_random_uuid(), 2, 'AGE_0_4', 'MALE', 0),
-            (gen_random_uuid(), 2, 'AGE_5_9', 'MALE', 0),
-            (gen_random_uuid(), 2, 'AGE_10_14', 'MALE', 0),
-            (gen_random_uuid(), 2, 'AGE_15_19', 'MALE', 0),
-            (gen_random_uuid(), 2, 'AGE_20_24', 'MALE', 0),
-            (gen_random_uuid(), 2, 'AGE_25_29', 'MALE', 1),
-            (gen_random_uuid(), 2, 'AGE_30_34', 'MALE', 0),
-            (gen_random_uuid(), 2, 'AGE_35_39', 'MALE', 1),
-            (gen_random_uuid(), 2, 'AGE_40_44', 'MALE', 1),
-            (gen_random_uuid(), 2, 'AGE_45_49', 'MALE', 2),
-            (gen_random_uuid(), 2, 'AGE_50_54', 'MALE', 5),
-            (gen_random_uuid(), 2, 'AGE_55_59', 'MALE', 1),
-            (gen_random_uuid(), 2, 'AGE_60_64', 'MALE', 2),
-            (gen_random_uuid(), 2, 'AGE_65_69', 'MALE', 0),
-            (gen_random_uuid(), 2, 'AGE_70_74', 'MALE', 1),
-            (gen_random_uuid(), 2, 'AGE_75_AND_ABOVE', 'MALE', 8), -- Sum of 75-79(2) + 80-84(3) + 85-89(0) + 90-94(1) + 95-99(2) + 100+(0)
-
-            -- Ward 2 Female data
-            (gen_random_uuid(), 2, 'AGE_0_4', 'FEMALE', 0),
-            (gen_random_uuid(), 2, 'AGE_5_9', 'FEMALE', 0),
-            (gen_random_uuid(), 2, 'AGE_10_14', 'FEMALE', 0),
-            (gen_random_uuid(), 2, 'AGE_15_19', 'FEMALE', 0),
-            (gen_random_uuid(), 2, 'AGE_20_24', 'FEMALE', 0),
-            (gen_random_uuid(), 2, 'AGE_25_29', 'FEMALE', 1),
-            (gen_random_uuid(), 2, 'AGE_30_34', 'FEMALE', 0),
-            (gen_random_uuid(), 2, 'AGE_35_39', 'FEMALE', 0),
-            (gen_random_uuid(), 2, 'AGE_40_44', 'FEMALE', 2),
-            (gen_random_uuid(), 2, 'AGE_45_49', 'FEMALE', 0),
-            (gen_random_uuid(), 2, 'AGE_50_54', 'FEMALE', 3),
-            (gen_random_uuid(), 2, 'AGE_55_59', 'FEMALE', 0),
-            (gen_random_uuid(), 2, 'AGE_60_64', 'FEMALE', 3),
-            (gen_random_uuid(), 2, 'AGE_65_69', 'FEMALE', 7),
-            (gen_random_uuid(), 2, 'AGE_70_74', 'FEMALE', 10),
+        RAISE NOTICE 'Age gender wise deceased population data inserted successfully';
+    ELSE
+        RAISE NOTICE 'Age gender wise deceased population data already exists, skipping insertion';
+    END IF;
+END
+$$;
             (gen_random_uuid(), 2, 'AGE_75_AND_ABOVE', 'FEMALE', 8), -- Sum of 75-79(1) + 80-84(3) + 85-89(2) + 90-94(2) + 95-99(0) + 100+(0)
 
             -- Ward 3 Male data
