@@ -1,7 +1,7 @@
 import { createTRPCRouter } from "@/server/api/trpc";
 import { demographicSummaryRouter } from "./demographic-summary.procedure";
 import { familyMainOccupationRouter } from "../demographics/ward-wise-major-occupation.procedure";
-import {wardAgeWiseEconomicallyActivePopulationRouter} from "./ward-age-wise-economically-active-population.procedure";
+import { wardGenderWiseEconomicallyActivePopulationRouter } from "./ward-gender-wise-economically-active-population.procedure";
 import { wardTimeSeriesRouter } from "./ward-time-series.procedure";
 import { wardWiseDemographicSummaryRouter } from "./ward-wise-demographic-summary.procedure";
 import { castePopulationRouter } from "./caste-population.procedure";
@@ -13,7 +13,6 @@ import { wardAgeWiseMaritalStatusRouter } from "./ward-age-wise-marital-status.p
 import { wardAgeGenderWiseMarriedAgeRouter } from "./ward-age-gender-wise-married-age.procedure";
 import { wardAgeGenderWiseAbsenteeRouter } from "./ward-age-gender-wise-absentee.procedure";
 import { wardWiseAbsenteeEducationalLevelRouter } from "./ward-wise-absentee-educational-level.procedure";
-import { wardAgeGenderWiseEconomicallyActivePopulationRouter } from "../economics/ward-age-gender-wise-economically-active-population.procedure";
 import { wardWiseEducationalLevelRouter } from "../education/ward-wise-educational-level.procedure";
 import { wardWiseLiteracyStatusRouter } from "../education/ward-wise-literacy-status.procedure";
 import { wardWiseMajorSubjectRouter } from "../education/ward-wise-major-subject.procedure";
@@ -35,11 +34,12 @@ export const demographicsRouter = createTRPCRouter({
   wardWiseReligionPopulation: wardWiseReligionPopulationRouter,
   wardAgeWiseMaritalStatus: wardAgeWiseMaritalStatusRouter,
   wardAgeGenderWiseMarriedAge: wardAgeGenderWiseMarriedAgeRouter,
+  wardGenderWiseEconomicallyActivePopulation: wardGenderWiseEconomicallyActivePopulationRouter,
   wardAgeGenderWiseAbsentee: wardAgeGenderWiseAbsenteeRouter,
   wardWiseAbsenteeEducationalLevel: wardWiseAbsenteeEducationalLevelRouter,
   wardWiseEducationalLevel: wardWiseEducationalLevelRouter,
   wardWiseLiteracyStatus: wardWiseLiteracyStatusRouter,
-  ageGroupHouseHeadGender:ageHouseHeadGenderRouter,
+  ageGroupHouseHeadGender: ageHouseHeadGenderRouter,
   wardWiseMajorSubject: wardWiseMajorSubjectRouter,
   wardWiseSchoolDropout: wardWiseSchoolDropoutRouter,
   familyMainOccupation: familyMainOccupationRouter,

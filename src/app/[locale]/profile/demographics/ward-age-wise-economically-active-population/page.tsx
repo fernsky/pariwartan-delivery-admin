@@ -1,128 +1,92 @@
 import { Metadata } from "next";
-import { DocsLayout } from "@/components/layout/DocsLayout";
-import { TableOfContents } from "@/components/TableOfContents";
-import Image from "next/image";
 import { api } from "@/trpc/server";
-import { localizeNumber } from "@/lib/utils/localize-number";
+import { TableOfContents } from "@/components/TableOfContents";
 import EconomicallyActivePopulationCharts from "./_components/economically-active-population-charts";
 import EconomicallyActivePopulationAnalysisSection from "./_components/economically-active-population-analysis-section";
-import EconomicallyActivePopulationSEO from "./_components/economically-active-population-seo";
+import { localizeNumber } from "@/lib/utils/localize-number";
+
+// Define type for economically active population data
+type EconomicallyActivePopulationDataType = {
+  id?: string;
+  wardNumber: string;
+  gender: string;
+  age10PlusTotal: number;
+  economicallyActiveEmployed: number;
+  economicallyActiveUnemployed: number;
+  householdWork: number;
+  economicallyActiveTotal: number;
+  dependentPopulation: number;
+};
 
 // Force dynamic rendering since we're using tRPC which relies on headers
 export const dynamic = "force-dynamic";
 
 // Define the locales for which this page should be statically generated
 export async function generateStaticParams() {
-  // Generate the page for 'en' and 'ne' locales
   return [{ locale: "en" }];
 }
 
 // Optional: Add revalidation period if you want to update the static pages periodically
 export const revalidate = 86400; // Revalidate once per day (in seconds)
 
-// Define Nepali names for age groups
-const AGE_GROUP_NAMES: Record<string, string> = {
-  AGE_0_TO_14: "०-१४ वर्षका व्यक्तिहरू",
-  AGE_15_TO_59: "१५-५९ वर्षका व्यक्तिहरू",
-  AGE_60_PLUS: "६० वर्ष र माथिका व्यक्तिहरू",
-};
-
-// Define English names for age groups (for SEO)
-const AGE_GROUP_NAMES_EN: Record<string, string> = {
-  AGE_0_TO_14: "0-14 Years Old Persons",
-  AGE_15_TO_59: "15-59 Years Old Persons",
-  AGE_60_PLUS: "60+ Years Old Persons",
-};
-
 // This function will generate metadata dynamically based on the actual data
 export async function generateMetadata(): Promise<Metadata> {
   try {
     // Fetch data for SEO using tRPC
-    const populationData =
-      await api.profile.demographics.wardAgeWiseEconomicallyActivePopulation.getAll.query();
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+    const economicallyActiveData =
+      await api.profile.demographics.wardGenderWiseEconomicallyActivePopulation.getAll.query();
+    const municipalityName = "परिवर्तन गाउँपालिका";
+
+    // Ensure data is a valid array
+    if (!economicallyActiveData || !Array.isArray(economicallyActiveData)) {
+      return {
+        title: `आर्थिक रूपमा सक्रिय जनसंख्या - ${municipalityName}`,
+        description: `${municipalityName}को वडागत र लैंगिक आर्थिक रूपमा सक्रिय जनसंख्याको विस्तृत तथ्याङ्क।`,
+      };
+    }
 
     // Process data for SEO
-    const totalPopulation = populationData.reduce(
-      (sum, item) => sum + (item.population || 0),
-      0,
-    );
+    const totalData = economicallyActiveData.filter(
+      (item) => item.wardNumber === "जम्मा" && item.gender === "जम्मा",
+    )[0];
+    const totalEconomicallyActive = totalData?.economicallyActiveTotal || 0;
+    const totalEmployed = totalData?.economicallyActiveEmployed || 0;
 
-    // Group by age group and calculate totals
-    const ageGroupCounts: Record<string, number> = {};
-    populationData.forEach((item) => {
-      if (!ageGroupCounts[item.ageGroup]) ageGroupCounts[item.ageGroup] = 0;
-      ageGroupCounts[item.ageGroup] += item.population || 0;
-    });
-
-    // Calculate economically active population (15-59 age group)
-    const economicallyActivePopulation = ageGroupCounts["AGE_15_TO_59"] || 0;
-    const economicallyActivePercentage =
-      totalPopulation > 0
-        ? ((economicallyActivePopulation / totalPopulation) * 100).toFixed(2)
-        : "0";
-
-    // Create rich keywords with actual data
-    const keywordsNP = [
-      "परिवर्तन गाउँपालिका आर्थिक रूपमा सक्रिय जनसंख्या",
-      "परिवर्तन उमेर अनुसार जनसंख्या वितरण",
-      "वडा अनुसार आर्थिक रूपमा सक्रिय जनसंख्या",
-      "आर्थिक सक्रिय उमेर समूह विवरण",
-      "१५-५९ वर्षका आर्थिक सक्रिय जनसंख्या",
-      "वृद्ध जनसंख्या परिवर्तन",
-      "बाल जनसंख्या परिवर्तन",
-      `परिवर्तन कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")}`,
-    ];
-
-    const keywordsEN = [
-      "Khajura Rural Municipality economically active population",
-      "Khajura age-wise population distribution",
-      "Ward-wise economically active population",
-      "Economically active age groups details",
-      "15-59 years old economically active population",
-      "Elderly population in Khajura",
-      "Child population in Khajura",
-      `Khajura total population ${totalPopulation}`,
-    ];
-
-    // Create detailed description with actual data
-    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार उमेर समूहको आर्थिक रूपमा सक्रिय जनसंख्याको वितरण र विश्लेषण। कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")} मध्ये ${localizeNumber(economicallyActivePercentage, "ne")}% (${localizeNumber(economicallyActivePopulation.toString(), "ne")}) आर्थिक रूपमा सक्रिय उमेर समूह (१५-५९ वर्ष) मा पर्दछन्। विभिन्न वडाहरूमा आर्थिक सक्रियता र कार्य उमेरको जनसंख्याको विस्तृत विश्लेषण।`;
-
-    const descriptionEN = `Ward-wise distribution and analysis of economically active population by age groups in Khajura Rural Municipality. Out of a total population of ${totalPopulation}, ${economicallyActivePercentage}% (${economicallyActivePopulation}) are in the economically active age group (15-59 years). Detailed analysis of economic activity and working-age population across various wards.`;
+    const title = `आर्थिक रूपमा सक्रिय जनसंख्या - ${municipalityName}`;
+    const description = `${municipalityName}को वडागत र लैंगिक आर्थिक रूपमा सक्रिय जनसंख्याको विस्तृत तथ्याङ्क। कुल आर्थिक रूपमा सक्रिय: ${totalEconomicallyActive.toLocaleString()} व्यक्ति। रोजगारीमा: ${totalEmployed.toLocaleString()} व्यक्ति।`;
 
     return {
-      title: `आर्थिक रूपमा सक्रिय जनसंख्या | ${municipalityName} डिजिटल प्रोफाइल`,
-      description: descriptionNP,
-      keywords: [...keywordsNP, ...keywordsEN],
-      alternates: {
-        canonical:
-          "/profile/demographics/ward-age-wise-economically-active-population",
-        languages: {
-          en: "/en/profile/demographics/ward-age-wise-economically-active-population",
-          ne: "/ne/profile/demographics/ward-age-wise-economically-active-population",
-        },
-      },
+      title,
+      description,
+      keywords: [
+        "आर्थिक रूपमा सक्रिय जनसंख्या",
+        "रोजगारी तथ्याङ्क",
+        "बेरोजगारी दर",
+        "परिवर्तन गाउँपालिका",
+        "वडागत तथ्याङ्क",
+        "Economically active population",
+        "Employment statistics",
+        "Unemployment rate",
+        "Ward-wise data",
+      ],
       openGraph: {
-        title: `आर्थिक रूपमा सक्रिय जनसंख्या | ${municipalityName}`,
-        description: descriptionNP,
-        type: "article",
+        title,
+        description,
+        type: "website",
         locale: "ne_NP",
-        alternateLocale: "en_US",
-        siteName: `${municipalityName} डिजिटल प्रोफाइल`,
       },
       twitter: {
         card: "summary_large_image",
-        title: `आर्थिक रूपमा सक्रिय जनसंख्या | ${municipalityName}`,
-        description: descriptionNP,
+        title,
+        description,
       },
     };
   } catch (error) {
-    // Fallback metadata if data fetching fails
+    console.error("Error generating metadata:", error);
     return {
-      title:
-        "आर्थिक रूपमा सक्रिय जनसंख्या | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
+      title: "आर्थिक रूपमा सक्रिय जनसंख्या - परिवर्तन गाउँपालिका",
       description:
-        "वडा अनुसार उमेर समूहको आर्थिक रूपमा सक्रिय जनसंख्याको वितरण र विश्लेषण।",
+        "परिवर्तन गाउँपालिकाको वडागत र लैंगिक आर्थिक रूपमा सक्रिय जनसंख्याको विस्तृत तथ्याङ्क।",
     };
   }
 }
@@ -131,243 +95,164 @@ const toc = [
   { level: 2, text: "परिचय", slug: "introduction" },
   {
     level: 2,
-    text: "उमेर अनुसार आर्थिक सक्रियता",
-    slug: "age-wise-economic-activity",
+    text: "आर्थिक रूपमा सक्रिय जनसंख्या",
+    slug: "economically-active-overview",
   },
-  {
-    level: 2,
-    text: "वडा अनुसार आर्थिक सक्रियता",
-    slug: "ward-wise-economic-activity",
-  },
-  {
-    level: 2,
-    text: "आर्थिक सक्रिय जनसंख्या विश्लेषण",
-    slug: "active-population-analysis",
-  },
+  { level: 2, text: "वडागत वितरण", slug: "ward-wise-distribution" },
+  { level: 2, text: "लैंगिक वितरण", slug: "gender-distribution" },
+  { level: 2, text: "रोजगारी र बेरोजगारी", slug: "employment-unemployment" },
+  { level: 2, text: "विश्लेषण र निष्कर्ष", slug: "analysis-conclusions" },
 ];
 
-export default async function WardAgeWiseEconomicallyActivePopulationPage() {
-  // Fetch all economically active population data using tRPC
-  const populationData =
-    await api.profile.demographics.wardAgeWiseEconomicallyActivePopulation.getAll.query();
-
-  // Try to fetch summary data
-  let summaryData = null;
+export default async function EconomicallyActivePopulationPage() {
+  // Fetch all economically active population data from your tRPC route
+  let economicallyActiveData: EconomicallyActivePopulationDataType[] = [];
   try {
-    summaryData =
-      await api.profile.demographics.wardAgeWiseEconomicallyActivePopulation.summary.query();
+    const fetchedData =
+      await api.profile.demographics.wardGenderWiseEconomicallyActivePopulation.getAll.query();
+    economicallyActiveData = fetchedData || [];
   } catch (error) {
-    console.error("Could not fetch summary data", error);
+    console.error("Error fetching economically active data:", error);
+    economicallyActiveData = [];
   }
 
-  // Process data for overall summary
-  const overallSummary = Object.entries(
-    populationData.reduce((acc: Record<string, number>, item) => {
-      if (!acc[item.ageGroup]) acc[item.ageGroup] = 0;
-      acc[item.ageGroup] += item.population || 0;
-      return acc;
-    }, {}),
-  )
-    .map(([ageGroup, population]) => ({
-      ageGroup,
-      ageGroupName:
-        AGE_GROUP_NAMES[ageGroup as keyof typeof AGE_GROUP_NAMES] || ageGroup,
-      population,
-    }))
-    .sort((a, b) => {
-      // Custom sort to ensure age groups are in chronological order
-      const order = { AGE_0_TO_14: 1, AGE_15_TO_59: 2, AGE_60_PLUS: 3 };
-      return (
-        order[a.ageGroup as keyof typeof order] -
-        order[b.ageGroup as keyof typeof order]
-      );
-    });
+  // Ensure data is a valid array
+  if (!economicallyActiveData || !Array.isArray(economicallyActiveData)) {
+    economicallyActiveData = [];
+  }
 
-  // Calculate total population for percentages
-  const totalPopulation = overallSummary.reduce(
-    (sum, item) => sum + item.population,
+  // Fetch summary statistics
+  let summaryData;
+  try {
+    summaryData =
+      await api.profile.demographics.wardGenderWiseEconomicallyActivePopulation.summary.query();
+  } catch (error) {
+    console.error("Error fetching summary:", error);
+  }
+
+  // Calculate totals from the data (excluding "जम्मा" rows to avoid double counting)
+  const nonTotalData = economicallyActiveData.filter(
+    (item) => item.wardNumber !== "जम्मा" && item.gender !== "जम्मा",
+  );
+
+  const totalAge10Plus = nonTotalData.reduce(
+    (sum, item) => sum + (item.age10PlusTotal || 0),
+    0,
+  );
+  const totalEmployed = nonTotalData.reduce(
+    (sum, item) => sum + (item.economicallyActiveEmployed || 0),
+    0,
+  );
+  const totalUnemployed = nonTotalData.reduce(
+    (sum, item) => sum + (item.economicallyActiveUnemployed || 0),
+    0,
+  );
+  const totalEconomicallyActive = nonTotalData.reduce(
+    (sum, item) => sum + (item.economicallyActiveTotal || 0),
     0,
   );
 
-  // Create data for pie chart
-  const pieChartData = overallSummary.map((item) => ({
-    name: item.ageGroupName,
-    value: item.population,
-    percentage: ((item.population / totalPopulation) * 100).toFixed(2),
-  }));
-
-  // Get unique ward numbers
-  const wardNumbers = Array.from(
-    new Set(populationData.map((item) => item.wardNumber)),
-  ).sort((a, b) => a - b); // Sort numerically
-
-  // Process data for ward-wise visualization
-  const wardWiseData = wardNumbers.map((wardNumber) => {
-    const wardData = populationData.filter(
-      (item) => item.wardNumber === wardNumber,
-    );
-
-    const result: Record<string, any> = { ward: `वडा ${wardNumber}` };
-
-    // Add age groups
-    wardData.forEach((item) => {
-      result[
-        AGE_GROUP_NAMES[item.ageGroup as keyof typeof AGE_GROUP_NAMES] ||
-          item.ageGroup
-      ] = item.population;
-    });
-
-    return result;
-  });
-
-  // Calculate dependency ratios for each ward
-  const dependencyRatios = wardNumbers.map((wardNumber) => {
-    const wardData = populationData.filter(
-      (item) => item.wardNumber === wardNumber,
-    );
-
-    const dependentPopulation = wardData.reduce((sum, item) => {
-      if (item.ageGroup === "AGE_0_TO_14" || item.ageGroup === "AGE_60_PLUS") {
-        return sum + item.population;
-      }
-      return sum;
-    }, 0);
-
-    const workingAgePopulation =
-      wardData.find((item) => item.ageGroup === "AGE_15_TO_59")?.population ||
-      0;
-
-    const ratio =
-      workingAgePopulation > 0
-        ? (dependentPopulation / workingAgePopulation) * 100
-        : 0;
-
-    return {
-      wardNumber,
-      dependentPopulation,
-      workingAgePopulation,
-      ratio: parseFloat(ratio.toFixed(2)),
-    };
-  });
-
   return (
-    <DocsLayout toc={<TableOfContents toc={toc} />}>
-      {/* Add structured data for SEO */}
-      <EconomicallyActivePopulationSEO
-        overallSummary={overallSummary}
-        totalPopulation={totalPopulation}
-        AGE_GROUP_NAMES={AGE_GROUP_NAMES}
-        AGE_GROUP_NAMES_EN={AGE_GROUP_NAMES_EN}
-        wardNumbers={wardNumbers}
-      />
-
-      <div className="flex flex-col gap-8">
-        <section>
-          <div className="relative rounded-lg overflow-hidden mb-8">
-            <Image
-              src="/images/economically-active-population.svg"
-              width={1200}
-              height={400}
-              alt="आर्थिक रूपमा सक्रिय जनसंख्या - परिवर्तन गाउँपालिका (Economically Active Population - Khajura Rural Municipality)"
-              className="w-full h-[250px] object-cover rounded-sm"
-              priority
-            />
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex gap-8">
+        {/* Table of Contents - Sidebar */}
+        <aside className="hidden lg:block w-64 flex-shrink-0">
+          <div className="sticky top-8">
+            <TableOfContents toc={toc} />
           </div>
+        </aside>
 
-          <div className="prose prose-slate dark:prose-invert max-w-none">
-            <h1 className="scroll-m-20 tracking-tight mb-6">
-              परिवर्तन गाउँपालिकामा आर्थिक रूपमा सक्रिय जनसंख्या
+        {/* Main Content */}
+        <main className="flex-1 min-w-0">
+          {/* Header Section */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold mb-4" id="introduction">
+              आर्थिक रूपमा सक्रिय जनसंख्या
             </h1>
-
-            <h2 id="introduction" className="scroll-m-20">
-              परिचय
-            </h2>
-            <p>
-              आर्थिक रूपमा सक्रिय जनसंख्याले कुनै पनि समुदायको उत्पादकता, आर्थिक
-              विकास र सामाजिक संरचनामा महत्वपूर्ण भूमिका खेल्छ। यस खण्डमा
-              परिवर्तन गाउँपालिकामा विभिन्न उमेर समूहका आर्थिक रूपमा सक्रिय
-              जनसंख्याको वडागत वितरण र विश्लेषण प्रस्तुत गरिएको छ।
-            </p>
-            <p>
-              परिवर्तन गाउँपालिकामा उमेर समूह अनुसार आर्थिक सक्रिय जनसंख्याको
-              तथ्याङ्क हेर्दा, कुल जनसंख्या{" "}
-              {localizeNumber(totalPopulation.toLocaleString(), "ne")}
-              मध्ये{" "}
-              {overallSummary.find((item) => item.ageGroup === "AGE_15_TO_59")
-                ?.ageGroupName || ""}
-              {localizeNumber(
-                (
-                  ((overallSummary.find(
-                    (item) => item.ageGroup === "AGE_15_TO_59",
-                  )?.population || 0) /
-                    totalPopulation) *
-                  100
-                ).toFixed(1),
-                "ne",
-              )}
-              % रहेको देखिन्छ। यस समूहलाई आर्थिक रूपमा सक्रिय जनसंख्याको रूपमा
-              हेरिएको छ।
+            <p className="text-muted-foreground leading-relaxed">
+              परिवर्तन गाउँपालिकाको वडागत र लैंगिक आर्थिक रूपमा सक्रिय
+              जनसंख्याको विस्तृत विश्लेषण। यहाँ रोजगारी, बेरोजगारी र घरायसी
+              कामको तथ्याङ्क प्रस्तुत गरिएको छ।
             </p>
 
-            <h2
-              id="age-wise-economic-activity"
-              className="scroll-m-20 border-b pb-2"
-            >
-              उमेर अनुसार आर्थिक सक्रियता
-            </h2>
-            <p>
-              परिवर्तन गाउँपालिकामा उमेर समूह अनुसार जनसंख्याको वितरण
-              निम्नानुसार रहेको छ:
-            </p>
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+              <div className="bg-blue-50 p-4 rounded-lg border">
+                <div className="text-2xl font-bold text-blue-600">
+                  {localizeNumber(totalAge10Plus.toLocaleString(), "ne")}
+                </div>
+                <div className="text-sm text-blue-600">
+                  १० वर्ष माथिको जनसंख्या
+                </div>
+              </div>
+              <div className="bg-green-50 p-4 rounded-lg border">
+                <div className="text-2xl font-bold text-green-600">
+                  {localizeNumber(totalEmployed.toLocaleString(), "ne")}
+                </div>
+                <div className="text-sm text-green-600">रोजगारीमा</div>
+              </div>
+              <div className="bg-orange-50 p-4 rounded-lg border">
+                <div className="text-2xl font-bold text-orange-600">
+                  {localizeNumber(totalUnemployed.toLocaleString(), "ne")}
+                </div>
+                <div className="text-sm text-orange-600">बेरोजगार</div>
+              </div>
+              <div className="bg-purple-50 p-4 rounded-lg border">
+                <div className="text-2xl font-bold text-purple-600">
+                  {localizeNumber(
+                    totalEconomicallyActive.toLocaleString(),
+                    "ne",
+                  )}
+                </div>
+                <div className="text-sm text-purple-600">
+                  आर्थिक रूपमा सक्रिय
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Client component for charts */}
+          {/* Charts Section */}
           <EconomicallyActivePopulationCharts
-            overallSummary={overallSummary}
-            totalPopulation={totalPopulation}
-            pieChartData={pieChartData}
-            wardWiseData={wardWiseData}
-            wardNumbers={wardNumbers}
-            populationData={populationData}
-            dependencyRatios={dependencyRatios}
-            AGE_GROUP_NAMES={AGE_GROUP_NAMES}
+            economicallyActiveData={economicallyActiveData}
+            totalAge10Plus={totalAge10Plus}
+            totalEmployed={totalEmployed}
+            totalUnemployed={totalUnemployed}
+            totalEconomicallyActive={totalEconomicallyActive}
           />
 
-          <div className="prose prose-slate dark:prose-invert max-w-none mt-8">
-            <h2
-              id="active-population-analysis"
-              className="scroll-m-20 border-b pb-2"
-            >
-              आर्थिक सक्रिय जनसंख्या विश्लेषण
-            </h2>
-            <p>
-              परिवर्तन गाउँपालिकामा आर्थिक रूपमा सक्रिय जनसंख्या (१५-५९ वर्ष)
-              समग्र जनसंख्याको
-              {localizeNumber(
-                (
-                  ((overallSummary.find(
-                    (item) => item.ageGroup === "AGE_15_TO_59",
-                  )?.population || 0) /
-                    totalPopulation) *
-                  100
-                ).toFixed(2),
-                "ne",
-              )}
-              % रहेको छ। यी व्यक्तिहरू आर्थिक गतिविधिमा संलग्न हुन सक्ने उमेर
-              समूहमा पर्दछन्।
-            </p>
-
-            {/* Client component for population analysis section */}
+          {/* Analysis Section */}
+          <section id="analysis-conclusions">
             <EconomicallyActivePopulationAnalysisSection
-              overallSummary={overallSummary}
-              totalPopulation={totalPopulation}
-              dependencyRatios={dependencyRatios}
-              AGE_GROUP_NAMES={AGE_GROUP_NAMES}
-              AGE_GROUP_NAMES_EN={AGE_GROUP_NAMES_EN}
+              economicallyActiveData={economicallyActiveData}
+              totalAge10Plus={totalAge10Plus}
+              totalEmployed={totalEmployed}
+              totalUnemployed={totalUnemployed}
+              totalEconomicallyActive={totalEconomicallyActive}
             />
+          </section>
+
+          {/* Additional Information */}
+          <div className="mt-12 bg-gray-50 p-6 rounded-lg">
+            <h3 className="text-lg font-semibold mb-4">डेटा स्रोत र नोट</h3>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>
+                • यो तथ्याङ्क राष्ट्रिय जनगणना र स्थानीय सर्वेक्षणमा आधारित छ
+              </li>
+              <li>
+                • आर्थिक रूपमा सक्रिय जनसंख्यामा १० वर्ष माथिका व्यक्तिहरू
+                समावेश छन्
+              </li>
+              <li>
+                • रोजगारी र बेरोजगारीको वर्गीकरण अन्तर्राष्ट्रिय मापदण्ड अनुसार
+                गरिएको छ
+              </li>
+              <li>
+                • यो डेटा रोजगारी नीति निर्माण र विकास योजनाका लागि उपयोगी छ
+              </li>
+            </ul>
           </div>
-        </section>
+        </main>
       </div>
-    </DocsLayout>
+    </div>
   );
 }
