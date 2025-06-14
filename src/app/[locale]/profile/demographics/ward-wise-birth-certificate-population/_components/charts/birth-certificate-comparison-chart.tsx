@@ -9,7 +9,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Cell,
   ReferenceLine,
   Legend,
 } from "recharts";
@@ -58,58 +57,55 @@ interface BirthCertificateComparisonProps {
 export default function BirthCertificateComparison({
   wardWiseAnalysis,
   CHART_COLORS,
-  highestWard,
-  lowestWard,
-  highestCoverageWard,
-  lowestCoverageWard,
   totalWithCertificate,
   totalPopulation,
 }: BirthCertificateComparisonProps) {
   // Calculate average coverage rate
-  const overallCoverageRate = totalPopulation > 0
-    ? (totalWithCertificate / totalPopulation) * 100
-    : 0;
+  const overallCoverageRate =
+    totalPopulation > 0 ? (totalWithCertificate / totalPopulation) * 100 : 0;
 
   // Prepare data for comparison chart
-  const comparisonData = wardWiseAnalysis.sort((a, b) => a.wardNumber - b.wardNumber).map(ward => ({
-    ward: `वडा ${ward.wardNumber}`,
-    withCertificate: ward.withCertificate,
-    withoutCertificate: ward.withoutCertificate,
-    total: ward.total,
-    coverageRate: parseFloat(ward.coverageRate),
-    averageCoverageRate: overallCoverageRate,
-  }));
+  const comparisonData = wardWiseAnalysis
+    .sort((a, b) => a.wardNumber - b.wardNumber)
+    .map((ward) => ({
+      ward: `वडा ${ward.wardNumber}`,
+      withCertificate: ward.withCertificate,
+      withoutCertificate: ward.withoutCertificate,
+      total: ward.total,
+      coverageRate: parseFloat(ward.coverageRate),
+      averageCoverageRate: overallCoverageRate,
+    }));
 
   // Custom tooltip for better presentation
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
-      const { withCertificate, withoutCertificate, total, coverageRate } = payload[0].payload;
-      
+      const data = payload[0].payload;
+
       return (
         <div className="bg-background p-3 border shadow-sm rounded-md">
           <p className="font-medium">{localizeNumber(label, "ne")}</p>
           <div className="flex justify-between gap-4 mt-1">
             <span className="text-sm">जन्मदर्ता भएका:</span>
             <span className="font-medium">
-              {localizeNumber(withCertificate.toLocaleString(), "ne")}
+              {localizeNumber(data.withCertificate.toLocaleString(), "ne")}
             </span>
           </div>
           <div className="flex justify-between gap-4">
             <span className="text-sm">जन्मदर्ता नभएका:</span>
             <span className="font-medium">
-              {localizeNumber(withoutCertificate.toLocaleString(), "ne")}
+              {localizeNumber(data.withoutCertificate.toLocaleString(), "ne")}
             </span>
           </div>
           <div className="flex justify-between gap-4">
             <span className="text-sm">कुल जनसंख्या:</span>
             <span className="font-medium">
-              {localizeNumber(total.toLocaleString(), "ne")}
+              {localizeNumber(data.total.toLocaleString(), "ne")}
             </span>
           </div>
           <div className="flex justify-between gap-4 mt-1">
             <span className="text-sm">कभरेज दर:</span>
             <span className="font-medium">
-              {localizeNumber(coverageRate.toFixed(2), "ne")}%
+              {localizeNumber(data.coverageRate.toFixed(2), "ne")}%
             </span>
           </div>
           <div className="flex justify-between gap-4">
@@ -121,7 +117,11 @@ export default function BirthCertificateComparison({
           <div className="flex justify-between gap-4">
             <span className="text-sm">अन्तर:</span>
             <span className="font-medium">
-              {localizeNumber((coverageRate - overallCoverageRate).toFixed(2), "ne")}%
+              {localizeNumber(
+                (data.coverageRate - overallCoverageRate).toFixed(2),
+                "ne",
+              )}
+              %
             </span>
           </div>
         </div>
@@ -148,41 +148,43 @@ export default function BirthCertificateComparison({
           yAxisId="left"
           orientation="left"
           tickFormatter={(value) => localizeNumber(value.toString(), "ne")}
-          label={{ 
-            value: 'संख्या',
+          label={{
+            value: "संख्या",
             angle: -90,
-            position: 'insideLeft',
-            style: { textAnchor: 'middle' }
+            position: "insideLeft",
+            style: { textAnchor: "middle" },
           }}
         />
         <YAxis
           yAxisId="right"
           orientation="right"
           domain={[0, 100]}
-          tickFormatter={(value) => localizeNumber(value.toString() + '%', "ne")}
-          label={{ 
-            value: 'कभरेज दर',
+          tickFormatter={(value) =>
+            localizeNumber(value.toString() + "%", "ne")
+          }
+          label={{
+            value: "कभरेज दर",
             angle: 90,
-            position: 'insideRight',
-            style: { textAnchor: 'middle' }
+            position: "insideRight",
+            style: { textAnchor: "middle" },
           }}
         />
         <Tooltip content={CustomTooltip} />
-        
+
         {/* Average reference line */}
-        <ReferenceLine 
-          y={overallCoverageRate} 
+        <ReferenceLine
+          y={overallCoverageRate}
           yAxisId="right"
           stroke={CHART_COLORS.accent}
           strokeDasharray="3 3"
-          label={{ 
+          label={{
             value: `औसत: ${localizeNumber(overallCoverageRate.toFixed(1), "ne")}%`,
-            position: 'insideBottomLeft',
+            position: "insideBottomLeft",
             fill: CHART_COLORS.accent,
-            fontSize: 12
+            fontSize: 12,
           }}
         />
-        
+
         {/* Stacked bar chart for population */}
         <Bar
           dataKey="withCertificate"
@@ -198,7 +200,7 @@ export default function BirthCertificateComparison({
           fill={CHART_COLORS.secondary}
           yAxisId="left"
         />
-        
+
         {/* Line for coverage rate */}
         <Line
           type="monotone"
@@ -211,7 +213,7 @@ export default function BirthCertificateComparison({
           activeDot={{ r: 6 }}
         />
 
-        <Legend 
+        <Legend
           wrapperStyle={{ paddingTop: "10px" }}
           formatter={(value) => {
             if (value === "जन्मदर्ता भएका") return "जन्मदर्ता भएका";

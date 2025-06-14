@@ -25,14 +25,17 @@ BEGIN
             id, ward_number, with_birth_certificate, without_birth_certificate
         )
         VALUES
-        (gen_random_uuid(), 1, 116, 12),
-        (gen_random_uuid(), 2, 322, 33),
-        (gen_random_uuid(), 3, 200, 20),
-        (gen_random_uuid(), 4, 193, 19),
-        (gen_random_uuid(), 5, 352, 36),
-        (gen_random_uuid(), 6, 348, 35),
-        (gen_random_uuid(), 7, 381, 38),
-        (gen_random_uuid(), 8, 302, 30);
+        (gen_random_uuid(), 1, 341, 23),
+        (gen_random_uuid(), 2, 548, 67),
+        (gen_random_uuid(), 3, 382, 64),
+        (gen_random_uuid(), 4, 280, 85),
+        (gen_random_uuid(), 5, 435, 43),
+        (gen_random_uuid(), 6, 183, 341);
+    END IF;
+END
+$$;
+        (gen_random_uuid(), 5, 202, 233, 22, 21),
+        (gen_random_uuid(), 6, 96, 87, 191, 150);
     END IF;
 END
 $$;

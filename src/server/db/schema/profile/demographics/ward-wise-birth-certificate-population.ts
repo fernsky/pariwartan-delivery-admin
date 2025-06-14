@@ -9,13 +9,13 @@ export const wardWiseBirthCertificatePopulation = pgTable(
     // Reference to the ward entity
     wardNumber: integer("ward_number").notNull(),
 
-    // Children with birth certificates under 5 years in this ward
+    // Children with birth certificates under 5 years (total)
     withBirthCertificate: integer("with_birth_certificate").notNull(),
 
-    // Children without birth certificates under 5 years in this ward
+    // Children without birth certificates under 5 years (total)
     withoutBirthCertificate: integer("without_birth_certificate").notNull(),
 
-    // Total population under 5 years (auto-calculated)
+    // Calculated total (generated column in SQL)
     totalPopulationUnder5: integer("total_population_under_5"),
 
     // Metadata
@@ -28,5 +28,4 @@ export const wardWiseBirthCertificatePopulation = pgTable(
 
 export type WardWiseBirthCertificatePopulation = 
   typeof wardWiseBirthCertificatePopulation.$inferSelect;
-export type NewWardWiseBirthCertificatePopulation = 
-  typeof wardWiseBirthCertificatePopulation.$inferInsert;
+

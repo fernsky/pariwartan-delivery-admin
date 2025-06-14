@@ -49,6 +49,19 @@ export default function BirthCertificateAnalysisSection({
   highestCoverageWard,
   lowestCoverageWard,
 }: BirthCertificateAnalysisSectionProps) {
+  // Add null checks and ensure data is valid
+  if (
+    !wardWiseAnalysis ||
+    !Array.isArray(wardWiseAnalysis) ||
+    wardWiseAnalysis.length === 0
+  ) {
+    return (
+      <div className="mt-8 p-6 bg-muted/50 rounded-lg text-center">
+        <p className="text-muted-foreground">जातीय तथ्याङ्क उपलब्ध छैन।</p>
+      </div>
+    );
+  }
+
   // Consistent color palette
   const CHART_COLORS = {
     primary: "#0891b2", // Teal color - for with certificate
@@ -57,24 +70,27 @@ export default function BirthCertificateAnalysisSection({
     muted: "#e0f2fe", // Very light blue
   };
 
-  // Calculate overall coverage rate
+  // Calculate overall coverage rate with proper validation
   const overallCoverageRate =
     totalPopulation > 0
       ? ((totalWithCertificate / totalPopulation) * 100).toFixed(2)
       : "0";
 
-  // Calculate average population and coverage per ward
-  const averagePopulationPerWard = totalPopulation / wardWiseAnalysis.length;
-  const averageCoverageRate = parseFloat(overallCoverageRate);
+  // Calculate average population and coverage per ward with validation
+  const averagePopulationPerWard =
+    wardWiseAnalysis.length > 0 ? totalPopulation / wardWiseAnalysis.length : 0;
+  const averageCoverageRate = parseFloat(overallCoverageRate) || 0;
 
-  // Calculate wards above and below average coverage
-  const wardsAboveAverageCoverage = wardWiseAnalysis.filter(
-    (ward) => parseFloat(ward.coverageRate) > averageCoverageRate,
-  ).length;
+  // Calculate wards above and below average coverage with proper filtering
+  const wardsAboveAverageCoverage = wardWiseAnalysis.filter((ward) => {
+    const wardCoverageRate = parseFloat(ward.coverageRate || "0");
+    return wardCoverageRate > averageCoverageRate;
+  }).length;
 
-  const wardsBelowAverageCoverage = wardWiseAnalysis.filter(
-    (ward) => parseFloat(ward.coverageRate) < averageCoverageRate,
-  ).length;
+  const wardsBelowAverageCoverage = wardWiseAnalysis.filter((ward) => {
+    const wardCoverageRate = parseFloat(ward.coverageRate || "0");
+    return wardCoverageRate < averageCoverageRate;
+  }).length;
 
   // Add SEO-friendly data attributes to enhance crawler understanding
   useEffect(() => {
@@ -148,8 +164,11 @@ export default function BirthCertificateAnalysisSection({
     <>
       <div className="mt-6 flex flex-wrap gap-4 justify-center">
         {wardWiseAnalysis.slice(0, 8).map((ward, index) => {
-          // Calculate coverage percentage
-          const coverageRate = parseFloat(ward.coverageRate);
+          // Calculate coverage percentage with proper validation
+          const coverageRate = parseFloat(ward.coverageRate || "0");
+          const withCertificate = ward.withCertificate || 0;
+          const withoutCertificate = ward.withoutCertificate || 0;
+          const total = ward.total || withCertificate + withoutCertificate;
 
           // Determine if this ward is above or below average
           const isAboveAverage = coverageRate > averageCoverageRate;
@@ -158,21 +177,21 @@ export default function BirthCertificateAnalysisSection({
             <div
               key={index}
               className={`bg-muted/50 rounded-lg p-4 text-center min-w-[150px] relative overflow-hidden ${
-                ward.wardNumber === highestCoverageWard.wardNumber
+                ward.wardNumber === (highestCoverageWard?.wardNumber || 0)
                   ? "border-2 border-blue-300"
                   : ""
               }`}
               // Add data attributes for SEO crawlers
               data-ward={ward.wardNumber}
-              data-with-certificate={ward.withCertificate}
-              data-without-certificate={ward.withoutCertificate}
-              data-total={ward.total}
-              data-coverage-rate={ward.coverageRate}
+              data-with-certificate={withCertificate}
+              data-without-certificate={withoutCertificate}
+              data-total={total}
+              data-coverage-rate={coverageRate.toFixed(2)}
             >
               <div
                 className="absolute bottom-0 left-0 right-0"
                 style={{
-                  height: `${coverageRate}%`,
+                  height: `${Math.min(coverageRate, 100)}%`,
                   backgroundColor: isAboveAverage
                     ? CHART_COLORS.primary
                     : CHART_COLORS.secondary,
@@ -189,25 +208,19 @@ export default function BirthCertificateAnalysisSection({
                 <div className="flex justify-between text-sm">
                   <span>जन्मदर्ता भएका:</span>
                   <span className="font-medium">
-                    {localizeNumber(
-                      ward.withCertificate.toLocaleString(),
-                      "ne",
-                    )}
+                    {localizeNumber(withCertificate.toLocaleString(), "ne")}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>जन्मदर्ता नभएका:</span>
                   <span className="font-medium">
-                    {localizeNumber(
-                      ward.withoutCertificate.toLocaleString(),
-                      "ne",
-                    )}
+                    {localizeNumber(withoutCertificate.toLocaleString(), "ne")}
                   </span>
                 </div>
                 <p className="text-sm text-muted-foreground mt-1">
-                  कभरेज: {localizeNumber(ward.coverageRate, "ne")}%
+                  कभरेज: {localizeNumber(coverageRate.toFixed(2), "ne")}%
                   <span className="sr-only">
-                    (Coverage: {ward.coverageRate}%)
+                    (Coverage: {coverageRate.toFixed(2)}%)
                   </span>
                 </p>
               </div>
@@ -225,7 +238,7 @@ export default function BirthCertificateAnalysisSection({
           <div
             className="bg-card p-4 rounded border"
             data-analysis-type="highest-birth-certificate-ward"
-            data-percentage={highestWard.percentageWithCertificate}
+            data-percentage={highestWard?.percentageWithCertificate || "0"}
           >
             <h4 className="font-medium mb-2">
               सबैभन्दा बढी जन्मदर्ता प्रमाणपत्र भएको वडा
@@ -235,16 +248,17 @@ export default function BirthCertificateAnalysisSection({
               </span>
             </h4>
             <p className="text-3xl font-bold">
-              वडा {localizeNumber(highestWard.wardNumber.toString(), "ne")}
+              वडा{" "}
+              {localizeNumber((highestWard?.wardNumber || 0).toString(), "ne")}
             </p>
             <p className="text-sm text-muted-foreground mt-2">
               {localizeNumber(
-                highestWard.withCertificate.toLocaleString(),
+                (highestWard?.withCertificate || 0).toLocaleString(),
                 "ne",
               )}{" "}
               जना
               <span className="sr-only">
-                {highestWard.withCertificate} children
+                {highestWard?.withCertificate || 0} children
               </span>
             </p>
           </div>
@@ -261,13 +275,16 @@ export default function BirthCertificateAnalysisSection({
             </h4>
             <p className="text-3xl font-bold">
               वडा{" "}
-              {localizeNumber(highestCoverageWard.wardNumber.toString(), "ne")}
+              {localizeNumber(
+                (highestCoverageWard?.wardNumber || 0).toString(),
+                "ne",
+              )}
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              कभरेज दर: {localizeNumber(highestCoverageWard.coverageRate, "ne")}
-              %
+              कभरेज दर:{" "}
+              {localizeNumber(highestCoverageWard?.coverageRate || "0", "ne")}%
               <span className="sr-only">
-                Coverage rate: {highestCoverageWard.coverageRate}%
+                Coverage rate: {highestCoverageWard?.coverageRate || "0"}%
               </span>
             </p>
           </div>
@@ -289,7 +306,7 @@ export default function BirthCertificateAnalysisSection({
                 <div
                   className="h-full rounded-full"
                   style={{
-                    width: `${overallCoverageRate}%`,
+                    width: `${Math.min(parseFloat(overallCoverageRate), 100)}%`,
                     backgroundColor: CHART_COLORS.primary,
                   }}
                 ></div>
@@ -307,14 +324,14 @@ export default function BirthCertificateAnalysisSection({
                 <div
                   className="h-2 rounded-l-full"
                   style={{
-                    width: `${(wardsAboveAverageCoverage / wardWiseAnalysis.length) * 100}%`,
+                    width: `${wardWiseAnalysis.length > 0 ? (wardsAboveAverageCoverage / wardWiseAnalysis.length) * 100 : 0}%`,
                     backgroundColor: CHART_COLORS.primary,
                   }}
                 ></div>
                 <div
                   className="h-2 rounded-r-full"
                   style={{
-                    width: `${(wardsBelowAverageCoverage / wardWiseAnalysis.length) * 100}%`,
+                    width: `${wardWiseAnalysis.length > 0 ? (wardsBelowAverageCoverage / wardWiseAnalysis.length) * 100 : 0}%`,
                     backgroundColor: CHART_COLORS.secondary,
                   }}
                 ></div>
@@ -329,11 +346,11 @@ export default function BirthCertificateAnalysisSection({
             <p className="mt-2 text-sm text-muted-foreground">
               परिवर्तन गाउँपालिकामा पाँच वर्षमुनिका जम्मा{" "}
               {localizeNumber(totalPopulation.toLocaleString(), "ne")}{" "}
-              बालबालिकामध्ये
+              बालबालिकामध्ये{" "}
               {localizeNumber(totalWithCertificate.toLocaleString(), "ne")} (
               {localizeNumber(overallCoverageRate, "ne")}%) जनासँग जन्मदर्ता
               प्रमाणपत्र छ र{" "}
-              {localizeNumber(totalWithoutCertificate.toLocaleString(), "ne")}(
+              {localizeNumber(totalWithoutCertificate.toLocaleString(), "ne")} (
               {localizeNumber(
                 (100 - parseFloat(overallCoverageRate)).toFixed(2),
                 "ne",
@@ -342,18 +359,25 @@ export default function BirthCertificateAnalysisSection({
             </p>
             <p className="mt-2 text-sm text-muted-foreground">
               वडा नं{" "}
-              {localizeNumber(lowestCoverageWard.wardNumber.toString(), "ne")}{" "}
+              {localizeNumber(
+                (lowestCoverageWard?.wardNumber || 0).toString(),
+                "ne",
+              )}{" "}
               मा कभरेज दर सबैभन्दा कम{" "}
-              {localizeNumber(lowestCoverageWard.coverageRate, "ne")}% रहेकोले
-              त्यहाँ जन्मदर्ता अभियान तथा जनचेतनामूलक कार्यक्रम सञ्चालन गरी
-              सुधार गर्न सकिन्छ।
+              {localizeNumber(lowestCoverageWard?.coverageRate || "0", "ne")}%
+              रहेकोले त्यहाँ जन्मदर्ता अभियान तथा जनचेतनामूलक कार्यक्रम सञ्चालन
+              गरी सुधार गर्न सकिन्छ।
             </p>
             <p className="mt-2 text-sm text-muted-foreground">
               वडा नं{" "}
-              {localizeNumber(highestCoverageWard.wardNumber.toString(), "ne")}{" "}
-              ले {localizeNumber(highestCoverageWard.coverageRate, "ne")}% कभरेज
-              हासिल गरेको छ, जसलाई अन्य वडाहरूको लागि अनुकरणीय मोडेलको रूपमा
-              प्रयोग गर्न सकिन्छ।
+              {localizeNumber(
+                (highestCoverageWard?.wardNumber || 0).toString(),
+                "ne",
+              )}{" "}
+              ले{" "}
+              {localizeNumber(highestCoverageWard?.coverageRate || "0", "ne")}%
+              कभरेज हासिल गरेको छ, जसलाई अन्य वडाहरूको लागि अनुकरणीय मोडेलको
+              रूपमा प्रयोग गर्न सकिन्छ।
             </p>
           </div>
         </div>

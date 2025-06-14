@@ -269,3 +269,4 @@ export const wardWiseBirthCertificatePopulationRouter = createTRPCRouter({
   delete: deleteWardWiseBirthCertificatePopulation,
   summary: getWardWiseBirthCertificatePopulationSummary,
 });
+     

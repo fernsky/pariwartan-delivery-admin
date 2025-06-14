@@ -132,8 +132,20 @@ const toc = [
 
 export default async function WardWiseBirthCertificatePopulationPage() {
   // Fetch all birth certificate data using tRPC
-  const birthCertificateData =
-    await api.profile.demographics.wardWiseBirthCertificatePopulation.getAll.query();
+  let birthCertificateData = [];
+  try {
+    const fetchedData =
+      await api.profile.demographics.wardWiseBirthCertificatePopulation.getAll.query();
+    birthCertificateData = fetchedData || [];
+  } catch (error) {
+    console.error("Error fetching birth certificate data:", error);
+    birthCertificateData = [];
+  }
+
+  // Ensure we have valid data
+  if (!Array.isArray(birthCertificateData)) {
+    birthCertificateData = [];
+  }
 
   // Try to fetch summary data
   let summaryData = null;
@@ -145,37 +157,67 @@ export default async function WardWiseBirthCertificatePopulationPage() {
     summaryData =
       await api.profile.demographics.wardWiseBirthCertificatePopulation.summary.query();
 
-    totalWithCertificate = summaryData.totalWithBirthCertificate;
-    totalWithoutCertificate = summaryData.totalWithoutBirthCertificate;
-    totalPopulation = summaryData.totalPopulationUnder5;
+    if (summaryData) {
+      totalWithCertificate = summaryData.totalWithBirthCertificate || 0;
+      totalWithoutCertificate = summaryData.totalWithoutBirthCertificate || 0;
+      totalPopulation = summaryData.totalPopulationUnder5 || 0;
+    }
   } catch (error) {
     console.error("Could not fetch summary data", error);
     // Calculate from raw data if summary API fails
-    totalWithCertificate = birthCertificateData.reduce(
-      (sum, item) => sum + (item.withBirthCertificate || 0),
-      0,
+    if (birthCertificateData.length > 0) {
+      totalWithCertificate = birthCertificateData.reduce((sum, item) => {
+        if (!item) return sum;
+        return sum + (item.withBirthCertificate || 0);
+      }, 0);
+      totalWithoutCertificate = birthCertificateData.reduce((sum, item) => {
+        if (!item) return sum;
+        return sum + (item.withoutBirthCertificate || 0);
+      }, 0);
+      totalPopulation = totalWithCertificate + totalWithoutCertificate;
+    }
+  }
+
+  // If we still don't have data, return error state
+  if (birthCertificateData.length === 0) {
+    return (
+      <DocsLayout toc={<TableOfContents toc={toc} />}>
+        <div className="flex flex-col gap-8">
+          <section>
+            <div className="prose prose-slate dark:prose-invert max-w-none">
+              <h1 className="scroll-m-20 tracking-tight mb-6">
+                परिवर्तन गाउँपालिकामा पाँच वर्षमुनिका बालबालिकाहरूको जन्मदर्ता
+              </h1>
+              <div className="bg-muted/50 p-6 rounded-lg text-center">
+                <p className="text-muted-foreground">
+                  जन्मदर्ता तथ्याङ्क लोड हुँदैछ वा उपलब्ध छैन।
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </DocsLayout>
     );
-    totalWithoutCertificate = birthCertificateData.reduce(
-      (sum, item) => sum + (item.withoutBirthCertificate || 0),
-      0,
-    );
-    totalPopulation = totalWithCertificate + totalWithoutCertificate;
   }
 
   // Sort data by ward number for consistent presentation
-  const sortedData = [...birthCertificateData].sort(
-    (a, b) => a.wardNumber - b.wardNumber,
-  );
+  const sortedData = [...birthCertificateData]
+    .filter((item) => item && typeof item.wardNumber === "number")
+    .sort((a, b) => a.wardNumber - b.wardNumber);
 
-  // Get unique ward numbers
+  // Get unique ward numbers with proper filtering
   const wardNumbers = Array.from(
-    new Set(birthCertificateData.map((item) => item.wardNumber)),
-  ).sort((a, b) => a - b); // Sort numerically
+    new Set(
+      birthCertificateData
+        .filter((item) => item && typeof item.wardNumber === "number")
+        .map((item) => item.wardNumber),
+    ),
+  ).sort((a, b) => a - b);
 
-  // Calculate ward-wise analysis
+  // Calculate ward-wise analysis with null checks
   const wardWiseAnalysis = wardNumbers.map((wardNumber) => {
     const wardData = birthCertificateData.find(
-      (item) => item.wardNumber === wardNumber,
+      (item) => item && item.wardNumber === wardNumber,
     );
 
     const withCertificate = wardData?.withBirthCertificate || 0;
@@ -204,28 +246,48 @@ export default async function WardWiseBirthCertificatePopulationPage() {
     };
   });
 
-  // Find wards with highest and lowest birth certificate registration
+  // Find wards with highest and lowest birth certificate registration with fallbacks
   const wardsRanked = [...wardWiseAnalysis].sort(
-    (a, b) => b.withCertificate - a.withCertificate,
+    (a, b) => (b.withCertificate || 0) - (a.withCertificate || 0),
   );
 
-  const highestWard = wardsRanked[0];
-  const lowestWard = wardsRanked[wardsRanked.length - 1];
+  const highestWard = wardsRanked[0] || {
+    wardNumber: 0,
+    withCertificate: 0,
+    percentageWithCertificate: "0",
+    coverageRate: "0",
+  };
 
-  // Find ward with highest and lowest coverage rate
+  const lowestWard = wardsRanked[wardsRanked.length - 1] || {
+    wardNumber: 0,
+    withCertificate: 0,
+    percentageWithCertificate: "0",
+    coverageRate: "0",
+  };
+
+  // Find ward with highest and lowest coverage rate with fallbacks
   const wardsRankedByCoverage = [...wardWiseAnalysis].sort(
-    (a, b) => parseFloat(b.coverageRate) - parseFloat(a.coverageRate),
+    (a, b) =>
+      parseFloat(b.coverageRate || "0") - parseFloat(a.coverageRate || "0"),
   );
 
-  const highestCoverageWard = wardsRankedByCoverage[0];
-  const lowestCoverageWard =
-    wardsRankedByCoverage[wardsRankedByCoverage.length - 1];
+  const highestCoverageWard = wardsRankedByCoverage[0] || {
+    wardNumber: 0,
+    coverageRate: "0",
+  };
+
+  const lowestCoverageWard = wardsRankedByCoverage[
+    wardsRankedByCoverage.length - 1
+  ] || {
+    wardNumber: 0,
+    coverageRate: "0",
+  };
 
   return (
     <DocsLayout toc={<TableOfContents toc={toc} />}>
       {/* Add structured data for SEO */}
       <BirthCertificateSEO
-        birthCertificateData={birthCertificateData}
+        birthCertificateData={sortedData}
         totalWithCertificate={totalWithCertificate}
         totalWithoutCertificate={totalWithoutCertificate}
         totalPopulation={totalPopulation}
@@ -260,20 +322,26 @@ export default async function WardWiseBirthCertificatePopulationPage() {
               वर्षमुनिका बालबालिकाहरूको जन्मदर्ता स्थिति प्रस्तुत गरिएको छ।
             </p>
             <p>
-              परिवर्तन गाउँपालिकाभरि पाँच वर्षमुनिका बालबालिकाहरूको कुल संख्या
+              परिवर्तन गाउँपालिकाभरि पाँच वर्षमुनिका बालबालिकाहरूको कुल संख्या{" "}
               {localizeNumber(totalPopulation.toLocaleString(), "ne")} रहेको छ।
-              यसमध्ये
+              यसमध्ये{" "}
               {localizeNumber(totalWithCertificate.toLocaleString(), "ne")} जना
               (
               {localizeNumber(
-                ((totalWithCertificate / totalPopulation) * 100).toFixed(2),
+                totalPopulation > 0
+                  ? ((totalWithCertificate / totalPopulation) * 100).toFixed(2)
+                  : "0",
                 "ne",
               )}
               %) बालबालिकासँग जन्मदर्ता प्रमाणपत्र छ भने{" "}
               {localizeNumber(totalWithoutCertificate.toLocaleString(), "ne")}{" "}
               जना (
               {localizeNumber(
-                ((totalWithoutCertificate / totalPopulation) * 100).toFixed(2),
+                totalPopulation > 0
+                  ? ((totalWithoutCertificate / totalPopulation) * 100).toFixed(
+                      2,
+                    )
+                  : "0",
                 "ne",
               )}
               %) बालबालिकासँग जन्मदर्ता प्रमाणपत्र छैन।
@@ -315,7 +383,7 @@ export default async function WardWiseBirthCertificatePopulationPage() {
             <p>
               परिवर्तन गाउँपालिकामा पाँच वर्षमुनिका बालबालिकाको जन्मदर्ता
               विश्लेषण गर्दा, सबैभन्दा बढी जन्मदर्ता प्रमाणपत्र धारकहरू वडा नं{" "}
-              {localizeNumber(highestWard.wardNumber.toString(), "ne")} मा
+              {localizeNumber(highestWard.wardNumber.toString(), "ne")} मा{" "}
               {localizeNumber(
                 highestWard.withCertificate.toLocaleString(),
                 "ne",
@@ -325,16 +393,13 @@ export default async function WardWiseBirthCertificatePopulationPage() {
             </p>
             <p>
               जन्मदर्ता प्रमाणपत्र कभरेज दर (कुल बालबालिकामा जन्मदर्ता भएकाको
-              अनुपात) सबैभन्दा उच्च वडा नं
-              {localizeNumber(
-                highestCoverageWard.wardNumber.toString(),
-                "ne",
-              )}{" "}
+              अनुपात) सबैभन्दा उच्च वडा नं{" "}
+              {localizeNumber(highestCoverageWard.wardNumber.toString(), "ne")}{" "}
               मा {localizeNumber(highestCoverageWard.coverageRate, "ne")}% र
               सबैभन्दा कम वडा नं{" "}
               {localizeNumber(lowestCoverageWard.wardNumber.toString(), "ne")}{" "}
-              मा
-              {localizeNumber(lowestCoverageWard.coverageRate, "ne")}% रहेको छ।
+              मा {localizeNumber(lowestCoverageWard.coverageRate, "ne")}% रहेको
+              छ।
             </p>
 
             {/* Client component for analysis section */}

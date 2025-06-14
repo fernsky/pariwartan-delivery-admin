@@ -8,7 +8,6 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Cell,
   Legend,
 } from "recharts";
 import { localizeNumber } from "@/lib/utils/localize-number";
@@ -33,67 +32,65 @@ export default function BirthCertificateBarChart({
   barChartData,
   CHART_COLORS,
 }: BirthCertificateBarChartProps) {
+  // Add null checks and ensure barChartData is a valid array
+  if (
+    !barChartData ||
+    !Array.isArray(barChartData) ||
+    barChartData.length === 0
+  ) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <p className="text-muted-foreground">चार्ट डेटा उपलब्ध छैन</p>
+      </div>
+    );
+  }
+
   // Custom tooltip component for better presentation with Nepali numbers
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
-      const withCertificate = payload[0].value;
-      const withoutCertificate = payload[1]?.value || 0;
-      const total = withCertificate + withoutCertificate;
-      const coverageRate = ((withCertificate / total) * 100).toFixed(2);
+      // Get the data from the payload - the data structure includes all ward info
+      const data = payload[0]?.payload;
 
-      return (
-        <div className="bg-background p-3 border shadow-sm rounded-md">
-          <p className="font-medium">{localizeNumber(label, "ne")}</p>
-          <div className="flex justify-between gap-4 mt-1">
-            <span className="text-sm">जन्मदर्ता भएका:</span>
-            <span className="font-medium">
-              {localizeNumber(withCertificate.toLocaleString(), "ne")}
-            </span>
+      if (data) {
+        const withCertificate = data.withCertificate || 0;
+        const withoutCertificate = data.withoutCertificate || 0;
+        const total = data.total || withCertificate + withoutCertificate;
+        const coverageRate =
+          data.coverageRate ||
+          (total > 0 ? ((withCertificate / total) * 100).toFixed(2) : "0");
+
+        return (
+          <div className="bg-background p-3 border shadow-sm rounded-md">
+            <p className="font-medium">{localizeNumber(label, "ne")}</p>
+            <div className="flex justify-between gap-4 mt-1">
+              <span className="text-sm">जन्मदर्ता भएका:</span>
+              <span className="font-medium">
+                {localizeNumber(withCertificate.toLocaleString(), "ne")}
+              </span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span className="text-sm">जन्मदर्ता नभेका:</span>
+              <span className="font-medium">
+                {localizeNumber(withoutCertificate.toLocaleString(), "ne")}
+              </span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span className="text-sm">जम्मा जनसंख्या:</span>
+              <span className="font-medium">
+                {localizeNumber(total.toLocaleString(), "ne")}
+              </span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span className="text-sm">कभरेज दर:</span>
+              <span className="font-medium">
+                {localizeNumber(coverageRate.toString(), "ne")}%
+              </span>
+            </div>
           </div>
-          <div className="flex justify-between gap-4">
-            <span className="text-sm">जन्मदर्ता नभएका:</span>
-            <span className="font-medium">
-              {localizeNumber(withoutCertificate.toLocaleString(), "ne")}
-            </span>
-          </div>
-          <div className="flex justify-between gap-4">
-            <span className="text-sm">जम्मा जनसंख्या:</span>
-            <span className="font-medium">
-              {localizeNumber(total.toLocaleString(), "ne")}
-            </span>
-          </div>
-          <div className="flex justify-between gap-4">
-            <span className="text-sm">कभरेज दर:</span>
-            <span className="font-medium">
-              {localizeNumber(coverageRate, "ne")}%
-            </span>
-          </div>
-        </div>
-      );
+        );
+      }
     }
     return null;
-  };
-
-  const renderCustomizedLegend = (props: any) => {
-    const { payload } = props;
-
-    return (
-      <div className="flex justify-center items-center gap-8 mt-4">
-        {payload.map((entry: any, index: number) => (
-          <div key={`item-${index}`} className="flex items-center gap-2">
-            <div
-              className="w-3 h-3"
-              style={{ backgroundColor: entry.color }}
-            />
-            <span className="text-xs">
-              {entry.value === "withCertificate"
-                ? "जन्मदर्ता भएका"
-                : "जन्मदर्ता नभेका"}
-            </span>
-          </div>
-        ))}
-      </div>
-    );
   };
 
   return (
@@ -121,7 +118,14 @@ export default function BirthCertificateBarChart({
           }}
         />
         <Tooltip content={CustomTooltip} />
-        <Legend content={renderCustomizedLegend} />
+        <Legend
+          wrapperStyle={{ paddingTop: "10px" }}
+          formatter={(value) => {
+            if (value === "withCertificate") return "जन्मदर्ता भएका";
+            if (value === "withoutCertificate") return "जन्मदर्ता नभेका";
+            return value;
+          }}
+        />
         <Bar
           dataKey="withCertificate"
           name="withCertificate"
