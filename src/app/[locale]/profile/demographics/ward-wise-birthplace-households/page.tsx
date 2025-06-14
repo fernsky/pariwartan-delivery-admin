@@ -41,36 +41,28 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     // Fetch data for SEO using tRPC
     const birthplaceData =
-      await api.profile.demographics.wardWiseBirthplaceHouseholds.getAll.query();
+      await api.profile.demographics.birthplaceHouseholds.getAll.query();
     const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
 
     // Process data for SEO
-    const totalHouseholds = birthplaceData.reduce(
-      (sum, item) => sum + (item.households || 0),
+    const totalPopulation = birthplaceData.reduce(
+      (sum, item) => sum + (item.totalPopulation || 0),
       0,
     );
 
-    // Group by birthplace and calculate totals
-    const birthplaceHouseholdCounts: Record<string, number> = {};
-    birthplaceData.forEach((item) => {
-      if (!birthplaceHouseholdCounts[item.birthPlace])
-        birthplaceHouseholdCounts[item.birthPlace] = 0;
-      birthplaceHouseholdCounts[item.birthPlace] += item.households || 0;
-    });
-
-    // Find the most common birthplace
-    let mostCommonBirthplace = "";
+    // Find the most common age group
+    let mostCommonAgeGroup = "";
     let mostCommonCount = 0;
-    Object.entries(birthplaceHouseholdCounts).forEach(([birthplace, count]) => {
-      if (count > mostCommonCount) {
-        mostCommonCount = count;
-        mostCommonBirthplace = birthplace;
+    birthplaceData.forEach((item) => {
+      if (item.totalPopulation > mostCommonCount) {
+        mostCommonCount = item.totalPopulation;
+        mostCommonAgeGroup = item.ageGroup;
       }
     });
 
     const mostCommonPercentage =
-      totalHouseholds > 0
-        ? ((mostCommonCount / totalHouseholds) * 100).toFixed(2)
+      totalPopulation > 0
+        ? ((mostCommonCount / totalPopulation) * 100).toFixed(2)
         : "0";
 
     // Create rich keywords with actual data
@@ -81,7 +73,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "घरपरिवारको जन्मस्थान विश्लेषण",
       "स्थानीय घरपरिवार परिवर्तन",
       "जिल्ला बाहिरका घर परिवार",
-      `परिवर्तन घरपरिवार संख्या ${localizeNumber(totalHouseholds.toString(), "ne")}`,
+      `परिवर्तन घरपरिवार संख्या ${localizeNumber(totalPopulation.toString(), "ne")}`,
     ];
 
     const keywordsEN = [
@@ -91,13 +83,13 @@ export async function generateMetadata(): Promise<Metadata> {
       "Household birthplace analysis",
       "Local households in Khajura",
       "Inter-district migration",
-      `Khajura total households ${totalHouseholds}`,
+      `Khajura total households ${totalPopulation}`,
     ];
 
     // Create detailed description with actual data
-    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार घरपरिवारको जन्मस्थानको वितरण र विश्लेषण। कुल घरपरिवार संख्या ${localizeNumber(totalHouseholds.toString(), "ne")} मध्ये ${localizeNumber(mostCommonPercentage, "ne")}% (${localizeNumber(mostCommonCount.toString(), "ne")}) ${BIRTH_PLACE_NAMES[mostCommonBirthplace] || mostCommonBirthplace} बाट आएका देखिन्छ। विभिन्न वडाहरूमा घरपरिवारको जन्मस्थानको विस्तृत विश्लेषण।`;
+    const descriptionNP = `परिवर्तन गाउँपालिकाको उमेर समूह अनुसार जन्मस्थानको वितरण र विश्लेषण। कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")} रहेको छ। विभिन्न उमेर समूहहरूमा जन्मस्थानको विस्तृत विश्लेषण।`;
 
-    const descriptionEN = `Ward-wise distribution and analysis of household birthplaces in Khajura Rural Municipality. Out of a total of ${totalHouseholds} households, ${mostCommonPercentage}% (${mostCommonCount}) are from ${BIRTH_PLACE_NAMES_EN[mostCommonBirthplace] || mostCommonBirthplace}. Detailed analysis of household birthplaces across various wards.`;
+    const descriptionEN = `Age-group-wise distribution and analysis of birthplaces in Khajura Rural Municipality. Total population is ${totalPopulation}. Detailed analysis of birthplaces across various age groups.`;
 
     return {
       title: `घरपरिवारको जन्मस्थान | ${municipalityName} डिजिटल प्रोफाइल`,
@@ -142,21 +134,68 @@ const toc = [
 
 export default async function WardWiseBirthplaceHouseholdsPage() {
   // Fetch all birthplace household data using tRPC
-  const birthplaceData =
-    await api.profile.demographics.wardWiseBirthplaceHouseholds.getAll.query();
+  const birthplaceAgeData =
+    await api.profile.demographics.birthplaceHouseholds.getAll.query();
 
   // Try to fetch summary data
   let summaryData = null;
   try {
     summaryData =
-      await api.profile.demographics.wardWiseBirthplaceHouseholds.summary.query();
+      await api.profile.demographics.birthplaceHouseholds.summary.query();
   } catch (error) {
     console.error("Could not fetch summary data", error);
   }
 
-  // Process data for overall summary
+  // Transform age group data to birthplace format (no ward-based data)
+  const transformedData = birthplaceAgeData
+    .filter((item) => item.ageGroup !== "जम्मा") // Exclude totals for individual analysis
+    .reduce((acc: any[], item) => {
+      // Add same municipality data
+      if (item.bornInDistrictMunicipality > 0) {
+        acc.push({
+          id: `${item.id}_same_municipality`,
+          birthPlace: "SAME_MUNICIPALITY",
+          households: item.bornInDistrictMunicipality,
+          ageGroup: item.ageGroup,
+        });
+      }
+
+      // Add same district other municipality data
+      if (item.bornInDistrictOther > 0) {
+        acc.push({
+          id: `${item.id}_same_district_other`,
+          birthPlace: "SAME_DISTRICT_ANOTHER_MUNICIPALITY",
+          households: item.bornInDistrictOther,
+          ageGroup: item.ageGroup,
+        });
+      }
+
+      // Add other district data
+      if (item.bornOtherDistrict > 0) {
+        acc.push({
+          id: `${item.id}_other_district`,
+          birthPlace: "ANOTHER_DISTRICT",
+          households: item.bornOtherDistrict,
+          ageGroup: item.ageGroup,
+        });
+      }
+
+      // Add abroad data
+      if (item.bornAbroad > 0) {
+        acc.push({
+          id: `${item.id}_abroad`,
+          birthPlace: "ABROAD",
+          households: item.bornAbroad,
+          ageGroup: item.ageGroup,
+        });
+      }
+
+      return acc;
+    }, []);
+
+  // Aggregate by birthplace for overall summary
   const overallSummary = Object.entries(
-    birthplaceData.reduce((acc: Record<string, number>, item) => {
+    transformedData.reduce((acc: Record<string, number>, item) => {
       if (!acc[item.birthPlace]) acc[item.birthPlace] = 0;
       acc[item.birthPlace] += item.households || 0;
       return acc;
@@ -169,7 +208,7 @@ export default async function WardWiseBirthplaceHouseholdsPage() {
         birthPlace,
       households,
     }))
-    .sort((a, b) => b.households - a.households); // Sort by households descending
+    .sort((a, b) => b.households - a.households);
 
   // Calculate total households for percentages
   const totalHouseholds = overallSummary.reduce(
@@ -184,64 +223,55 @@ export default async function WardWiseBirthplaceHouseholdsPage() {
     percentage: ((item.households / totalHouseholds) * 100).toFixed(2),
   }));
 
-  // Get unique ward numbers
-  const wardNumbers = Array.from(
-    new Set(birthplaceData.map((item) => item.wardNumber)),
-  ).sort((a, b) => a - b); // Sort numerically
+  // Process data for age-group-wise visualization (instead of ward-wise)
+  const ageGroupWiseData = birthplaceAgeData
+    .filter((item) => item.ageGroup !== "जम्मा")
+    .map((item) => {
+      const result: Record<string, any> = { ageGroup: item.ageGroup };
 
-  // Process data for ward-wise visualization
-  const wardWiseData = wardNumbers.map((wardNumber) => {
-    const wardData = birthplaceData.filter(
-      (item) => item.wardNumber === wardNumber,
-    );
+      // Add birthplaces
+      result[BIRTH_PLACE_NAMES.SAME_MUNICIPALITY] =
+        item.bornInDistrictMunicipality;
+      result[BIRTH_PLACE_NAMES.SAME_DISTRICT_ANOTHER_MUNICIPALITY] =
+        item.bornInDistrictOther;
+      result[BIRTH_PLACE_NAMES.ANOTHER_DISTRICT] = item.bornOtherDistrict;
+      result[BIRTH_PLACE_NAMES.ABROAD] = item.bornAbroad;
 
-    const result: Record<string, any> = { ward: `वडा ${wardNumber}` };
-
-    // Add birthplaces
-    wardData.forEach((item) => {
-      result[
-        BIRTH_PLACE_NAMES[item.birthPlace as keyof typeof BIRTH_PLACE_NAMES] ||
-          item.birthPlace
-      ] = item.households;
+      return result;
     });
 
-    return result;
-  });
+  // Calculate age-group-wise birthplace analysis
+  const ageGroupAnalysis = birthplaceAgeData
+    .filter((item) => item.ageGroup !== "जम्मा")
+    .map((item) => {
+      const totalPopulation = item.totalPopulation;
 
-  // Calculate ward-wise birthplace analysis
-  const wardWiseAnalysis = wardNumbers.map((wardNumber) => {
-    const wardData = birthplaceData.filter(
-      (item) => item.wardNumber === wardNumber,
-    );
+      // Find most common birthplace for this age group
+      const birthplaces = [
+        { place: "SAME_MUNICIPALITY", count: item.bornInDistrictMunicipality },
+        {
+          place: "SAME_DISTRICT_ANOTHER_MUNICIPALITY",
+          count: item.bornInDistrictOther,
+        },
+        { place: "ANOTHER_DISTRICT", count: item.bornOtherDistrict },
+        { place: "ABROAD", count: item.bornAbroad },
+      ];
 
-    const wardTotalHouseholds = wardData.reduce(
-      (sum, item) => sum + (item.households || 0),
-      0,
-    );
+      const mostCommon = birthplaces.reduce((prev, curr) =>
+        curr.count > prev.count ? curr : prev,
+      );
 
-    const mostCommonBirthplace = wardData.reduce(
-      (prev, current) => {
-        return (prev.households || 0) > (current.households || 0)
-          ? prev
-          : current;
-      },
-      { birthPlace: "", households: 0 },
-    );
-
-    return {
-      wardNumber,
-      totalHouseholds: wardTotalHouseholds,
-      mostCommonBirthplace: mostCommonBirthplace.birthPlace,
-      mostCommonBirthplaceHouseholds: mostCommonBirthplace.households || 0,
-      mostCommonBirthplacePercentage:
-        wardTotalHouseholds > 0
-          ? (
-              ((mostCommonBirthplace.households || 0) / wardTotalHouseholds) *
-              100
-            ).toFixed(2)
-          : "0",
-    };
-  });
+      return {
+        ageGroup: item.ageGroup,
+        totalPopulation,
+        mostCommonBirthplace: mostCommon.place,
+        mostCommonBirthplaceCount: mostCommon.count,
+        mostCommonBirthplacePercentage:
+          totalPopulation > 0
+            ? ((mostCommon.count / totalPopulation) * 100).toFixed(2)
+            : "0",
+      };
+    });
 
   return (
     <DocsLayout toc={<TableOfContents toc={toc} />}>
@@ -251,7 +281,9 @@ export default async function WardWiseBirthplaceHouseholdsPage() {
         totalHouseholds={totalHouseholds}
         BIRTH_PLACE_NAMES={BIRTH_PLACE_NAMES}
         BIRTH_PLACE_NAMES_EN={BIRTH_PLACE_NAMES_EN}
-        wardNumbers={wardNumbers}
+        ageGroups={birthplaceAgeData
+          .filter((item) => item.ageGroup !== "जम्मा")
+          .map((item) => item.ageGroup)}
       />
 
       <div className="flex flex-col gap-8">
@@ -315,11 +347,14 @@ export default async function WardWiseBirthplaceHouseholdsPage() {
             overallSummary={overallSummary}
             totalHouseholds={totalHouseholds}
             pieChartData={pieChartData}
-            wardWiseData={wardWiseData}
-            wardNumbers={wardNumbers}
-            birthplaceData={birthplaceData}
-            wardWiseAnalysis={wardWiseAnalysis}
+            ageGroupWiseData={ageGroupWiseData}
+            ageGroups={birthplaceAgeData
+              .filter((item) => item.ageGroup !== "जम्मा")
+              .map((item) => item.ageGroup)}
+            birthplaceData={transformedData}
+            ageGroupAnalysis={ageGroupAnalysis}
             BIRTH_PLACE_NAMES={BIRTH_PLACE_NAMES}
+            birthplaceAgeData={birthplaceAgeData}
           />
 
           <div className="prose prose-slate dark:prose-invert max-w-none mt-8">
@@ -346,7 +381,7 @@ export default async function WardWiseBirthplaceHouseholdsPage() {
             <BirthplaceHouseholdAnalysisSection
               overallSummary={overallSummary}
               totalHouseholds={totalHouseholds}
-              wardWiseAnalysis={wardWiseAnalysis}
+              ageGroupAnalysis={ageGroupAnalysis}
               BIRTH_PLACE_NAMES={BIRTH_PLACE_NAMES}
               BIRTH_PLACE_NAMES_EN={BIRTH_PLACE_NAMES_EN}
             />

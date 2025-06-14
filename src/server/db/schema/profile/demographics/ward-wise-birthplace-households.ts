@@ -1,27 +1,24 @@
 import { pgTable } from "../../basic";
-import { integer, pgEnum, timestamp, varchar } from "drizzle-orm/pg-core";
+import { integer, timestamp, varchar } from "drizzle-orm/pg-core";
 
-// Define the birth place enum
-export const birthPlaceEnum = pgEnum("birth_place", [
-  "SAME_MUNICIPALITY", // यहि गापा/नपा
-  "SAME_DISTRICT_ANOTHER_MUNICIPALITY", // यहि जिल्लाको अर्को गा.पा./न.पा
-  "ANOTHER_DISTRICT", // अर्को जिल्ला
-  "ABROAD", // विदेश
-]);
-
-export const wardWiseBirthplaceHouseholds = pgTable(
-  "ward_wise_birthplace_households",
+export const birthplaceHouseholds = pgTable(
+  "birthplace_households",
   {
     id: varchar("id", { length: 36 }).primaryKey(),
 
-    // Reference to the ward entity
-    wardNumber: integer("ward_number").notNull(),
 
-    // Birth place category
-    birthPlace: birthPlaceEnum("birth_place").notNull(),
+    // Age group (e.g., "०-४ वर्ष", "५-९ वर्ष", etc.)
+    ageGroup: varchar("age_group", { length: 50 }).notNull(),
 
-    // Number of households in this demographic category
-    households: integer("households").notNull(),
+    // Population counts by birth place
+    totalPopulation: integer("total_population").notNull(),
+    nepalBorn: integer("nepal_born").notNull(),
+    bornInDistrictMunicipality: integer("born_in_district_municipality").notNull(),
+    bornInDistrictOther: integer("born_in_district_other").notNull(),
+    bornInDistrictTotal: integer("born_in_district_total").notNull(),
+    bornOtherDistrict: integer("born_other_district").notNull(),
+    bornAbroad: integer("born_abroad").notNull(),
+    birthPlaceUnknown: integer("birth_place_unknown").notNull(),
 
     // Metadata
     updatedAt: timestamp("updated_at")
@@ -31,7 +28,7 @@ export const wardWiseBirthplaceHouseholds = pgTable(
   },
 );
 
-export type WardWiseBirthplaceHouseholds = 
-  typeof wardWiseBirthplaceHouseholds.$inferSelect;
-export type NewWardWiseBirthplaceHouseholds = 
-  typeof wardWiseBirthplaceHouseholds.$inferInsert;
+export type BirthplaceHouseholds = 
+  typeof birthplaceHouseholds.$inferSelect;
+export type NewBirthplaceHouseholds = 
+  typeof birthplaceHouseholds.$inferInsert;

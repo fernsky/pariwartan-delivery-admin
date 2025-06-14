@@ -4,6 +4,7 @@ import { familyMainOccupationRouter } from "../demographics/ward-wise-major-occu
 import { wardGenderWiseEconomicallyActivePopulationRouter } from "./ward-gender-wise-economically-active-population.procedure";
 import { wardTimeSeriesRouter } from "./ward-time-series.procedure";
 import { wardWiseDemographicSummaryRouter } from "./ward-wise-demographic-summary.procedure";
+import { birthplaceHouseholdsRouter } from "./ward-wise-birthplace-households.procedure";
 import { castePopulationRouter } from "./caste-population.procedure";
 import {ageWisePopulationRouter} from "./age-wise-population.procedure";
 import { ageHouseHeadGenderRouter } from "./ward-wise-househead-gender.procedure";
@@ -18,11 +19,11 @@ import { wardWiseLiteracyStatusRouter } from "../education/ward-wise-literacy-st
 import { wardWiseMajorSubjectRouter } from "../education/ward-wise-major-subject.procedure";
 import { wardWiseSchoolDropoutRouter } from "../education/ward-wise-school-dropout.procedure";
 import { disabilityByAgeRouter } from "./ward-wise-disability-cause.procedure";
-import { wardWiseBirthplaceHouseholdsRouter } from "./ward-wise-birthplace-households.procedure";
 import { wardWiseMigratedHouseholdsRouter } from "./ward-wise-migrated-households.procedure";
 import { wardWiseBirthCertificatePopulationRouter } from "./ward-wise-birth-certificate-population.procedure";
 import {wardAgeGenderWiseDeceasedPopulationRouter} from "./ward-age-gender-wise-deceased-population.procedure";
 import { wardWiseDeathCauseRouter } from "./ward-wise-death-cause.procedure";
+import { birthplaceHouseholds } from "@/server/db/schema";
 
 export const demographicsRouter = createTRPCRouter({
   summary: demographicSummaryRouter,
@@ -44,8 +45,7 @@ export const demographicsRouter = createTRPCRouter({
   wardWiseMajorSubject: wardWiseMajorSubjectRouter,
   wardWiseSchoolDropout: wardWiseSchoolDropoutRouter,
   familyMainOccupation: familyMainOccupationRouter,
-  wardWiseBirthplaceHouseholds: wardWiseBirthplaceHouseholdsRouter,
-  wardWiseMigratedHouseholds: wardWiseMigratedHouseholdsRouter,
+  birthplaceHouseholds: birthplaceHouseholdsRouter,
   wardWiseBirthCertificatePopulation: wardWiseBirthCertificatePopulationRouter,
   wardAgeGenderWiseDeceasedPopulation: wardAgeGenderWiseDeceasedPopulationRouter,
   wardWiseDeathCause: wardWiseDeathCauseRouter,

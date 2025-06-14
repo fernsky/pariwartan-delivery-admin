@@ -10,7 +10,7 @@ interface BirthplaceHouseholdSEOProps {
   totalHouseholds: number;
   BIRTH_PLACE_NAMES: Record<string, string>;
   BIRTH_PLACE_NAMES_EN: Record<string, string>;
-  wardNumbers: number[];
+  ageGroups: string[];
 }
 
 export default function BirthplaceHouseholdSEO({
@@ -18,7 +18,7 @@ export default function BirthplaceHouseholdSEO({
   totalHouseholds,
   BIRTH_PLACE_NAMES,
   BIRTH_PLACE_NAMES_EN,
-  wardNumbers,
+  ageGroups,
 }: BirthplaceHouseholdSEOProps) {
   // Create structured data for SEO
   const generateStructuredData = () => {
@@ -51,14 +51,14 @@ export default function BirthplaceHouseholdSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Household Birthplaces in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Household birthplace data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. The most common origin is ${mostCommonBirthplaceEN} with ${mostCommonBirthplace?.households.toLocaleString()} households (${mostCommonBirthplacePercentage}%).`,
+      name: "Age-group-wise Birthplaces in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Birthplace data across ${ageGroups.length} age groups of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} population. The most common origin is ${mostCommonBirthplaceEN} with ${mostCommonBirthplace?.households.toLocaleString()} people (${mostCommonBirthplacePercentage}%).`,
       keywords: [
         "Khajura Rural Municipality",
         "परिवर्तन गाउँपालिका",
-        "Household birthplaces",
+        "Age-group birthplaces",
         "Birthplace distribution",
-        "Ward-wise birthplace data",
+        "Age-group-wise birthplace data",
         "Nepal demographics",
         "Migration statistics",
         ...Object.values(BIRTH_PLACE_NAMES_EN).map(

@@ -14,13 +14,13 @@ import {
 import { localizeNumber } from "@/lib/utils/localize-number";
 
 interface BirthplaceHouseholdBarChartProps {
-  wardWiseData: Array<Record<string, any>>;
+  ageGroupWiseData: Array<Record<string, any>>;
   BIRTH_PLACE_COLORS: Record<string, string>;
   BIRTH_PLACE_NAMES: Record<string, string>;
 }
 
 export default function BirthplaceHouseholdBarChart({
-  wardWiseData,
+  ageGroupWiseData,
   BIRTH_PLACE_COLORS,
   BIRTH_PLACE_NAMES,
 }: BirthplaceHouseholdBarChartProps) {
@@ -53,25 +53,25 @@ export default function BirthplaceHouseholdBarChart({
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart
-        data={wardWiseData}
+        data={ageGroupWiseData}
         margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
         barSize={40}
       >
         <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
         <XAxis
-          dataKey="ward"
+          dataKey="ageGroup"
           scale="point"
           padding={{ left: 10, right: 10 }}
           tick={{ fontSize: 12 }}
           tickFormatter={(value) => localizeNumber(value.toString(), "ne")}
         />
-        <YAxis 
-          tickFormatter={(value) => localizeNumber(value.toString(), "ne")} 
-          label={{ 
-            value: 'घरपरिवार संख्या',
+        <YAxis
+          tickFormatter={(value) => localizeNumber(value.toString(), "ne")}
+          label={{
+            value: "जनसंख्या",
             angle: -90,
-            position: 'insideLeft',
-            style: { textAnchor: 'middle' }
+            position: "insideLeft",
+            style: { textAnchor: "middle" },
           }}
         />
         <Tooltip content={CustomTooltip} />
@@ -81,12 +81,12 @@ export default function BirthplaceHouseholdBarChart({
           verticalAlign="bottom"
           align="center"
         />
-        {/* Dynamically generate bars based on available birthplaces in wardWiseData */}
+        {/* Dynamically generate bars based on available birthplaces in ageGroupWiseData */}
         {Object.keys(
-          wardWiseData.reduce(
-            (acc, ward) => {
-              Object.keys(ward).forEach((key) => {
-                if (key !== "ward") acc[key] = true;
+          ageGroupWiseData.reduce(
+            (acc, ageGroup) => {
+              Object.keys(ageGroup).forEach((key) => {
+                if (key !== "ageGroup") acc[key] = true;
               });
               return acc;
             },
@@ -111,14 +111,17 @@ export default function BirthplaceHouseholdBarChart({
                 ] || `#${Math.floor(Math.random() * 16777215).toString(16)}`
               }
             >
-              {wardWiseData.map((entry, entryIndex) => (
+              {ageGroupWiseData.map((entry, entryIndex) => (
                 <Cell
                   key={`cell-${entryIndex}`}
                   fill={
-                    BIRTH_PLACE_COLORS[birthplaceKey as keyof typeof BIRTH_PLACE_COLORS] ||
-                    `#${Math.floor(Math.random() * 16777215).toString(16)}`
+                    BIRTH_PLACE_COLORS[
+                      birthplaceKey as keyof typeof BIRTH_PLACE_COLORS
+                    ] || `#${Math.floor(Math.random() * 16777215).toString(16)}`
                   }
-                  fillOpacity={0.8 + (0.2 * index) / Object.keys(BIRTH_PLACE_NAMES).length}
+                  fillOpacity={
+                    0.8 + (0.2 * index) / Object.keys(BIRTH_PLACE_NAMES).length
+                  }
                 />
               ))}
             </Bar>

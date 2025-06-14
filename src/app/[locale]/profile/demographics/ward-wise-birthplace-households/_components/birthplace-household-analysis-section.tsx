@@ -11,11 +11,11 @@ interface BirthplaceHouseholdAnalysisSectionProps {
     households: number;
   }>;
   totalHouseholds: number;
-  wardWiseAnalysis: Array<{
-    wardNumber: number;
-    totalHouseholds: number;
+  ageGroupAnalysis: Array<{
+    ageGroup: string;
+    totalPopulation: number;
     mostCommonBirthplace: string;
-    mostCommonBirthplaceHouseholds: number;
+    mostCommonBirthplaceCount: number;
     mostCommonBirthplacePercentage: string;
   }>;
   BIRTH_PLACE_NAMES: Record<string, string>;
@@ -25,7 +25,7 @@ interface BirthplaceHouseholdAnalysisSectionProps {
 export default function BirthplaceHouseholdAnalysisSection({
   overallSummary,
   totalHouseholds,
-  wardWiseAnalysis,
+  ageGroupAnalysis,
   BIRTH_PLACE_NAMES,
   BIRTH_PLACE_NAMES_EN,
 }: BirthplaceHouseholdAnalysisSectionProps) {
@@ -37,36 +37,28 @@ export default function BirthplaceHouseholdAnalysisSection({
     ABROAD: "#D9ED92", // Yellow for abroad
   };
 
-  // Find wards with highest and lowest local households
-  const highestLocalWard = [...wardWiseAnalysis].sort((a, b) => {
+  // Find age groups with highest and lowest local population
+  const highestLocalAgeGroup = [...ageGroupAnalysis].sort((a, b) => {
     const aLocalCount =
-      wardWiseAnalysis.find(
-        (w) =>
-          w.wardNumber === a.wardNumber &&
-          w.mostCommonBirthplace === "SAME_MUNICIPALITY",
-      )?.mostCommonBirthplaceHouseholds || 0;
+      a.mostCommonBirthplace === "SAME_MUNICIPALITY"
+        ? a.mostCommonBirthplaceCount
+        : 0;
     const bLocalCount =
-      wardWiseAnalysis.find(
-        (w) =>
-          w.wardNumber === b.wardNumber &&
-          w.mostCommonBirthplace === "SAME_MUNICIPALITY",
-      )?.mostCommonBirthplaceHouseholds || 0;
+      b.mostCommonBirthplace === "SAME_MUNICIPALITY"
+        ? b.mostCommonBirthplaceCount
+        : 0;
     return bLocalCount - aLocalCount;
   })[0];
 
-  const highestMigrationWard = [...wardWiseAnalysis].sort((a, b) => {
+  const highestMigrationAgeGroup = [...ageGroupAnalysis].sort((a, b) => {
     const aMigrationCount =
-      wardWiseAnalysis.find(
-        (w) =>
-          w.wardNumber === a.wardNumber &&
-          w.mostCommonBirthplace === "ANOTHER_DISTRICT",
-      )?.mostCommonBirthplaceHouseholds || 0;
+      a.mostCommonBirthplace === "ANOTHER_DISTRICT"
+        ? a.mostCommonBirthplaceCount
+        : 0;
     const bMigrationCount =
-      wardWiseAnalysis.find(
-        (w) =>
-          w.wardNumber === b.wardNumber &&
-          w.mostCommonBirthplace === "ANOTHER_DISTRICT",
-      )?.mostCommonBirthplaceHouseholds || 0;
+      b.mostCommonBirthplace === "ANOTHER_DISTRICT"
+        ? b.mostCommonBirthplaceCount
+        : 0;
     return bMigrationCount - aMigrationCount;
   })[0];
 
@@ -95,21 +87,21 @@ export default function BirthplaceHouseholdAnalysisSection({
         );
       }
 
-      // Add ward data
+      // Add age group data
       document.body.setAttribute(
-        "data-highest-local-ward",
-        highestLocalWard?.wardNumber.toString() || "",
+        "data-highest-local-age-group",
+        highestLocalAgeGroup?.ageGroup || "",
       );
       document.body.setAttribute(
-        "data-highest-migration-ward",
-        highestMigrationWard?.wardNumber.toString() || "",
+        "data-highest-migration-age-group",
+        highestMigrationAgeGroup?.ageGroup || "",
       );
     }
   }, [
     overallSummary,
     totalHouseholds,
-    highestLocalWard,
-    highestMigrationWard,
+    highestLocalAgeGroup,
+    highestMigrationAgeGroup,
     BIRTH_PLACE_NAMES_EN,
   ]);
 
@@ -117,7 +109,6 @@ export default function BirthplaceHouseholdAnalysisSection({
     <>
       <div className="mt-6 flex flex-wrap gap-4 justify-center">
         {overallSummary.map((item, index) => {
-          // Calculate percentage
           const percentage = (
             (item.households / totalHouseholds) *
             100
@@ -127,7 +118,6 @@ export default function BirthplaceHouseholdAnalysisSection({
             <div
               key={index}
               className="bg-muted/50 rounded-lg p-4 text-center min-w-[200px] relative overflow-hidden"
-              // Add data attributes for SEO crawlers
               data-birthplace={`${BIRTH_PLACE_NAMES_EN[item.birthPlace as keyof typeof BIRTH_PLACE_NAMES_EN] || item.birthPlace} / ${item.birthPlaceName}`}
               data-households={item.households}
               data-percentage={percentage}
@@ -152,7 +142,6 @@ export default function BirthplaceHouseholdAnalysisSection({
               <div className="relative z-10">
                 <h3 className="text-lg font-medium mb-2">
                   {item.birthPlaceName}
-                  {/* Hidden span for SEO with English name */}
                   <span className="sr-only">
                     {BIRTH_PLACE_NAMES_EN[
                       item.birthPlace as keyof typeof BIRTH_PLACE_NAMES_EN
@@ -164,9 +153,9 @@ export default function BirthplaceHouseholdAnalysisSection({
                 </p>
                 <p className="text-sm text-muted-foreground">
                   {localizeNumber(item.households.toLocaleString(), "ne")}{" "}
-                  घरपरिवार
+                  जनसंख्या
                   <span className="sr-only">
-                    ({item.households.toLocaleString()} households)
+                    ({item.households.toLocaleString()} population)
                   </span>
                 </p>
               </div>
@@ -177,10 +166,8 @@ export default function BirthplaceHouseholdAnalysisSection({
 
       <div className="bg-muted/50 p-4 rounded-lg mt-8">
         <h3 className="text-xl font-medium mb-4">
-          घरपरिवारको जन्मस्थान विश्लेषण
-          <span className="sr-only">
-            Household Birthplace Analysis of Khajura
-          </span>
+          जन्मस्थान विश्लेषण
+          <span className="sr-only">Birthplace Analysis of Khajura</span>
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div
@@ -223,7 +210,7 @@ export default function BirthplaceHouseholdAnalysisSection({
                   : "0",
                 "ne",
               )}{" "}
-              घरपरिवार)
+              जनसंख्या)
               <span className="sr-only">
                 {overallSummary.length > 0
                   ? (
@@ -233,19 +220,19 @@ export default function BirthplaceHouseholdAnalysisSection({
                   : "0"}
                 % (
                 {overallSummary.length > 0 ? overallSummary[0].households : 0}{" "}
-                households)
+                population)
               </span>
             </p>
           </div>
 
           <div
             className="bg-card p-4 rounded border"
-            data-analysis-type="birthplace-distribution"
+            data-analysis-type="local-birthplace"
           >
             <h4 className="font-medium mb-2">
-              स्थानीय जन्मस्थान भएका घरपरिवार
+              स्थानीय जन्मस्थान भएको जनसंख्या
               <span className="sr-only">
-                Households with Local Birthplace in Khajura
+                Population with Local Birthplace in Khajura
               </span>
             </h4>
             <p className="text-3xl font-bold">
@@ -269,7 +256,7 @@ export default function BirthplaceHouseholdAnalysisSection({
                 ).toFixed(2),
                 "ne",
               )}
-              % घरपरिवार
+              % जनसंख्या
               <span className="sr-only">
                 {(
                   ((overallSummary.find(
@@ -278,7 +265,7 @@ export default function BirthplaceHouseholdAnalysisSection({
                     totalHouseholds) *
                   100
                 ).toFixed(2)}
-                % of households are local
+                % of population are local
               </span>
             </p>
           </div>
@@ -286,8 +273,8 @@ export default function BirthplaceHouseholdAnalysisSection({
 
         <div className="mt-4 bg-card p-4 rounded border">
           <h4 className="font-medium mb-2">
-            वडागत जन्मस्थान विश्लेषण
-            <span className="sr-only">Ward-wise Birthplace Analysis</span>
+            उमेर समूहगत जन्मस्थान विश्लेषण
+            <span className="sr-only">Age-group-wise Birthplace Analysis</span>
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Display top two most common birthplaces */}
@@ -300,7 +287,7 @@ export default function BirthplaceHouseholdAnalysisSection({
                     "ne",
                   )}
                   % ({localizeNumber(item.households.toLocaleString(), "ne")}{" "}
-                  घरपरिवार)
+                  जनसंख्या)
                 </p>
                 <div className="w-full bg-muted h-2 rounded-full mt-2 overflow-hidden">
                   <div
@@ -320,17 +307,17 @@ export default function BirthplaceHouseholdAnalysisSection({
 
           <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <h5 className="text-sm font-medium">वडागत प्रमुख जन्मस्थान</h5>
+              <h5 className="text-sm font-medium">
+                उमेर समूहगत प्रमुख जन्मस्थान
+              </h5>
               <ul className="mt-2 text-sm space-y-1">
-                {wardWiseAnalysis.slice(0, 3).map((ward, index) => (
+                {ageGroupAnalysis.slice(0, 3).map((ageGroup, index) => (
                   <li key={index} className="flex justify-between">
-                    <span>
-                      वडा {localizeNumber(ward.wardNumber.toString(), "ne")}:
-                    </span>
+                    <span>{ageGroup.ageGroup}:</span>
                     <span className="font-medium">
                       {BIRTH_PLACE_NAMES[
-                        ward.mostCommonBirthplace as keyof typeof BIRTH_PLACE_NAMES
-                      ] || ward.mostCommonBirthplace}
+                        ageGroup.mostCommonBirthplace as keyof typeof BIRTH_PLACE_NAMES
+                      ] || ageGroup.mostCommonBirthplace}
                     </span>
                   </li>
                 ))}
@@ -344,7 +331,7 @@ export default function BirthplaceHouseholdAnalysisSection({
                 {overallSummary.find(
                   (item) => item.birthPlace === "SAME_MUNICIPALITY",
                 )
-                  ? `परिवर्तन गाउँपालिकामा ${localizeNumber((((overallSummary.find((item) => item.birthPlace === "SAME_MUNICIPALITY")?.households || 0) / totalHouseholds) * 100).toFixed(2), "ne")}% घरपरिवारहरूको जन्मस्थान यहि गाउँपालिकामा रहेको छ।`
+                  ? `परिवर्तन गाउँपालिकामा ${localizeNumber((((overallSummary.find((item) => item.birthPlace === "SAME_MUNICIPALITY")?.households || 0) / totalHouseholds) * 100).toFixed(2), "ne")}% जनसंख्याको जन्मस्थान यहि गाउँपालिकामा रहेको छ।`
                   : "जन्मस्थान सम्बन्धी विवरण उपलब्ध छैन।"}
               </p>
             </div>

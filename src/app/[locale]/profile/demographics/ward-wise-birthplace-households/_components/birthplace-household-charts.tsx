@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { FileDown } from "lucide-react";
 import BirthplaceHouseholdPieChart from "./charts/birthplace-household-pie-chart";
 import BirthplaceHouseholdBarChart from "./charts/birthplace-household-bar-chart";
-import WardBirthplaceHouseholdPieCharts from "./charts/ward-birthplace-household-pie-charts";
+import AgeGroupBirthplacePieCharts from "./charts/age-group-birthplace-pie-charts";
 import { localizeNumber } from "@/lib/utils/localize-number";
 
 // Define birthplace colors for consistency
@@ -25,38 +25,51 @@ interface BirthplaceHouseholdChartsProps {
     value: number;
     percentage: string;
   }>;
-  wardWiseData: Array<Record<string, any>>;
-  wardNumbers: number[];
+  ageGroupWiseData: Array<Record<string, any>>;
+  ageGroups: string[];
   birthplaceData: Array<{
     id?: string;
-    wardNumber: number;
     birthPlace: string;
     households: number;
+    ageGroup: string;
   }>;
-  wardWiseAnalysis: Array<{
-    wardNumber: number;
-    totalHouseholds: number;
+  ageGroupAnalysis: Array<{
+    ageGroup: string;
+    totalPopulation: number;
     mostCommonBirthplace: string;
-    mostCommonBirthplaceHouseholds: number;
+    mostCommonBirthplaceCount: number;
     mostCommonBirthplacePercentage: string;
   }>;
   BIRTH_PLACE_NAMES: Record<string, string>;
+  birthplaceAgeData: Array<{
+    id?: string;
+    ageGroup: string;
+    totalPopulation: number;
+    nepalBorn: number;
+    bornInDistrictMunicipality: number;
+    bornInDistrictOther: number;
+    bornInDistrictTotal: number;
+    bornOtherDistrict: number;
+    bornAbroad: number;
+    birthPlaceUnknown: number;
+  }>;
 }
 
 export default function BirthplaceHouseholdCharts({
   overallSummary,
   totalHouseholds,
   pieChartData,
-  wardWiseData,
-  wardNumbers,
+  ageGroupWiseData,
+  ageGroups,
   birthplaceData,
-  wardWiseAnalysis,
+  ageGroupAnalysis,
   BIRTH_PLACE_NAMES,
+  birthplaceAgeData,
 }: BirthplaceHouseholdChartsProps) {
   return (
     <>
       {/* Overall birthplace distribution - with pre-rendered table and client-side chart */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
@@ -75,7 +88,8 @@ export default function BirthplaceHouseholdCharts({
             घरपरिवारको जन्मस्थान अनुसार वितरण
           </h3>
           <p className="text-sm text-muted-foreground">
-            कुल घरपरिवार संख्या: {localizeNumber(totalHouseholds.toLocaleString(), "ne")} घरपरिवार
+            कुल घरपरिवार संख्या:{" "}
+            {localizeNumber(totalHouseholds.toLocaleString(), "ne")} घरपरिवार
           </p>
         </div>
 
@@ -108,13 +122,21 @@ export default function BirthplaceHouseholdCharts({
                 <tbody>
                   {overallSummary.map((item, i) => (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/40" : ""}>
-                      <td className="border p-2">{localizeNumber(i + 1, "ne")}</td>
+                      <td className="border p-2">
+                        {localizeNumber(i + 1, "ne")}
+                      </td>
                       <td className="border p-2">{item.birthPlaceName}</td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.households.toLocaleString(), "ne")}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(((item.households / totalHouseholds) * 100).toFixed(2), "ne")}%
+                        {localizeNumber(
+                          ((item.households / totalHouseholds) * 100).toFixed(
+                            2,
+                          ),
+                          "ne",
+                        )}
+                        %
                       </td>
                     </tr>
                   ))}
@@ -134,7 +156,6 @@ export default function BirthplaceHouseholdCharts({
                 </tfoot>
               </table>
             </div>
-            
           </div>
         </div>
 
@@ -158,7 +179,11 @@ export default function BirthplaceHouseholdCharts({
                   <div className="flex justify-between items-center">
                     <span>{item.birthPlaceName}</span>
                     <span className="font-medium">
-                      {localizeNumber(((item.households / totalHouseholds) * 100).toFixed(1), "ne")}%
+                      {localizeNumber(
+                        ((item.households / totalHouseholds) * 100).toFixed(1),
+                        "ne",
+                      )}
+                      %
                     </span>
                   </div>
                   <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -180,35 +205,35 @@ export default function BirthplaceHouseholdCharts({
         </div>
       </div>
 
-      {/* Ward-wise distribution - pre-rendered table with client-side chart */}
-      <div 
+      {/* Age-group-wise distribution - pre-rendered table with client-side chart */}
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
-        id="ward-wise-birthplaces"
+        id="age-group-wise-birthplaces"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Ward-wise Household Birthplaces in Khajura Rural Municipality"
+          content="Age-group-wise Birthplaces in Khajura Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Household birthplace distribution across wards in Khajura"
+          content="Birthplace distribution across age groups in Khajura"
         />
 
         <div className="border-b px-4 py-3">
           <h3 className="text-xl font-semibold" itemProp="headline">
-            वडा अनुसार घरपरिवारको जन्मस्थान वितरण
+            उमेर समूह अनुसार जन्मस्थान वितरण
           </h3>
           <p className="text-sm text-muted-foreground">
-            वडा र जन्मस्थान अनुसार घरपरिवार संख्या वितरण
+            उमेर समूह र जन्मस्थान अनुसार जनसंख्या वितरण
           </p>
         </div>
 
         <div className="p-6">
           <div className="h-[500px]">
             <BirthplaceHouseholdBarChart
-              wardWiseData={wardWiseData}
+              ageGroupWiseData={ageGroupWiseData}
               BIRTH_PLACE_COLORS={BIRTH_PLACE_COLORS}
               BIRTH_PLACE_NAMES={BIRTH_PLACE_NAMES}
             />
@@ -216,27 +241,27 @@ export default function BirthplaceHouseholdCharts({
         </div>
       </div>
 
-      {/* Ward-wise analysis - with pre-rendered HTML table for SEO */}
-      <div 
+      {/* Age-group-wise analysis - with pre-rendered HTML table for SEO */}
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Ward-wise Birthplace Analysis in Khajura Rural Municipality"
+          content="Age-group-wise Birthplace Analysis in Khajura Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Most common household birthplaces by ward in Khajura"
+          content="Most common birthplaces by age group in Khajura"
         />
 
         <div className="border-b px-4 py-3">
           <h3 className="text-xl font-semibold" itemProp="headline">
-            वडागत घरपरिवारको प्रमुख जन्मस्थान
+            उमेर समूहगत प्रमुख जन्मस्थान
           </h3>
           <p className="text-sm text-muted-foreground">
-            वडा अनुसार घरपरिवारको प्रमुख जन्मस्थान र वितरण
+            उमेर समूह अनुसार प्रमुख जन्मस्थान र वितरण
           </p>
         </div>
 
@@ -245,29 +270,43 @@ export default function BirthplaceHouseholdCharts({
             <table className="w-full border-collapse min-w-[800px]">
               <thead className="sticky top-0 z-10">
                 <tr className="bg-muted">
-                  <th className="border p-2">वडा नं.</th>
-                  <th className="border p-2 text-right">कुल घरपरिवार संख्या</th>
+                  <th className="border p-2">उमेर समूह</th>
+                  <th className="border p-2 text-right">कुल जनसंख्या</th>
                   <th className="border p-2">प्रमुख जन्मस्थान</th>
-                  <th className="border p-2 text-right">प्रमुख जन्मस्थानका घरपरिवार</th>
+                  <th className="border p-2 text-right">
+                    प्रमुख जन्मस्थानको जनसंख्या
+                  </th>
                   <th className="border p-2 text-right">प्रतिशत</th>
                 </tr>
               </thead>
               <tbody>
-                {wardWiseAnalysis.map((item, i) => {
+                {ageGroupAnalysis.map((item, i) => {
                   return (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
-                      <td className="border p-2">वडा {localizeNumber(item.wardNumber, "ne")}</td>
+                      <td className="border p-2">{item.ageGroup}</td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.totalHouseholds.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.totalPopulation.toLocaleString(),
+                          "ne",
+                        )}
                       </td>
                       <td className="border p-2">
-                        {BIRTH_PLACE_NAMES[item.mostCommonBirthplace as keyof typeof BIRTH_PLACE_NAMES] || item.mostCommonBirthplace}
+                        {BIRTH_PLACE_NAMES[
+                          item.mostCommonBirthplace as keyof typeof BIRTH_PLACE_NAMES
+                        ] || item.mostCommonBirthplace}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.mostCommonBirthplaceHouseholds.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.mostCommonBirthplaceCount.toLocaleString(),
+                          "ne",
+                        )}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.mostCommonBirthplacePercentage, "ne")}%
+                        {localizeNumber(
+                          item.mostCommonBirthplacePercentage,
+                          "ne",
+                        )}
+                        %
                       </td>
                     </tr>
                   );
@@ -280,27 +319,191 @@ export default function BirthplaceHouseholdCharts({
                     {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
                   </td>
                   <td className="border p-2">
-                    {BIRTH_PLACE_NAMES[overallSummary[0]?.birthPlace as keyof typeof BIRTH_PLACE_NAMES] || overallSummary[0]?.birthPlace}
+                    {BIRTH_PLACE_NAMES[
+                      overallSummary[0]
+                        ?.birthPlace as keyof typeof BIRTH_PLACE_NAMES
+                    ] || overallSummary[0]?.birthPlace}
                   </td>
                   <td className="border p-2 text-right">
-                    {localizeNumber((overallSummary[0]?.households || 0).toLocaleString(), "ne")}
+                    {localizeNumber(
+                      (overallSummary[0]?.households || 0).toLocaleString(),
+                      "ne",
+                    )}
                   </td>
                   <td className="border p-2 text-right">
-                    {localizeNumber(((overallSummary[0]?.households || 0) / totalHouseholds * 100).toFixed(2), "ne")}%
+                    {localizeNumber(
+                      (
+                        ((overallSummary[0]?.households || 0) /
+                          totalHouseholds) *
+                        100
+                      ).toFixed(2),
+                      "ne",
+                    )}
+                    %
                   </td>
                 </tr>
               </tfoot>
             </table>
           </div>
 
-          {/* Ward pie charts (client component) */}
-          <h4 className="text-lg font-medium mt-8 mb-4">वडागत जन्मस्थान वितरण</h4>
-          <WardBirthplaceHouseholdPieCharts
-            wardNumbers={wardNumbers}
+          {/* Age group pie charts (client component) */}
+          <h4 className="text-lg font-medium mt-8 mb-4">
+            उमेर समूहगत जन्मस्थान वितरण
+          </h4>
+          <AgeGroupBirthplacePieCharts
+            ageGroups={ageGroups}
             birthplaceData={birthplaceData}
             BIRTH_PLACE_NAMES={BIRTH_PLACE_NAMES}
             BIRTH_PLACE_COLORS={BIRTH_PLACE_COLORS}
           />
+        </div>
+      </div>
+
+      {/* Age Group Analysis Section */}
+      <div
+        className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
+        itemScope
+        itemType="https://schema.org/Dataset"
+      >
+        <div className="border-b px-4 py-3">
+          <h3 className="text-xl font-semibold">
+            उमेर समूह अनुसार जन्मस्थान वितरण
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            विभिन्न उमेर समूहको जन्मस्थान अनुसारको वितरण
+          </p>
+        </div>
+
+        <div className="p-6">
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse min-w-[1000px]">
+              <thead className="sticky top-0 z-10">
+                <tr className="bg-muted">
+                  <th className="border p-2 text-left">उमेर समूह</th>
+                  <th className="border p-2 text-right">कुल जनसंख्या</th>
+                  <th className="border p-2 text-right">यहि गा.पा./न.पा</th>
+                  <th className="border p-2 text-right">यहि जिल्लाको अर्को</th>
+                  <th className="border p-2 text-right">अर्को जिल्ला</th>
+                  <th className="border p-2 text-right">विदेश</th>
+                  <th className="border p-2 text-right">अज्ञात</th>
+                </tr>
+              </thead>
+              <tbody>
+                {birthplaceAgeData
+                  .filter((item) => item.ageGroup !== "जम्मा")
+                  .sort((a, b) => {
+                    // Custom sort for age groups
+                    const ageOrder = [
+                      "०-४ वर्ष",
+                      "५-९ वर्ष",
+                      "१०-१४ वर्ष",
+                      "१५-१९ वर्ष",
+                      "२०-२४ वर्ष",
+                      "२५-२९ वर्ष",
+                      "३०-३४ वर्ष",
+                      "३५-३९ वर्ष",
+                      "४०-४४ वर्ष",
+                      "४५-४९ वर्ष",
+                      "५०-५४ वर्ष",
+                      "५५-५९ वर्ष",
+                      "६०-६४ वर्ष",
+                      "६५-६९ वर्ष",
+                      "७०-७४ वर्ष",
+                      "७५- वर्षमाथि",
+                    ];
+                    return (
+                      ageOrder.indexOf(a.ageGroup) -
+                      ageOrder.indexOf(b.ageGroup)
+                    );
+                  })
+                  .map((item, i) => (
+                    <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
+                      <td className="border p-2 font-medium">
+                        {item.ageGroup}
+                      </td>
+                      <td className="border p-2 text-right">
+                        {localizeNumber(
+                          item.totalPopulation.toLocaleString(),
+                          "ne",
+                        )}
+                      </td>
+                      <td className="border p-2 text-right">
+                        {localizeNumber(
+                          item.bornInDistrictMunicipality.toLocaleString(),
+                          "ne",
+                        )}
+                      </td>
+                      <td className="border p-2 text-right">
+                        {localizeNumber(
+                          item.bornInDistrictOther.toLocaleString(),
+                          "ne",
+                        )}
+                      </td>
+                      <td className="border p-2 text-right">
+                        {localizeNumber(
+                          item.bornOtherDistrict.toLocaleString(),
+                          "ne",
+                        )}
+                      </td>
+                      <td className="border p-2 text-right">
+                        {localizeNumber(item.bornAbroad.toLocaleString(), "ne")}
+                      </td>
+                      <td className="border p-2 text-right">
+                        {localizeNumber(
+                          item.birthPlaceUnknown.toLocaleString(),
+                          "ne",
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+              <tfoot>
+                {birthplaceAgeData
+                  .filter((item) => item.ageGroup === "जम्मा")
+                  .map((totalItem, i) => (
+                    <tr key={i} className="font-semibold bg-muted/70">
+                      <td className="border p-2">जम्मा</td>
+                      <td className="border p-2 text-right">
+                        {localizeNumber(
+                          totalItem.totalPopulation.toLocaleString(),
+                          "ne",
+                        )}
+                      </td>
+                      <td className="border p-2 text-right">
+                        {localizeNumber(
+                          totalItem.bornInDistrictMunicipality.toLocaleString(),
+                          "ne",
+                        )}
+                      </td>
+                      <td className="border p-2 text-right">
+                        {localizeNumber(
+                          totalItem.bornInDistrictOther.toLocaleString(),
+                          "ne",
+                        )}
+                      </td>
+                      <td className="border p-2 text-right">
+                        {localizeNumber(
+                          totalItem.bornOtherDistrict.toLocaleString(),
+                          "ne",
+                        )}
+                      </td>
+                      <td className="border p-2 text-right">
+                        {localizeNumber(
+                          totalItem.bornAbroad.toLocaleString(),
+                          "ne",
+                        )}
+                      </td>
+                      <td className="border p-2 text-right">
+                        {localizeNumber(
+                          totalItem.birthPlaceUnknown.toLocaleString(),
+                          "ne",
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+              </tfoot>
+            </table>
+          </div>
         </div>
       </div>
     </>

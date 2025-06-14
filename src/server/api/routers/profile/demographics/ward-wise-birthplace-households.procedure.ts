@@ -3,107 +3,75 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "@/server/api/trpc";
-import { wardWiseBirthplaceHouseholds } from "@/server/db/schema/profile/demographics/ward-wise-birthplace-households";
+import { birthplaceHouseholds } from "@/server/db/schema/profile/demographics/ward-wise-birthplace-households";
 import { eq, and, sql } from "drizzle-orm";
 import {
-  wardWiseBirthplaceHouseholdsSchema,
-  wardWiseBirthplaceHouseholdsFilterSchema,
-  updateWardWiseBirthplaceHouseholdsSchema,
-  BirthPlaceEnum,
+  birthplaceHouseholdsSchema,
+  birthplaceHouseholdsFilterSchema,
+  updateBirthplaceHouseholdsSchema,
 } from "./ward-wise-birthplace-households.schema";
 import { TRPCError } from "@trpc/server";
-import { z } from "zod";
+import { any, z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 
-// Get all ward-wise birthplace households data with optional filtering
-export const getAllWardWiseBirthplaceHouseholds = publicProcedure
-  .input(wardWiseBirthplaceHouseholdsFilterSchema.optional())
+// Get all birthplace households data with optional filtering
+export const getAllBirthplaceHouseholds = publicProcedure
+  .input(birthplaceHouseholdsFilterSchema.optional())
   .query(async ({ ctx, input }) => {
     try {
       // Set UTF-8 encoding explicitly before running query
       await ctx.db.execute(sql`SET client_encoding = 'UTF8'`);
 
-      // First try querying the main schema table
-      let data: any[];
-      try {
-        // Build query with conditions
-        const baseQuery = ctx.db
-          .select()
-          .from(wardWiseBirthplaceHouseholds);
+      // Query the ACME table directly
+      const acmeSql = sql`
+        SELECT 
+          id,
+          age_group,
+          total_population,
+          nepal_born,
+          born_in_district_municipality,
+          born_in_district_other,
+          born_in_district_total,
+          born_other_district,
+          born_abroad,
+          birth_place_unknown
+        FROM 
+          acme_birthplace_households
+        ORDER BY 
+          CASE age_group
+            WHEN 'जम्मा' THEN 999
+            ELSE 0
+          END,
+          age_group
+      `;
+      const acmeResult = await ctx.db.execute(acmeSql);
 
-        let conditions = [];
+      let data: any[] | PromiseLike<any[]> = [];
+      if (acmeResult && Array.isArray(acmeResult) && acmeResult.length > 0) {
+        // Transform ACME data to match expected schema
+        data = acmeResult.map((row) => ({
+          id: row.id,
+          ageGroup: row.age_group,
+          totalPopulation: parseInt(String(row.total_population || "0")),
+          nepalBorn: parseInt(String(row.nepal_born || "0")),
+          bornInDistrictMunicipality: parseInt(String(row.born_in_district_municipality || "0")),
+          bornInDistrictOther: parseInt(String(row.born_in_district_other || "0")),
+          bornInDistrictTotal: parseInt(String(row.born_in_district_total || "0")),
+          bornOtherDistrict: parseInt(String(row.born_other_district || "0")),
+          bornAbroad: parseInt(String(row.born_abroad || "0")),
+          birthPlaceUnknown: parseInt(String(row.birth_place_unknown || "0")),
+        }));
 
-        if (input?.wardNumber) {
-          conditions.push(
-            eq(
-              wardWiseBirthplaceHouseholds.wardNumber,
-              input.wardNumber,
-            ),
-          );
-        }
-
-        if (input?.birthPlace) {
-          conditions.push(
-            eq(
-              wardWiseBirthplaceHouseholds.birthPlace,
-              input.birthPlace,
-            ),
-          );
-        }
-
-        const queryWithFilters = conditions.length
-          ? baseQuery.where(and(...conditions))
-          : baseQuery;
-
-        // Sort by ward number and birth place
-        data = await queryWithFilters.orderBy(
-          wardWiseBirthplaceHouseholds.wardNumber,
-          wardWiseBirthplaceHouseholds.birthPlace,
-        );
-      } catch (err) {
-        console.log("Failed to query main schema, trying ACME table:", err);
-        data = [];
-      }
-
-      // If no data from main schema, try the ACME table
-      if (!data || data.length === 0) {
-        const acmeSql = sql`
-          SELECT 
-            id,
-            ward_number,
-            birth_place,
-            households
-          FROM 
-            acme_ward_wise_birthplace_households
-          ORDER BY 
-            ward_number, birth_place
-        `;
-        const acmeResult = await ctx.db.execute(acmeSql);
-
-        if (acmeResult && Array.isArray(acmeResult) && acmeResult.length > 0) {
-          // Transform ACME data to match expected schema
-          data = acmeResult.map((row) => ({
-            id: row.id,
-            wardNumber: parseInt(String(row.ward_number)),
-            birthPlace: row.birth_place,
-            households: parseInt(String(row.households || "0")),
-          }));
-
-          // Apply filters if needed
-          if (input?.wardNumber) {
-            data = data.filter((item) => item.wardNumber === input.wardNumber);
-          }
-
-          if (input?.birthPlace) {
-            data = data.filter((item) => item.birthPlace === input.birthPlace);
-          }
+        // Apply filters if needed
+        if (input?.ageGroup) {
+          data = data.filter((item) => item.ageGroup === input.ageGroup);
         }
       }
 
       return data;
     } catch (error) {
       console.error(
-        "Error fetching ward-wise birthplace households data:",
+        "Error fetching birthplace households data:",
         error,
       );
       throw new TRPCError({
@@ -113,85 +81,97 @@ export const getAllWardWiseBirthplaceHouseholds = publicProcedure
     }
   });
 
-// Get data for a specific ward
-export const getWardWiseBirthplaceHouseholdsByWard = publicProcedure
-  .input(z.object({ wardNumber: z.number().int().positive() }))
+// Get data for a specific age group
+export const getBirthplaceHouseholdsByAgeGroup = publicProcedure
+  .input(z.object({ ageGroup: z.string() }))
   .query(async ({ ctx, input }) => {
-    const data = await ctx.db
-      .select()
-      .from(wardWiseBirthplaceHouseholds)
-      .where(
-        eq(
-          wardWiseBirthplaceHouseholds.wardNumber,
-          input.wardNumber,
-        ),
-      )
-      .orderBy(
-        wardWiseBirthplaceHouseholds.birthPlace,
-      );
+    const acmeSql = sql`
+      SELECT 
+        id,
+        age_group,
+        total_population,
+        nepal_born,
+        born_in_district_municipality,
+        born_in_district_other,
+        born_in_district_total,
+        born_other_district,
+        born_abroad,
+        birth_place_unknown
+      FROM 
+        acme_birthplace_households
+      WHERE 
+        age_group = ${input.ageGroup}
+    `;
+    const result = await ctx.db.execute(acmeSql);
 
-    return data;
+    return result.map((row) => ({
+      id: row.id,
+      ageGroup: row.age_group,
+      totalPopulation: parseInt(String(row.total_population || "0")),
+      nepalBorn: parseInt(String(row.nepal_born || "0")),
+      bornInDistrictMunicipality: parseInt(String(row.born_in_district_municipality || "0")),
+      bornInDistrictOther: parseInt(String(row.born_in_district_other || "0")),
+      bornInDistrictTotal: parseInt(String(row.born_in_district_total || "0")),
+      bornOtherDistrict: parseInt(String(row.born_other_district || "0")),
+      bornAbroad: parseInt(String(row.born_abroad || "0")),
+      birthPlaceUnknown: parseInt(String(row.birth_place_unknown || "0")),
+    }));
   });
 
-// Create a new ward-wise birthplace households entry
-export const createWardWiseBirthplaceHouseholds = protectedProcedure
-  .input(wardWiseBirthplaceHouseholdsSchema)
+// Create a new birthplace households entry
+export const createBirthplaceHouseholds = protectedProcedure
+  .input(birthplaceHouseholdsSchema)
   .mutation(async ({ ctx, input }) => {
     // Check if user has appropriate permissions
     if (ctx.user.role !== "superadmin") {
       throw new TRPCError({
         code: "UNAUTHORIZED",
-        message: "Only administrators can create ward-wise birthplace households data",
+        message: "Only administrators can create birthplace households data",
       });
     }
 
-    // Check if entry already exists for this ward and birth place
-    const existing = await ctx.db
-      .select({ id: wardWiseBirthplaceHouseholds.id })
-      .from(wardWiseBirthplaceHouseholds)
-      .where(
-        and(
-          eq(
-            wardWiseBirthplaceHouseholds.wardNumber,
-            input.wardNumber,
-          ),
-          eq(
-            wardWiseBirthplaceHouseholds.birthPlace,
-            input.birthPlace,
-          ),
-        ),
-      )
-      .limit(1);
+    // Check if entry already exists for this age group
+    const existingQuery = sql`
+      SELECT id FROM acme_birthplace_households 
+      WHERE age_group = ${input.ageGroup}
+      LIMIT 1
+    `;
+    const existing = await ctx.db.execute(existingQuery);
 
     if (existing.length > 0) {
       throw new TRPCError({
         code: "CONFLICT",
-        message: `Data for Ward Number ${input.wardNumber} and birth place ${input.birthPlace} already exists`,
+        message: `Data for age group ${input.ageGroup} already exists`,
       });
     }
 
     // Create new record
-    await ctx.db
-      .insert(wardWiseBirthplaceHouseholds)
-      .values({
-        id: input.id || uuidv4(),
-        wardNumber: input.wardNumber,
-        birthPlace: input.birthPlace,
-        households: input.households,
-      });
+    const insertQuery = sql`
+      INSERT INTO acme_birthplace_households (
+        id, age_group, total_population, nepal_born,
+        born_in_district_municipality, born_in_district_other, born_in_district_total,
+        born_other_district, born_abroad, birth_place_unknown
+      ) VALUES (
+        ${input.id || uuidv4()}, ${input.ageGroup}, 
+        ${input.totalPopulation}, ${input.nepalBorn}, ${input.bornInDistrictMunicipality},
+        ${input.bornInDistrictOther}, ${input.bornInDistrictTotal}, ${input.bornOtherDistrict},
+        ${input.bornAbroad}, ${input.birthPlaceUnknown}
+      )
+    `;
+    await ctx.db.execute(insertQuery);
 
     return { success: true };
   });
 
-// Update an existing ward-wise birthplace households entry
-export const updateWardWiseBirthplaceHouseholds = protectedProcedure
-  .input(updateWardWiseBirthplaceHouseholdsSchema)
+// Update an existing birthplace households entry
+export const updateBirthplaceHouseholds = protectedProcedure
+  .input(updateBirthplaceHouseholdsSchema)
   .mutation(async ({ ctx, input }) => {
     // Check if user has appropriate permissions
     if (ctx.user.role !== "superadmin") {
       throw new TRPCError({
         code: "UNAUTHORIZED",
-        message: "Only administrators can update ward-wise birthplace households data",
+        message: "Only administrators can update birthplace households data",
       });
     }
 
@@ -203,11 +183,12 @@ export const updateWardWiseBirthplaceHouseholds = protectedProcedure
     }
 
     // Check if the record exists
-    const existing = await ctx.db
-      .select({ id: wardWiseBirthplaceHouseholds.id })
-      .from(wardWiseBirthplaceHouseholds)
-      .where(eq(wardWiseBirthplaceHouseholds.id, input.id))
-      .limit(1);
+    const existingQuery = sql`
+      SELECT id FROM acme_birthplace_households 
+      WHERE id = ${input.id}
+      LIMIT 1
+    `;
+    const existing = await ctx.db.execute(existingQuery);
 
     if (existing.length === 0) {
       throw new TRPCError({
@@ -217,53 +198,70 @@ export const updateWardWiseBirthplaceHouseholds = protectedProcedure
     }
 
     // Update the record
-    await ctx.db
-      .update(wardWiseBirthplaceHouseholds)
-      .set({
-        wardNumber: input.wardNumber,
-        birthPlace: input.birthPlace,
-        households: input.households,
-      })
-      .where(eq(wardWiseBirthplaceHouseholds.id, input.id));
+    const updateQuery = sql`
+      UPDATE acme_birthplace_households 
+      SET 
+        age_group = ${input.ageGroup},
+        total_population = ${input.totalPopulation},
+        nepal_born = ${input.nepalBorn},
+        born_in_district_municipality = ${input.bornInDistrictMunicipality},
+        born_in_district_other = ${input.bornInDistrictOther},
+        born_in_district_total = ${input.bornInDistrictTotal},
+        born_other_district = ${input.bornOtherDistrict},
+        born_abroad = ${input.bornAbroad},
+        birth_place_unknown = ${input.birthPlaceUnknown},
+        updated_at = NOW()
+      WHERE id = ${input.id}
+    `;
+    await ctx.db.execute(updateQuery);
 
     return { success: true };
   });
 
-// Delete a ward-wise birthplace households entry
-export const deleteWardWiseBirthplaceHouseholds = protectedProcedure
+// Delete a birthplace households entry
+export const deleteBirthplaceHouseholds = protectedProcedure
   .input(z.object({ id: z.string() }))
   .mutation(async ({ ctx, input }) => {
     // Check if user has appropriate permissions
     if (ctx.user.role !== "superadmin") {
       throw new TRPCError({
         code: "UNAUTHORIZED",
-        message: "Only administrators can delete ward-wise birthplace households data",
+        message: "Only administrators can delete birthplace households data",
       });
     }
 
     // Delete the record
-    await ctx.db
-      .delete(wardWiseBirthplaceHouseholds)
-      .where(eq(wardWiseBirthplaceHouseholds.id, input.id));
+    const deleteQuery = sql`
+      DELETE FROM acme_birthplace_households 
+      WHERE id = ${input.id}
+    `;
+    await ctx.db.execute(deleteQuery);
 
     return { success: true };
   });
 
 // Get summary statistics
-export const getWardWiseBirthplaceHouseholdsSummary = publicProcedure
+export const getBirthplaceHouseholdsSummary = publicProcedure
   .query(async ({ ctx }) => {
     try {
-      // Get total counts by birth place across all wards
+      // Get summary data
       const summarySql = sql`
         SELECT 
-          birth_place, 
-          SUM(households) as total_households
+          age_group,
+          total_population,
+          nepal_born,
+          born_in_district_municipality,
+          born_in_district_other,
+          born_in_district_total,
+          born_other_district,
+          born_abroad,
+          birth_place_unknown
         FROM 
-          acme_ward_wise_birthplace_households
-        GROUP BY 
-          birth_place
+          acme_birthplace_households
+        WHERE 
+          age_group != 'जम्मा'
         ORDER BY 
-          birth_place
+          age_group
       `;
 
       const summaryData = await ctx.db.execute(summarySql);
@@ -271,22 +269,23 @@ export const getWardWiseBirthplaceHouseholdsSummary = publicProcedure
       return summaryData;
     } catch (error) {
       console.error(
-        "Error in getWardWiseBirthplaceHouseholdsSummary:",
+        "Error in getBirthplaceHouseholdsSummary:",
         error,
       );
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to retrieve ward-wise birthplace households summary",
+        message: "Failed to retrieve birthplace households summary",
       });
     }
   });
 
 // Export the router with all procedures
-export const wardWiseBirthplaceHouseholdsRouter = createTRPCRouter({
-  getAll: getAllWardWiseBirthplaceHouseholds,
-  getByWard: getWardWiseBirthplaceHouseholdsByWard,
-  create: createWardWiseBirthplaceHouseholds,
-  update: updateWardWiseBirthplaceHouseholds,
-  delete: deleteWardWiseBirthplaceHouseholds,
-  summary: getWardWiseBirthplaceHouseholdsSummary,
+export const birthplaceHouseholdsRouter = createTRPCRouter({
+  getAll: getAllBirthplaceHouseholds,
+  getByAgeGroup: getBirthplaceHouseholdsByAgeGroup,
+  create: createBirthplaceHouseholds,
+  update: updateBirthplaceHouseholds,
+  delete: deleteBirthplaceHouseholds,
+  summary: getBirthplaceHouseholdsSummary,
 });
+       

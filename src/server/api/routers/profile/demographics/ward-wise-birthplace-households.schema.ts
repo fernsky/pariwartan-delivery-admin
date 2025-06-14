@@ -1,36 +1,42 @@
 import { z } from "zod";
 
-// Define the birth place enum for validation
-export const BirthPlaceEnum = z.enum([
-  "SAME_MUNICIPALITY",
-  "SAME_DISTRICT_ANOTHER_MUNICIPALITY",
-  "ANOTHER_DISTRICT",
-  "ABROAD",
-]);
-export type BirthPlace = z.infer<typeof BirthPlaceEnum>;
-
-// Schema for ward-wise birthplace households data
-export const wardWiseBirthplaceHouseholdsSchema = z.object({
+// Schema for birthplace households data by age group
+export const birthplaceHouseholdsSchema = z.object({
   id: z.string().optional(),
-  wardNumber: z.number().int().positive(),
-  birthPlace: BirthPlaceEnum,
-  households: z.number().int().nonnegative(),
+  ageGroup: z.string(),
+  totalPopulation: z.number().int().nonnegative(),
+  nepalBorn: z.number().int().nonnegative(),
+  bornInDistrictMunicipality: z.number().int().nonnegative(),
+  bornInDistrictOther: z.number().int().nonnegative(),
+  bornInDistrictTotal: z.number().int().nonnegative(),
+  bornOtherDistrict: z.number().int().nonnegative(),
+  bornAbroad: z.number().int().nonnegative(),
+  birthPlaceUnknown: z.number().int().nonnegative(),
 });
 
-// Schema for filtering ward-wise birthplace households data
-export const wardWiseBirthplaceHouseholdsFilterSchema = z.object({
-  wardNumber: z.number().int().positive().optional(),
-  birthPlace: BirthPlaceEnum.optional(),
+// Schema for filtering birthplace households data
+export const birthplaceHouseholdsFilterSchema = z.object({
+  ageGroup: z.string().optional(),
 });
 
-export const updateWardWiseBirthplaceHouseholdsSchema = 
-  wardWiseBirthplaceHouseholdsSchema;
+export const updateBirthplaceHouseholdsSchema = 
+  birthplaceHouseholdsSchema;
 
-export type WardWiseBirthplaceHouseholdsData = z.infer<
-  typeof wardWiseBirthplaceHouseholdsSchema
+export type BirthplaceHouseholdsData = z.infer<
+  typeof birthplaceHouseholdsSchema
 >;
-export type UpdateWardWiseBirthplaceHouseholdsData =
-  WardWiseBirthplaceHouseholdsData;
-export type WardWiseBirthplaceHouseholdsFilter = z.infer<
-  typeof wardWiseBirthplaceHouseholdsFilterSchema
+export type UpdateBirthplaceHouseholdsData =
+  BirthplaceHouseholdsData;
+export type BirthplaceHouseholdsFilter = z.infer<
+  typeof birthplaceHouseholdsFilterSchema
 >;
+
+// Define the birth place categories for UI mapping
+export const BIRTH_PLACE_CATEGORIES = {
+  SAME_MUNICIPALITY: "bornInDistrictMunicipality",
+  SAME_DISTRICT_ANOTHER_MUNICIPALITY: "bornInDistrictOther", 
+  ANOTHER_DISTRICT: "bornOtherDistrict",
+  ABROAD: "bornAbroad",
+} as const;
+
+export type BirthPlaceCategory = keyof typeof BIRTH_PLACE_CATEGORIES;
