@@ -1,302 +1,294 @@
-import Link from "next/link";
+"use client";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { localizeNumber } from "@/lib/utils/localize-number";
 
-interface DisabilityCauseAnalysisSectionProps {
-  overallSummary: Array<{
-    disabilityCause: string;
-    disabilityCauseName: string;
-    population: number;
-  }>;
-  totalPopulationWithDisability: number;
-  wardWiseAnalysis: Array<{
-    wardNumber: number;
-    totalDisabilityPopulation: number;
-    mostCommonCause: string;
-    mostCommonCausePopulation: number;
-    mostCommonCausePercentage: string;
-  }>;
-  DISABILITY_CAUSE_NAMES: Record<string, string>;
-  DISABILITY_CAUSE_NAMES_EN: Record<string, string>;
+interface DisabilityCauseAnalysisProps {
+  disabilityData:
+    | Array<{
+        id?: string;
+        ageGroup: string;
+        physicalDisability: number;
+        visualImpairment: number;
+        hearingImpairment: number;
+        deafMute: number;
+        speechHearingCombined: number;
+        intellectualDisability: number;
+        mentalPsychosocial: number;
+        autism: number;
+        multipleDisabilities: number;
+        otherDisabilities: number;
+        total: number;
+      }>
+    | null
+    | undefined;
+  totalDisabled: number;
+  totalPhysical: number;
+  totalVisual: number;
+  totalHearing: number;
 }
 
 export default function DisabilityCauseAnalysisSection({
-  overallSummary,
-  totalPopulationWithDisability,
-  wardWiseAnalysis,
-  DISABILITY_CAUSE_NAMES,
-  DISABILITY_CAUSE_NAMES_EN,
-}: DisabilityCauseAnalysisSectionProps) {
-  // Updated modern aesthetic color palette for disability causes
-  const DISABILITY_CAUSE_COLORS = {
-    CONGENITAL: "#FFD166", // Yellow for congenital
-    ACCIDENT: "#EF476F", // Red for accident
-    MALNUTRITION: "#06D6A0", // Green for malnutrition
-    DISEASE: "#118AB2", // Blue for disease
-    CONFLICT: "#7B2CBF", // Purple for conflict
-    OTHER: "#9D9D9D", // Gray for other
-  };
+  disabilityData,
+  totalDisabled,
+  totalPhysical,
+  totalVisual,
+  totalHearing,
+}: DisabilityCauseAnalysisProps) {
+  // Add null checks and ensure disabilityData is a valid array
+  if (
+    !disabilityData ||
+    !Array.isArray(disabilityData) ||
+    disabilityData.length === 0
+  ) {
+    return (
+      <div className="mt-8 p-6 bg-muted/50 rounded-lg text-center">
+        <p className="text-muted-foreground">अपाङ्गता तथ्याङ्क उपलब्ध छैन।</p>
+      </div>
+    );
+  }
 
-  // Find wards with highest and lowest disability population
-  const highestDisabilityWard = [...wardWiseAnalysis].sort(
-    (a, b) => b.totalDisabilityPopulation - a.totalDisabilityPopulation,
-  )[0];
-  const lowestDisabilityWard = [...wardWiseAnalysis].sort(
-    (a, b) => a.totalDisabilityPopulation - b.totalDisabilityPopulation,
-  )[0];
+  // Filter out total row for calculations
+  const dataWithoutTotal = disabilityData.filter(
+    (item) => item.ageGroup !== "जम्मा",
+  );
 
-  // SEO attributes to include directly in JSX
-  const seoAttributes = {
-    "data-municipality": "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
-    "data-total-disability-population":
-      totalPopulationWithDisability.toString(),
-    "data-most-common-disability-cause":
-      overallSummary.length > 0
-        ? `${overallSummary[0].disabilityCauseName} / ${DISABILITY_CAUSE_NAMES_EN[overallSummary[0].disabilityCause as keyof typeof DISABILITY_CAUSE_NAMES_EN] || overallSummary[0].disabilityCause}`
-        : "",
-    "data-most-common-cause-percentage":
-      overallSummary.length > 0
-        ? (
-            (overallSummary[0].population / totalPopulationWithDisability) *
-            100
-          ).toFixed(2)
-        : "0",
-    "data-highest-disability-ward":
-      highestDisabilityWard?.wardNumber.toString() || "",
-    "data-lowest-disability-ward":
-      lowestDisabilityWard?.wardNumber.toString() || "",
-  };
+  // Find the age group with most disabilities
+  const mostAffectedAgeGroup = dataWithoutTotal.reduce((prev, current) =>
+    prev.total > current.total ? prev : current,
+  );
+
+  // Calculate disability type totals
+  const totalDeafMute = dataWithoutTotal.reduce(
+    (sum, item) => sum + (item.deafMute || 0),
+    0,
+  );
+  const totalSpeechHearing = dataWithoutTotal.reduce(
+    (sum, item) => sum + (item.speechHearingCombined || 0),
+    0,
+  );
+  const totalIntellectual = dataWithoutTotal.reduce(
+    (sum, item) => sum + (item.intellectualDisability || 0),
+    0,
+  );
+  const totalMentalPsychosocial = dataWithoutTotal.reduce(
+    (sum, item) => sum + (item.mentalPsychosocial || 0),
+    0,
+  );
+  const totalAutism = dataWithoutTotal.reduce(
+    (sum, item) => sum + (item.autism || 0),
+    0,
+  );
+  const totalMultiple = dataWithoutTotal.reduce(
+    (sum, item) => sum + (item.multipleDisabilities || 0),
+    0,
+  );
+
+  // Find dominant disability type
+  const disabilityTypeData = [
+    { name: "शारीरिक अपाङ्गता", value: totalPhysical },
+    { name: "दृष्टि अपाङ्गता", value: totalVisual },
+    { name: "श्रवण अपाङ्गता", value: totalHearing },
+    { name: "बोली-श्रवण अपाङ्गता", value: totalSpeechHearing },
+    { name: "बौद्धिक अपाङ्गता", value: totalIntellectual },
+    { name: "मानसिक-मनोसामाजिक अपाङ्गता", value: totalMentalPsychosocial },
+  ];
+
+  const dominantDisabilityType = disabilityTypeData.reduce((prev, current) =>
+    prev.value > current.value ? prev : current,
+  );
+
+  // Age groups with high disability rates
+  const highDisabilityAgeGroups = dataWithoutTotal
+    .filter((item) => item.total > totalDisabled / dataWithoutTotal.length)
+    .sort((a, b) => b.total - a.total);
+
+  // Age groups with low disability rates
+  const lowDisabilityAgeGroups = dataWithoutTotal
+    .filter((item) => item.total < totalDisabled / dataWithoutTotal.length)
+    .sort((a, b) => a.total - b.total);
 
   return (
     <>
-      <div
-        className="mt-6 flex flex-wrap gap-4 justify-center"
-        {...seoAttributes}
-      >
-        {overallSummary.map((item, index) => {
-          // Calculate percentage
-          const percentage = (
-            (item.population / totalPopulationWithDisability) *
-            100
-          ).toFixed(2);
-
-          return (
-            <div
-              key={index}
-              className="bg-muted/50 rounded-lg p-4 text-center min-w-[200px] relative overflow-hidden"
-              // Add data attributes for SEO crawlers
-              data-disability-cause={`${DISABILITY_CAUSE_NAMES_EN[item.disabilityCause as keyof typeof DISABILITY_CAUSE_NAMES_EN] || item.disabilityCause} / ${item.disabilityCauseName}`}
-              data-population={item.population}
-              data-percentage={percentage}
-            >
-              <div
-                className="absolute bottom-0 left-0 right-0"
-                style={{
-                  height: `${Math.min(
-                    (item.population /
-                      Math.max(...overallSummary.map((i) => i.population))) *
-                      100,
-                    100,
-                  )}%`,
-                  backgroundColor:
-                    DISABILITY_CAUSE_COLORS[
-                      item.disabilityCause as keyof typeof DISABILITY_CAUSE_COLORS
-                    ] || "#888",
-                  opacity: 0.2,
-                  zIndex: 0,
-                }}
-              />
-              <div className="relative z-10">
-                <h3 className="text-lg font-medium mb-2">
-                  {item.disabilityCauseName}
-                  {/* Hidden span for SEO with English name */}
-                  <span className="sr-only">
-                    {DISABILITY_CAUSE_NAMES_EN[
-                      item.disabilityCause as keyof typeof DISABILITY_CAUSE_NAMES_EN
-                    ] || item.disabilityCause}
-                  </span>
-                </h3>
-                <p className="text-2xl font-bold">
-                  {localizeNumber(percentage, "ne")}%
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {localizeNumber(item.population.toLocaleString(), "ne")}{" "}
-                  व्यक्ति
-                  <span className="sr-only">
-                    ({item.population.toLocaleString()} people)
-                  </span>
-                </p>
-              </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              कुल अपाङ्गता भएका
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {localizeNumber(totalDisabled.toLocaleString(), "ne")}
             </div>
-          );
-        })}
-      </div>
+            <div className="text-xs text-muted-foreground">
+              {dataWithoutTotal.length} उमेर समूह
+            </div>
+          </CardContent>
+        </Card>
 
-      <div className="bg-muted/50 p-4 rounded-lg mt-8">
-        <h3 className="text-xl font-medium mb-4">
-          अपाङ्गताको कारण विश्लेषण
-          <span className="sr-only">Disability Cause Analysis of Khajura</span>
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div
-            className="bg-card p-4 rounded border"
-            data-analysis-type="most-common-disability-cause"
-            data-percentage={
-              overallSummary.length > 0
-                ? (
-                    (overallSummary[0].population /
-                      totalPopulationWithDisability) *
-                    100
-                  ).toFixed(2)
-                : "0"
-            }
-          >
-            <h4 className="font-medium mb-2">
-              प्रमुख अपाङ्गताको कारण
-              <span className="sr-only">
-                Most Common Disability Cause in Khajura Rural Municipality
-              </span>
-            </h4>
-            <p className="text-3xl font-bold">
-              {overallSummary.length > 0
-                ? overallSummary[0].disabilityCauseName
-                : ""}
-            </p>
-            <p className="text-sm text-muted-foreground mt-2">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              सबैभन्दा प्रभावित उमेर समूह
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-lg font-bold">
+              {mostAffectedAgeGroup.ageGroup}
+            </div>
+            <div className="text-sm text-muted-foreground">
               {localizeNumber(
-                overallSummary.length > 0
-                  ? (
-                      (overallSummary[0].population /
-                        totalPopulationWithDisability) *
-                      100
-                    ).toFixed(2)
-                  : "0",
-                "ne",
-              )}
-              % (
-              {localizeNumber(
-                overallSummary.length > 0
-                  ? overallSummary[0].population.toLocaleString()
-                  : "0",
-                "ne",
-              )}{" "}
-              व्यक्ति)
-              <span className="sr-only">
-                {overallSummary.length > 0
-                  ? (
-                      (overallSummary[0].population /
-                        totalPopulationWithDisability) *
-                      100
-                    ).toFixed(2)
-                  : "0"}
-                % (
-                {overallSummary.length > 0 ? overallSummary[0].population : 0}{" "}
-                people)
-              </span>
-            </p>
-          </div>
-
-          <div
-            className="bg-card p-4 rounded border"
-            data-analysis-type="disability-distribution"
-          >
-            <h4 className="font-medium mb-2">
-              सबैभन्दा बढी अपाङ्गता भएको वडा
-              <span className="sr-only">
-                Ward with Highest Disability Population in Khajura
-              </span>
-            </h4>
-            <p className="text-3xl font-bold">
-              वडा{" "}
-              {localizeNumber(
-                highestDisabilityWard?.wardNumber.toString() || "",
-                "ne",
-              )}
-            </p>
-            <p className="text-sm text-muted-foreground mt-2">
-              {localizeNumber(
-                highestDisabilityWard?.totalDisabilityPopulation.toString() ||
-                  "0",
+                mostAffectedAgeGroup.total.toLocaleString(),
                 "ne",
               )}{" "}
               व्यक्ति
-              <span className="sr-only">
-                {highestDisabilityWard?.totalDisabilityPopulation || 0} people
-                with disabilities
-              </span>
-            </p>
+            </div>
+            <div className="text-xs text-muted-foreground">
+              {localizeNumber(
+                ((mostAffectedAgeGroup.total / totalDisabled) * 100).toFixed(1),
+                "ne",
+              )}
+              %
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              प्रमुख अपाङ्गताको प्रकार
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-lg font-bold">
+              {dominantDisabilityType.name}
+            </div>
+            <div className="text-sm text-muted-foreground">
+              {localizeNumber(
+                dominantDisabilityType.value.toLocaleString(),
+                "ne",
+              )}{" "}
+              व्यक्ति
+            </div>
+            <div className="text-xs text-muted-foreground">
+              {localizeNumber(
+                ((dominantDisabilityType.value / totalDisabled) * 100).toFixed(
+                  1,
+                ),
+                "ne",
+              )}
+              %
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              औसत प्रति उमेर समूह
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {localizeNumber(
+                Math.round(totalDisabled / dataWithoutTotal.length).toString(),
+                "ne",
+              )}
+            </div>
+            <div className="text-xs text-muted-foreground">प्रति उमेर समूह</div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="bg-muted/50 p-6 rounded-lg mt-8">
+        <h4 className="text-lg font-semibold mb-4">अपाङ्गता वितरण विश्लेषण</h4>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h5 className="font-medium mb-3 text-red-700">
+              उच्च अपाङ्गता दर भएका उमेर समूहहरू
+            </h5>
+            <div className="space-y-2">
+              {highDisabilityAgeGroups.slice(0, 5).map((ageGroup) => (
+                <div
+                  key={ageGroup.id || ageGroup.ageGroup}
+                  className="flex items-center justify-between"
+                >
+                  <span className="text-sm">{ageGroup.ageGroup}</span>
+                  <Badge variant="secondary" className="text-xs">
+                    {localizeNumber(ageGroup.total.toLocaleString(), "ne")}{" "}
+                    व्यक्ति
+                  </Badge>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h5 className="font-medium mb-3 text-green-700">
+              कम अपाङ्गता दर भएका उमेर समूहहरू
+            </h5>
+            <div className="space-y-2">
+              {lowDisabilityAgeGroups.slice(0, 5).map((ageGroup) => (
+                <div
+                  key={ageGroup.id || ageGroup.ageGroup}
+                  className="flex items-center justify-between"
+                >
+                  <span className="text-sm">{ageGroup.ageGroup}</span>
+                  <Badge variant="secondary" className="text-xs">
+                    {localizeNumber(ageGroup.total.toLocaleString(), "ne")}{" "}
+                    व्यक्ति
+                  </Badge>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className="mt-4 bg-card p-4 rounded border">
-          <h4 className="font-medium mb-2">
-            वडागत अपाङ्गताको कारण विश्लेषण
-            <span className="sr-only">Ward-wise Disability Cause Analysis</span>
-          </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Display top two most common disability causes */}
-            {overallSummary.slice(0, 2).map((item, index) => (
-              <div key={index}>
-                <h5 className="text-sm font-medium">
-                  {item.disabilityCauseName}
-                </h5>
-                <p className="text-sm text-muted-foreground">
-                  {localizeNumber(
-                    (
-                      (item.population / totalPopulationWithDisability) *
-                      100
-                    ).toFixed(2),
-                    "ne",
-                  )}
-                  % ({localizeNumber(item.population.toLocaleString(), "ne")}{" "}
-                  व्यक्ति)
-                </p>
-                <div className="w-full bg-muted h-2 rounded-full mt-2 overflow-hidden">
-                  <div
-                    className="h-full rounded-full"
-                    style={{
-                      width: `${Math.min((item.population / totalPopulationWithDisability) * 100, 100)}%`,
-                      backgroundColor:
-                        DISABILITY_CAUSE_COLORS[
-                          item.disabilityCause as keyof typeof DISABILITY_CAUSE_COLORS
-                        ] || "#888",
-                    }}
-                  ></div>
-                </div>
-              </div>
-            ))}
-          </div>
+        <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+          <h5 className="font-medium text-blue-800 mb-2">मुख्य निष्कर्षहरू:</h5>
+          <ul className="text-sm text-blue-700 space-y-1">
+            <li>
+              • कुल जनसंख्यामा {localizeNumber(totalDisabled.toString(), "ne")}{" "}
+              व्यक्तिमा अपाङ्गता छ
+            </li>
+            <li>
+              • {mostAffectedAgeGroup.ageGroup} उमेर समूहमा सबैभन्दा धेरै
+              अपाङ्गता भएका व्यक्ति छन्
+            </li>
+            <li>
+              • {dominantDisabilityType.name} सबैभन्दा सामान्य अपाङ्गताको प्रकार
+              हो
+            </li>
+            <li>
+              • शारीरिक अपाङ्गता कुल अपाङ्गताको{" "}
+              {localizeNumber(
+                ((totalPhysical / totalDisabled) * 100).toFixed(1),
+                "ne",
+              )}
+              % हो
+            </li>
+          </ul>
+        </div>
 
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <h5 className="text-sm font-medium">वडागत प्रमुख कारणहरू</h5>
-              <ul className="mt-2 text-sm space-y-1">
-                {wardWiseAnalysis.slice(0, 3).map((ward, index) => (
-                  <li key={index} className="flex justify-between">
-                    <span>
-                      वडा {localizeNumber(ward.wardNumber.toString(), "ne")}:
-                    </span>
-                    <span className="font-medium">
-                      {DISABILITY_CAUSE_NAMES[
-                        ward.mostCommonCause as keyof typeof DISABILITY_CAUSE_NAMES
-                      ] || ward.mostCommonCause}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h5 className="text-sm font-medium">
-                अपाङ्गताको कारण आधारित सुझाव
-              </h5>
-              <p className="mt-2 text-sm text-muted-foreground">
-                सबैभन्दा बढी देखिएको अपाङ्गताको कारण,{" "}
-                {overallSummary.length > 0
-                  ? overallSummary[0].disabilityCauseName
-                  : ""}{" "}
-                को न्यूनीकरणका लागि विशेष कार्यक्रम सञ्चालन गर्नु उपयुक्त हुनेछ।
-              </p>
-            </div>
-          </div>
+        <div className="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+          <h5 className="font-medium text-yellow-800 mb-2">सुझावहरू:</h5>
+          <ul className="text-sm text-yellow-700 space-y-1">
+            <li>
+              • विशेष आवश्यकता भएका उमेर समूहका लागि विशेष कार्यक्रम सञ्चालन
+              गर्नुपर्छ
+            </li>
+            <li>
+              • अपाङ्गता भएका व्यक्तिहरूका लागि पहुँचयोग्य सुविधाहरू विकास
+              गर्नुपर्छ
+            </li>
+            <li>
+              • प्रारम्भिक हस्तक्षेप र रोकथाम कार्यक्रमहरू सञ्चालन गर्नुपर्छ
+            </li>
+            <li>• अपाङ्गता भएका व्यक्तिहरूको क्षमता विकासमा जोड दिनुपर्छ</li>
+          </ul>
         </div>
       </div>
     </>

@@ -1,372 +1,244 @@
 import { Metadata } from "next";
-import { DocsLayout } from "@/components/layout/DocsLayout";
-import { TableOfContents } from "@/components/TableOfContents";
-import Image from "next/image";
 import { api } from "@/trpc/server";
-import { localizeNumber } from "@/lib/utils/localize-number";
+import { TableOfContents } from "@/components/TableOfContents";
 import DisabilityCauseCharts from "./_components/disability-cause-charts";
 import DisabilityCauseAnalysisSection from "./_components/disability-cause-analysis-section";
-import DisabilityCauseSEO from "./_components/disability-cause-seo";
+import { localizeNumber } from "@/lib/utils/localize-number";
+
+// Define type for disability data
+type DisabilityDataType = {
+  id?: string;
+  ageGroup: string;
+  physicalDisability: number;
+  visualImpairment: number;
+  hearingImpairment: number;
+  deafMute: number;
+  speechHearingCombined: number;
+  intellectualDisability: number;
+  mentalPsychosocial: number;
+  autism: number;
+  multipleDisabilities: number;
+  otherDisabilities: number;
+  total: number;
+};
 
 // Force dynamic rendering since we're using tRPC which relies on headers
 export const dynamic = "force-dynamic";
 
 // Define the locales for which this page should be statically generated
 export async function generateStaticParams() {
-  // Generate the page for 'en' and 'ne' locales
   return [{ locale: "en" }];
 }
 
-// Optional: Add revalidation period if you want to update the static pages periodically
+// Optional: Add revalidation period
 export const revalidate = 86400; // Revalidate once per day (in seconds)
 
-// Define Nepali names for disability causes
-const DISABILITY_CAUSE_NAMES: Record<string, string> = {
-  CONGENITAL: "जन्मजात",
-  ACCIDENT: "दुर्घटना",
-  MALNUTRITION: "कुपोषण",
-  DISEASE: "रोगको कारण",
-  CONFLICT: "द्वन्द्वको कारण",
-  OTHER: "अन्य कारण",
-};
-
-// Define English names for disability causes (for SEO)
-const DISABILITY_CAUSE_NAMES_EN: Record<string, string> = {
-  CONGENITAL: "Congenital",
-  ACCIDENT: "Accident",
-  MALNUTRITION: "Malnutrition",
-  DISEASE: "Disease",
-  CONFLICT: "Conflict-related",
-  OTHER: "Other causes",
-};
-
-// This function will generate metadata dynamically based on the actual data
+// Generate metadata dynamically based on the actual data
 export async function generateMetadata(): Promise<Metadata> {
   try {
-    // Fetch data for SEO using tRPC
     const disabilityData =
-      await api.profile.demographics.wardWiseDisabilityCause.getAll.query();
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+      await api.profile.demographics.disabilityByAge.getAll.query();
+    const municipalityName = "परिवर्तन गाउँपालिका";
 
-    // Process data for SEO
-    const totalPopulationWithDisability = disabilityData.reduce(
-      (sum, item) => sum + (item.population || 0),
-      0,
-    );
+    if (!disabilityData || !Array.isArray(disabilityData)) {
+      return {
+        title: `उमेर अनुसार अपाङ्गता वितरण - ${municipalityName}`,
+        description: `${municipalityName}को उमेर र अपाङ्गताको प्रकार अनुसार जनसंख्या वितरणको विस्तृत तथ्याङ्क।`,
+      };
+    }
 
-    // Group by disability cause and calculate totals
-    const disabilityCauseCounts: Record<string, number> = {};
-    disabilityData.forEach((item) => {
-      if (!disabilityCauseCounts[item.disabilityCause])
-        disabilityCauseCounts[item.disabilityCause] = 0;
-      disabilityCauseCounts[item.disabilityCause] += item.population || 0;
-    });
+    const totalDisabled = disabilityData
+      .filter((item) => item.ageGroup !== "जम्मा")
+      .reduce((sum, item) => sum + (item.total || 0), 0);
 
-    // Find the most common disability cause
-    let mostCommonCause = "";
-    let mostCommonCount = 0;
-    Object.entries(disabilityCauseCounts).forEach(([cause, count]) => {
-      if (count > mostCommonCount) {
-        mostCommonCount = count;
-        mostCommonCause = cause;
-      }
-    });
-
-    const mostCommonPercentage =
-      totalPopulationWithDisability > 0
-        ? ((mostCommonCount / totalPopulationWithDisability) * 100).toFixed(2)
-        : "0";
-
-    // Create rich keywords with actual data
-    const keywordsNP = [
-      "परिवर्तन गाउँपालिका अपाङ्गताको कारण",
-      "परिवर्तन अपाङ्गता वितरण",
-      "वडा अनुसार अपाङ्गताको कारण",
-      "अपाङ्गताको कारण विवरण",
-      "जन्मजात अपाङ्गता परिवर्तन",
-      "दुर्घटनाको कारण अपाङ्गता",
-      `परिवर्तन अपाङ्गता जनसंख्या ${localizeNumber(totalPopulationWithDisability.toString(), "ne")}`,
-    ];
-
-    const keywordsEN = [
-      "Khajura Rural Municipality disability causes",
-      "Khajura disability distribution",
-      "Ward-wise disability causes",
-      "Disability cause details",
-      "Congenital disabilities in Khajura",
-      "Accident-related disabilities",
-      `Khajura disability population ${totalPopulationWithDisability}`,
-    ];
-
-    // Create detailed description with actual data
-    const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार अपाङ्गताको कारणको वितरण र विश्लेषण। कुल अपाङ्गता भएका जनसंख्या ${localizeNumber(totalPopulationWithDisability.toString(), "ne")} मध्ये ${localizeNumber(mostCommonPercentage, "ne")}% (${localizeNumber(mostCommonCount.toString(), "ne")}) ${DISABILITY_CAUSE_NAMES[mostCommonCause] || mostCommonCause} कारणबाट हुने देखिन्छ। विभिन्न वडाहरूमा अपाङ्गताको कारणहरूको विस्तृत विश्लेषण।`;
-
-    const descriptionEN = `Ward-wise distribution and analysis of disability causes in Khajura Rural Municipality. Out of a total population with disabilities of ${totalPopulationWithDisability}, ${mostCommonPercentage}% (${mostCommonCount}) are due to ${DISABILITY_CAUSE_NAMES_EN[mostCommonCause] || mostCommonCause}. Detailed analysis of disability causes across various wards.`;
+    const title = `उमेर अनुसार अपाङ्गता वितरण - ${municipalityName}`;
+    const description = `${municipalityName}को उमेर र अपाङ्गताको प्रकार अनुसार जनसंख्या वितरणको विस्तृत तथ्याङ्क। कुल अपाङ्गता भएका व्यक्ति: ${totalDisabled.toLocaleString()}।`;
 
     return {
-      title: `अपाङ्गताको कारणहरू | ${municipalityName} डिजिटल प्रोफाइल`,
-      description: descriptionNP,
-      keywords: [...keywordsNP, ...keywordsEN],
-      alternates: {
-        canonical: "/profile/demographics/ward-wise-disability-cause",
-        languages: {
-          en: "/en/profile/demographics/ward-wise-disability-cause",
-          ne: "/ne/profile/demographics/ward-wise-disability-cause",
-        },
-      },
+      title,
+      description,
+      keywords: [
+        "अपाङ्गता तथ्याङ्क",
+        "उमेर अनुसार अपाङ्गता",
+        "परिवर्तन गाउँपालिका",
+        "खजुरा नगरपालिका",
+        "विकलाङ्गता",
+        "Disability statistics",
+        "Age-wise disability",
+        "Khajura Rural Municipality",
+        "Disability distribution",
+      ],
       openGraph: {
-        title: `अपाङ्गताको कारणहरू | ${municipalityName}`,
-        description: descriptionNP,
-        type: "article",
+        title,
+        description,
+        type: "website",
         locale: "ne_NP",
-        alternateLocale: "en_US",
-        siteName: `${municipalityName} डिजिटल प्रोफाइल`,
       },
       twitter: {
         card: "summary_large_image",
-        title: `अपाङ्गताको कारणहरू | ${municipalityName}`,
-        description: descriptionNP,
+        title,
+        description,
       },
     };
   } catch (error) {
-    // Fallback metadata if data fetching fails
+    console.error("Error generating metadata:", error);
     return {
-      title: "अपाङ्गताको कारणहरू | परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
-      description: "वडा अनुसार अपाङ्गताका कारणहरूको वितरण र विश्लेषण।",
+      title: "उमेर अनुसार अपाङ्गता वितरण - परिवर्तन गाउँपालिका",
+      description:
+        "परिवर्तन गाउँपालिकाको उमेर र अपाङ्गताको प्रकार अनुसार जनसंख्या वितरणको विस्तृत तथ्याङ्क।",
     };
   }
 }
 
 const toc = [
   { level: 2, text: "परिचय", slug: "introduction" },
-  { level: 2, text: "अपाङ्गताका कारणहरू", slug: "disability-causes" },
   {
     level: 2,
-    text: "वडा अनुसार अपाङ्गताका कारणहरू",
-    slug: "ward-wise-disability-causes",
+    text: "अपाङ्गताको समग्र स्थिति",
+    slug: "overall-disability-status",
   },
-  { level: 2, text: "अपाङ्गता विश्लेषण", slug: "disability-analysis" },
+  { level: 2, text: "उमेर अनुसार अपाङ्गता वितरण", slug: "age-wise-disability" },
+  {
+    level: 2,
+    text: "अपाङ्गताको प्रकार अनुसार वितरण",
+    slug: "disability-type-distribution",
+  },
+  { level: 2, text: "विस्तृत विश्लेषण", slug: "detailed-analysis" },
 ];
 
-export default async function WardWiseDisabilityCausePage() {
-  // Fetch all disability cause data using tRPC
-  const disabilityData =
-    await api.profile.demographics.wardWiseDisabilityCause.getAll.query();
+export default async function DisabilityCausePage() {
+  let disabilityData: DisabilityDataType[] = [];
 
-  // Try to fetch summary data
-  let summaryData = null;
   try {
-    summaryData =
-      await api.profile.demographics.wardWiseDisabilityCause.summary.query();
+    const fetchedData =
+      await api.profile.demographics.disabilityByAge.getAll.query();
+    disabilityData = fetchedData || [];
   } catch (error) {
-    console.error("Could not fetch summary data", error);
+    console.error("Error fetching disability data:", error);
+    disabilityData = [];
   }
 
-  // Process data for overall summary
-  const overallSummary = Object.entries(
-    disabilityData.reduce((acc: Record<string, number>, item) => {
-      if (!acc[item.disabilityCause]) acc[item.disabilityCause] = 0;
-      acc[item.disabilityCause] += item.population || 0;
-      return acc;
-    }, {}),
-  )
-    .map(([disabilityCause, population]) => ({
-      disabilityCause,
-      disabilityCauseName:
-        DISABILITY_CAUSE_NAMES[
-          disabilityCause as keyof typeof DISABILITY_CAUSE_NAMES
-        ] || disabilityCause,
-      population,
-    }))
-    .sort((a, b) => b.population - a.population); // Sort by population descending
+  if (!disabilityData || !Array.isArray(disabilityData)) {
+    disabilityData = [];
+  }
 
-  // Calculate total population for percentages
-  const totalPopulationWithDisability = overallSummary.reduce(
-    (sum, item) => sum + item.population,
+  // Calculate totals (excluding the 'जम्मा' row if it exists)
+  const dataWithoutTotal = disabilityData.filter(
+    (item) => item.ageGroup !== "जम्मा",
+  );
+
+  const totalPhysical = dataWithoutTotal.reduce(
+    (sum, item) => sum + (item.physicalDisability || 0),
+    0,
+  );
+  const totalVisual = dataWithoutTotal.reduce(
+    (sum, item) => sum + (item.visualImpairment || 0),
+    0,
+  );
+  const totalHearing = dataWithoutTotal.reduce(
+    (sum, item) => sum + (item.hearingImpairment || 0),
+    0,
+  );
+  const totalDeafMute = dataWithoutTotal.reduce(
+    (sum, item) => sum + (item.deafMute || 0),
+    0,
+  );
+  const totalDisabled = dataWithoutTotal.reduce(
+    (sum, item) => sum + (item.total || 0),
     0,
   );
 
-  // Create data for pie chart
-  const pieChartData = overallSummary.map((item) => ({
-    name: item.disabilityCauseName,
-    value: item.population,
-    percentage: (
-      (item.population / totalPopulationWithDisability) *
-      100
-    ).toFixed(2),
-  }));
-
-  // Get unique ward numbers
-  const wardNumbers = Array.from(
-    new Set(disabilityData.map((item) => item.wardNumber)),
-  ).sort((a, b) => a - b); // Sort numerically
-
-  // Process data for ward-wise visualization
-  const wardWiseData = wardNumbers.map((wardNumber) => {
-    const wardData = disabilityData.filter(
-      (item) => item.wardNumber === wardNumber,
-    );
-
-    const result: Record<string, any> = { ward: `वडा ${wardNumber}` };
-
-    // Add disability causes
-    wardData.forEach((item) => {
-      result[
-        DISABILITY_CAUSE_NAMES[
-          item.disabilityCause as keyof typeof DISABILITY_CAUSE_NAMES
-        ] || item.disabilityCause
-      ] = item.population;
-    });
-
-    return result;
-  });
-
-  // Calculate ward-wise disability rates
-  const wardWiseAnalysis = wardNumbers.map((wardNumber) => {
-    const wardData = disabilityData.filter(
-      (item) => item.wardNumber === wardNumber,
-    );
-
-    const wardTotalPopulation = wardData.reduce(
-      (sum, item) => sum + (item.population || 0),
-      0,
-    );
-
-    const mostCommonCause = wardData.reduce(
-      (prev, current) => {
-        return (prev.population || 0) > (current.population || 0)
-          ? prev
-          : current;
-      },
-      { disabilityCause: "", population: 0 },
-    );
-
-    return {
-      wardNumber,
-      totalDisabilityPopulation: wardTotalPopulation,
-      mostCommonCause: mostCommonCause.disabilityCause,
-      mostCommonCausePopulation: mostCommonCause.population || 0,
-      mostCommonCausePercentage:
-        wardTotalPopulation > 0
-          ? (
-              ((mostCommonCause.population || 0) / wardTotalPopulation) *
-              100
-            ).toFixed(2)
-          : "0",
-    };
-  });
-
   return (
-    <DocsLayout toc={<TableOfContents toc={toc} />}>
-      {/* Add structured data for SEO */}
-      <DisabilityCauseSEO
-        overallSummary={overallSummary}
-        totalPopulationWithDisability={totalPopulationWithDisability}
-        DISABILITY_CAUSE_NAMES={DISABILITY_CAUSE_NAMES}
-        DISABILITY_CAUSE_NAMES_EN={DISABILITY_CAUSE_NAMES_EN}
-        wardNumbers={wardNumbers}
-      />
-
-      <div className="flex flex-col gap-8">
-        <section>
-          <div className="relative rounded-lg overflow-hidden mb-8">
-            <Image
-              src="/images/disability-causes.svg"
-              width={1200}
-              height={400}
-              alt="अपाङ्गताका कारणहरू - परिवर्तन गाउँपालिका (Disability Causes - Khajura Rural Municipality)"
-              className="w-full h-[250px] object-cover rounded-sm"
-              priority
-            />
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex gap-8">
+        {/* Table of Contents - Sidebar */}
+        <aside className="hidden lg:block w-64 flex-shrink-0">
+          <div className="sticky top-8">
+            <TableOfContents toc={toc} />
           </div>
+        </aside>
 
-          <div className="prose prose-slate dark:prose-invert max-w-none">
-            <h1 className="scroll-m-20 tracking-tight mb-6">
-              परिवर्तन गाउँपालिकामा अपाङ्गताका कारणहरू
+        {/* Main Content */}
+        <main className="flex-1 min-w-0">
+          {/* Header Section */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold mb-4" id="introduction">
+              उमेर अनुसार अपाङ्गता वितरण
             </h1>
-
-            <h2 id="introduction" className="scroll-m-20">
-              परिचय
-            </h2>
-            <p>
-              अपाङ्गता भएका व्यक्तिहरूको जीवनस्तर सुधार तथा समाजमा पूर्ण
-              समावेशीकरणका लागि अपाङ्गताका कारणहरूको अध्ययन र विश्लेषण
-              महत्त्वपूर्ण छ। यस खण्डमा परिवर्तन गाउँपालिकामा अपाङ्गताका प्रमुख
-              कारणहरू र तिनको वडागत वितरणको विश्लेषण प्रस्तुत गरिएको छ।
-            </p>
-            <p>
-              परिवर्तन गाउँपालिकामा अपाङ्गताका कारणहरूको तथ्याङ्क हेर्दा, कुल
-              अपाङ्गता भएका{" "}
-              {localizeNumber(
-                totalPopulationWithDisability.toLocaleString(),
-                "ne",
-              )}
-              जनसंख्या मध्ये सबैभन्दा बढी{" "}
-              {overallSummary[0]?.disabilityCauseName || ""}
-              कारणले{" "}
-              {localizeNumber(
-                (
-                  ((overallSummary[0]?.population || 0) /
-                    totalPopulationWithDisability) *
-                  100
-                ).toFixed(1),
-                "ne",
-              )}
-              % अपाङ्गता भएको देखिन्छ।
+            <p className="text-muted-foreground leading-relaxed">
+              परिवर्तन गाउँपालिकाको उमेर र अपाङ्गताको प्रकार अनुसार विस्तृत
+              जनसंख्या विश्लेषण। यहाँ विभिन्न उमेर समूहमा रहेका अपाङ्गता भएका
+              व्यक्तिहरूको तथ्याङ्क प्रस्तुत गरिएको छ।
             </p>
 
-            <h2 id="disability-causes" className="scroll-m-20 border-b pb-2">
-              अपाङ्गताका कारणहरू
-            </h2>
-            <p>
-              परिवर्तन गाउँपालिकामा अपाङ्गताका प्रमुख कारणहरू र तिनको वितरण
-              निम्नानुसार रहेको छ:
-            </p>
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+              <div className="bg-blue-50 p-4 rounded-lg border">
+                <div className="text-2xl font-bold text-blue-600">
+                  {localizeNumber(totalDisabled.toLocaleString(), "ne")}
+                </div>
+                <div className="text-sm text-blue-600">कुल अपाङ्गता भएका</div>
+              </div>
+              <div className="bg-red-50 p-4 rounded-lg border">
+                <div className="text-2xl font-bold text-red-600">
+                  {localizeNumber(totalPhysical.toLocaleString(), "ne")}
+                </div>
+                <div className="text-sm text-red-600">शारीरिक अपाङ्गता</div>
+              </div>
+              <div className="bg-green-50 p-4 rounded-lg border">
+                <div className="text-2xl font-bold text-green-600">
+                  {localizeNumber(totalVisual.toLocaleString(), "ne")}
+                </div>
+                <div className="text-sm text-green-600">दृष्टि अपाङ्गता</div>
+              </div>
+              <div className="bg-purple-50 p-4 rounded-lg border">
+                <div className="text-2xl font-bold text-purple-600">
+                  {localizeNumber(dataWithoutTotal.length.toString(), "ne")}
+                </div>
+                <div className="text-sm text-purple-600">उमेर समूह</div>
+              </div>
+            </div>
           </div>
 
-          {/* Client component for charts */}
+          {/* Charts Section */}
           <DisabilityCauseCharts
-            overallSummary={overallSummary}
-            totalPopulationWithDisability={totalPopulationWithDisability}
-            pieChartData={pieChartData}
-            wardWiseData={wardWiseData}
-            wardNumbers={wardNumbers}
             disabilityData={disabilityData}
-            wardWiseAnalysis={wardWiseAnalysis}
-            DISABILITY_CAUSE_NAMES={DISABILITY_CAUSE_NAMES}
+            totalDisabled={totalDisabled}
+            totalPhysical={totalPhysical}
+            totalVisual={totalVisual}
+            totalHearing={totalHearing}
           />
 
-          <div className="prose prose-slate dark:prose-invert max-w-none mt-8">
-            <h2 id="disability-analysis" className="scroll-m-20 border-b pb-2">
-              अपाङ्गता विश्लेषण
-            </h2>
-            <p>
-              परिवर्तन गाउँपालिकामा अपाङ्गताका कारणहरूको विश्लेषण गर्दा,
-              {DISABILITY_CAUSE_NAMES[
-                overallSummary[0]?.disabilityCause || ""
-              ] || overallSummary[0]?.disabilityCause}
-              कारणले हुने अपाङ्गता सबैभन्दा बढी
-              {localizeNumber(
-                (
-                  ((overallSummary[0]?.population || 0) /
-                    totalPopulationWithDisability) *
-                  100
-                ).toFixed(2),
-                "ne",
-              )}
-              % रहेको पाइन्छ।
-            </p>
-
+          {/* Analysis Section */}
+          <section id="detailed-analysis">
             <DisabilityCauseAnalysisSection
-              overallSummary={overallSummary}
-              totalPopulationWithDisability={totalPopulationWithDisability}
-              wardWiseAnalysis={wardWiseAnalysis}
-              DISABILITY_CAUSE_NAMES={DISABILITY_CAUSE_NAMES}
-              DISABILITY_CAUSE_NAMES_EN={DISABILITY_CAUSE_NAMES_EN}
+              disabilityData={disabilityData}
+              totalDisabled={totalDisabled}
+              totalPhysical={totalPhysical}
+              totalVisual={totalVisual}
+              totalHearing={totalHearing}
             />
+          </section>
+
+          {/* Additional Information */}
+          <div className="mt-12 bg-gray-50 p-6 rounded-lg">
+            <h3 className="text-lg font-semibold mb-4">डेटा स्रोत र नोट</h3>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>
+                • यो तथ्याङ्क राष्ट्रिय जनगणना र स्थानीय सर्वेक्षणमा आधारित छ
+              </li>
+              <li>• अपाङ्गताको वर्गीकरण राष्ट्रिय मापदण्ड अनुसार गरिएको छ</li>
+              <li>
+                • यो डेटा नीति निर्माण र समावेशी विकास योजनाका लागि उपयोगी छ
+              </li>
+              <li>
+                • अपाङ्गता भएका व्यक्तिहरूको अधिकार र सुविधा सुनिश्चित गर्न यो
+                तथ्याङ्क महत्वपूर्ण छ
+              </li>
+            </ul>
           </div>
-        </section>
+        </main>
       </div>
-    </DocsLayout>
+    </div>
   );
 }

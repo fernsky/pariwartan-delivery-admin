@@ -17,7 +17,7 @@ import { wardWiseEducationalLevelRouter } from "../education/ward-wise-education
 import { wardWiseLiteracyStatusRouter } from "../education/ward-wise-literacy-status.procedure";
 import { wardWiseMajorSubjectRouter } from "../education/ward-wise-major-subject.procedure";
 import { wardWiseSchoolDropoutRouter } from "../education/ward-wise-school-dropout.procedure";
-import { wardWiseDisabilityCauseRouter } from "./ward-wise-disability-cause.procedure";
+import { disabilityByAgeRouter } from "./ward-wise-disability-cause.procedure";
 import { wardWiseBirthplaceHouseholdsRouter } from "./ward-wise-birthplace-households.procedure";
 import { wardWiseMigratedHouseholdsRouter } from "./ward-wise-migrated-households.procedure";
 import { wardWiseBirthCertificatePopulationRouter } from "./ward-wise-birth-certificate-population.procedure";
@@ -31,6 +31,7 @@ export const demographicsRouter = createTRPCRouter({
   ageWisePopulation: ageWisePopulationRouter,
   castePopulation: castePopulationRouter,
   motherTonguePopulation: motherTonguePopulationRouter,
+  disabilityByAge: disabilityByAgeRouter,
   wardWiseReligionPopulation: wardWiseReligionPopulationRouter,
   wardAgeWiseMaritalStatus: wardAgeWiseMaritalStatusRouter,
   wardAgeGenderWiseMarriedAge: wardAgeGenderWiseMarriedAgeRouter,
@@ -43,7 +44,6 @@ export const demographicsRouter = createTRPCRouter({
   wardWiseMajorSubject: wardWiseMajorSubjectRouter,
   wardWiseSchoolDropout: wardWiseSchoolDropoutRouter,
   familyMainOccupation: familyMainOccupationRouter,
-  wardWiseDisabilityCause: wardWiseDisabilityCauseRouter,
   wardWiseBirthplaceHouseholds: wardWiseBirthplaceHouseholdsRouter,
   wardWiseMigratedHouseholds: wardWiseMigratedHouseholdsRouter,
   wardWiseBirthCertificatePopulation: wardWiseBirthCertificatePopulationRouter,

@@ -1,38 +1,29 @@
 import { z } from "zod";
 
-// Define the disability cause enum for validation
-export const DisabilityCauseEnum = z.enum([
-  "CONGENITAL",
-  "ACCIDENT",
-  "MALNUTRITION",
-  "DISEASE",
-  "CONFLICT",
-  "OTHER",
-]);
-export type DisabilityCause = z.infer<typeof DisabilityCauseEnum>;
-
-// Schema for ward-wise disability cause data
-export const wardWiseDisabilityCauseSchema = z.object({
+// Schema for disability statistics by age group
+export const disabilityByAgeSchema = z.object({
   id: z.string().optional(),
-  wardNumber: z.number().int().positive(),
-  disabilityCause: DisabilityCauseEnum,
-  population: z.number().int().nonnegative(),
+  ageGroup: z.string(),
+  physicalDisability: z.number().int().nonnegative(),
+  visualImpairment: z.number().int().nonnegative(),
+  hearingImpairment: z.number().int().nonnegative(),
+  deafMute: z.number().int().nonnegative(),
+  speechHearingCombined: z.number().int().nonnegative(),
+  intellectualDisability: z.number().int().nonnegative(),
+  mentalPsychosocial: z.number().int().nonnegative(),
+  autism: z.number().int().nonnegative(),
+  multipleDisabilities: z.number().int().nonnegative(),
+  otherDisabilities: z.number().int().nonnegative(),
+  total: z.number().int().nonnegative(),
 });
 
-// Schema for filtering ward-wise disability cause data
-export const wardWiseDisabilityCauseFilterSchema = z.object({
-  wardNumber: z.number().int().positive().optional(),
-  disabilityCause: DisabilityCauseEnum.optional(),
+// Schema for filtering disability data
+export const disabilityByAgeFilterSchema = z.object({
+  ageGroup: z.string().optional(),
 });
 
-export const updateWardWiseDisabilityCauseSchema = 
-  wardWiseDisabilityCauseSchema;
+export const updateDisabilityByAgeSchema = disabilityByAgeSchema;
 
-export type WardWiseDisabilityCauseData = z.infer<
-  typeof wardWiseDisabilityCauseSchema
->;
-export type UpdateWardWiseDisabilityCauseData =
-  WardWiseDisabilityCauseData;
-export type WardWiseDisabilityCauseFilter = z.infer<
-  typeof wardWiseDisabilityCauseFilterSchema
->;
+export type DisabilityByAgeData = z.infer<typeof disabilityByAgeSchema>;
+export type UpdateDisabilityByAgeData = DisabilityByAgeData;
+export type DisabilityByAgeFilter = z.infer<typeof disabilityByAgeFilterSchema>;

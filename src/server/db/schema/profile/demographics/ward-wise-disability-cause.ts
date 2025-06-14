@@ -1,29 +1,26 @@
 import { pgTable } from "../../basic";
-import { integer, pgEnum, timestamp, varchar } from "drizzle-orm/pg-core";
+import { integer, timestamp, varchar } from "drizzle-orm/pg-core";
 
-// Define the disability cause enum
-export const disabilityCauseEnum = pgEnum("disability_cause", [
-  "CONGENITAL", // जन्मजात
-  "ACCIDENT", // दुर्घटना
-  "MALNUTRITION", // कुपोषण
-  "DISEASE", // रोगको कारण
-  "CONFLICT", // द्वन्द्वको कारण
-  "OTHER", // अन्य(खुलाऊनुहोस्)
-]);
-
-export const wardWiseDisabilityCause = pgTable(
-  "ward_wise_disability_cause",
+export const disabilityByAge = pgTable(
+  "disability_by_age",
   {
     id: varchar("id", { length: 36 }).primaryKey(),
 
-    // Reference to the ward entity
-    wardNumber: integer("ward_number").notNull(),
+    // Age group
+    ageGroup: varchar("age_group", { length: 50 }).notNull(),
 
-    // Disability cause category
-    disabilityCause: disabilityCauseEnum("disability_cause").notNull(),
-
-    // Number of people in this demographic category
-    population: integer("population").notNull(),
+    // Different disability types
+    physicalDisability: integer("physical_disability").notNull(),
+    visualImpairment: integer("visual_impairment").notNull(),
+    hearingImpairment: integer("hearing_impairment").notNull(),
+    deafMute: integer("deaf_mute").notNull(),
+    speechHearingCombined: integer("speech_hearing_combined").notNull(),
+    intellectualDisability: integer("intellectual_disability").notNull(),
+    mentalPsychosocial: integer("mental_psychosocial").notNull(),
+    autism: integer("autism").notNull(),
+    multipleDisabilities: integer("multiple_disabilities").notNull(),
+    otherDisabilities: integer("other_disabilities").notNull(),
+    total: integer("total").notNull(),
 
     // Metadata
     updatedAt: timestamp("updated_at")
@@ -33,7 +30,5 @@ export const wardWiseDisabilityCause = pgTable(
   },
 );
 
-export type WardWiseDisabilityCause = 
-  typeof wardWiseDisabilityCause.$inferSelect;
-export type NewWardWiseDisabilityCause = 
-  typeof wardWiseDisabilityCause.$inferInsert;
+export type DisabilityByAge = typeof disabilityByAge.$inferSelect;
+export type NewDisabilityByAge = typeof disabilityByAge.$inferInsert;
