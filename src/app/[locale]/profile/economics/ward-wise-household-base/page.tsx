@@ -27,6 +27,9 @@ const BASE_TYPE_NAMES: Record<string, string> = {
   CEMENT_JOINED: "सिमेन्टको जोडाइ भएको इँटा/ढुङ्गा",
   MUD_JOINED: "माटोको जोडाइ भएको इँटा/ढुङ्गा",
   WOOD_POLE: "काठको खम्बा गाडेको",
+  MUD_JOINED_BRICK_STONE: "माटोको जोडाइ भएको इँटा/ढुङ्गा",
+  CEMENT_JOINED_BRICK_STONE: "सिमेन्टको जोडाइ भएको इँटा/ढुङ्गा",
+  RCC_PILLAR: "ढलान पिल्लरसहितको",
   OTHER: "अन्य",
 };
 
@@ -36,6 +39,9 @@ const BASE_TYPE_NAMES_EN: Record<string, string> = {
   CEMENT_JOINED: "Cement-bonded brick/stone",
   MUD_JOINED: "Mud-bonded brick/stone",
   WOOD_POLE: "Wooden pole foundation",
+  MUD_JOINED_BRICK_STONE: "Mud-bonded brick/stone",
+  CEMENT_JOINED_BRICK_STONE: "Cement-bonded brick/stone",
+  RCC_PILLAR: "RCC pillar construction",
   OTHER: "Other materials",
 };
 

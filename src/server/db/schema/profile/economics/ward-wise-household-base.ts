@@ -3,9 +3,9 @@ import { integer, timestamp, varchar, pgEnum } from "drizzle-orm/pg-core";
 
 // Define base type enum
 export const householdBaseTypeEnum = pgEnum("household_base_type", [
-  "CONCRETE_PILLAR",
-  "CEMENT_JOINED",
-  "MUD_JOINED",
+  "MUD_JOINED_BRICK_STONE",
+  "CEMENT_JOINED_BRICK_STONE", 
+  "RCC_PILLAR",
   "WOOD_POLE",
   "OTHER",
 ]);
