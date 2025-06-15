@@ -3,10 +3,14 @@ import { timestamp, varchar, text, pgEnum } from "drizzle-orm/pg-core";
 
 // Define vegetable and fruit type enum
 export const vegetableFruitTypeEnum = pgEnum("vegetable_fruit_type_enum", [
-  "TOMATO", // गोलभेडा
+  "TOMATO", // गोलभेँडा
   "CAULIFLOWER", // काउली
   "CABBAGE", // बन्दा
   "POTATO", // आलु
+  "WALNUT", // ओखर
+  "CITRUS", // सुन्तला/कागती
+  "KIWI", // किवी
+  "APPLE", // स्याउ
   "MUSTARD", // रायो
   "OTHER", // अन्य
 ]);

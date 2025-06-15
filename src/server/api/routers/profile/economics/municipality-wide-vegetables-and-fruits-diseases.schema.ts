@@ -2,10 +2,14 @@ import { z } from "zod";
 
 // Define the vegetable and fruit type enum to match the database enum
 export const VegetableFruitTypeEnum = z.enum([
-  "TOMATO", // गोलभेडा
+  "TOMATO", // गोलभेँडा
   "CAULIFLOWER", // काउली
   "CABBAGE", // बन्दा
   "POTATO", // आलु
+  "WALNUT", // ओखर
+  "CITRUS", // सुन्तला/कागती
+  "KIWI", // किवी
+  "APPLE", // स्याउ
   "MUSTARD", // रायो
   "OTHER", // अन्य
 ]);
@@ -38,10 +42,14 @@ export type MunicipalityWideVegetablesAndFruitsDiseasesFilter = z.infer<
 
 // Export the vegetable and fruit type options for use in UI components
 export const vegetableFruitTypeOptions = [
-  { value: "TOMATO", label: "गोलभेडा" },
+  { value: "TOMATO", label: "गोलभेँडा" },
   { value: "CAULIFLOWER", label: "काउली" },
   { value: "CABBAGE", label: "बन्दा" },
   { value: "POTATO", label: "आलु" },
+  { value: "WALNUT", label: "ओखर" },
+  { value: "CITRUS", label: "सुन्तला/कागती" },
+  { value: "KIWI", label: "किवी" },
+  { value: "APPLE", label: "स्याउ" },
   { value: "MUSTARD", label: "रायो" },
   { value: "OTHER", label: "अन्य" },
 ];
