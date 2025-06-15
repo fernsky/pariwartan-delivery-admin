@@ -1,506 +1,432 @@
-import Link from "next/link";
+"use client";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import {
+  TrendingUp,
+  TrendingDown,
+  AlertCircle,
+  Users,
+  Globe,
+  MapPin,
+} from "lucide-react";
 import { localizeNumber } from "@/lib/utils/localize-number";
+import {
+  foreignEmploymentCountryOptions,
+  ageGroupOptions,
+  genderOptions,
+} from "@/server/api/routers/profile/economics/ward-wise-foreign-employment-countries.schema";
 
 interface ForeignEmploymentAnalysisSectionProps {
-  overallSummary: Array<{
+  data: Array<{
+    id?: string;
+    ageGroup: string;
+    gender: string;
     country: string;
-    countryName: string;
     population: number;
+    total: number;
   }>;
-  totalPopulation: number;
-  wardWiseAnalysis: Array<{
-    wardNumber: number;
-    totalPopulation: number;
-    mostCommonCountry: string;
-    mostCommonCountryPopulation: number;
-    mostCommonCountryPercentage: string;
-    gulfCountriesPopulation: number;
-    gulfPercentage: string;
-    asiaPacificPopulation: number;
-    asiaPacificPercentage: string;
-    westernCountriesPopulation: number;
-    westernCountriesPercentage: string;
-    diversityScore: number;
-    uniqueCountries: number;
+  summaryData?: Array<{
+    country: string;
+    total_population: number;
   }>;
-  COUNTRY_NAMES: Record<string, string>;
-  COUNTRY_NAMES_EN: Record<string, string>;
-  COUNTRY_COLORS: Record<string, string>;
-  regionChartData: Array<{
-    name: string;
-    value: number;
-    percentage: string;
-  }>;
-  skillLevelChartData: Array<{
-    name: string;
-    value: number;
-    percentage: string;
-  }>;
-  estimatedAnnualRemittance: number;
-  formattedEstimatedAnnualRemittance: string;
+  isLoading?: boolean;
 }
 
 export default function ForeignEmploymentAnalysisSection({
-  overallSummary,
-  totalPopulation,
-  wardWiseAnalysis,
-  COUNTRY_NAMES,
-  COUNTRY_NAMES_EN,
-  COUNTRY_COLORS,
-  regionChartData,
-  skillLevelChartData,
-  estimatedAnnualRemittance,
-  formattedEstimatedAnnualRemittance,
+  data,
+  summaryData,
+  isLoading,
 }: ForeignEmploymentAnalysisSectionProps) {
-  // Find out which ward has highest foreign employment population
-  const highestPopulationWard = [...wardWiseAnalysis].sort(
-    (a, b) => b.totalPopulation - a.totalPopulation,
-  )[0];
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="animate-pulse">
+          <div className="h-32 bg-muted rounded-md"></div>
+        </div>
+      </div>
+    );
+  }
 
-  // Find out which ward has most diverse destinations
-  const mostDiverseWard = [...wardWiseAnalysis].sort(
-    (a, b) => b.diversityScore - a.diversityScore,
-  )[0];
-
-  // Find out which ward has highest percentage of Gulf workers
-  const highestGulfPercentageWard = [...wardWiseAnalysis].sort(
-    (a, b) => parseFloat(b.gulfPercentage) - parseFloat(a.gulfPercentage),
-  )[0];
-
-  // Find out which ward has highest percentage of skilled workers (going to developed countries)
-  const highestWesternPercentageWard = [...wardWiseAnalysis].sort(
-    (a, b) =>
-      parseFloat(b.westernCountriesPercentage) -
-      parseFloat(a.westernCountriesPercentage),
-  )[0];
-
-  // Calculate diversity score for the municipality
-  const uniqueCountriesOverall = new Set(
-    overallSummary.map((item) => item.country),
-  ).size;
-  const diversityScoreMunicipality = Math.min(uniqueCountriesOverall * 5, 100);
-
-  // Get skilled worker percentage
-  const skilledWorkersPercentage =
-    skillLevelChartData.find((item) => item.name === "दक्ष")?.percentage || "0";
-
-  // Format total remittance in billions (arab)
-  const remittanceArab = (estimatedAnnualRemittance / 1000000000).toFixed(2);
-
-  // Calculate per capita remittance (assuming average household size of 5.4)
-  const estimatedPopulation = 45000; // Example total population of municipality
-  const perCapitaRemittance = Math.round(
-    estimatedAnnualRemittance / estimatedPopulation,
+  // Calculate key metrics
+  const totalPopulation = data.reduce(
+    (sum, item) => sum + (item.population || 0),
+    0,
   );
 
-  // SEO attributes to include directly in JSX
-  const seoAttributes = {
-    "data-municipality": "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
-    "data-total-migrant-workers": totalPopulation.toString(),
-    "data-most-common-destination":
-      overallSummary.length > 0
-        ? `${overallSummary[0].countryName} / ${COUNTRY_NAMES_EN[overallSummary[0].country] || overallSummary[0].country}`
-        : "",
-    "data-most-common-percentage":
-      overallSummary.length > 0
-        ? ((overallSummary[0].population / totalPopulation) * 100).toFixed(2)
-        : "0",
-    "data-gulf-countries-percentage":
-      regionChartData.find((r) => r.name === "खाडी मुलुक")?.percentage || "0",
-    "data-estimated-remittance": estimatedAnnualRemittance.toString(),
-  };
+  // Age group analysis
+  const ageGroupStats: Record<string, number> = {};
+  data.forEach((item) => {
+    if (item.ageGroup !== "TOTAL") {
+      ageGroupStats[item.ageGroup] =
+        (ageGroupStats[item.ageGroup] || 0) + item.population;
+    }
+  });
+
+  const topAgeGroup = Object.entries(ageGroupStats).sort(
+    ([, a], [, b]) => b - a,
+  )[0];
+
+  // Gender analysis
+  const genderStats: Record<string, number> = {};
+  data.forEach((item) => {
+    if (item.gender !== "TOTAL") {
+      genderStats[item.gender] =
+        (genderStats[item.gender] || 0) + item.population;
+    }
+  });
+
+  // Country analysis
+  const countryStats: Record<string, number> = {};
+  data.forEach((item) => {
+    countryStats[item.country] =
+      (countryStats[item.country] || 0) + item.population;
+  });
+
+  const topCountries = Object.entries(countryStats)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 5);
+
+  // Calculate percentages
+  const genderPercentages = Object.entries(genderStats).map(
+    ([gender, count]) => ({
+      gender,
+      count,
+      percentage: (count / totalPopulation) * 100,
+    }),
+  );
+
+  const ageGroupPercentages = Object.entries(ageGroupStats)
+    .map(([ageGroup, count]) => ({
+      ageGroup,
+      count,
+      percentage: (count / totalPopulation) * 100,
+    }))
+    .sort((a, b) => b.count - a.count);
+
+  // Helper function to get localized labels
+  const getCountryLabel = (country: string) =>
+    foreignEmploymentCountryOptions.find((opt) => opt.value === country)
+      ?.label || country;
+
+  const getAgeGroupLabel = (ageGroup: string) =>
+    ageGroupOptions.find((opt) => opt.value === ageGroup)?.label || ageGroup;
+
+  const getGenderLabel = (gender: string) =>
+    genderOptions.find((opt) => opt.value === gender)?.label || gender;
 
   return (
-    <>
-      <div
-        className="mt-8 flex flex-wrap gap-4 justify-center"
-        {...seoAttributes}
-      >
-        <div className="bg-muted/50 rounded-lg p-4 text-center min-w-[200px] border">
-          <h4 className="text-lg font-medium mb-2">कुल वैदेशिक रोजगारी</h4>
-          <p className="text-3xl font-bold">
-            {localizeNumber(totalPopulation.toLocaleString(), "ne")}
-          </p>
-          <p className="text-sm text-muted-foreground mt-2">जना</p>
-        </div>
-
-        <div className="bg-muted/50 rounded-lg p-4 text-center min-w-[200px] border">
-          <h4 className="text-lg font-medium mb-2">खाडी मुलुकमा कार्यरत</h4>
-          <p className="text-3xl font-bold">
-            {localizeNumber(
-              regionChartData.find((r) => r.name === "खाडी मुलुक")
-                ?.percentage || "0",
-              "ne",
-            )}
-            %
-          </p>
-          <p className="text-sm text-muted-foreground mt-2">
-            (
-            {localizeNumber(
-              (
-                regionChartData.find((r) => r.name === "खाडी मुलुक")?.value || 0
-              ).toLocaleString(),
-              "ne",
-            )}{" "}
-            जना)
-          </p>
-        </div>
-
-        <div className="bg-muted/50 rounded-lg p-4 text-center min-w-[200px] border">
-          <h4 className="text-lg font-medium mb-2">वार्षिक रेमिट्यान्स</h4>
-          <p className="text-3xl font-bold">
-            रु. {localizeNumber(remittanceArab, "ne")} अर्ब
-          </p>
-          <p className="text-sm text-muted-foreground mt-2">अनुमानित</p>
-        </div>
-      </div>
-
-      <div className="bg-muted/50 p-6 rounded-lg mt-8 border">
-        <h3 className="text-xl font-medium mb-6">
-          वैदेशिक रोजगारीको विस्तृत विश्लेषण
-          <span className="sr-only">
-            Detailed Foreign Employment Analysis of Khajura
-          </span>
-        </h3>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div
-            className="bg-card p-4 rounded border"
-            data-analysis-type="destination-country-analysis"
-            data-percentage={
-              overallSummary.length > 0
-                ? (
-                    (overallSummary[0].population / totalPopulation) *
-                    100
-                  ).toFixed(2)
-                : "0"
-            }
-          >
-            <h4 className="font-medium mb-2">
-              प्रमुख वैदेशिक रोजगारी गन्तव्य
-              <span className="sr-only">
-                Main Foreign Employment Destination from Khajura Rural
-                Municipality
-              </span>
-            </h4>
-            <div className="flex items-center gap-3">
-              <div
-                className="w-4 h-16 rounded"
-                style={{
-                  backgroundColor:
-                    overallSummary.length > 0
-                      ? COUNTRY_COLORS[
-                          overallSummary[0]
-                            .country as keyof typeof COUNTRY_COLORS
-                        ] || "#8e44ad"
-                      : "#8e44ad",
-                }}
-              ></div>
-              <div>
-                <p className="text-2xl font-bold">
-                  {overallSummary.length > 0
-                    ? overallSummary[0].countryName
-                    : ""}
-                </p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  {localizeNumber(
-                    overallSummary.length > 0
-                      ? (
-                          (overallSummary[0].population / totalPopulation) *
-                          100
-                        ).toFixed(2)
-                      : "0",
-                    "ne",
-                  )}
-                  % (
-                  {localizeNumber(
-                    overallSummary.length > 0
-                      ? overallSummary[0].population.toLocaleString()
-                      : "0",
-                    "ne",
-                  )}{" "}
-                  जना)
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-4">
-              {/* Top 3 destination countries visualization */}
-              {overallSummary.slice(0, 3).map((item, index) => (
-                <div key={index} className="mt-3">
-                  <div className="flex justify-between text-sm">
-                    <span>
-                      {index + 1}. {item.countryName}
-                    </span>
-                    <span className="font-medium">
-                      {localizeNumber(
-                        ((item.population / totalPopulation) * 100).toFixed(1),
-                        "ne",
-                      )}
-                      %
-                    </span>
-                  </div>
-                  <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
-                    <div
-                      className="h-full rounded-full"
-                      style={{
-                        width: `${Math.min((item.population / totalPopulation) * 100, 100)}%`,
-                        backgroundColor:
-                          COUNTRY_COLORS[
-                            item.country as keyof typeof COUNTRY_COLORS
-                          ] || "#8e44ad",
-                      }}
-                    ></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="bg-card p-4 rounded border">
-            <h4 className="font-medium mb-2">
-              वडागत वैदेशिक रोजगारी विश्लेषण
-              <span className="sr-only">
-                Ward-wise Foreign Employment Analysis
-              </span>
-            </h4>
-
+    <div className="space-y-6">
+      {/* Key Insights */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Users className="w-5 h-5 text-blue-600" />
+              लिङ्गगत विश्लेषण
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
             <div className="space-y-3">
-              {wardWiseAnalysis.slice(0, 5).map((ward, index) => (
-                <div key={index}>
-                  <div className="flex justify-between text-sm">
-                    <span>
-                      वडा {localizeNumber(ward.wardNumber.toString(), "ne")} -
-                      वैदेशिक रोजगारी
+              {genderPercentages.map(({ gender, count, percentage }) => (
+                <div key={gender}>
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-sm font-medium">
+                      {getGenderLabel(gender)}
                     </span>
-                    <span className="font-medium">
-                      {localizeNumber(ward.totalPopulation.toString(), "ne")}{" "}
-                      जना
+                    <span className="text-sm text-muted-foreground">
+                      {localizeNumber(percentage.toFixed(1), "ne")}%
                     </span>
                   </div>
-                  <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-purple-500"
-                      style={{
-                        width: `${(ward.totalPopulation / highestPopulationWard.totalPopulation) * 100}%`,
-                      }}
-                    ></div>
+                  <Progress value={percentage} className="h-2" />
+                  <div className="text-xs text-muted-foreground mt-1">
+                    {localizeNumber(count.toLocaleString(), "ne")} जना
                   </div>
                 </div>
               ))}
             </div>
+          </CardContent>
+        </Card>
 
-            <div className="mt-6 pt-4 border-t">
-              <div className="flex justify-between items-center">
-                <div>
-                  <h5 className="font-medium">सर्वाधिक वैदेशिक रोजगारी</h5>
-                  <p className="text-sm text-muted-foreground">जना संख्या</p>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Globe className="w-5 h-5 text-green-600" />
+              मुख्य गन्तव्य
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {topCountries.slice(0, 3).map(([country, count], index) => (
+                <div
+                  key={country}
+                  className="flex items-center justify-between"
+                >
+                  <div className="flex items-center gap-2">
+                    <Badge variant={index === 0 ? "default" : "secondary"}>
+                      {localizeNumber((index + 1).toString(), "ne")}
+                    </Badge>
+                    <span className="text-sm">{getCountryLabel(country)}</span>
+                  </div>
+                  <span className="text-sm font-medium">
+                    {localizeNumber(count.toLocaleString(), "ne")}
+                  </span>
                 </div>
-                <div className="text-right">
-                  <p className="text-xl font-bold">
-                    वडा{" "}
-                    {localizeNumber(
-                      highestPopulationWard?.wardNumber.toString() || "",
-                      "ne",
-                    )}
-                  </p>
-                  <p className="text-sm text-purple-500 font-medium">
-                    {localizeNumber(
-                      highestPopulationWard?.totalPopulation.toString() || "0",
-                      "ne",
-                    )}{" "}
-                    जना
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-card p-4 rounded border">
-            <h4 className="font-medium mb-4">विस्तृत विश्लेषण</h4>
-            <ul className="space-y-2 text-sm">
-              <li className="flex gap-2">
-                <span className="text-blue-500">•</span>
-                <span>
-                  <strong>क्षेत्रगत वितरण:</strong> कुल वैदेशिक रोजगारीको{" "}
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <TrendingUp className="w-5 h-5 text-purple-600" />
+              मुख्य उमेर समूह
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {topAgeGroup && (
+              <div className="text-center">
+                <div className="text-2xl font-bold text-purple-600">
+                  {getAgeGroupLabel(topAgeGroup[0])}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  {localizeNumber(topAgeGroup[1].toLocaleString(), "ne")} जना
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">
+                  (
                   {localizeNumber(
-                    regionChartData.find((r) => r.name === "खाडी मुलुक")
-                      ?.percentage || "0",
+                    ((topAgeGroup[1] / totalPopulation) * 100).toFixed(1),
                     "ne",
                   )}
-                  % खाडी मुलुकमा,{" "}
-                  {localizeNumber(
-                    regionChartData.find((r) => r.name === "एसिया प्यासिफिक")
-                      ?.percentage || "0",
-                    "ne",
-                  )}
-                  % एसिया प्यासिफिकमा, र{" "}
-                  {localizeNumber(
-                    regionChartData.find((r) => r.name === "पश्चिमी देशहरू")
-                      ?.percentage || "0",
-                    "ne",
-                  )}
-                  % पश्चिमी देशहरूमा कार्यरत छन्।
-                </span>
-              </li>
-              <li className="flex gap-2">
-                <span className="text-amber-500">•</span>
-                <span>
-                  <strong>सीप वर्गीकरण:</strong> कुल वैदेशिक रोजगारीको{" "}
-                  {localizeNumber(
-                    skillLevelChartData.find((s) => s.name === "दक्ष")
-                      ?.percentage || "0",
-                    "ne",
-                  )}
-                  % दक्ष,
-                  {localizeNumber(
-                    skillLevelChartData.find((s) => s.name === "अर्धदक्ष")
-                      ?.percentage || "0",
-                    "ne",
-                  )}
-                  % अर्धदक्ष, र{" "}
-                  {localizeNumber(
-                    skillLevelChartData.find((s) => s.name === "अदक्ष")
-                      ?.percentage || "0",
-                    "ne",
-                  )}
-                  % अदक्ष कामदारको रूपमा कार्यरत छन्।
-                </span>
-              </li>
-              <li className="flex gap-2">
-                <span className="text-green-500">•</span>
-                <span>
-                  <strong>विविधता स्कोर:</strong> परिवर्तन गाउँपालिकाको वैदेशिक
-                  रोजगारी गन्तव्य विविधता स्कोर{" "}
-                  {localizeNumber(diversityScoreMunicipality.toString(), "ne")}
-                  (१०० मध्ये) रहेको छ, जुन कुल{" "}
-                  {localizeNumber(uniqueCountriesOverall.toString(), "ne")} वटा
-                  विभिन्न देशहरूमा वैदेशिक रोजगारीमा आधारित छ। सबैभन्दा धेरै
-                  विविधता वडा नं.{" "}
-                  {localizeNumber(
-                    mostDiverseWard?.wardNumber.toString() || "",
-                    "ne",
-                  )}{" "}
-                  मा रहेको छ।
-                </span>
-              </li>
-              <li className="flex gap-2">
-                <span className="text-purple-500">•</span>
-                <span>
-                  <strong>रेमिट्यान्स प्रभाव:</strong> प्रति परिवार औसत वार्षिक
-                  रु. {localizeNumber("5,25,000", "ne")} रेमिट्यान्स प्राप्त
-                  हुने अनुमान छ, जुन प्रति व्यक्ति रु.{" "}
-                  {localizeNumber(perCapitaRemittance.toLocaleString(), "ne")}{" "}
-                  हुन आउँछ। यो गाउँपालिकाको कुल अनुमानित बार्षिक बजेटको लगभग ३
-                  गुना बढी हो।
-                </span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="bg-card p-4 rounded border">
-            <h4 className="font-medium mb-4">वडागत तुलनात्मक विश्लेषण</h4>
-
-            <div className="space-y-5">
-              <div>
-                <h5 className="text-sm font-medium mb-1">
-                  खाडी मुलुकमा कार्यरत वडागत प्रतिशत
-                </h5>
-                <div className="flex items-center gap-2">
-                  <div className="w-full bg-muted h-4 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-blue-500 rounded-full"
-                      style={{
-                        width: `${parseFloat(highestGulfPercentageWard?.gulfPercentage || "0")}%`,
-                      }}
-                    ></div>
-                  </div>
-                  <span className="text-sm font-medium">
-                    वडा{" "}
-                    {localizeNumber(
-                      highestGulfPercentageWard?.wardNumber.toString() || "",
-                      "ne",
-                    )}
-                    :{" "}
-                    {localizeNumber(
-                      highestGulfPercentageWard?.gulfPercentage || "0",
-                      "ne",
-                    )}
-                    %
-                  </span>
+                  %)
                 </div>
               </div>
-
-              <div>
-                <h5 className="text-sm font-medium mb-1">
-                  पश्चिमी देशहरूमा कार्यरत वडागत प्रतिशत
-                </h5>
-                <div className="flex items-center gap-2">
-                  <div className="w-full bg-muted h-4 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-green-500 rounded-full"
-                      style={{
-                        width: `${parseFloat(highestWesternPercentageWard?.westernCountriesPercentage || "0")}%`,
-                      }}
-                    ></div>
-                  </div>
-                  <span className="text-sm font-medium">
-                    वडा{" "}
-                    {localizeNumber(
-                      highestWesternPercentageWard?.wardNumber.toString() || "",
-                      "ne",
-                    )}
-                    :{" "}
-                    {localizeNumber(
-                      highestWesternPercentageWard?.westernCountriesPercentage ||
-                        "0",
-                      "ne",
-                    )}
-                    %
-                  </span>
-                </div>
-              </div>
-
-              <div>
-                <h5 className="text-sm font-medium mb-1">
-                  गन्तव्य विविधता स्कोर (उत्कृष्ट वडा)
-                </h5>
-                <div className="flex items-center gap-2">
-                  <div className="w-full bg-muted h-4 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-purple-500 rounded-full"
-                      style={{
-                        width: `${Math.min(mostDiverseWard?.diversityScore || 0, 100)}%`,
-                      }}
-                    ></div>
-                  </div>
-                  <span className="text-sm font-medium">
-                    वडा{" "}
-                    {localizeNumber(
-                      mostDiverseWard?.wardNumber.toString() || "",
-                      "ne",
-                    )}
-                    :{" "}
-                    {localizeNumber(
-                      mostDiverseWard?.diversityScore.toString() || "0",
-                      "ne",
-                    )}
-                  </span>
-                </div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {localizeNumber(
-                    mostDiverseWard?.uniqueCountries.toString() || "0",
-                    "ne",
-                  )}{" "}
-                  विभिन्न देशहरू
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
-    </>
+
+      {/* Detailed Age Group Analysis */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Users className="w-5 h-5" />
+            उमेर समूह अनुसार विस्तृत विश्लेषण
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              {ageGroupPercentages
+                .slice(0, Math.ceil(ageGroupPercentages.length / 2))
+                .map(({ ageGroup, count, percentage }) => (
+                  <div key={ageGroup}>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-medium">
+                        {getAgeGroupLabel(ageGroup)}
+                      </span>
+                      <span className="text-sm text-muted-foreground">
+                        {localizeNumber(percentage.toFixed(1), "ne")}%
+                      </span>
+                    </div>
+                    <Progress value={percentage} className="h-3" />
+                    <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                      <span>
+                        {localizeNumber(count.toLocaleString(), "ne")} जना
+                      </span>
+                      <span>
+                        कुलको {localizeNumber(percentage.toFixed(1), "ne")}%
+                      </span>
+                    </div>
+                  </div>
+                ))}
+            </div>
+            <div className="space-y-4">
+              {ageGroupPercentages
+                .slice(Math.ceil(ageGroupPercentages.length / 2))
+                .map(({ ageGroup, count, percentage }) => (
+                  <div key={ageGroup}>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-medium">
+                        {getAgeGroupLabel(ageGroup)}
+                      </span>
+                      <span className="text-sm text-muted-foreground">
+                        {localizeNumber(percentage.toFixed(1), "ne")}%
+                      </span>
+                    </div>
+                    <Progress value={percentage} className="h-3" />
+                    <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                      <span>
+                        {localizeNumber(count.toLocaleString(), "ne")} जना
+                      </span>
+                      <span>
+                        कुलको {localizeNumber(percentage.toFixed(1), "ne")}%
+                      </span>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Key Insights and Recommendations */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <AlertCircle className="w-5 h-5 text-orange-600" />
+              मुख्य निष्कर्षहरू
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <p className="text-sm">
+                    <strong>
+                      {getCountryLabel(topCountries[0]?.[0] || "")}
+                    </strong>{" "}
+                    सबैभन्दा लोकप्रिय गन्तव्य देश हो, जहाँ कुल{" "}
+                    {localizeNumber(
+                      (
+                        ((topCountries[0]?.[1] || 0) / totalPopulation) *
+                        100
+                      ).toFixed(1),
+                      "ne",
+                    )}
+                    % वैदेशिक कामदारहरू छन्।
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <div className="w-2 h-2 bg-green-600 rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <p className="text-sm">
+                    <strong>{getAgeGroupLabel(topAgeGroup?.[0] || "")}</strong>{" "}
+                    उमेर समूहका सबैभन्दा बढी व्यक्तिहरू वैदेशिक रोजगारीमा छन्।
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <div className="w-2 h-2 bg-purple-600 rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <p className="text-sm">
+                    लिङ्गगत अनुपात:{" "}
+                    {genderPercentages
+                      .map(
+                        ({ gender, percentage }) =>
+                          `${getGenderLabel(gender)} ${localizeNumber(percentage.toFixed(1), "ne")}%`,
+                      )
+                      .join(", ")}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <MapPin className="w-5 h-5 text-green-600" />
+              क्षेत्रगत सुझावहरू
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <div className="w-2 h-2 bg-orange-600 rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <p className="text-sm">
+                    वैदेशिक रोजगारी सीप विकास कार्यक्रमहरू मुख्यतः{" "}
+                    {getAgeGroupLabel(topAgeGroup?.[0] || "")}
+                    उमेर समूहमा केन्द्रित गर्नुपर्छ।
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <div className="w-2 h-2 bg-red-600 rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <p className="text-sm">
+                    {getCountryLabel(topCountries[0]?.[0] || "")} र{" "}
+                    {getCountryLabel(topCountries[1]?.[0] || "")}
+                    जस्ता मुख्य गन्तव्य देशहरूको भाषा र सीप तालिममा जोड
+                    दिनुपर्छ।
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <div className="w-2 h-2 bg-teal-600 rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <p className="text-sm">
+                    महिला वैदेशिक रोजगारीको प्रवर्धनका लागि विशेष कार्यक्रमहरू
+                    सञ्चालन गर्नुपर्छ।
+                  </p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Summary Statistics */}
+      <Card>
+        <CardHeader>
+          <CardTitle>सांख्यिकीय सारांश</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="text-center p-4 bg-blue-50 rounded-lg">
+              <div className="text-2xl font-bold text-blue-600">
+                {localizeNumber(totalPopulation.toLocaleString(), "ne")}
+              </div>
+              <div className="text-sm text-muted-foreground">
+                कुल वैदेशिक कामदार
+              </div>
+            </div>
+
+            <div className="text-center p-4 bg-green-50 rounded-lg">
+              <div className="text-2xl font-bold text-green-600">
+                {localizeNumber(
+                  Object.keys(countryStats).length.toString(),
+                  "ne",
+                )}
+              </div>
+              <div className="text-sm text-muted-foreground">
+                गन्तव्य देशहरू
+              </div>
+            </div>
+
+            <div className="text-center p-4 bg-purple-50 rounded-lg">
+              <div className="text-2xl font-bold text-purple-600">
+                {localizeNumber(
+                  Object.keys(ageGroupStats).length.toString(),
+                  "ne",
+                )}
+              </div>
+              <div className="text-sm text-muted-foreground">उमेर समूहहरू</div>
+            </div>
+
+            <div className="text-center p-4 bg-orange-50 rounded-lg">
+              <div className="text-2xl font-bold text-orange-600">
+                {localizeNumber(
+                  Object.keys(genderStats).length.toString(),
+                  "ne",
+                )}
+              </div>
+              <div className="text-sm text-muted-foreground">लिङ्ग वर्गहरू</div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

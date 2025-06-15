@@ -76,10 +76,6 @@ export const navItems: NavItem[] = [
     icon: <PieChart className="w-4 h-4" />,
     items: [
       {
-        title: "विशेष सीप भएका मानव संशाधनको विवरण",
-        href: "/profile/economics/ward-main-skills",
-      },
-      {
         title: "घरको स्वामित्वको आधारमा घरधुरी",
         href: "/profile/economics/ward-wise-house-ownership",
       },
@@ -94,10 +90,6 @@ export const navItems: NavItem[] = [
       {
         title: "वैदेशिक रोजगारीमा गएकाहरूको विवरण",
         href: "/profile/economics/ward-wise-foreign-employment-countries",
-      },
-      {
-        title: "वैदेशिक रोजगारीबाट प्राप्त विप्रेषण",
-        href: "/profile/economics/ward-wise-remittance",
       },
       {
         title: "जग्गाको स्वामित्वको आधारमा घरधुरी",
