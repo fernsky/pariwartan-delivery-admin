@@ -107,10 +107,10 @@ export const navItems: NavItem[] = [
         title: "व्यवसायिक कृषि/पशुपालन फर्महरू",
         href: "/profile/economics/commercial-agricultural-animal-husbandry-farmers-group",
       },
-      {
-        title: "कृषि वा पशुपालन उत्पादनमा आबद्ध घरधुरी",
-        href: "/profile/economics/ward-wise-households-in-agriculture",
-      },
+      // {
+      //   title: "कृषि वा पशुपालन उत्पादनमा आबद्ध घरधुरी",
+      //   href: "/profile/economics/ward-wise-households-in-agriculture",
+      // },
       {
         title: "सहकारी संस्थाहरू सम्बन्धी विवरण",
         href: "/profile/economics/cooperatives",

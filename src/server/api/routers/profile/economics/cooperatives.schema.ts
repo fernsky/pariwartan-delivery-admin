@@ -5,6 +5,7 @@ export const CooperativeTypeEnum = z.enum([
   "SAVINGS_CREDIT", // बचत तथा ऋण
   "MULTI_PURPOSE", // बहुउद्देश्यीय
   "AGRICULTURE", // कृषि
+  "AGRICULTURE_COOPERATIVE", // कृषि जनसहकारी / कृषि जन सहकार
   "DAIRY", // दुग्ध
   "COMMUNITY", // सामुदायिक
   "WOMENS", // महिला
@@ -20,6 +21,7 @@ export const cooperativeSchema = z.object({
   cooperativeName: z.string().min(1, "Name is required"),
   wardNumber: z.number().int().min(1).max(9, "Ward number must be between 1 and 9"),
   cooperativeType: CooperativeTypeEnum,
+  address: z.string().optional(),
   phoneNumber: z.string().optional(),
   remarks: z.string().optional(),
 });
@@ -42,6 +44,7 @@ export const cooperativeTypeOptions = [
   { value: "SAVINGS_CREDIT", label: "बचत तथा ऋण" },
   { value: "MULTI_PURPOSE", label: "बहुउद्देश्यीय" },
   { value: "AGRICULTURE", label: "कृषि" },
+  { value: "AGRICULTURE_COOPERATIVE", label: "कृषि जनसहकारी" },
   { value: "DAIRY", label: "दुग्ध" },
   { value: "COMMUNITY", label: "सामुदायिक" },
   { value: "WOMENS", label: "महिला" },

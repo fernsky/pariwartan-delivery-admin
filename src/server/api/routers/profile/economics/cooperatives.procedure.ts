@@ -64,6 +64,7 @@ export const getAllCooperatives = publicProcedure
             cooperative_name,
             ward_number,
             cooperative_type,
+            address,
             phone_number,
             remarks,
             updated_at,
@@ -82,6 +83,7 @@ export const getAllCooperatives = publicProcedure
             cooperativeName: row.cooperative_name,
             wardNumber: row.ward_number,
             cooperativeType: row.cooperative_type,
+            address: row.address,
             phoneNumber: row.phone_number,
             remarks: row.remarks,
             updatedAt: row.updated_at,
@@ -148,6 +150,7 @@ export const createCooperative = protectedProcedure
       cooperativeName: input.cooperativeName,
       wardNumber: input.wardNumber,
       cooperativeType: input.cooperativeType,
+      address: input.address,
       phoneNumber: input.phoneNumber,
       remarks: input.remarks,
     });
@@ -196,6 +199,7 @@ export const updateCooperative = protectedProcedure
         cooperativeName: input.cooperativeName,
         wardNumber: input.wardNumber,
         cooperativeType: input.cooperativeType,
+        address: input.address,
         phoneNumber: input.phoneNumber,
         remarks: input.remarks,
       })

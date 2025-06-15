@@ -1,11 +1,12 @@
 import { pgTable } from "../../../schema/basic";
 import { timestamp, varchar, text, pgEnum, integer } from "drizzle-orm/pg-core";
 
-// Define cooperative type enum based on the data
+// Define cooperative type enum based on the actual data
 export const cooperativeTypeEnum = pgEnum("cooperative_type_enum", [
   "SAVINGS_CREDIT", // बचत तथा ऋण
   "MULTI_PURPOSE", // बहुउद्देश्यीय
   "AGRICULTURE", // कृषि
+  "AGRICULTURE_COOPERATIVE", // कृषि जनसहकारी / कृषि जन सहकार
   "DAIRY", // दुग्ध
   "COMMUNITY", // सामुदायिक
   "WOMENS", // महिला
@@ -23,6 +24,7 @@ export const cooperatives = pgTable(
     cooperativeName: varchar("cooperative_name", { length: 255 }).notNull(),
     wardNumber: integer("ward_number").notNull(),
     cooperativeType: cooperativeTypeEnum("cooperative_type").notNull(),
+    address: varchar("address", { length: 255 }), // Added address field
     phoneNumber: varchar("phone_number", { length: 20 }),
     remarks: text("remarks"),
 

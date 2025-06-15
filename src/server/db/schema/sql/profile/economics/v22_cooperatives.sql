@@ -9,6 +9,7 @@ BEGIN
             cooperative_name VARCHAR(255) NOT NULL,
             ward_number INTEGER NOT NULL,
             cooperative_type VARCHAR(50) NOT NULL,
+            address VARCHAR(255),
             phone_number VARCHAR(20),
             remarks TEXT,
             updated_at TIMESTAMP DEFAULT NOW(),
@@ -25,50 +26,24 @@ BEGIN
 END
 $$;
 
--- Insert data from the provided dataset with extracted ward numbers
+-- Insert data from the provided dataset
 DO $$
 BEGIN
-    -- Sample entries from the dataset with mapped cooperative types and extracted ward numbers
-    INSERT INTO acme_cooperatives (id, cooperative_name, ward_number, cooperative_type, phone_number, remarks)
+    INSERT INTO acme_cooperatives (id, cooperative_name, ward_number, cooperative_type, address, phone_number, remarks)
     VALUES 
-    (gen_random_uuid(), 'राधापुर बचत तथा ऋण स.सं लि.', 1, 'SAVINGS_CREDIT', '', 'प्रदेश स्तरीय'),
-    (gen_random_uuid(), 'शिवशक्ति बहुउद्देश्यीय कृषि स. सं लि.', 1, 'MULTI_PURPOSE', '9848178510', 'प्रदेश स्तरीय'),
-    (gen_random_uuid(), 'जागरुक महिला बहुउद्देश्यीय स. सं लि.', 2, 'MULTI_PURPOSE', '9824531553', ''),
-    (gen_random_uuid(), 'धनबर्षा सहकारी संस्था लि.', 2, 'OTHER', '9858024809', ''),
-    (gen_random_uuid(), 'ध्रुबतारा संयुक्त युवा जागरण स. सं.लि.', 2, 'OTHER', '9844827152', ''),
-    (gen_random_uuid(), 'आदर्श कृषक सहकारी सं लि.', 2, 'AGRICULTURE', '9848025037', ''),
-    (gen_random_uuid(), 'रिमझिम सहकारी संस्था लि.', 2, 'OTHER', '9848086733', ''),
-    (gen_random_uuid(), 'पुष्प महिला सहकारी स.लि.', 2, 'WOMENS', '9848222488', ''),
-    (gen_random_uuid(), 'सुर्योदय सामुदायिक स. सं लि', 2, 'COMMUNITY', '9848146424', ''),
-    (gen_random_uuid(), 'भद्रकाली महिला बचत सहकारी स. लि.', 2, 'WOMENS', '', ''),
-    (gen_random_uuid(), 'परिवार कल्याण सहकारी सं लि', 2, 'OTHER', '9848083497', ''),
-    (gen_random_uuid(), 'हम्रो साझा कृषि सहकारी सं लि', 2, 'AGRICULTURE', '9815594594', ''),
-    (gen_random_uuid(), 'नव दुर्गा कृषि सहकारी सं लि.', 2, 'AGRICULTURE', '9844828433', ''),
-    (gen_random_uuid(), 'सुरक्षित बचत तथा सहकारी स. लि.', 2, 'SAVINGS_CREDIT', '9804515228', ''),
-    (gen_random_uuid(), 'अमर कृषि सहकारी सं लि', 2, 'AGRICULTURE', '9858028138', ''),
-    (gen_random_uuid(), 'एकता महिला बचत सहकारी स.लि.', 3, 'WOMENS', '9848033270', ''),
-    (gen_random_uuid(), 'बागेश्वरी बहुउद्देश्यीय कृ.स.स.लि', 3, 'MULTI_PURPOSE', '9848080085', ''),
-    (gen_random_uuid(), 'पुष्पाञ्जली म. वि स. सं', 3, 'OTHER', '9844839680', ''),
-    (gen_random_uuid(), 'भूमि बचत तथा स. सं लि.', 3, 'SAVINGS_CREDIT', '9844839680', ''),
-    (gen_random_uuid(), 'दिप शशक्तिकरण कृषि स. सं लि.', 3, 'AGRICULTURE', '9848091447', ''),
-    (gen_random_uuid(), 'पंचज्योती कृषि सहकारी सं लि.', 3, 'AGRICULTURE', '9848016418', ''),
-    (gen_random_uuid(), 'परिवर्तन बहुउद्देश्यीय स. सं लि', 3, 'MULTI_PURPOSE', '9848102221', ''),
-    (gen_random_uuid(), 'जनता दुग्घ सहकारी सं लि.', 3, 'DAIRY', '9858024167', 'प्रदेश स्तरीय'),
-    (gen_random_uuid(), 'सहकारी संस्था लि. परिवर्तन', 3, 'OTHER', '9848052947', 'प्रदेश स्तरीय'),
-    (gen_random_uuid(), 'साझा फुलबारी सहकारी सं लि.', 4, 'OTHER', '9816591736', ''),
-    (gen_random_uuid(), 'दक्षशिला साना किसान कृषि स. सं लि.', 4, 'FARMERS', '9848086267', ''),
-    (gen_random_uuid(), 'परिवर्तन सैनिकी सहकारी सं लि.', 4, 'OTHER', '9858035240', 'प्रदेश स्तरीय'),
-    (gen_random_uuid(), 'माई भगवती कृषि सहकारी सं लि.', 5, 'AGRICULTURE', '9848112240', ''),
-    (gen_random_uuid(), 'प्रकृति बचत तथा ऋण सहकारी सं लि.', 6, 'SAVINGS_CREDIT', '9858060992', 'प्रदेश स्तरीय'),
-    (gen_random_uuid(), 'शैयद कृषि सहकारी सं लि.', 6, 'AGRICULTURE', '9848189156', ''),
-    (gen_random_uuid(), 'श्रृजनशिल महिला विकास बचत तथा श्रण सहकारी सं लि.', 7, 'WOMENS', '9864868104', ''),
-    (gen_random_uuid(), 'पुर्नबास कृषक तरकारी उपभोक्ता सहकारी सं लि.', 7, 'VEGETABLE', '9868113252', ''),
-    (gen_random_uuid(), 'नयाँ समावेशी सहकारी सं लि.', 8, 'OTHER', '9868044002', 'प्रदेश स्तरीय'),
-    (gen_random_uuid(), 'कालिका बहुउद्देश्यीय सहकारी स. लि.', 3, 'MULTI_PURPOSE', '9849491699', 'प्रदेश स्तरीय'),
-    (gen_random_uuid(), 'शुभकामना सहकारी सं लि.', 3, 'OTHER', '9858020244', 'प्रदेश स्तरीय'),
-    (gen_random_uuid(), 'बागेश्वरी कृषि सहकारी सं लि.', 3, 'AGRICULTURE', '9848080085', 'प्रदेश स्तरीय'),
-    (gen_random_uuid(), 'स्वाबलम्बन बचत तथा ऋण स. सं लि.', 3, 'SAVINGS_CREDIT', '9868086113', 'प्रदेश स्तरीय'),
-    (gen_random_uuid(), 'सिमरहन कृषि सहकारी स. लि.', 5, 'AGRICULTURE', '9815539998', ''),
-    (gen_random_uuid(), 'परोपकार कृषि सहकारी सं लि.', 4, 'AGRICULTURE', '9848030332', '');
+    (gen_random_uuid(), 'इरावती साना किसान कृषि सहकारी लि.', 3, 'AGRICULTURE', 'परिवर्तन गा.पा.-३ रोल्पा', '', ''),
+    (gen_random_uuid(), 'पूर्णिमा कृषि सहकारी संस्था लि.', 5, 'AGRICULTURE', 'परिवर्तन गा.पा.-५ रोल्पा', '', ''),
+    (gen_random_uuid(), 'महिला जनजागरण बहुउद्देश्यीय सहकारी संस्था लि.', 4, 'MULTI_PURPOSE', 'परिवर्तन गा.पा.-४ रोल्पा', '', ''),
+    (gen_random_uuid(), 'प्रोभिन कृषि जनसहकारी संस्था लि.', 1, 'AGRICULTURE_COOPERATIVE', 'परिवर्तन गा.पा.-१ रोल्पा', '', ''),
+    (gen_random_uuid(), 'जनजागरण बहुउद्देश्यीय सहकारी संस्था लि.', 5, 'MULTI_PURPOSE', 'परिवर्तन गा.पा.-५ रोल्पा', '', ''),
+    (gen_random_uuid(), 'दुर्गेश्वरी काव्रीपानी वन बहुउद्देश्यीय सहकारी संस्था लि.', 4, 'MULTI_PURPOSE', 'परिवर्तन गा.पा.-४ रोल्पा', '', ''),
+    (gen_random_uuid(), 'सचेतना कृषि जन सहकारी संस्था लि.', 5, 'AGRICULTURE_COOPERATIVE', 'परिवर्तन गा.पा.-५ रोल्पा', '', ''),
+    (gen_random_uuid(), 'भिन्नजुली बचत तथा ऋण सहकारी संस्था लि.', 6, 'SAVINGS_CREDIT', 'परिवर्तन गा.पा.-६ रोल्पा', '', ''),
+    (gen_random_uuid(), 'सयपानी बचत तथा ऋण सहकारी संस्था लि.', 3, 'SAVINGS_CREDIT', 'परिवर्तन गा.पा.-३ रोल्पा', '', ''),
+    (gen_random_uuid(), 'नमुना बहुउद्देश्यीय सहकारी संस्था लि.', 1, 'MULTI_PURPOSE', 'परिवर्तन गा.पा.-१ रोल्पा', '', ''),
+    (gen_random_uuid(), 'समावेशी बहुउद्देश्यीय सहकारी संस्था लि.', 2, 'MULTI_PURPOSE', 'परिवर्तन गा.पा.-२ रोल्पा', '', ''),
+    (gen_random_uuid(), 'मेलवाटे शिक्षक कर्मचारी बहुउद्देश्यीय सहकारी संस्था लि.', 5, 'MULTI_PURPOSE', 'परिवर्तन गा.पा.-५ रोल्पा', '', ''),
+    (gen_random_uuid(), 'चमेली बहुउद्देश्यीय सहकारी संस्था लि.', 5, 'MULTI_PURPOSE', 'परिवर्तन गा.पा.-५ रोल्पा', '', '');
 END
 $$;
+    
