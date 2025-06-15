@@ -42,6 +42,8 @@ const WALL_TYPE_NAMES: Record<string, string> = {
   UNBAKED_BRICK: "काँचो इँटा",
   MUD_JOINED: "माटोको जोडाइ भएको इँटा/ढुङ्गा",
   TIN: "जस्ता/टिन/च्यादर",
+  CEMENT_BRICK_JOINED: "सिमेन्ट र इट्टाको जोडाइ भएको",
+  MUD_JOINED_BRICK_STONE: "माटोको जोडाइ भएको ईंटा/ढुंगा",
   BAMBOO: "बाँसजन्य सामग्री",
   WOOD: "काठ/फल्याक",
   PREFAB: "प्रि फ्याब",
