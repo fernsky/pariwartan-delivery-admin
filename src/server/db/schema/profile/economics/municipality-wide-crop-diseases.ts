@@ -6,6 +6,8 @@ export const cropTypeEnum = pgEnum("crop_type_enum", [
   "RICE", // धान
   "WHEAT", // गहुँ
   "CORN", // मकै
+  "MUSTARD", // तोरी
+  "POTATO", // आलु
   "VEGETABLES", // तरकारी
   "FRUITS", // फलफूल
   "OTHER", // अन्य

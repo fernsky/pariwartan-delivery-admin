@@ -28,22 +28,22 @@ DO $$
 BEGIN
     -- Rice (धान)
     INSERT INTO acme_municipality_wide_crop_diseases (id, crop, major_pests, major_diseases)
-    VALUES (gen_random_uuid(), 'RICE', 'ब्लाष्ट, खैरोथोप्ले, फेदकुहिने आदि ।', 'पतेरो, गवारो, फड्के, पातबेरुवा');
+    VALUES (gen_random_uuid(), 'RICE', 'फड्के, फट्याङ्ग्रा, गवारो, हिरपा', 'मरुवा, डडुवा, खैरे रोग');
 
     -- Wheat (गहुँ)
     INSERT INTO acme_municipality_wide_crop_diseases (id, crop, major_pests, major_diseases)
-    VALUES (gen_random_uuid(), 'WHEAT', 'सिन्दुरे, कालोपोके', 'लाही, खुर्मे, फट्याँग्रा, फेदकटुवा');
+    VALUES (gen_random_uuid(), 'WHEAT', 'कीटिकिटे, धमिरा, लाही', 'कालो पोके, पहेँलो सिन्दुरे, खैरो सिन्दुरे, डडुवा, गहाउने कालो पोके');
     
     -- Corn (मकै)
     INSERT INTO acme_municipality_wide_crop_diseases (id, crop, major_pests, major_diseases)
-    VALUES (gen_random_uuid(), 'CORN', 'कालोपोके, पातको धर्सेरोग, डाँठ र फल कुहिने, ध्वाँसे आदि ।', 'लाही, फट्याग्रा, खुम्रै, फेदकटुवा, गवारो आदि।');
+    VALUES (gen_random_uuid(), 'CORN', 'अमेरिकी फौजी कीरा, खुम्रे कीरा, गवारो, फेदकटुवा', 'ध्वाँसे ठोटले रोग, उत्तरी पाते डडुवा, दक्षिणी पाते डडुवा, डाँठ कुहिने रोग');
     
-    -- Vegetables (तरकारी)
+    -- Mustard (तोरी)
     INSERT INTO acme_municipality_wide_crop_diseases (id, crop, major_pests, major_diseases)
-    VALUES (gen_random_uuid(), 'VEGETABLES', 'भण्टाको गवारो, लाही, वन्दाको पुतली, टमाटरको फलको गवारो, फल कुहाउने औसा, सुलसुले, रातो खपटे, डल्ले खपटे, थ्रिप्स, खुम्रे', 'ओइलाउने रोग, अल्टरनोरिया, क्लवरट, ड्याम्पिङ्ग अफ, डाइ ब्याक, जरा कुहिने, पाउडरी मिल्ड्यू');
+    VALUES (gen_random_uuid(), 'MUSTARD', 'करौते फिँङ्गा, लाही', 'करौते फिँङ्गा, लाही');
     
-    -- Fruits (फलफूल)
+    -- Potato (आलु)
     INSERT INTO acme_municipality_wide_crop_diseases (id, crop, major_pests, major_diseases)
-    VALUES (gen_random_uuid(), 'FRUITS', 'आपको मधुवा, गवारो, फल कुहाउने औसा सुलसुले, अनारको पुतली, होपर', 'एनथ्राक्नोजा, ससेतो ढुसी, डाईव्याक, आँपको गुच्चा हुने, डाउनी मिल्ड्यू');
+    VALUES (gen_random_uuid(), 'POTATO', 'फेदकटुवा, आलुको पुतली, रातो केमिला, लाही', 'फेदकटुवा, आलुको पुतली, रातो केमिला, लाही');
 END
 $$;

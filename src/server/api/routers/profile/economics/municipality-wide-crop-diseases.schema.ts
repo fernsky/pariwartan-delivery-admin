@@ -5,6 +5,8 @@ export const CropTypeEnum = z.enum([
   "RICE", // धान
   "WHEAT", // गहुँ
   "CORN", // मकै
+  "MUSTARD", // तोरी
+  "POTATO", // आलु
   "VEGETABLES", // तरकारी
   "FRUITS", // फलफूल
   "OTHER", // अन्य
@@ -41,6 +43,8 @@ export const cropTypeOptions = [
   { value: "RICE", label: "धान" },
   { value: "WHEAT", label: "गहुँ" },
   { value: "CORN", label: "मकै" },
+  { value: "MUSTARD", label: "तोरी" },
+  { value: "POTATO", label: "आलु" },
   { value: "VEGETABLES", label: "तरकारी" },
   { value: "FRUITS", label: "फलफूल" },
   { value: "OTHER", label: "अन्य" },
