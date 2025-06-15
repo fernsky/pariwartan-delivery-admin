@@ -27,23 +27,20 @@ $$;
 DO $$
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM acme_ward_wise_house_ownership) THEN
-        -- Ward 1
+        -- Ward data based on provided JSON
         INSERT INTO acme_ward_wise_house_ownership (ward_number, ownership_type, households) VALUES
-        (1, 'PRIVATE', 847), (1, 'RENT', 35), (1, 'INSTITUTIONAL', 2), (1, 'OTHER', 26),
+        -- Ward 1
+        (1, 'PRIVATE', 637), (1, 'RENT', 19), (1, 'INSTITUTIONAL', 1), (1, 'OTHER', 18),
         -- Ward 2
-        (2, 'PRIVATE', 2470), (2, 'RENT', 128), (2, 'INSTITUTIONAL', 4), (2, 'OTHER', 9),
+        (2, 'PRIVATE', 1055), (2, 'RENT', 35), (2, 'INSTITUTIONAL', 6), (2, 'OTHER', 0),
         -- Ward 3
-        (3, 'PRIVATE', 1819), (3, 'RENT', 236), (3, 'INSTITUTIONAL', 3), (3, 'OTHER', 3),
+        (3, 'PRIVATE', 685), (3, 'RENT', 58), (3, 'INSTITUTIONAL', 2), (3, 'OTHER', 2),
         -- Ward 4
-        (4, 'PRIVATE', 1792), (4, 'RENT', 32), (4, 'INSTITUTIONAL', 2), (4, 'OTHER', 6),
+        (4, 'PRIVATE', 873), (4, 'RENT', 4), (4, 'INSTITUTIONAL', 1), (4, 'OTHER', 1),
         -- Ward 5
-        (5, 'PRIVATE', 1815), (5, 'RENT', 13), (5, 'INSTITUTIONAL', 0), (5, 'OTHER', 20),
+        (5, 'PRIVATE', 801), (5, 'RENT', 14), (5, 'INSTITUTIONAL', 2), (5, 'OTHER', 1),
         -- Ward 6
-        (6, 'PRIVATE', 1944), (6, 'RENT', 10), (6, 'INSTITUTIONAL', 3), (6, 'OTHER', 14),
-        -- Ward 7
-        (7, 'PRIVATE', 2377), (7, 'RENT', 24), (7, 'INSTITUTIONAL', 1), (7, 'OTHER', 5),
-        -- Ward 8
-        (8, 'PRIVATE', 1868), (8, 'RENT', 17), (8, 'INSTITUTIONAL', 0), (8, 'OTHER', 5);
+        (6, 'PRIVATE', 449), (6, 'RENT', 18), (6, 'INSTITUTIONAL', 0), (6, 'OTHER', 0);
 
         -- Add indexes
         CREATE INDEX IF NOT EXISTS idx_ward_wise_house_ownership_ward_number ON acme_ward_wise_house_ownership(ward_number);
@@ -53,7 +50,10 @@ END
 $$;
 
 -- Add comments for documentation
-COMMENT ON TABLE acme_ward_wise_house_ownership IS 'Stores ward-wise house ownership data for Khajura Rural Municipality';
+COMMENT ON TABLE acme_ward_wise_house_ownership IS 'Stores ward-wise house ownership data (घरको स्वामित्वको आधारमा घरपरिवारको विवरण)';
+COMMENT ON COLUMN acme_ward_wise_house_ownership.ward_number IS 'Ward number (1-6)';
+COMMENT ON COLUMN acme_ward_wise_house_ownership.ownership_type IS 'Type of house ownership (निजी=PRIVATE, भाडामा=RENT, संस्थागत=INSTITUTIONAL, अन्य=OTHER)';
+COMMENT ON COLUMN acme_ward_wise_house_ownership.households IS 'Number of households with this type of ownership in the ward';
 COMMENT ON COLUMN acme_ward_wise_house_ownership.ward_number IS 'Ward number (1-8)';
 COMMENT ON COLUMN acme_ward_wise_house_ownership.ownership_type IS 'Type of house ownership (PRIVATE, RENT, INSTITUTIONAL, OTHER)';
 COMMENT ON COLUMN acme_ward_wise_house_ownership.households IS 'Number of households with this type of ownership in the ward';

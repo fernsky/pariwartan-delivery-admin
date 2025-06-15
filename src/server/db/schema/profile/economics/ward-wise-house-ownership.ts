@@ -1,5 +1,5 @@
 import { pgTable } from "../../basic";
-import { integer, timestamp, varchar, pgEnum } from "drizzle-orm/pg-core";
+import { integer, timestamp, uuid, pgEnum } from "drizzle-orm/pg-core";
 
 // Define house ownership type enum
 export const houseOwnershipTypeEnum = pgEnum("ownership_type_enum", [
@@ -9,8 +9,8 @@ export const houseOwnershipTypeEnum = pgEnum("ownership_type_enum", [
   "OTHER",
 ]);
 
-export const wardWiseHouseOwnership = pgTable("ward_wise_house_ownership", {
-  id: varchar("id", { length: 36 }).primaryKey(),
+export const wardWiseHouseOwnership = pgTable("acme_ward_wise_house_ownership", {
+  id: uuid("id").primaryKey().defaultRandom(),
 
   // Ward reference
   wardNumber: integer("ward_number").notNull(),
