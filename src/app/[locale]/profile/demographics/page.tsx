@@ -11,6 +11,8 @@ import {
   BabyIcon,
   Home,
   Clock,
+  Mountain,
+  MapPin,
 } from "lucide-react";
 import { api } from "@/trpc/server";
 import Image from "next/image";
@@ -46,25 +48,11 @@ export const metadata: Metadata = {
   },
 };
 
-const toc = [
-  { level: 2, text: "परिचय", slug: "introduction" },
-  { level: 2, text: "प्रमुख जनसांख्यिकी तथ्यहरू", slug: "key-demographics" },
-  { level: 2, text: "जनसांख्यिकी श्रेणीहरू", slug: "demographic-categories" },
-  { level: 2, text: "जनसंख्या वितरण", slug: "population-distribution" },
-];
-
 const demographicCategories = [
   {
-    title: "जनसंख्या सारांश",
+    title: "उमेर र लिङ्ग अनुसार जनसंख्या",
     description:
-      "परिवर्तन गाउँपालिकाको समग्र जनसंख्या, लिङ्ग अनुपात र घरधुरी सम्बन्धी सारांश तथ्याङ्क।",
-    href: "/profile/demographics/ward-wise-summary",
-    icon: <BarChart3 className="h-5 w-5" />,
-  },
-  {
-    title: "उमेर अनुसार जनसंख्या",
-    description:
-      "परिवर्तन गाउँपालिकामा उमेर समूह अनुसार जनसंख्या वितरण र वडागत विश्लेषण।",
+      "परिवर्तन गाउँपालिकामा उमेर समूह र लिङ्ग अनुसार जनसंख्या वितरण र वडागत विश्लेषण।",
     href: "/profile/demographics/age-wise-population",
     icon: <Users className="h-5 w-5" />,
   },
@@ -86,22 +74,22 @@ const demographicCategories = [
     title: "जात/जनजाति अनुसार जनसंख्या",
     description:
       "परिवर्तन गाउँपालिकामा विभिन्न जात र जनजातिको जनसंख्या र वितरण सम्बन्धी विस्तृत जानकारी।",
-    href: "/profile/demographics/ward-wise-caste-population",
+    href: "/profile/demographics/caste-population",
     icon: <Users className="h-5 w-5" />,
   },
   {
-    title: "घरमूली लिङ्ग अनुसार जनसंख्या",
+    title: "घरमुलीको लिङ्ग अनुसार घरधुरी",
     description:
-      "परिवर्तन गाउँपालिकामा वडागत घरमूली लिङ्ग वितरण र लैङ्गिक समानताको अवस्था।",
+      "परिवर्तन गाउँपालिकामा वडागत घरमुली लिङ्ग वितरण र लैङ्गिक समानताको अवस्था।",
     href: "/profile/demographics/ward-wise-househead-gender",
     icon: <Home className="h-5 w-5" />,
   },
   {
-    title: "वैवाहिक स्थिति अनुसार जनसंख्या",
+    title: "पेशाको आधारमा जनसंख्या",
     description:
-      "परिवर्तन गाउँपालिकामा उमेर अनुसार वैवाहिक स्थिति सम्बन्धी तथ्याङ्क र विवाह दर।",
-    href: "/profile/demographics/ward-age-wise-marital-status",
-    icon: <UserCheck className="h-5 w-5" />,
+      "परिवर्तन गाउँपालिकामा मुख्य पेशा अनुसार जनसंख्याको वितरण र आर्थिक संरचना।",
+    href: "/profile/demographics/ward-main-occupations",
+    icon: <Building className="h-5 w-5" />,
   },
   {
     title: "आर्थिक रुपले सक्रिय जनसंख्या",
@@ -122,7 +110,7 @@ const demographicCategories = [
     description:
       "परिवर्तन गाउँपालिकामा घरपरिवारको जन्मस्थान अनुसार वितरण र बसाई सराईको प्रवृत्ति।",
     href: "/profile/demographics/ward-wise-birthplace-households",
-    icon: <Building className="h-5 w-5" />,
+    icon: <MapPin className="h-5 w-5" />,
   },
   {
     title: "बालबालिकाको जन्मदर्ताको आधारमा जनसंख्या",
@@ -138,51 +126,25 @@ const demographicCategories = [
     href: "/profile/demographics/ward-age-gender-wise-deceased-population",
     icon: <Clock className="h-5 w-5" />,
   },
-  {
-    title: "मृत्युको कारण अनुसार मृतकको संख्या",
-    description:
-      "परिवर्तन गाउँपालिकामा मृत्युका विभिन्न कारणहरूको वितरण र विश्लेषण।",
-    href: "/profile/demographics/ward-death-causes",
-    icon: <Skull className="h-5 w-5" />,
-  },
 ];
 
 export default async function DemographicsPage() {
-  // Fetch overall demographic summary for the municipality
-  let summaryData;
+  // Fetch hero demographic summary for the municipality
+  let heroData;
   try {
-    summaryData =
-      await api.profile.demographics.wardWiseDemographicSummary.getAll.query();
+    heroData =
+      await api.profile.demographics.heroDemographics.getheroDemographicsSummary.query(
+        {
+          municipalityId: "a1b2c3d4-e5f6-7890-abcd-ef1234567890", // Use default municipality ID
+        },
+      );
   } catch (error) {
-    console.error("Error fetching demographic summary:", error);
+    console.error("Error fetching hero demographic summary:", error);
   }
 
-  // Process the single demographic summary record
-  const municipalityStats = summaryData
-    ? {
-        totalPopulation: summaryData.totalPopulation || 0,
-        totalHouseholds: summaryData.totalHouseholds || 0,
-        malePopulation: summaryData.populationMale || 0,
-        femalePopulation: summaryData.populationFemale || 0,
-        averageHouseholdSize: summaryData.averageHouseholdSize || 0,
-        sexRatio: summaryData.sexRatio || 0,
-        populationDensity: summaryData.populationDensity || 0,
-        literacyRate: summaryData.literacyRate || 0,
-      }
-    : null;
-
-  // Use the sex ratio from data if available, otherwise calculate it
-  const displaySexRatio = municipalityStats
-    ? typeof municipalityStats.sexRatio === "number" &&
-      municipalityStats.sexRatio > 0
-      ? municipalityStats.sexRatio.toFixed(2)
-      : municipalityStats.malePopulation > 0
-        ? (
-            (municipalityStats.femalePopulation /
-              municipalityStats.malePopulation) *
-            100
-          ).toFixed(2)
-        : null
+  // Calculate estimated households if not available
+  const estimatedHouseholds = heroData?.totalPopulation
+    ? Math.round(heroData.totalPopulation / 2.87) // Average household size estimation
     : null;
 
   return (
@@ -212,112 +174,132 @@ export default async function DemographicsPage() {
             <p>
               जनसांख्यिकी तथ्याङ्क गाउँपालिका विकास, योजना र नीति निर्माणका लागि
               अत्यन्त महत्त्वपूर्ण हुन्छ। परिवर्तन गाउँपालिकाको जनसांख्यिकी
-              प्रोफाइलमा जनसंख्या, वडागत वितरण, लिङ्ग, उमेर, जात, धर्म,
-              मातृभाषा, वैवाहिक स्थिति लगायतका तथ्याङ्कहरू समेटिएका छन्। यी
-              तथ्याङ्कहरूले स्थानीय सरकारलाई स्रोत विनियोजन, विकास योजना तयारी र
-              सेवा प्रवाहलाई लक्षित समुदायसम्म पुर्‍याउन सहयोग पुर्‍याउँछन्।
+              प्रोफाइलमा जनसंख्या, वडागत वितरण, क्षेत्रफल र अन्य महत्वपूर्ण
+              तथ्याङ्कहरू समेटिएका छन्। यी तथ्याङ्कहरूले स्थानीय सरकारलाई स्रोत
+              विनियोजन, विकास योजना तयारी र सेवा प्रवाहलाई लक्षित समुदायसम्म
+              पुर्‍याउन सहयोग पुर्‍याउँछन्।
             </p>
           </div>
         </section>
 
-        {/* Key Demographics Section */}
-        <section id="key-demographics">
-          <div className="prose prose-lg dark:prose-invert max-w-none">
-            <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight border-b pb-2 mb-6">
-              प्रमुख जनसांख्यिकी तथ्यहरू
-            </h2>
-          </div>
+        {/* Key Demographics Section - Only show available data */}
+        {heroData && (
+          <section id="key-demographics">
+            <div className="prose prose-lg dark:prose-invert max-w-none">
+              <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight border-b pb-2 mb-6">
+                प्रमुख जनसांख्यिकी तथ्यहरू
+              </h2>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Key stats cards */}
-            <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
-              <h3 className="text-lg font-medium mb-2">कुल जनसंख्या</h3>
-              <p className="text-3xl font-bold text-primary">
-                {municipalityStats?.totalPopulation
-                  ? localizeNumber(
-                      municipalityStats.totalPopulation.toLocaleString(),
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* Total Population */}
+              <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <Users className="h-5 w-5 text-primary" />
+                  <h3 className="text-lg font-medium">कुल जनसंख्या</h3>
+                </div>
+                <p className="text-3xl font-bold text-primary">
+                  {localizeNumber(
+                    heroData.totalPopulation.toLocaleString(),
+                    "ne",
+                  )}
+                </p>
+              </div>
+
+              {/* Total Area */}
+              <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <Mountain className="h-5 w-5 text-primary" />
+                  <h3 className="text-lg font-medium">कुल क्षेत्रफल</h3>
+                </div>
+                <p className="text-3xl font-bold text-primary">
+                  {localizeNumber(heroData.totalAreaSqKm.toString(), "ne")}
+                </p>
+                <p className="text-sm text-muted-foreground">वर्ग कि.मि.</p>
+              </div>
+
+              {/* Total Wards */}
+              <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <MapPin className="h-5 w-5 text-primary" />
+                  <h3 className="text-lg font-medium">कुल वडा संख्या</h3>
+                </div>
+                <p className="text-3xl font-bold text-primary">
+                  {localizeNumber(heroData.totalWards.toString(), "ne")}
+                </p>
+              </div>
+
+              {/* Estimated Households */}
+              {estimatedHouseholds && (
+                <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Home className="h-5 w-5 text-primary" />
+                    <h3 className="text-lg font-medium">अनुमानित घरधुरी</h3>
+                  </div>
+                  <p className="text-3xl font-bold text-primary">
+                    {localizeNumber(estimatedHouseholds.toLocaleString(), "ne")}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    (औसत ३ सदस्य प्रति घर)
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Additional stats if available */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+              {/* Population Density */}
+              {heroData.populationDensity && heroData.populationDensity > 0 && (
+                <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
+                  <h3 className="text-lg font-medium mb-2">जनसंख्या घनत्व</h3>
+                  <p className="text-3xl font-bold text-primary">
+                    {localizeNumber(
+                      heroData.populationDensity.toFixed(1),
                       "ne",
-                    )
-                  : "उपलब्ध छैन"}
-              </p>
-            </div>
+                    )}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    (प्रति वर्ग किलोमिटर)
+                  </p>
+                </div>
+              )}
 
-            <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
-              <h3 className="text-lg font-medium mb-2">कुल घरधुरी</h3>
-              <p className="text-3xl font-bold text-primary">
-                {municipalityStats?.totalHouseholds
-                  ? localizeNumber(
-                      municipalityStats.totalHouseholds.toLocaleString(),
-                      "ne",
-                    )
-                  : "उपलब्ध छैन"}
-              </p>
-            </div>
-
-            <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
-              <h3 className="text-lg font-medium mb-2">लैङ्गिक अनुपात</h3>
-              <p className="text-3xl font-bold text-primary">
-                {displaySexRatio
-                  ? localizeNumber(displaySexRatio, "ne")
-                  : "उपलब्ध छैन"}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                (प्रति १०० पुरुषमा महिला)
-              </p>
-            </div>
-
-            <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
-              <h3 className="text-lg font-medium mb-2">औसत घर आकार</h3>
-              <p className="text-3xl font-bold text-primary">
-                {municipalityStats?.averageHouseholdSize
-                  ? localizeNumber(
-                      Number(municipalityStats.averageHouseholdSize).toFixed(1),
-                      "ne",
-                    )
-                  : "उपलब्ध छैन"}
-              </p>
-            </div>
-          </div>
-
-          {/* Additional stats if available */}
-          {municipalityStats &&
-            (Number(municipalityStats.populationDensity) > 0 ||
-              Number(municipalityStats.literacyRate) > 0) && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                {Number(municipalityStats.populationDensity) > 0 && (
+              {/* Average Ward Population */}
+              {heroData.averageWardPopulation &&
+                heroData.averageWardPopulation > 0 && (
                   <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
-                    <h3 className="text-lg font-medium mb-2">जनसंख्या घनत्व</h3>
+                    <h3 className="text-lg font-medium mb-2">
+                      औसत वडा जनसंख्या
+                    </h3>
                     <p className="text-3xl font-bold text-primary">
                       {localizeNumber(
-                        Number(municipalityStats.populationDensity).toFixed(1),
+                        Math.round(
+                          heroData.averageWardPopulation,
+                        ).toLocaleString(),
                         "ne",
                       )}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      (प्रति वर्ग किलोमिटर)
                     </p>
                   </div>
                 )}
 
-                {municipalityStats.literacyRate &&
-                  Number(municipalityStats.literacyRate) > 0 && (
-                    <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
-                      <h3 className="text-lg font-medium mb-2">साक्षरता दर</h3>
-                      <p className="text-3xl font-bold text-primary">
-                        {localizeNumber(
-                          Number(municipalityStats.literacyRate).toFixed(1),
-                          "ne",
-                        )}
-                        %
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        (५ वर्ष माथिका)
-                      </p>
-                    </div>
-                  )}
-              </div>
-            )}
-        </section>
+              {/* Average Ward Area */}
+              {heroData.averageWardArea && heroData.averageWardArea > 0 && (
+                <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
+                  <h3 className="text-lg font-medium mb-2">
+                    औसत वडा क्षेत्रफल
+                  </h3>
+                  <p className="text-3xl font-bold text-primary">
+                    {localizeNumber(heroData.averageWardArea.toFixed(1), "ne")}
+                  </p>
+                  <p className="text-sm text-muted-foreground">वर्ग कि.मि.</p>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* Ward Details Section - commented out as wards data is not available */}
+        {/* TODO: Implement ward details section when ward data is available from API */}
 
         {/* Demographic Categories Section */}
         <section id="demographic-categories" className="my-8">
@@ -327,7 +309,7 @@ export default async function DemographicsPage() {
             </h2>
             <p>
               परिवर्तन गाउँपालिकाको जनसांख्यिकी सम्बन्धी विस्तृत जानकारीका लागि
-              तलका श्रेणीहरू हेर्नुहोस्。 प्रत्येक श्रेणीमा विस्तृत तथ्याङ्क,
+              तलका श्रेणीहरू हेर्नुहोस्। प्रत्येक श्रेणीमा विस्तृत तथ्याङ्क,
               चार्ट र विश्लेषण प्रस्तुत गरिएको छ।
             </p>
           </div>
@@ -361,26 +343,6 @@ export default async function DemographicsPage() {
                 </div>
               </Link>
             ))}
-          </div>
-        </section>
-
-        {/* Population Distribution Section */}
-        <section id="population-distribution" className="my-8">
-          <div className="prose prose-lg dark:prose-invert max-w-none mb-6">
-            <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight border-b pb-2">
-              जनसंख्या वितरण
-            </h2>
-            <p>
-              परिवर्तन गाउँपालिकाको विस्तृत जनसंख्या वितरण, वडागत विश्लेषण,
-              लैङ्गिक अनुपात लगायत अन्य महत्वपूर्ण तथ्याङ्कहरू हेर्न{" "}
-              <Link
-                href="/profile/demographics/ward-wise-summary"
-                className="text-primary hover:text-primary/80 font-medium"
-              >
-                जनसंख्या सारांश
-              </Link>{" "}
-              मा जानुहोस्।
-            </p>
           </div>
         </section>
       </div>
