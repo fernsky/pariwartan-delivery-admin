@@ -10,6 +10,7 @@ import {
   wardWiseLiteracyStatusFilterSchema,
   updateWardWiseLiteracyStatusSchema,
   LiteracyTypeEnum,
+  GenderEnum,
 } from "./ward-wise-literacy-status.schema";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
@@ -37,6 +38,12 @@ export const getAllWardWiseLiteracyStatus = publicProcedure
           );
         }
 
+        if (input?.gender) {
+          conditions.push(
+            eq(wardWiseLiteracyStatus.gender, input.gender),
+          );
+        }
+
         if (input?.literacyType) {
           conditions.push(
             eq(wardWiseLiteracyStatus.literacyType, input.literacyType),
@@ -47,9 +54,10 @@ export const getAllWardWiseLiteracyStatus = publicProcedure
           ? baseQuery.where(and(...conditions))
           : baseQuery;
 
-        // Sort by ward number and literacy type
+        // Sort by ward number, gender, and literacy type
         data = await queryWithFilters.orderBy(
           wardWiseLiteracyStatus.wardNumber,
+          wardWiseLiteracyStatus.gender,
           wardWiseLiteracyStatus.literacyType,
         );
       } catch (err) {
@@ -63,6 +71,7 @@ export const getAllWardWiseLiteracyStatus = publicProcedure
           SELECT 
             id,
             ward_number,
+            gender,
             literacy_type,
             population,
             updated_at,
@@ -70,7 +79,7 @@ export const getAllWardWiseLiteracyStatus = publicProcedure
           FROM 
             acme_ward_wise_literacy_status
           ORDER BY 
-            ward_number, literacy_type
+            ward_number, gender, literacy_type
         `;
         const acmeResult = await ctx.db.execute(acmeSql);
 
@@ -79,6 +88,7 @@ export const getAllWardWiseLiteracyStatus = publicProcedure
           data = acmeResult.map((row) => ({
             id: row.id,
             wardNumber: parseInt(String(row.ward_number)),
+            gender: row.gender,
             literacyType: row.literacy_type,
             population: parseInt(String(row.population || "0")),
             updatedAt: row.updated_at,
@@ -88,6 +98,10 @@ export const getAllWardWiseLiteracyStatus = publicProcedure
           // Apply filters if needed
           if (input?.wardNumber) {
             data = data.filter((item) => item.wardNumber === input.wardNumber);
+          }
+
+          if (input?.gender) {
+            data = data.filter((item) => item.gender === input.gender);
           }
 
           if (input?.literacyType) {
@@ -116,7 +130,7 @@ export const getWardWiseLiteracyStatusByWard = publicProcedure
       .select()
       .from(wardWiseLiteracyStatus)
       .where(eq(wardWiseLiteracyStatus.wardNumber, input.wardNumber))
-      .orderBy(wardWiseLiteracyStatus.literacyType);
+      .orderBy(wardWiseLiteracyStatus.gender, wardWiseLiteracyStatus.literacyType);
 
     return data;
   });
@@ -134,13 +148,14 @@ export const createWardWiseLiteracyStatus = protectedProcedure
       });
     }
 
-    // Check if entry already exists for this ward and literacy type
+    // Check if entry already exists for this ward, gender, and literacy type
     const existing = await ctx.db
       .select({ id: wardWiseLiteracyStatus.id })
       .from(wardWiseLiteracyStatus)
       .where(
         and(
           eq(wardWiseLiteracyStatus.wardNumber, input.wardNumber),
+          eq(wardWiseLiteracyStatus.gender, input.gender),
           eq(wardWiseLiteracyStatus.literacyType, input.literacyType),
         ),
       )
@@ -149,7 +164,7 @@ export const createWardWiseLiteracyStatus = protectedProcedure
     if (existing.length > 0) {
       throw new TRPCError({
         code: "CONFLICT",
-        message: `Data for Ward Number ${input.wardNumber} and literacy type ${input.literacyType} already exists`,
+        message: `Data for Ward Number ${input.wardNumber}, gender ${input.gender}, and literacy type ${input.literacyType} already exists`,
       });
     }
 
@@ -157,6 +172,7 @@ export const createWardWiseLiteracyStatus = protectedProcedure
     await ctx.db.insert(wardWiseLiteracyStatus).values({
       id: input.id || uuidv4(),
       wardNumber: input.wardNumber,
+      gender: input.gender,
       literacyType: input.literacyType,
       population: input.population,
     });
@@ -203,6 +219,7 @@ export const updateWardWiseLiteracyStatus = protectedProcedure
       .update(wardWiseLiteracyStatus)
       .set({
         wardNumber: input.wardNumber,
+        gender: input.gender,
         literacyType: input.literacyType,
         population: input.population,
       })
@@ -236,17 +253,18 @@ export const deleteWardWiseLiteracyStatus = protectedProcedure
 export const getWardWiseLiteracyStatusSummary = publicProcedure.query(
   async ({ ctx }) => {
     try {
-      // Get total counts by literacy type across all wards
+      // Get total counts by literacy type and gender across all wards
       const summarySql = sql`
         SELECT 
+          gender,
           literacy_type, 
           SUM(population) as total_population
         FROM 
           acme_ward_wise_literacy_status
         GROUP BY 
-          literacy_type
+          gender, literacy_type
         ORDER BY 
-          literacy_type
+          gender, literacy_type
       `;
 
       const summaryData = await ctx.db.execute(summarySql);

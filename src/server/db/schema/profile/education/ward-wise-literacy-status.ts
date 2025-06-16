@@ -6,6 +6,14 @@ export const literacyTypeEnum = pgEnum("literacy_type", [
   "BOTH_READING_AND_WRITING",
   "READING_ONLY",
   "ILLITERATE",
+  "NOT_MENTIONED",
+]);
+
+// Define gender enum
+export const genderEnum = pgEnum("gender", [
+  "MALE",
+  "FEMALE",
+  "TOTAL",
 ]);
 
 export const wardWiseLiteracyStatus = pgTable("ward_wise_literacy_status", {
@@ -13,6 +21,9 @@ export const wardWiseLiteracyStatus = pgTable("ward_wise_literacy_status", {
 
   // Ward reference
   wardNumber: integer("ward_number").notNull(),
+
+  // Gender
+  gender: genderEnum("gender").notNull(),
 
   // Literacy status
   literacyType: literacyTypeEnum("literacy_type").notNull(),

@@ -5,13 +5,23 @@ export const LiteracyTypeEnum = z.enum([
   "BOTH_READING_AND_WRITING",
   "READING_ONLY",
   "ILLITERATE",
+  "NOT_MENTIONED",
 ]);
 export type LiteracyType = z.infer<typeof LiteracyTypeEnum>;
+
+// Define the gender enum
+export const GenderEnum = z.enum([
+  "MALE",
+  "FEMALE",
+  "TOTAL",
+]);
+export type Gender = z.infer<typeof GenderEnum>;
 
 // Schema for ward-wise literacy status data
 export const wardWiseLiteracyStatusSchema = z.object({
   id: z.string().optional(),
   wardNumber: z.number().int().positive(),
+  gender: GenderEnum,
   literacyType: LiteracyTypeEnum,
   population: z.number().int().nonnegative(),
 });
@@ -19,6 +29,7 @@ export const wardWiseLiteracyStatusSchema = z.object({
 // Schema for filtering ward-wise literacy status data
 export const wardWiseLiteracyStatusFilterSchema = z.object({
   wardNumber: z.number().int().positive().optional(),
+  gender: GenderEnum.optional(),
   literacyType: LiteracyTypeEnum.optional(),
 });
 
@@ -43,4 +54,12 @@ export const literacyTypeOptions = [
     label: "Can read but not write (पढ्न मात्र जानेको)",
   },
   { value: "ILLITERATE", label: "Cannot read or write (पढ्न लेख्न नजानेका)" },
+  { value: "NOT_MENTIONED", label: "Not mentioned (उल्लेख नभएको)" },
+];
+
+// Export gender options for use in UI components
+export const genderOptions = [
+  { value: "MALE", label: "Male (पुरुष)" },
+  { value: "FEMALE", label: "Female (महिला)" },
+  { value: "TOTAL", label: "Total (जम्मा)" },
 ];
