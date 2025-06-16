@@ -16,40 +16,51 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import Script from "next/script";
 import { localizeNumber } from "@/lib/utils/localize-number";
+import { api } from "@/trpc/react";
 
 interface StatisticsProps {
-  demographicData?: {
-    totalPopulation?: number | null;
-    totalHouseholds?: number | null;
-    areaSqKm?: string | null;
-    populationDensity?: string | null;
-    populationMale?: number | null;
-    populationFemale?: number | null;
-    sexRatio?: string | null;
-    literacyRateAbove15?: string | null;
-    growthRate?: string | null;
-    populationAbsenteeTotal?: number | null;
-    averageHouseholdSize?: string | null;
-  } | null;
-  isLoading: boolean;
+  municipalityId?: string;
   municipalityName: string;
+  lng?: string;
 }
 
 const Statistics = ({
-  demographicData,
-  isLoading,
+  municipalityId,
   municipalityName,
+  lng = "ne",
 }: StatisticsProps) => {
   const { ref, inView } = useInView({
     threshold: 0.1,
     triggerOnce: true,
   });
 
-  // Define stats based on the demographic data
+  // Fetch ward demographics data with fixed query condition
+  const { data: wardDemographics, isLoading } =
+    api.profile.demographics.heroDemographics.getheroDemographicsSummary.useQuery(
+      {
+        municipalityId:
+          municipalityId || "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      },
+      {
+        enabled: true, // Always enable to test with fallback data
+        retry: 1,
+      },
+    );
+
+  // Calculate statistics from ward demographics data
+  const totalArea = wardDemographics?.totalAreaSqKm || 163.01;
+  const totalPopulation = wardDemographics?.totalPopulation || 21671;
+  const averageHouseholdSize = 2.87; // Standard household size used in calculations
+  const estimatedHouseholds = Math.round(
+    totalPopulation / averageHouseholdSize,
+  );
+  const populationDensity = wardDemographics?.populationDensity || 133.0;
+
+  // Define stats based on the ward demographics data
   const stats = [
     {
       label: "कुल क्षेत्रफल",
-      value: demographicData?.areaSqKm || 124.38,
+      value: totalArea,
       suffix: "वर्ग कि.मि.",
       icon: <MapPinned className="w-5 h-5" />,
       description: "कुल भूमि क्षेत्रफल",
@@ -57,7 +68,7 @@ const Statistics = ({
     },
     {
       label: "जनसंख्या",
-      value: demographicData?.totalPopulation || 5534,
+      value: totalPopulation,
       suffix: "+",
       icon: <Users className="w-5 h-5" />,
       description: "बासिन्दा संख्या",
@@ -65,18 +76,18 @@ const Statistics = ({
     },
     {
       label: "घरधुरी",
-      value: demographicData?.totalHouseholds || 1268,
+      value: estimatedHouseholds,
       suffix: "",
       icon: <Home className="w-5 h-5" />,
-      description: `प्रति घर ${localizeNumber(parseFloat(demographicData?.averageHouseholdSize as string)?.toFixed(1) || "4.4", "ne")} व्यक्ति`,
+      description: `प्रति घर ${localizeNumber(averageHouseholdSize.toFixed(1), "ne")} व्यक्ति`,
       color: "from-[#0b1f42] to-[#123772]",
     },
     {
-      label: "अनुपस्थित जनसंख्या",
-      value: demographicData?.populationAbsenteeTotal || 317,
-      suffix: "",
-      icon: <UserX className="w-5 h-5" />,
-      description: "अनुपस्थित नागरिक",
+      label: "जनघनत्व",
+      value: populationDensity,
+      suffix: "/वर्ग कि.मि.",
+      icon: <TrendingUp className="w-5 h-5" />,
+      description: "प्रति वर्ग किलोमिटर",
       color: "from-[#123772] to-[#0b1f42]",
     },
   ];
@@ -86,58 +97,42 @@ const Statistics = ({
     "@context": "https://schema.org",
     "@type": "Dataset",
     name: `${municipalityName} जनसांख्यिकीय तथ्याङ्क`,
-    description:
-      "परिवर्तन गाउँपालिकाको प्रमुख जनसांख्यिकीय तथ्याङ्क, जनगणना अनुसार",
-    url: "https://digital.khajuramun.gov.np",
+    description: `${municipalityName}को प्रमुख जनसांख्यिकीय तथ्याङ्क, वडाअनुसार`,
+    url: `https://digital.khajuramun.gov.np/${lng}`,
     keywords: [
-      "परिवर्तन गाउँपालिका जनसंख्या",
-      "Khajura Rural Municipality demographics",
-      "परिवर्तन जनगणना",
-      "बाँके जनसंख्या",
+      `${municipalityName} जनसंख्या`,
+      "ward demographics",
+      `${municipalityName} जनगणना`,
+      "रोल्पा जनसंख्या",
       "नेपालको जनसंख्या",
     ],
     variableMeasured: [
       {
         "@type": "PropertyValue",
         name: "कुल जनसंख्या",
-        value: demographicData?.totalPopulation || "उपलब्ध छैन",
+        value: totalPopulation,
       },
       {
         "@type": "PropertyValue",
         name: "कुल घरधुरी",
-        value: demographicData?.totalHouseholds || "उपलब्ध छैन",
+        value: estimatedHouseholds,
       },
       {
         "@type": "PropertyValue",
         name: "क्षेत्रफल",
-        value: demographicData?.areaSqKm || "उपलब्ध छैन",
+        value: totalArea,
         unitText: "square kilometers",
       },
       {
         "@type": "PropertyValue",
-        name: "पुरुष जनसंख्या",
-        value: demographicData?.populationMale || "उपलब्ध छैन",
+        name: "जनघनत्व",
+        value: populationDensity,
+        unitText: "per square kilometer",
       },
       {
         "@type": "PropertyValue",
-        name: "महिला जनसंख्या",
-        value: demographicData?.populationFemale || "उपलब्ध छैन",
-      },
-      {
-        "@type": "PropertyValue",
-        name: "प्रवासी जनसंख्या",
-        value: demographicData?.populationAbsenteeTotal || "उपलब्ध छैन",
-      },
-      {
-        "@type": "PropertyValue",
-        name: "लैङ्गिक अनुपात",
-        value: demographicData?.sexRatio || "उपलब्ध छैन",
-      },
-      {
-        "@type": "PropertyValue",
-        name: "साक्षरता दर",
-        value: demographicData?.literacyRateAbove15 || "उपलब्ध छैन",
-        unitText: "percentage",
+        name: "कुल वडा संख्या",
+        value: wardDemographics?.totalWards || 6,
       },
     ],
   };
@@ -221,7 +216,7 @@ const Statistics = ({
               >
                 <Card className="border-0 overflow-hidden group hover:shadow-md transition-all duration-300 bg-white/95 backdrop-blur-sm">
                   <div className="relative h-full">
-                    {/* Gradient header - updated to blue style */}
+                    {/* Gradient header */}
                     <div
                       className={`p-2 bg-gradient-to-r ${stat.color} relative`}
                     >
@@ -249,10 +244,13 @@ const Statistics = ({
                               >
                                 {inView && (
                                   <CountUp
-                                    end={parseFloat(stat.value as string)}
+                                    end={parseFloat(stat.value.toString())}
                                     duration={2}
                                     decimals={
-                                      stat.label === "कुल क्षेत्रफल" ? 2 : 0
+                                      stat.label === "कुल क्षेत्रफल" ||
+                                      stat.label === "जनघनत्व"
+                                        ? 2
+                                        : 0
                                     }
                                     formattingFn={(value) =>
                                       localizeNumber(value.toString(), "ne")
@@ -277,7 +275,8 @@ const Statistics = ({
             ))}
           </motion.div>
 
-          {!isLoading && demographicData && (
+          {/* Additional ward information */}
+          {!isLoading && wardDemographics && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -288,55 +287,55 @@ const Statistics = ({
                 <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-[#123772]/10">
                   <div className="p-4 bg-gradient-to-br from-white to-[#123772]/5">
                     <p className="text-xs text-[#123772] font-medium mb-1 flex items-center">
-                      <Users className="w-3 h-3 mr-1 opacity-70" />
-                      पुरुष जनसंख्या
+                      <MapPinned className="w-3 h-3 mr-1 opacity-70" />
+                      कुल वडा संख्या
                     </p>
                     <p className="text-xl font-bold text-gray-900">
-                      {demographicData.populationMale
-                        ? localizeNumber(
-                            demographicData.populationMale.toString(),
-                            "ne",
-                          )
-                        : "N/A"}
+                      {localizeNumber(
+                        (wardDemographics.totalWards || 6).toString(),
+                        "ne",
+                      )}
                     </p>
                   </div>
                   <div className="p-4 bg-gradient-to-br from-white to-[#123772]/5">
                     <p className="text-xs text-[#123772] font-medium mb-1 flex items-center">
                       <Users className="w-3 h-3 mr-1 opacity-70" />
-                      महिला जनसंख्या
+                      औसत वडा जनसंख्या
                     </p>
                     <p className="text-xl font-bold text-gray-900">
-                      {demographicData.populationFemale
-                        ? localizeNumber(
-                            demographicData.populationFemale.toString(),
-                            "ne",
-                          )
-                        : "N/A"}
+                      {localizeNumber(
+                        Math.round(
+                          wardDemographics.averageWardPopulation || 0,
+                        ).toString(),
+                        "ne",
+                      )}
                     </p>
                   </div>
                   <div className="p-4 bg-gradient-to-br from-white to-[#123772]/5">
                     <p className="text-xs text-[#123772] font-medium mb-1 flex items-center">
-                      <ChevronRight className="w-3 h-3 mr-1 opacity-70" />
-                      लैङ्गिक अनुपात
+                      <MapPinned className="w-3 h-3 mr-1 opacity-70" />
+                      औसत वडा क्षेत्रफल
                     </p>
                     <p className="text-xl font-bold text-gray-900">
-                      {demographicData.sexRatio
-                        ? localizeNumber(
-                            parseFloat(demographicData.sexRatio).toFixed(2),
-                            "ne",
-                          )
-                        : "N/A"}
+                      {localizeNumber(
+                        (wardDemographics.averageWardArea || 0).toFixed(2),
+                        "ne",
+                      )}{" "}
+                      <span className="text-sm font-normal text-gray-600">
+                        वर्ग कि.मि.
+                      </span>
                     </p>
                   </div>
                   <div className="p-4 bg-gradient-to-br from-white to-[#123772]/5">
                     <p className="text-xs text-[#123772] font-medium mb-1 flex items-center">
-                      <TrendingUp className="w-3 h-3 mr-1 opacity-70" />
-                      साक्षरता दर
+                      <Home className="w-3 h-3 mr-1 opacity-70" />
+                      औसत घरधुरी आकार
                     </p>
                     <p className="text-xl font-bold text-gray-900">
-                      {demographicData.literacyRateAbove15
-                        ? `${localizeNumber(parseFloat(demographicData.literacyRateAbove15).toFixed(1), "ne")}%`
-                        : "N/A"}
+                      {localizeNumber(averageHouseholdSize.toFixed(2), "ne")}{" "}
+                      <span className="text-sm font-normal text-gray-600">
+                        व्यक्ति
+                      </span>
                     </p>
                   </div>
                 </div>

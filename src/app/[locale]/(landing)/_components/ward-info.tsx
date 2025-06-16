@@ -15,121 +15,82 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import Script from "next/script";
 import { localizeNumber } from "@/lib/utils/localize-number";
+import { api } from "@/trpc/react";
 
 interface WardInfoProps {
-  wardData?:
-    | Array<{
-        id?: string;
-        wardNumber: number;
-        wardName?: string;
-        year: number;
-        totalPopulation?: number;
-        totalHouseholds?: number;
-        areaSqKm?: number | string;
-        populationDensity?: number | string;
-        sexRatio?: number | string;
-      }>
-    | undefined;
-  isLoading: boolean;
+  municipalityId?: string;
   lng: string;
   municipalityName?: string;
 }
 
 const WardInfo: React.FC<WardInfoProps> = ({
-  wardData,
-  isLoading,
+  municipalityId,
   lng,
   municipalityName = "परिवर्तन गाउँपालिका",
 }) => {
   // State to track selected ward for mobile view
   const [selectedWard, setSelectedWard] = useState<number | null>(null);
 
-  // Process ward data for SEO and display
+  // Fetch ward table data with fixed query condition
+  const { data: wardTableData, isLoading } =
+    api.profile.demographics.heroDemographics.getWardTable.useQuery(
+      {
+        municipalityId:
+          municipalityId || "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      },
+      {
+        enabled: true, // Always enable to test with fallback data
+        retry: 1,
+      },
+    );
+
+  // Process ward data for display
   const processedWards = useMemo(() => {
-    if (!wardData || wardData.length === 0) {
+    if (!wardTableData?.wards || wardTableData.wards.length === 0) {
       return [];
     }
 
-    // Map the real data to our format
-    return wardData
-      .sort((a, b) => a.wardNumber - b.wardNumber)
-      .map((ward) => {
-        const colorMap: Record<number, string> = {
-          1: "from-[#0b1f42] via-[#123772] to-[#1a4894]",
-          2: "from-[#123772] via-[#1a4894] to-[#0b1f42]",
-          3: "from-[#1a4894] via-[#0b1f42] to-[#123772]",
-          4: "from-[#123772] via-[#0b1f42] to-[#1a4894]",
-          5: "from-[#0b1f42] via-[#1a4894] to-[#123772]",
-        };
+    return wardTableData.wards.map((ward) => {
+      const colorMap: Record<number, string> = {
+        1: "from-[#0b1f42] via-[#123772] to-[#1a4894]",
+        2: "from-[#123772] via-[#1a4894] to-[#0b1f42]",
+        3: "from-[#1a4894] via-[#0b1f42] to-[#123772]",
+        4: "from-[#123772] via-[#0b1f42] to-[#1a4894]",
+        5: "from-[#0b1f42] via-[#1a4894] to-[#123772]",
+        6: "from-[#1a4894] via-[#123772] to-[#0b1f42]",
+      };
 
-        const areaSqKm =
-          typeof ward.areaSqKm === "string"
-            ? parseFloat(ward.areaSqKm)
-            : ward.areaSqKm || 0;
+      return {
+        number: ward.wardNo,
+        name: ward.includedVdcOrMunicipality,
+        households: ward.estimatedHouseholds,
+        population: ward.population,
+        area: ward.areaSqKm,
+        density: ward.populationDensity,
+        color:
+          colorMap[ward.wardNo] || "from-[#123772] via-[#1a4894] to-[#0b1f42]",
+      };
+    });
+  }, [wardTableData]);
 
-        const populationDensity =
-          typeof ward.populationDensity === "string"
-            ? parseFloat(ward.populationDensity)
-            : ward.populationDensity || 0;
-
-        const sexRatio =
-          typeof ward.sexRatio === "string"
-            ? parseFloat(ward.sexRatio)
-            : ward.sexRatio || 100;
-
-        return {
-          number: ward.wardNumber,
-          households: ward.totalHouseholds || 0,
-          population: ward.totalPopulation || 0,
-          area: areaSqKm,
-          density: populationDensity,
-          sexRatio: sexRatio,
-          color:
-            colorMap[ward.wardNumber] ||
-            "from-[#123772] via-[#1a4894] to-[#0b1f42]",
-          year: ward.year,
-        };
-      });
-  }, [wardData]);
-
-  // Calculate totals for the summary row
+  // Use totals from API response
   const wardTotals = useMemo(() => {
-    if (!processedWards || processedWards.length === 0) {
+    if (!wardTableData?.totals) {
       return {
         totalPopulation: 0,
         totalHouseholds: 0,
         totalArea: 0,
         avgDensity: 0,
-        avgSexRatio: 0,
       };
     }
 
-    const totalPopulation = processedWards.reduce(
-      (sum, ward) => sum + ward.population,
-      0,
-    );
-    const totalHouseholds = processedWards.reduce(
-      (sum, ward) => sum + ward.households,
-      0,
-    );
-    const totalArea = processedWards.reduce((sum, ward) => sum + ward.area, 0);
-
-    // Calculate weighted average density and sex ratio
-    const avgDensity = totalPopulation / totalArea || 0;
-
-    // For sex ratio, take the average of all wards
-    const avgSexRatio =
-      processedWards.reduce((sum, ward) => sum + ward.sexRatio, 0) /
-        processedWards.length || 0;
-
     return {
-      totalPopulation,
-      totalHouseholds,
-      totalArea,
-      avgDensity: parseFloat(avgDensity.toFixed(2)),
-      avgSexRatio: parseFloat(avgSexRatio.toFixed(2)),
+      totalPopulation: wardTableData.totals.totalPopulation,
+      totalHouseholds: wardTableData.totals.totalEstimatedHouseholds,
+      totalArea: wardTableData.totals.totalAreaSqKm,
+      avgDensity: wardTableData.totals.averagePopulationDensity,
     };
-  }, [processedWards]);
+  }, [wardTableData]);
 
   // Create structured data for SEO
   const structuredData = {
@@ -141,7 +102,7 @@ const WardInfo: React.FC<WardInfoProps> = ({
     keywords: [
       `${municipalityName} वडा`,
       `${municipalityName} वडा विवरण`,
-      "Khajura Rural Municipality wards",
+      "ward demographics",
     ],
     variableMeasured: processedWards.map((ward) => ({
       "@type": "PropertyValue",
@@ -151,7 +112,7 @@ const WardInfo: React.FC<WardInfoProps> = ({
         घरधुरी: ward.households,
         क्षेत्रफल: ward.area,
         जनघनत्व: ward.density,
-        "लैङ्गिक अनुपात": ward.sexRatio,
+        "समावेश गरिएको क्षेत्र": ward.name,
       },
     })),
     creator: {
@@ -221,7 +182,8 @@ const WardInfo: React.FC<WardInfoProps> = ({
             className="text-gray-600 max-w-2xl mx-auto text-xs md:text-sm"
             itemProp="description"
           >
-            {municipalityName}को प्रत्येक वडाको आधारभूत जानकारी
+            {municipalityName}को प्रत्येक वडाको आधारभूत जानकारी र समावेश गरिएका
+            क्षेत्रहरू
           </p>
         </motion.div>
 
@@ -231,7 +193,7 @@ const WardInfo: React.FC<WardInfoProps> = ({
           <EmptyWardState />
         ) : (
           <>
-            {/* Desktop/Tablet Layout - Compact Table View */}
+            {/* Desktop/Tablet Layout - Enhanced Table View */}
             <div className="hidden md:block overflow-hidden rounded-xl shadow-sm bg-white/90 backdrop-blur-sm">
               <div className="overflow-x-auto">
                 <table className="w-full">
@@ -239,6 +201,9 @@ const WardInfo: React.FC<WardInfoProps> = ({
                     <tr className="bg-[#123772]/5 text-left">
                       <th className="py-3 px-4 text-sm font-medium text-[#0b1f42] border-b border-[#123772]/10">
                         वडा नं.
+                      </th>
+                      <th className="py-3 px-4 text-sm font-medium text-[#0b1f42] border-b border-[#123772]/10">
+                        समावेश गरिएको क्षेत्र
                       </th>
                       <th className="py-3 px-4 text-sm font-medium text-[#0b1f42] border-b border-[#123772]/10">
                         <div className="flex items-center gap-1.5">
@@ -264,12 +229,6 @@ const WardInfo: React.FC<WardInfoProps> = ({
                           <span>जनघनत्व</span>
                         </div>
                       </th>
-                      <th className="py-3 px-4 text-sm font-medium text-[#0b1f42] border-b border-[#123772]/10">
-                        <div className="flex items-center gap-1.5">
-                          <BarChart2 className="w-3.5 h-3.5" />
-                          <span>लैङ्गिक अनुपात</span>
-                        </div>
-                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -277,84 +236,107 @@ const WardInfo: React.FC<WardInfoProps> = ({
                       <motion.tr
                         key={ward.number}
                         variants={itemVariants}
+                        initial="hidden"
+                        animate="show"
+                        transition={{ delay: idx * 0.1 }}
                         className={`hover:bg-[#123772]/5 transition-colors ${idx % 2 === 0 ? "bg-white" : "bg-[#123772]/5"}`}
                       >
-                        <td className="py-2.5 px-4 border-b border-[#123772]/5">
+                        <td className="py-3 px-4 border-b border-[#123772]/5">
                           <div className="flex items-center gap-2">
                             <div
-                              className={`w-8 h-8 rounded-full bg-gradient-to-r ${ward.color} flex items-center justify-center text-white font-semibold`}
+                              className={`w-8 h-8 rounded-full bg-gradient-to-r ${ward.color} flex items-center justify-center text-white font-semibold text-sm shadow-sm`}
                             >
-                              {localizeNumber(ward.number, "ne")}
+                              {localizeNumber(ward.number.toString(), "ne")}
                             </div>
                           </div>
                         </td>
-                        <td className="py-2.5 px-4 border-b border-[#123772]/5 font-medium">
-                          {localizeNumber(
-                            ward.population.toLocaleString(),
-                            "ne",
-                          )}
+                        <td className="py-3 px-4 border-b border-[#123772]/5">
+                          <div className="max-w-xs">
+                            <p className="font-medium text-gray-900 text-sm leading-relaxed">
+                              {ward.name}
+                            </p>
+                          </div>
                         </td>
-                        <td className="py-2.5 px-4 border-b border-[#123772]/5 font-medium">
-                          {localizeNumber(
-                            ward.households.toLocaleString(),
-                            "ne",
-                          )}
+                        <td className="py-3 px-4 border-b border-[#123772]/5">
+                          <span className="font-semibold text-gray-900">
+                            {localizeNumber(
+                              ward.population.toLocaleString(),
+                              "ne",
+                            )}
+                          </span>
                         </td>
-                        <td className="py-2.5 px-4 border-b border-[#123772]/5 font-medium">
-                          {localizeNumber(ward.area, "ne")}
+                        <td className="py-3 px-4 border-b border-[#123772]/5">
+                          <span className="font-semibold text-gray-900">
+                            {localizeNumber(
+                              ward.households.toLocaleString(),
+                              "ne",
+                            )}
+                          </span>
                         </td>
-                        <td className="py-2.5 px-4 border-b border-[#123772]/5 font-medium">
-                          {localizeNumber(ward.density, "ne")}
+                        <td className="py-3 px-4 border-b border-[#123772]/5">
+                          <span className="font-semibold text-gray-900">
+                            {localizeNumber(ward.area.toString(), "ne")}
+                          </span>
                         </td>
-                        <td className="py-2.5 px-4 border-b border-[#123772]/5 font-medium">
-                          {localizeNumber(ward.sexRatio, "ne")}
+                        <td className="py-3 px-4 border-b border-[#123772]/5">
+                          <span className="font-semibold text-gray-900">
+                            {localizeNumber(ward.density.toString(), "ne")}
+                          </span>
                         </td>
                       </motion.tr>
                     ))}
 
                     {/* Totals Row */}
-                    <motion.tr
-                      variants={itemVariants}
-                      className="bg-[#123772]/10 font-medium"
-                    >
-                      <td className="py-3 px-4 border-t border-[#123772]/20">
-                        <div className="flex items-center gap-2">
-                          <div className="text-[#0b1f42] font-semibold">
-                            जम्मा
-                          </div>
+                    <tr className="bg-[#123772]/10 font-medium border-t-2 border-[#123772]/20">
+                      <td className="py-4 px-4">
+                        <div className="text-[#0b1f42] font-bold text-sm">
+                          जम्मा
                         </div>
                       </td>
-                      <td className="py-3 px-4 border-t border-[#123772]/20 text-[#0b1f42] font-semibold">
-                        {localizeNumber(
-                          wardTotals.totalPopulation.toLocaleString(),
-                          "ne",
-                        )}
+                      <td className="py-4 px-4">
+                        <span className="text-[#0b1f42] font-bold text-sm">
+                          {processedWards.length} वडा
+                        </span>
                       </td>
-                      <td className="py-3 px-4 border-t border-[#123772]/20 text-[#0b1f42] font-semibold">
-                        {localizeNumber(
-                          wardTotals.totalHouseholds.toLocaleString(),
-                          "ne",
-                        )}
+                      <td className="py-4 px-4">
+                        <span className="text-[#0b1f42] font-bold">
+                          {localizeNumber(
+                            wardTotals.totalPopulation.toLocaleString(),
+                            "ne",
+                          )}
+                        </span>
                       </td>
-                      <td className="py-3 px-4 border-t border-[#123772]/20 text-[#0b1f42] font-semibold">
-                        {localizeNumber(wardTotals.totalArea.toFixed(2), "ne")}
+                      <td className="py-4 px-4">
+                        <span className="text-[#0b1f42] font-bold">
+                          {localizeNumber(
+                            wardTotals.totalHouseholds.toLocaleString(),
+                            "ne",
+                          )}
+                        </span>
                       </td>
-                      <td className="py-3 px-4 border-t border-[#123772]/20 text-[#0b1f42] font-semibold">
-                        {localizeNumber(wardTotals.avgDensity.toFixed(2), "ne")}
+                      <td className="py-4 px-4">
+                        <span className="text-[#0b1f42] font-bold">
+                          {localizeNumber(
+                            wardTotals.totalArea.toFixed(2),
+                            "ne",
+                          )}
+                        </span>
                       </td>
-                      <td className="py-3 px-4 border-t border-[#123772]/20 text-[#0b1f42] font-semibold">
-                        {localizeNumber(
-                          wardTotals.avgSexRatio.toFixed(2),
-                          "ne",
-                        )}
+                      <td className="py-4 px-4">
+                        <span className="text-[#0b1f42] font-bold">
+                          {localizeNumber(
+                            wardTotals.avgDensity.toFixed(2),
+                            "ne",
+                          )}
+                        </span>
                       </td>
-                    </motion.tr>
+                    </tr>
                   </tbody>
                 </table>
               </div>
             </div>
 
-            {/* Mobile Layout - Compact Cards */}
+            {/* Mobile Layout - Enhanced Cards */}
             <div className="md:hidden">
               <motion.div
                 variants={containerVariants}
@@ -384,7 +366,7 @@ const WardInfo: React.FC<WardInfoProps> = ({
   );
 };
 
-// Mobile Card with Expandable Details
+// Enhanced Mobile Card with Ward Name
 const MobileWardCard = ({
   ward,
   isSelected,
@@ -407,24 +389,25 @@ const MobileWardCard = ({
       <Card className="border-0 bg-white/95 backdrop-blur-sm rounded-lg shadow-sm overflow-hidden">
         {/* Card Header with basic info */}
         <div
-          className={`bg-gradient-to-r ${ward.color} p-2.5 flex items-center justify-between relative cursor-pointer`}
+          className={`bg-gradient-to-r ${ward.color} p-3 flex items-center justify-between relative cursor-pointer`}
           onClick={onSelect}
         >
           <div className="absolute inset-0 bg-[url('/patterns/topography.svg')] opacity-10"></div>
 
-          <div className="flex items-center z-10 relative">
-            <h3 className="font-bold text-white text-base">
-              वडा {localizeNumber(ward.number, "ne")}
-            </h3>
-
-            <div className="bg-white/20 w-px h-5 mx-2"></div>
-
-            <div className="text-white">
-              <Users className="inline-block w-3 h-3 mr-1 opacity-80" />
-              <span className="font-medium text-sm">
-                {localizeNumber(ward.population.toLocaleString(), "ne")}
-              </span>
+          <div className="flex-1 z-10 relative">
+            <div className="flex items-center mb-1">
+              <h3 className="font-bold text-white text-base mr-2">
+                वडा {localizeNumber(ward.number.toString(), "ne")}
+              </h3>
+              <div className="bg-white/20 w-px h-4 mr-2"></div>
+              <div className="text-white/90">
+                <Users className="inline-block w-3 h-3 mr-1" />
+                <span className="font-medium text-sm">
+                  {localizeNumber(ward.population.toLocaleString(), "ne")}
+                </span>
+              </div>
             </div>
+            <p className="text-white/80 text-xs line-clamp-1">{ward.name}</p>
           </div>
 
           <motion.div
@@ -446,52 +429,51 @@ const MobileWardCard = ({
               transition={{ duration: 0.2 }}
               className="overflow-hidden"
             >
-              <div className="p-3 grid grid-cols-2 gap-2 text-sm">
-                {/* Households */}
-                <div className="flex items-center p-1.5 bg-[#123772]/5 rounded-md">
-                  <Home className="w-3 h-3 text-[#1a4894] mr-1.5" />
-                  <div>
-                    <span className="text-xs text-gray-500">घरधुरी</span>
-                    <p className="font-medium text-gray-900">
-                      {localizeNumber(ward.households.toLocaleString(), "ne")}
-                    </p>
-                  </div>
+              <div className="p-3 space-y-2">
+                {/* Ward Name */}
+                <div className="p-2 bg-[#123772]/5 rounded-md">
+                  <span className="text-xs text-gray-500 block">
+                    समावेश गरिएको क्षेत्र
+                  </span>
+                  <p className="font-medium text-gray-900 text-sm">
+                    {ward.name}
+                  </p>
                 </div>
 
-                {/* Area */}
-                <div className="flex items-center p-1.5 bg-[#123772]/5 rounded-md">
-                  <MapPin className="w-3 h-3 text-[#1a4894] mr-1.5" />
-                  <div>
-                    <span className="text-xs text-gray-500">क्षेत्रफल</span>
-                    <p className="font-medium text-gray-900">
-                      {localizeNumber(ward.area, "ne")}{" "}
-                      <span className="text-xs">वर्ग कि.मि.</span>
-                    </p>
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  {/* Households */}
+                  <div className="flex items-center p-1.5 bg-[#123772]/5 rounded-md">
+                    <Home className="w-3 h-3 text-[#1a4894] mr-1.5 flex-shrink-0" />
+                    <div>
+                      <span className="text-xs text-gray-500">घरधुरी</span>
+                      <p className="font-medium text-gray-900">
+                        {localizeNumber(ward.households.toLocaleString(), "ne")}
+                      </p>
+                    </div>
                   </div>
-                </div>
 
-                {/* Population Density */}
-                <div className="flex items-center p-1.5 bg-[#123772]/5 rounded-md">
-                  <PieChart className="w-3 h-3 text-[#1a4894] mr-1.5" />
-                  <div>
-                    <span className="text-xs text-gray-500">जनघनत्व</span>
-                    <p className="font-medium text-gray-900">
-                      {localizeNumber(ward.density, "ne")}{" "}
-                      <span className="text-xs">/कि.मि²</span>
-                    </p>
+                  {/* Area */}
+                  <div className="flex items-center p-1.5 bg-[#123772]/5 rounded-md">
+                    <MapPin className="w-3 h-3 text-[#1a4894] mr-1.5 flex-shrink-0" />
+                    <div>
+                      <span className="text-xs text-gray-500">क्षेत्रफल</span>
+                      <p className="font-medium text-gray-900">
+                        {localizeNumber(ward.area.toString(), "ne")}{" "}
+                        <span className="text-xs">वर्ग कि.मि.</span>
+                      </p>
+                    </div>
                   </div>
-                </div>
 
-                {/* Sex Ratio */}
-                <div className="flex items-center p-1.5 bg-[#123772]/5 rounded-md">
-                  <BarChart2 className="w-3 h-3 text-[#1a4894] mr-1.5" />
-                  <div>
-                    <span className="text-xs text-gray-500">
-                      लैङ्गिक अनुपात
-                    </span>
-                    <p className="font-medium text-gray-900">
-                      {localizeNumber(ward.sexRatio, "ne")}
-                    </p>
+                  {/* Population Density */}
+                  <div className="flex items-center p-1.5 bg-[#123772]/5 rounded-md col-span-2">
+                    <PieChart className="w-3 h-3 text-[#1a4894] mr-1.5 flex-shrink-0" />
+                    <div>
+                      <span className="text-xs text-gray-500">जनघनत्व</span>
+                      <p className="font-medium text-gray-900">
+                        {localizeNumber(ward.density.toString(), "ne")}{" "}
+                        <span className="text-xs">व्यक्ति/वर्ग कि.मि.</span>
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -510,50 +492,30 @@ const WardInfoSkeleton = () => (
       <table className="w-full">
         <thead>
           <tr className="bg-[#123772]/5">
-            <th className="py-3 px-4 text-left border-b border-[#123772]/10">
-              <Skeleton className="h-5 w-16" />
-            </th>
-            <th className="py-3 px-4 text-left border-b border-[#123772]/10">
-              <Skeleton className="h-5 w-20" />
-            </th>
-            <th className="py-3 px-4 text-left border-b border-[#123772]/10">
-              <Skeleton className="h-5 w-20" />
-            </th>
-            <th className="py-3 px-4 text-left border-b border-[#123772]/10">
-              <Skeleton className="h-5 w-24" />
-            </th>
-            <th className="py-3 px-4 text-left border-b border-[#123772]/10">
-              <Skeleton className="h-5 w-20" />
-            </th>
-            <th className="py-3 px-4 text-left border-b border-[#123772]/10">
-              <Skeleton className="h-5 w-20" />
-            </th>
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <th
+                key={i}
+                className="py-3 px-4 text-left border-b border-[#123772]/10"
+              >
+                <Skeleton className="h-5 w-20" />
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
-          {[1, 2, 3, 4, 5].map((i) => (
+          {[1, 2, 3, 4, 5, 6].map((i) => (
             <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-[#123772]/5"}>
-              <td className="py-3 px-4 border-b border-[#123772]/5">
-                <div className="flex items-center">
-                  <Skeleton className="h-8 w-8 rounded-full mr-2" />
-                  <Skeleton className="h-5 w-16" />
-                </div>
-              </td>
-              <td className="py-3 px-4 border-b border-[#123772]/5">
-                <Skeleton className="h-5 w-16" />
-              </td>
-              <td className="py-3 px-4 border-b border-[#123772]/5">
-                <Skeleton className="h-5 w-16" />
-              </td>
-              <td className="py-3 px-4 border-b border-[#123772]/5">
-                <Skeleton className="h-5 w-16" />
-              </td>
-              <td className="py-3 px-4 border-b border-[#123772]/5">
-                <Skeleton className="h-5 w-16" />
-              </td>
-              <td className="py-3 px-4 border-b border-[#123772]/5">
-                <Skeleton className="h-5 w-16" />
-              </td>
+              {[1, 2, 3, 4, 5, 6].map((j) => (
+                <td key={j} className="py-3 px-4 border-b border-[#123772]/5">
+                  {j === 1 ? (
+                    <div className="flex items-center">
+                      <Skeleton className="h-8 w-8 rounded-full mr-2" />
+                    </div>
+                  ) : (
+                    <Skeleton className="h-5 w-16" />
+                  )}
+                </td>
+              ))}
             </tr>
           ))}
         </tbody>

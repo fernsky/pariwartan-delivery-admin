@@ -7,6 +7,7 @@ import { wardWiseDemographicSummaryRouter } from "./ward-wise-demographic-summar
 import { birthplaceHouseholdsRouter } from "./ward-wise-birthplace-households.procedure";
 import { castePopulationRouter } from "./caste-population.procedure";
 import {ageWisePopulationRouter} from "./age-wise-population.procedure";
+import { heroDemographicsRouter } from "./hero-demographics.procedure";
 import { ageHouseHeadGenderRouter } from "./ward-wise-househead-gender.procedure";
 import { motherTonguePopulationRouter } from "./ward-wise-mother-tongue-population.procedure";
 import { wardWiseReligionPopulationRouter } from "./ward-wise-religion-population.procedure";
@@ -49,4 +50,5 @@ export const demographicsRouter = createTRPCRouter({
   ageGenderWiseDeceasedPopulation: ageGenderWiseDeceasedPopulationRouter,
   wardWiseBirthCertificatePopulation: wardWiseBirthCertificatePopulationRouter,
   wardWiseDeathCause: wardWiseDeathCauseRouter,
+  heroDemographics: heroDemographicsRouter,
 });
