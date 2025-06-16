@@ -39,7 +39,8 @@ export const getAllWardWiseHouseholdOuterWall = publicProcedure
 
         if (input?.wallType) {
           conditions.push(
-            eq(wardWiseHouseholdOuterWall.wallType, input.wallType),
+            //@ts-ignore
+            eq(wardWiseHouseholdOuterWall.wallType, input.wallType as typeof wardWiseHouseholdOuterWall.wallType.dataType),
           );
         }
 
@@ -142,6 +143,7 @@ export const createWardWiseHouseholdOuterWall = protectedProcedure
       .where(
         and(
           eq(wardWiseHouseholdOuterWall.wardNumber, input.wardNumber),
+          //@ts-ignore
           eq(wardWiseHouseholdOuterWall.wallType, input.wallType),
         ),
       )
@@ -156,9 +158,9 @@ export const createWardWiseHouseholdOuterWall = protectedProcedure
 
     // Create new record
     await ctx.db.insert(wardWiseHouseholdOuterWall).values({
-      id: input.id || uuidv4(),
+      id: uuidv4(),
       wardNumber: input.wardNumber,
-      wallType: input.wallType,
+      wallType: input.wallType as any,
       households: input.households,
     });
 
@@ -204,7 +206,7 @@ export const updateWardWiseHouseholdOuterWall = protectedProcedure
       .update(wardWiseHouseholdOuterWall)
       .set({
         wardNumber: input.wardNumber,
-        wallType: input.wallType,
+        wallType: input.wallType as any,
         households: input.households,
       })
       .where(eq(wardWiseHouseholdOuterWall.id, input.id));

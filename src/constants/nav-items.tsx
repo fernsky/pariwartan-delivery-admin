@@ -80,10 +80,6 @@ export const navItems: NavItem[] = [
         href: "/profile/economics/ward-wise-house-ownership",
       },
       {
-        title: "जगको आधारमा घरधुरी",
-        href: "/profile/economics/ward-wise-household-base",
-      },
-      {
         title: "बाहिरी गारोको आधारमा घरधुरी",
         href: "/profile/economics/ward-wise-household-outer-wall",
       },

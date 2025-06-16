@@ -53,6 +53,7 @@ interface AgeWiseChartsProps {
     ageGroup: string;
     gender: string;
     population: number;
+    wardNumber?: number;
   }>;
   AGE_GROUP_NAMES: Record<string, string>;
   GENDER_NAMES: Record<string, string>;
@@ -427,7 +428,10 @@ export default function AgeWiseCharts({
               <TabsContent value="chart" className="p-6">
                 <WardDetailedAgePieCharts
                   wardNumbers={wardNumbers}
-                  ageData={ageData}
+                  //@ts-ignore
+                  ageData={ageData.filter(
+                    (item) => item.wardNumber !== undefined,
+                  )}
                   AGE_CATEGORY_COLORS={AGE_CATEGORY_COLORS}
                 />
               </TabsContent>

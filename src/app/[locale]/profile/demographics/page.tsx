@@ -157,42 +157,33 @@ export default async function DemographicsPage() {
     console.error("Error fetching demographic summary:", error);
   }
 
-  // Calculate municipality totals if data is available
+  // Process the single demographic summary record
   const municipalityStats = summaryData
     ? {
-        totalPopulation: summaryData.reduce(
-          (sum, ward) =>
-            sum +
-            (ward.totalPopulation ||
-              (ward.populationMale || 0) +
-                (ward.populationFemale || 0) +
-                (ward.populationOther || 0)),
-          0,
-        ),
-        totalHouseholds: summaryData.reduce(
-          (sum, ward) => sum + (ward.totalHouseholds || 0),
-          0,
-        ),
-        malePopulation: summaryData.reduce(
-          (sum, ward) => sum + (ward.populationMale || 0),
-          0,
-        ),
-        femalePopulation: summaryData.reduce(
-          (sum, ward) => sum + (ward.populationFemale || 0),
-          0,
-        ),
+        totalPopulation: summaryData.totalPopulation || 0,
+        totalHouseholds: summaryData.totalHouseholds || 0,
+        malePopulation: summaryData.populationMale || 0,
+        femalePopulation: summaryData.populationFemale || 0,
+        averageHouseholdSize: summaryData.averageHouseholdSize || 0,
+        sexRatio: summaryData.sexRatio || 0,
+        populationDensity: summaryData.populationDensity || 0,
+        literacyRate: summaryData.literacyRate || 0,
       }
     : null;
 
-  // Calculate sex ratio if data is available
-  const sexRatio =
-    municipalityStats && municipalityStats.malePopulation > 0
-      ? (
-          (municipalityStats.femalePopulation /
-            municipalityStats.malePopulation) *
-          100
-        ).toFixed(2)
-      : null;
+  // Use the sex ratio from data if available, otherwise calculate it
+  const displaySexRatio = municipalityStats
+    ? typeof municipalityStats.sexRatio === "number" &&
+      municipalityStats.sexRatio > 0
+      ? municipalityStats.sexRatio.toFixed(2)
+      : municipalityStats.malePopulation > 0
+        ? (
+            (municipalityStats.femalePopulation /
+              municipalityStats.malePopulation) *
+            100
+          ).toFixed(2)
+        : null
+    : null;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -214,6 +205,7 @@ export default async function DemographicsPage() {
             परिवर्तन गाउँपालिकाको जनसांख्यिक विवरण
           </h1>
         </div>
+
         {/* Introduction Section */}
         <section id="introduction">
           <div className="prose prose-lg dark:prose-invert max-w-none">
@@ -223,7 +215,7 @@ export default async function DemographicsPage() {
               प्रोफाइलमा जनसंख्या, वडागत वितरण, लिङ्ग, उमेर, जात, धर्म,
               मातृभाषा, वैवाहिक स्थिति लगायतका तथ्याङ्कहरू समेटिएका छन्। यी
               तथ्याङ्कहरूले स्थानीय सरकारलाई स्रोत विनियोजन, विकास योजना तयारी र
-              सेवा प्रवाहलाई लक्षित समुदायसम्म पुर्‍याउन सहयोग पुर्‍याउँछन्。
+              सेवा प्रवाहलाई लक्षित समुदायसम्म पुर्‍याउन सहयोग पुर्‍याउँछन्।
             </p>
           </div>
         </section>
@@ -241,31 +233,33 @@ export default async function DemographicsPage() {
             <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
               <h3 className="text-lg font-medium mb-2">कुल जनसंख्या</h3>
               <p className="text-3xl font-bold text-primary">
-                {municipalityStats
+                {municipalityStats?.totalPopulation
                   ? localizeNumber(
                       municipalityStats.totalPopulation.toLocaleString(),
                       "ne",
                     )
-                  : "लोड हुँदैछ..."}
+                  : "उपलब्ध छैन"}
               </p>
             </div>
 
             <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
               <h3 className="text-lg font-medium mb-2">कुल घरधुरी</h3>
               <p className="text-3xl font-bold text-primary">
-                {municipalityStats
+                {municipalityStats?.totalHouseholds
                   ? localizeNumber(
                       municipalityStats.totalHouseholds.toLocaleString(),
                       "ne",
                     )
-                  : "लोड हुँदैछ..."}
+                  : "उपलब्ध छैन"}
               </p>
             </div>
 
             <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
               <h3 className="text-lg font-medium mb-2">लैङ्गिक अनुपात</h3>
               <p className="text-3xl font-bold text-primary">
-                {sexRatio ? localizeNumber(sexRatio, "ne") : "लोड हुँदैछ..."}
+                {displaySexRatio
+                  ? localizeNumber(displaySexRatio, "ne")
+                  : "उपलब्ध छैन"}
               </p>
               <p className="text-sm text-muted-foreground">
                 (प्रति १०० पुरुषमा महिला)
@@ -273,10 +267,56 @@ export default async function DemographicsPage() {
             </div>
 
             <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
-              <h3 className="text-lg font-medium mb-2">वडा संख्या</h3>
-              <p className="text-3xl font-bold text-primary">८</p>
+              <h3 className="text-lg font-medium mb-2">औसत घर आकार</h3>
+              <p className="text-3xl font-bold text-primary">
+                {municipalityStats?.averageHouseholdSize
+                  ? localizeNumber(
+                      Number(municipalityStats.averageHouseholdSize).toFixed(1),
+                      "ne",
+                    )
+                  : "उपलब्ध छैन"}
+              </p>
             </div>
           </div>
+
+          {/* Additional stats if available */}
+          {municipalityStats &&
+            (Number(municipalityStats.populationDensity) > 0 ||
+              Number(municipalityStats.literacyRate) > 0) && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                {Number(municipalityStats.populationDensity) > 0 && (
+                  <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
+                    <h3 className="text-lg font-medium mb-2">जनसंख्या घनत्व</h3>
+                    <p className="text-3xl font-bold text-primary">
+                      {localizeNumber(
+                        Number(municipalityStats.populationDensity).toFixed(1),
+                        "ne",
+                      )}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      (प्रति वर्ग किलोमिटर)
+                    </p>
+                  </div>
+                )}
+
+                {municipalityStats.literacyRate &&
+                  Number(municipalityStats.literacyRate) > 0 && (
+                    <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
+                      <h3 className="text-lg font-medium mb-2">साक्षरता दर</h3>
+                      <p className="text-3xl font-bold text-primary">
+                        {localizeNumber(
+                          Number(municipalityStats.literacyRate).toFixed(1),
+                          "ne",
+                        )}
+                        %
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        (५ वर्ष माथिका)
+                      </p>
+                    </div>
+                  )}
+              </div>
+            )}
         </section>
 
         {/* Demographic Categories Section */}
@@ -288,7 +328,7 @@ export default async function DemographicsPage() {
             <p>
               परिवर्तन गाउँपालिकाको जनसांख्यिकी सम्बन्धी विस्तृत जानकारीका लागि
               तलका श्रेणीहरू हेर्नुहोस्。 प्रत्येक श्रेणीमा विस्तृत तथ्याङ्क,
-              चार्ट र विश्लेषण प्रस्तुत गरिएको छ。
+              चार्ट र विश्लेषण प्रस्तुत गरिएको छ।
             </p>
           </div>
 
@@ -339,7 +379,7 @@ export default async function DemographicsPage() {
               >
                 जनसंख्या सारांश
               </Link>{" "}
-              मा जानुहोस्。
+              मा जानुहोस्।
             </p>
           </div>
         </section>
