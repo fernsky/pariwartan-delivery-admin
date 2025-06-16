@@ -81,8 +81,8 @@ const Footer: React.FC<FooterProps> = ({ lng }) => {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-gray-900">सम्पर्क</h3>
             <div className="space-y-3 text-sm text-gray-600">
-              <p>परिवर्तन, बाँके</p>
-              <p>नेपाल</p>
+              <p>गाउँ कार्यपालिकाको कार्यालय, पुतलाचौर, रोल्पा</p>
+              <p>लुम्बिनी प्रदेश, नेपाल</p>
             </div>
           </div>
 
