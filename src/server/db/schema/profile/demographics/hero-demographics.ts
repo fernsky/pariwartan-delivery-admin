@@ -33,4 +33,4 @@ export const heroDemographics = pgTable(
 
 export type HeroDemographic = typeof heroDemographics.$inferSelect;
 export type InsertHeroDemographic = typeof heroDemographics.$inferInsert;
-export type InsertHeroDemographic = typeof heroDemographics.$inferInsert;
+

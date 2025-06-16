@@ -39,18 +39,9 @@ export default function Home({
             demographicData={demographicData}
           />
           <div className="space-y-12 sm:space-y-20">
-            <Statistics
-              demographicData={demographicData}
-              isLoading={!demographicData}
-              municipalityName={municipalityName}
-            />
+            <Statistics municipalityName={municipalityName} />
 
-            <WardInfo
-              wardData={wardData}
-              isLoading={!wardData}
-              lng={lng}
-              municipalityName={municipalityName}
-            />
+            <WardInfo lng={lng} municipalityName={municipalityName} />
 
             {/* <InteractiveMap />
             <NewsUpdates />
