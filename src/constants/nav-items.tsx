@@ -87,6 +87,10 @@ export const navItems: NavItem[] = [
         title: "वैदेशिक रोजगारीमा गएकाहरूको विवरण",
         href: "/profile/economics/ward-wise-foreign-employment-countries",
       },
+      {
+        title: "कृषि फर्मको संख्या",
+        href: "/profile/economics/ward-wise-agricultural-firm-count",
+      },
       // {
       //   title: "पशुपन्छीजन्य वस्तुको उत्पादन सम्बन्धी विवरण",
       //   href: "/profile/economics/municipality-wide-animal-products",
