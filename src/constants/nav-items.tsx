@@ -123,6 +123,10 @@ export const navItems: NavItem[] = [
         href: "/profile/education/ward-wise-literacy-status",
       },
       {
+        title: "औपचारिक शिक्षामा आबद्ध जनसंख्या",
+        href: "/profile/education/ward-wise-formal-education",
+      },
+      {
         title: "उत्तीर्ण गरेको तह",
         href: "/profile/education/ward-wise-educational-level",
       },
