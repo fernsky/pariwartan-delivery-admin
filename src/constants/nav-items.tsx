@@ -104,6 +104,10 @@ export const navItems: NavItem[] = [
         href: "/profile/economics/municipality-wide-agri-representatives",
       },
       {
+        title: "पशु सेवा प्रतिनिधिहरूको विवरण",
+        href: "/profile/economics/municipality-wide-vet-representatives",
+      },
+      {
         title: "तरकारी तथा फलफूलमा लाग्ने रोग/किरा",
         href: "/profile/economics/municipality-wide-vegetables-and-fruits-diseases",
       },
