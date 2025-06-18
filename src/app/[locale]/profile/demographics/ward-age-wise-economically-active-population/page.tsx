@@ -155,12 +155,6 @@ export default async function EconomicallyActivePopulationPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex gap-8">
-        {/* Table of Contents - Sidebar */}
-        <aside className="hidden lg:block w-64 flex-shrink-0">
-          <div className="sticky top-8">
-            <TableOfContents toc={toc} />
-          </div>
-        </aside>
 
         {/* Main Content */}
         <main className="flex-1 min-w-0">
