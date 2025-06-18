@@ -19,6 +19,31 @@ export const navItems: NavItem[] = [
     icon: <Layout className="w-4 h-4" />,
     items: [],
   },
+
+  {
+    title: "गाऊँपालिकाको चिनारी",
+    href: "/profile/demographics",
+    icon: <FileText className="w-4 h-4" />,
+    items: [
+      {
+        title: "वडागत विवरण",
+        href: "/profile/municipality-introduction/municipality-ward-information",
+      },
+      {
+        title: "मुख्य बस्तीहरूको विवरण",
+        href: "/profile/municipality-introduction/municipality-ward-wise-settlements",
+      },
+      {
+        title: "भूमि भिरालोपनको विवरण",
+        href: "/profile/municipality-introduction/municipality-terrain-slope",
+      },
+      {
+        title: "भूमि मोहडाको विवरण",
+        href: "/profile/municipality-introduction/municipality-terrain-aspect",
+      },
+    ],
+  },
+
   {
     title: "जनसांख्यिक विवरण",
     href: "/profile/demographics",

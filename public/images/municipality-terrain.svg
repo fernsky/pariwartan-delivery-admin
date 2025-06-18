@@ -1,0 +1,141 @@
+<!-- filepath: /Users/sarbagya/Desktop/pariwartan-delivery-admin/public/images/municipality-terrain.svg -->
+<svg width="1200" height="400" viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient for sky -->
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E0F6FF;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Gradient for gentle slope (0-5 degrees) -->
+    <linearGradient id="gentleSlope" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#22C55E;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#16A34A;stop-opacity:0.9" />
+    </linearGradient>
+    
+    <!-- Gradient for moderate slope (5-20 degrees) -->
+    <linearGradient id="moderateSlope" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#84CC16;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#65A30D;stop-opacity:0.9" />
+    </linearGradient>
+    
+    <!-- Gradient for steep slope (20-30 degrees) -->
+    <linearGradient id="steepSlope" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#F97316;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#EA580C;stop-opacity:0.9" />
+    </linearGradient>
+    
+    <!-- Gradient for very steep slope (30+ degrees) -->
+    <linearGradient id="verySteepSlope" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#DC2626;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#B91C1C;stop-opacity:0.9" />
+    </linearGradient>
+    
+    <!-- Shadow gradient -->
+    <linearGradient id="shadowGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:0.2" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Sky background -->
+  <rect width="1200" height="150" fill="url(#skyGradient)" />
+  
+  <!-- Terrain layers showing different slopes -->
+  
+  <!-- Gentle slope area (0-5 degrees) - largest area -->
+  <path d="M0 300 Q200 280 400 290 T800 295 L1200 300 L1200 400 L0 400 Z" fill="url(#gentleSlope)" />
+  
+  <!-- Moderate slope area (5-10 degrees) -->
+  <path d="M100 280 Q300 260 500 270 T900 275 L1200 280 L1200 300 L0 300 Z" fill="url(#moderateSlope)" />
+  
+  <!-- Moderate-steep slope area (10-20 degrees) -->
+  <path d="M200 250 Q400 230 600 240 T1000 245 L1200 250 L1200 280 L100 280 Z" fill="url(#moderateSlope)" opacity="0.7" />
+  
+  <!-- Steep slope area (20-30 degrees) -->
+  <path d="M300 200 Q500 180 700 190 T1100 195 L1200 200 L1200 250 L200 250 Z" fill="url(#steepSlope)" />
+  
+  <!-- Very steep slope area (30+ degrees) -->
+  <path d="M400 150 Q600 130 800 140 T1200 145 L1200 200 L300 200 Z" fill="url(#verySteepSlope)" />
+  
+  <!-- Add some texture lines to show slope direction -->
+  <g stroke="#ffffff" stroke-width="1" opacity="0.3">
+    <!-- Gentle slope lines -->
+    <line x1="50" y1="320" x2="70" y2="380" />
+    <line x1="150" y1="315" x2="170" y2="375" />
+    <line x1="250" y1="318" x2="270" y2="378" />
+    <line x1="350" y1="312" x2="370" y2="372" />
+    <line x1="450" y1="316" x2="470" y2="376" />
+    <line x1="550" y1="314" x2="570" y2="374" />
+    <line x1="650" y1="318" x2="670" y2="378" />
+    <line x1="750" y1="315" x2="770" y2="375" />
+    <line x1="850" y1="317" x2="870" y2="377" />
+    <line x1="950" y1="314" x2="970" y2="374" />
+    <line x1="1050" y1="316" x2="1070" y2="376" />
+    <line x1="1150" y1="318" x2="1170" y2="378" />
+    
+    <!-- Moderate slope lines -->
+    <line x1="120" y1="290" x2="135" y2="340" />
+    <line x1="220" y1="285" x2="235" y2="335" />
+    <line x1="320" y1="288" x2="335" y2="338" />
+    <line x1="420" y1="282" x2="435" y2="332" />
+    <line x1="520" y1="286" x2="535" y2="336" />
+    <line x1="620" y1="284" x2="635" y2="334" />
+    <line x1="720" y1="287" x2="735" y2="337" />
+    <line x1="820" y1="285" x2="835" y2="335" />
+    <line x1="920" y1="288" x2="935" y2="338" />
+    <line x1="1020" y1="286" x2="1035" y2="336" />
+    
+    <!-- Steep slope lines -->
+    <line x1="320" y1="210" x2="330" y2="250" />
+    <line x1="420" y1="205" x2="430" y2="245" />
+    <line x1="520" y1="208" x2="530" y2="248" />
+    <line x1="620" y1="202" x2="630" y2="242" />
+    <line x1="720" y1="206" x2="730" y2="246" />
+    <line x1="820" y1="204" x2="830" y2="244" />
+    <line x1="920" y1="207" x2="930" y2="247" />
+    <line x1="1020" y1="205" x2="1030" y2="245" />
+    
+    <!-- Very steep slope lines -->
+    <line x1="420" y1="160" x2="425" y2="190" />
+    <line x1="520" y1="155" x2="525" y2="185" />
+    <line x1="620" y1="158" x2="625" y2="188" />
+    <line x1="720" y1="152" x2="725" y2="182" />
+    <line x1="820" y1="156" x2="825" y2="186" />
+    <line x1="920" y1="154" x2="925" y2="184" />
+    <line x1="1020" y1="157" x2="1025" y2="187" />
+  </g>
+  
+  <!-- Add contour lines to emphasize elevation changes -->
+  <g stroke="#000000" stroke-width="0.5" opacity="0.2" fill="none">
+    <path d="M0 350 Q300 340 600 345 T1200 350" />
+    <path d="M50 320 Q350 310 650 315 T1200 320" />
+    <path d="M150 290 Q450 280 750 285 T1200 290" />
+    <path d="M250 260 Q550 250 850 255 T1200 260" />
+    <path d="M350 230 Q650 220 950 225 T1200 230" />
+    <path d="M450 200 Q750 190 1050 195 T1200 200" />
+    <path d="M550 170 Q850 160 1150 165 L1200 170" />
+  </g>
+  
+  <!-- Add subtle shadows for depth -->
+  <g opacity="0.15">
+    <path d="M100 300 Q300 290 500 295 T900 300 L1200 305 L1200 310 L100 310 Z" fill="url(#shadowGradient)" />
+    <path d="M200 270 Q400 260 600 265 T1000 270 L1200 275 L1200 280 L200 280 Z" fill="url(#shadowGradient)" />
+    <path d="M300 220 Q500 210 700 215 T1100 220 L1200 225 L1200 230 L300 230 Z" fill="url(#shadowGradient)" />
+  </g>
+  
+  <!-- Add some simple geometric patterns to represent different slope zones -->
+  <g opacity="0.1">
+    <!-- Gentle slope pattern -->
+    <rect x="0" y="300" width="1200" height="100" fill="none" stroke="#22C55E" stroke-width="2" stroke-dasharray="10,5" />
+    
+    <!-- Moderate slope pattern -->
+    <rect x="100" y="250" width="1100" height="50" fill="none" stroke="#84CC16" stroke-width="1.5" stroke-dasharray="8,4" />
+    
+    <!-- Steep slope pattern -->
+    <rect x="300" y="180" width="900" height="70" fill="none" stroke="#F97316" stroke-width="1" stroke-dasharray="6,3" />
+    
+    <!-- Very steep slope pattern -->
+    <rect x="400" y="150" width="800" height="30" fill="none" stroke="#DC2626" stroke-width="0.5" stroke-dasharray="4,2" />
+  </g>
+</svg>
