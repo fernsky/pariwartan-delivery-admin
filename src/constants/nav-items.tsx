@@ -26,6 +26,14 @@ export const navItems: NavItem[] = [
     icon: <FileText className="w-4 h-4" />,
     items: [
       {
+        title: "वडागत विवरण",
+        href: "/profile/municipality-introduction/municipality-ward-information",
+      },
+      {
+        title: "मुख्य बस्तीहरूको विवरण",
+        href: "/profile/municipality-introduction/municipality-ward-wise-settlements",
+      },
+      {
         title: "भूमि भिरालोपनको विवरण",
         href: "/profile/municipality-introduction/municipality-terrain-slope",
       },
