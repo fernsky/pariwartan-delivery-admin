@@ -4,8 +4,8 @@ export * from "./ward-wise-cooking-fuel";
 // Export ward-wise electricity source 
 export * from "./ward-wise-electricity-source";
 
-// Export ward-wise facilities
-export * from "./ward-wise-facilities";
+// Export municipality facilities (replaces ward-wise facilities)
+export * from "./municipality-facilities";
 
 // Export ward-wise house map passed
 export * from "./ward-wise-house-map-passed";
