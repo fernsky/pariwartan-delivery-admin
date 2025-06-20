@@ -1,3 +1,21 @@
+-- Check if acme_ward_wise_toilet_type table exists, if not create it
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_tables WHERE tablename = 'acme_ward_wise_toilet_type'
+    ) THEN
+        CREATE TABLE acme_ward_wise_toilet_type (
+            id VARCHAR(36) PRIMARY KEY,
+            ward_number INTEGER NOT NULL,
+            toilet_type VARCHAR(100) NOT NULL,
+            households INTEGER NOT NULL,
+            updated_at TIMESTAMP DEFAULT NOW(),
+            created_at TIMESTAMP DEFAULT NOW()
+        );
+    END IF;
+END
+$$;
+
 -- Insert seed data if table is empty
 DO $$
 BEGIN
@@ -7,60 +25,46 @@ BEGIN
         )
         VALUES
         -- Ward 1
-        (gen_random_uuid(), 1, 'NORMAL', 674),
-        (gen_random_uuid(), 1, 'FLUSH_WITH_SEPTIC_TANK', 96),
-        (gen_random_uuid(), 1, 'PUBLIC_EILANI', 135),
-        (gen_random_uuid(), 1, 'NO_TOILET', 2),
-        (gen_random_uuid(), 1, 'OTHER', 3),
+        (gen_random_uuid(), 1, 'NORMAL', 10),
+        (gen_random_uuid(), 1, 'FLUSH_WITH_SEPTIC_TANK', 627),
+        (gen_random_uuid(), 1, 'PUBLIC_EILANI', 5),
+        (gen_random_uuid(), 1, 'NO_TOILET', 8),
+        (gen_random_uuid(), 1, 'OTHER', 25),
 
         -- Ward 2
-        (gen_random_uuid(), 2, 'NORMAL', 1001),
-        (gen_random_uuid(), 2, 'FLUSH_WITH_SEPTIC_TANK', 1376),
-        (gen_random_uuid(), 2, 'PUBLIC_EILANI', 190),
-        (gen_random_uuid(), 2, 'NO_TOILET', 36),
-        (gen_random_uuid(), 2, 'OTHER', 8),
+        (gen_random_uuid(), 2, 'NORMAL', 203),
+        (gen_random_uuid(), 2, 'FLUSH_WITH_SEPTIC_TANK', 715),
+        (gen_random_uuid(), 2, 'PUBLIC_EILANI', 2),
+        (gen_random_uuid(), 2, 'NO_TOILET', 0),
+        (gen_random_uuid(), 2, 'OTHER', 176),
 
         -- Ward 3
-        (gen_random_uuid(), 3, 'NORMAL', 859),
-        (gen_random_uuid(), 3, 'FLUSH_WITH_SEPTIC_TANK', 1149),
-        (gen_random_uuid(), 3, 'PUBLIC_EILANI', 33),
-        (gen_random_uuid(), 3, 'NO_TOILET', 11),
-        (gen_random_uuid(), 3, 'OTHER', 9),
+        (gen_random_uuid(), 3, 'NORMAL', 79),
+        (gen_random_uuid(), 3, 'FLUSH_WITH_SEPTIC_TANK', 660),
+        (gen_random_uuid(), 3, 'PUBLIC_EILANI', 0),
+        (gen_random_uuid(), 3, 'NO_TOILET', 2),
+        (gen_random_uuid(), 3, 'OTHER', 6),
 
         -- Ward 4
-        (gen_random_uuid(), 4, 'NORMAL', 821),
-        (gen_random_uuid(), 4, 'FLUSH_WITH_SEPTIC_TANK', 847),
-        (gen_random_uuid(), 4, 'PUBLIC_EILANI', 133),
-        (gen_random_uuid(), 4, 'NO_TOILET', 8),
-        (gen_random_uuid(), 4, 'OTHER', 23),
+        (gen_random_uuid(), 4, 'NORMAL', 434),
+        (gen_random_uuid(), 4, 'FLUSH_WITH_SEPTIC_TANK', 437),
+        (gen_random_uuid(), 4, 'PUBLIC_EILANI', 2),
+        (gen_random_uuid(), 4, 'NO_TOILET', 3),
+        (gen_random_uuid(), 4, 'OTHER', 3),
 
         -- Ward 5
-        (gen_random_uuid(), 5, 'NORMAL', 1757),
-        (gen_random_uuid(), 5, 'FLUSH_WITH_SEPTIC_TANK', 34),
-        (gen_random_uuid(), 5, 'PUBLIC_EILANI', 1),
-        (gen_random_uuid(), 5, 'NO_TOILET', 47),
-        (gen_random_uuid(), 5, 'OTHER', 9),
+        (gen_random_uuid(), 5, 'NORMAL', 6),
+        (gen_random_uuid(), 5, 'FLUSH_WITH_SEPTIC_TANK', 784),
+        (gen_random_uuid(), 5, 'PUBLIC_EILANI', 0),
+        (gen_random_uuid(), 5, 'NO_TOILET', 1),
+        (gen_random_uuid(), 5, 'OTHER', 27),
 
         -- Ward 6
-        (gen_random_uuid(), 6, 'NORMAL', 1913),
-        (gen_random_uuid(), 6, 'FLUSH_WITH_SEPTIC_TANK', 24),
-        (gen_random_uuid(), 6, 'PUBLIC_EILANI', 1),
-        (gen_random_uuid(), 6, 'NO_TOILET', 12),
-        (gen_random_uuid(), 6, 'OTHER', 21),
-
-        -- Ward 7
-        (gen_random_uuid(), 7, 'NORMAL', 1917),
-        (gen_random_uuid(), 7, 'FLUSH_WITH_SEPTIC_TANK', 92),
-        (gen_random_uuid(), 7, 'PUBLIC_EILANI', 74),
-        (gen_random_uuid(), 7, 'NO_TOILET', 298),
-        (gen_random_uuid(), 7, 'OTHER', 26),
-
-        -- Ward 8
-        (gen_random_uuid(), 8, 'NORMAL', 1595),
-        (gen_random_uuid(), 8, 'FLUSH_WITH_SEPTIC_TANK', 18),
-        (gen_random_uuid(), 8, 'PUBLIC_EILANI', 120),
-        (gen_random_uuid(), 8, 'NO_TOILET', 73),
-        (gen_random_uuid(), 8, 'OTHER', 84);
+        (gen_random_uuid(), 6, 'NORMAL', 4),
+        (gen_random_uuid(), 6, 'FLUSH_WITH_SEPTIC_TANK', 447),
+        (gen_random_uuid(), 6, 'PUBLIC_EILANI', 0),
+        (gen_random_uuid(), 6, 'NO_TOILET', 3),
+        (gen_random_uuid(), 6, 'OTHER', 13);
     END IF;
 END
 $$;

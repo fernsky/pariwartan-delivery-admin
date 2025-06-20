@@ -3,7 +3,7 @@ import { wardWiseTimeToPublicTransportRouter } from "./ward-wise-time-to-public-
 import { wardWiseTimeToMarketCenterRouter } from "./ward-wise-time-to-market-center.procedure";
 import { wardWiseCookingFuelRouter } from "./ward-wise-cooking-fuel.procedure";
 import { wardWiseElectricitySourceRouter } from "./ward-wise-electricity-source.procedure";
-import { wardWiseFacilitiesRouter } from "./ward-wise-facilities.procedure";
+import { municipalityFacilitiesRouter } from "./municipality-facilities.procedure";
 import { wardWiseHouseMapPassedRouter } from "./ward-wise-house-map-passed.procedure";
 import { wardWiseHouseholdFloorRouter } from "./ward-wise-household-floor.procedure";
 import { wardWiseHouseholdRoofRouter } from "./ward-wise-household-roof.procedure";
@@ -16,7 +16,7 @@ export const physicalRouter = createTRPCRouter({
   wardWiseTimeToMarketCenter: wardWiseTimeToMarketCenterRouter,
   wardWiseCookingFuel: wardWiseCookingFuelRouter,
   wardWiseElectricitySource: wardWiseElectricitySourceRouter,
-  wardWiseFacilities: wardWiseFacilitiesRouter,
+  municipalityFacilities: municipalityFacilitiesRouter,
   wardWiseHouseMapPassed: wardWiseHouseMapPassedRouter,
   wardWiseHouseholdFloor: wardWiseHouseholdFloorRouter,
   wardWiseHouseholdRoof: wardWiseHouseholdRoofRouter,

@@ -5,6 +5,7 @@ import {
   Flame,
   Zap,
   Smartphone,
+  Home,
 } from "lucide-react";
 import { api } from "@/trpc/server";
 import Image from "next/image";
@@ -79,6 +80,20 @@ const physicalInfrastructureCategories = [
       "परिवर्तन गाउँपालिकामा घरपरिवारले बत्ती बाल्न प्रयोग गर्ने विद्युतको स्रोत र त्यसको वडागत वितरण।",
     href: "/profile/physical/ward-wise-electricity-source",
     icon: <Zap className="h-5 w-5" />,
+  },
+  {
+    title: "वडा अनुसार घरको छानाको प्रकार",
+    description:
+      "परिवर्तन गाउँपालिकाका विभिन्न वडाहरूमा प्रयोग हुने घरको छानाका प्रकारहरूको विस्तृत विश्लेषण र वितरण।",
+    href: "/profile/physical/ward-wise-household-roof",
+    icon: <Home className="h-5 w-5" />,
+  },
+  {
+    title: "वडा अनुसार घरको भुइँको प्रकार",
+    description:
+      "परिवर्तन गाउँपालिकाका विभिन्न वडाहरूमा प्रयोग हुने घरको भुइँका प्रकारहरूको विस्तृत विश्लेषण र वितरण।",
+    href: "/profile/physical/ward-wise-household-floor",
+    icon: <Home className="h-5 w-5" />,
   },
   {
     title: "आधुनिक सुविधामा पहुँच सम्बन्धी विवरण",

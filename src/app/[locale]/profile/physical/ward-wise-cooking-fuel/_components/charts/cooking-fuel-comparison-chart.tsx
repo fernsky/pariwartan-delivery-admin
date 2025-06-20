@@ -81,7 +81,7 @@ export default function CookingFuelComparisonChart({
               ></div>
               <span>स्वच्छ इन्धन प्रयोग घरधुरी: </span>
               <span className="font-medium">
-                {localizeNumber(payload[1].value.toLocaleString(), "ne")}
+                {localizeNumber(payload[1]?.value?.toLocaleString(), "ne")}
               </span>
             </div>
           </div>

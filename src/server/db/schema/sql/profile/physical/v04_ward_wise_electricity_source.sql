@@ -25,42 +25,29 @@ BEGIN
         )
         VALUES
         -- Ward 1
-        (gen_random_uuid(), 1, 'ELECTRICITY', 909),
-        (gen_random_uuid(), 1, 'KEROSENE', 1),
+        (gen_random_uuid(), 1, 'ELECTRICITY', 654),
+        (gen_random_uuid(), 1, 'SOLAR', 19),
+        (gen_random_uuid(), 1, 'OTHER', 2),
         -- Ward 2
-        (gen_random_uuid(), 2, 'ELECTRICITY', 2599),
-        (gen_random_uuid(), 2, 'SOLAR', 3),
-        (gen_random_uuid(), 2, 'KEROSENE', 7),
+        (gen_random_uuid(), 2, 'ELECTRICITY', 1043),
+        (gen_random_uuid(), 2, 'SOLAR', 49),
+        (gen_random_uuid(), 2, 'KEROSENE', 2),
         (gen_random_uuid(), 2, 'OTHER', 2),
         -- Ward 3
-        (gen_random_uuid(), 3, 'ELECTRICITY', 2049),
-        (gen_random_uuid(), 3, 'SOLAR', 11),
-        (gen_random_uuid(), 3, 'BIOGAS', 1),
+        (gen_random_uuid(), 3, 'ELECTRICITY', 746),
+        (gen_random_uuid(), 3, 'OTHER', 1),
         -- Ward 4
-        (gen_random_uuid(), 4, 'ELECTRICITY', 1827),
-        (gen_random_uuid(), 4, 'SOLAR', 2),
-        (gen_random_uuid(), 4, 'KEROSENE', 1),
-        (gen_random_uuid(), 4, 'OTHER', 2),
+        (gen_random_uuid(), 4, 'ELECTRICITY', 872),
+        (gen_random_uuid(), 4, 'SOLAR', 6),
+        (gen_random_uuid(), 4, 'OTHER', 1),
         -- Ward 5
-        (gen_random_uuid(), 5, 'ELECTRICITY', 1832),
-        (gen_random_uuid(), 5, 'SOLAR', 1),
-        (gen_random_uuid(), 5, 'KEROSENE', 7),
-        (gen_random_uuid(), 5, 'OTHER', 8),
+        (gen_random_uuid(), 5, 'ELECTRICITY', 782),
+        (gen_random_uuid(), 5, 'SOLAR', 35),
+        (gen_random_uuid(), 5, 'KEROSENE', 1),
         -- Ward 6
-        (gen_random_uuid(), 6, 'ELECTRICITY', 1963),
-        (gen_random_uuid(), 6, 'KEROSENE', 4),
-        (gen_random_uuid(), 6, 'OTHER', 4),
-        -- Ward 7
-        (gen_random_uuid(), 7, 'ELECTRICITY', 2237),
-        (gen_random_uuid(), 7, 'SOLAR', 102),
-        (gen_random_uuid(), 7, 'KEROSENE', 65),
-        (gen_random_uuid(), 7, 'BIOGAS', 3),
-        -- Ward 8
-        (gen_random_uuid(), 8, 'ELECTRICITY', 1505),
-        (gen_random_uuid(), 8, 'SOLAR', 276),
-        (gen_random_uuid(), 8, 'KEROSENE', 88),
-        (gen_random_uuid(), 8, 'OTHER', 12),
-        (gen_random_uuid(), 8, 'BIOGAS', 9);
+        (gen_random_uuid(), 6, 'ELECTRICITY', 424),
+        (gen_random_uuid(), 6, 'SOLAR', 32),
+        (gen_random_uuid(), 6, 'OTHER', 11);
     END IF;
 END
 $$;

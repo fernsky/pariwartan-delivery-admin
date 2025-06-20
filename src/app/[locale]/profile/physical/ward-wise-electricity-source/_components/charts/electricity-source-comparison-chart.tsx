@@ -77,7 +77,7 @@ export default function ElectricitySourceComparisonChart({
               ></div>
               <span>आधुनिक स्रोत प्रयोग घरधुरी: </span>
               <span className="font-medium">
-                {localizeNumber(payload[1].value.toLocaleString(), "ne")}
+                {localizeNumber(payload[1]?.value?.toLocaleString(), "ne")}
               </span>
             </div>
           </div>

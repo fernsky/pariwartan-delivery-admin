@@ -253,8 +253,8 @@ export const navItems: NavItem[] = [
         href: "/profile/physical/ward-wise-electricity-source",
       },
       {
-        title: "आधुनिक सुविधामा पहुँच सम्बन्धी विवरण",
-        href: "/profile/physical/ward-wise-facilities",
+        title: "पालिकाका आधुनिक सुविधाहरू",
+        href: "/profile/physical/municipality-facilities",
       },
     ],
   },
