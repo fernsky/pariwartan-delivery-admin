@@ -139,7 +139,11 @@ export default function ReligionCharts({
                         )}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.percentage.toFixed(2), "ne")}%
+                        {localizeNumber(
+                          (item.percentage * 0.01).toFixed(2),
+                          "ne",
+                        )}
+                        %
                       </td>
                     </tr>
                   ))}
@@ -200,7 +204,11 @@ export default function ReligionCharts({
                       {RELIGION_NAMES[item.religionType] || item.religionType}
                     </span>
                     <span className="font-medium">
-                      {localizeNumber(item.percentage.toFixed(1), "ne")}%
+                      {localizeNumber(
+                        (item.percentage * 0.01).toFixed(1),
+                        "ne",
+                      )}
+                      %
                     </span>
                   </div>
                   <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">

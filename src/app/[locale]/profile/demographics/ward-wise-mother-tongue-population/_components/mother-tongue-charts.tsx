@@ -209,7 +209,7 @@ export default function MotherTongueCharts({
                       </td>
                       <td className="border p-2 text-right">
                         {localizeNumber(
-                          ((item.population / totalPopulation) * 100).toFixed(
+                          ((item.population / totalPopulation) * 0.01).toFixed(
                             2,
                           ),
                           "ne",

@@ -251,7 +251,7 @@ export default async function WardWiseReligionPopulationPage() {
               {RELIGION_NAMES[religionData[0]?.religionType] || ""} धर्म मान्ने
               व्यक्तिहरू{" "}
               {localizeNumber(
-                ((religionData[0]?.percentage || 0) / 100).toFixed(1),
+                ((religionData[0]?.percentage || 0) * 0.01).toFixed(1),
                 "ne",
               )}
               % रहेका छन्। यस तथ्याङ्कले परिवर्तन गाउँपालिकाको धार्मिक नीति,
@@ -286,7 +286,7 @@ export default async function WardWiseReligionPopulationPage() {
               {RELIGION_NAMES[religionData[0]?.religionType] || "हिन्दू"}
               सबैभन्दा धेरै व्यक्तिहरूले मान्ने धर्म हो, जसलाई कुल जनसंख्याको{" "}
               {localizeNumber(
-                ((religionData[0]?.percentage || 0) / 100).toFixed(2),
+                ((religionData[0]?.percentage || 0) * 0.01).toFixed(2),
                 "ne",
               )}
               % ले अवलम्बन गर्दछन्।
