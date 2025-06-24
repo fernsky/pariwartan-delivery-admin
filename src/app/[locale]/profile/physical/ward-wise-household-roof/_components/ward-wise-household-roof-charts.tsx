@@ -32,11 +32,14 @@ interface WardWiseHouseholdRoofChartsProps {
     wardNumber: number;
     percentage: number;
   };
-  ROOF_CATEGORIES: Record<string, {
-    name: string;
-    nameEn: string;
-    color: string;
-  }>;
+  ROOF_CATEGORIES: Record<
+    string,
+    {
+      name: string;
+      nameEn: string;
+      color: string;
+    }
+  >;
   housingQualityIndex: number;
 }
 
@@ -56,7 +59,7 @@ export default function WardWiseHouseholdRoofCharts({
   return (
     <>
       {/* Overall roof type distribution */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
@@ -64,7 +67,7 @@ export default function WardWiseHouseholdRoofCharts({
       >
         <meta
           itemProp="name"
-          content="Household Roof Type Distribution in Khajura Rural Municipality"
+          content="Household Roof Type Distribution in pariwartan Rural Municipality"
         />
         <meta
           itemProp="description"
@@ -75,11 +78,13 @@ export default function WardWiseHouseholdRoofCharts({
           <h2 className="text-xl font-semibold">
             छानाको प्रकारको वितरण
             <span className="sr-only">
-              Distribution of Roof Types in Khajura Rural Municipality
+              Distribution of Roof Types in pariwartan Rural Municipality
             </span>
           </h2>
           <p className="text-sm text-muted-foreground mt-1">
-            परिवर्तन गाउँपालिकाका {localizeNumber(totalHouseholds.toLocaleString(), "ne")} घरधुरीमा प्रयोग हुने छानाका प्रकारहरू
+            परिवर्तन गाउँपालिकाका{" "}
+            {localizeNumber(totalHouseholds.toLocaleString(), "ne")} घरधुरीमा
+            प्रयोग हुने छानाका प्रकारहरू
           </p>
         </div>
 
@@ -100,14 +105,18 @@ export default function WardWiseHouseholdRoofCharts({
             </h3>
             <div className="space-y-3">
               {Object.keys(ROOF_CATEGORIES).map((categoryKey) => {
-                const category = ROOF_CATEGORIES[categoryKey as keyof typeof ROOF_CATEGORIES];
+                const category =
+                  ROOF_CATEGORIES[categoryKey as keyof typeof ROOF_CATEGORIES];
                 const total = roofCategoryTotals[categoryKey];
                 const percentage = roofCategoryPercentages[categoryKey];
-                
+
                 if (total === 0) return null;
-                
+
                 return (
-                  <div key={categoryKey} className="flex items-center justify-between p-3 bg-muted/30 rounded">
+                  <div
+                    key={categoryKey}
+                    className="flex items-center justify-between p-3 bg-muted/30 rounded"
+                  >
                     <div className="flex items-center gap-3">
                       <div
                         className="w-4 h-4 rounded"
@@ -145,7 +154,7 @@ export default function WardWiseHouseholdRoofCharts({
       </div>
 
       {/* Ward-wise distribution */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="ward-wise-roof-types"
         itemScope
@@ -153,18 +162,18 @@ export default function WardWiseHouseholdRoofCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise Household Roof Types in Khajura Rural Municipality"
+          content="Ward-wise Household Roof Types in pariwartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Distribution of household roof types across wards in Khajura"
+          content="Distribution of household roof types across wards in pariwartan"
         />
 
         <div className="border-b px-4 py-3">
           <h2 className="text-xl font-semibold">
             वडा अनुसार छानाको प्रकार
             <span className="sr-only">
-              Ward-wise Household Roof Types in Khajura Rural Municipality
+              Ward-wise Household Roof Types in pariwartan Rural Municipality
             </span>
           </h2>
           <p className="text-sm text-muted-foreground mt-1">
@@ -196,7 +205,7 @@ export default function WardWiseHouseholdRoofCharts({
       </div>
 
       {/* Ward-wise comparison */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
@@ -204,11 +213,11 @@ export default function WardWiseHouseholdRoofCharts({
       >
         <meta
           itemProp="name"
-          content="Modern Roofing Comparison Across Wards in Khajura Rural Municipality"
+          content="Modern Roofing Comparison Across Wards in pariwartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Comparison of modern roofing (cement + tile) across wards in Khajura"
+          content="Comparison of modern roofing (cement + tile) across wards in pariwartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -239,10 +248,18 @@ export default function WardWiseHouseholdRoofCharts({
                 उत्कृष्ट आवास गुणस्तर
               </h4>
               <p className="text-2xl font-bold text-green-600">
-                वडा {localizeNumber(bestRoofingWard?.wardNumber.toString() || "0", "ne")}
+                वडा{" "}
+                {localizeNumber(
+                  bestRoofingWard?.wardNumber.toString() || "0",
+                  "ne",
+                )}
               </p>
               <p className="text-sm text-green-700">
-                {localizeNumber(bestRoofingWard?.percentage.toFixed(2) || "0", "ne")}% आधुनिक छाना
+                {localizeNumber(
+                  bestRoofingWard?.percentage.toFixed(2) || "0",
+                  "ne",
+                )}
+                % आधुनिक छाना
               </p>
             </div>
 
@@ -252,13 +269,17 @@ export default function WardWiseHouseholdRoofCharts({
               </h4>
               <p className="text-2xl font-bold text-blue-600">
                 {localizeNumber(
-                  (wardWiseModernRoofing.reduce((sum, ward) => sum + ward.percentage, 0) / wardWiseModernRoofing.length).toFixed(2),
-                  "ne"
-                )}%
+                  (
+                    wardWiseModernRoofing.reduce(
+                      (sum, ward) => sum + ward.percentage,
+                      0,
+                    ) / wardWiseModernRoofing.length
+                  ).toFixed(2),
+                  "ne",
+                )}
+                %
               </p>
-              <p className="text-sm text-blue-700">
-                सबै वडाहरूको औसत
-              </p>
+              <p className="text-sm text-blue-700">सबै वडाहरूको औसत</p>
             </div>
 
             <div className="bg-red-50 p-4 rounded-lg border border-red-200">
@@ -266,10 +287,18 @@ export default function WardWiseHouseholdRoofCharts({
                 सुधार आवश्यक वडा
               </h4>
               <p className="text-2xl font-bold text-red-600">
-                वडा {localizeNumber(worstRoofingWard?.wardNumber.toString() || "0", "ne")}
+                वडा{" "}
+                {localizeNumber(
+                  worstRoofingWard?.wardNumber.toString() || "0",
+                  "ne",
+                )}
               </p>
               <p className="text-sm text-red-700">
-                {localizeNumber(worstRoofingWard?.percentage.toFixed(2) || "0", "ne")}% आधुनिक छाना
+                {localizeNumber(
+                  worstRoofingWard?.percentage.toFixed(2) || "0",
+                  "ne",
+                )}
+                % आधुनिक छाना
               </p>
             </div>
           </div>

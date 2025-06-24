@@ -56,7 +56,8 @@ export default function WardWiseHouseholdRoofAnalysisSection({
   ).toFixed(2);
 
   // Calculate how many households have traditional roofing (straw + wood)
-  const traditionalRoofingTotal = roofCategoryTotals.STRAW + roofCategoryTotals.WOOD;
+  const traditionalRoofingTotal =
+    roofCategoryTotals.STRAW + roofCategoryTotals.WOOD;
   const traditionalRoofingPercentage = (
     (traditionalRoofingTotal / totalHouseholds) *
     100
@@ -64,7 +65,7 @@ export default function WardWiseHouseholdRoofAnalysisSection({
 
   // SEO attributes to include directly in JSX
   const seoAttributes = {
-    "data-municipality": "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
+    "data-municipality": "pariwartan Rural Municipality / परिवर्तन गाउँपालिका",
     "data-total-households": totalHouseholds.toString(),
     "data-modern-roofing-rate": modernRoofingPercentage,
     "data-best-roofing-ward": bestRoofingWard?.wardNumber.toString() || "",
@@ -114,7 +115,7 @@ export default function WardWiseHouseholdRoofAnalysisSection({
         <h3 className="text-xl font-medium mb-6">
           घरको छानाको प्रकारको विस्तृत विश्लेषण
           <span className="sr-only">
-            Detailed Household Roof Type Analysis of Khajura
+            Detailed Household Roof Type Analysis of pariwartan
           </span>
         </h3>
 
@@ -129,10 +130,18 @@ export default function WardWiseHouseholdRoofAnalysisSection({
               सबैभन्दा राम्रो छाना गुणस्तर
             </h4>
             <p className="text-2xl font-bold text-green-600">
-              वडा {localizeNumber(bestRoofingWard?.wardNumber.toString() || "0", "ne")}
+              वडा{" "}
+              {localizeNumber(
+                bestRoofingWard?.wardNumber.toString() || "0",
+                "ne",
+              )}
             </p>
             <p className="text-sm text-muted-foreground">
-              {localizeNumber(bestRoofingWard?.percentage.toFixed(2) || "0", "ne")}% घरधुरीमा आधुनिक छाना
+              {localizeNumber(
+                bestRoofingWard?.percentage.toFixed(2) || "0",
+                "ne",
+              )}
+              % घरधुरीमा आधुनिक छाना
             </p>
             <p className="text-xs text-muted-foreground mt-1">
               (सिमेन्ट + टायल छाना)
@@ -145,14 +154,20 @@ export default function WardWiseHouseholdRoofAnalysisSection({
             data-ward-number={worstRoofingWard?.wardNumber}
             data-percentage={worstRoofingWard?.percentage.toFixed(2)}
           >
-            <h4 className="font-medium text-red-700 mb-2">
-              सुधार आवश्यक वडा
-            </h4>
+            <h4 className="font-medium text-red-700 mb-2">सुधार आवश्यक वडा</h4>
             <p className="text-2xl font-bold text-red-600">
-              वडा {localizeNumber(worstRoofingWard?.wardNumber.toString() || "0", "ne")}
+              वडा{" "}
+              {localizeNumber(
+                worstRoofingWard?.wardNumber.toString() || "0",
+                "ne",
+              )}
             </p>
             <p className="text-sm text-muted-foreground">
-              {localizeNumber(worstRoofingWard?.percentage.toFixed(2) || "0", "ne")}% घरधुरीमा आधुनिक छाना
+              {localizeNumber(
+                worstRoofingWard?.percentage.toFixed(2) || "0",
+                "ne",
+              )}
+              % घरधुरीमा आधुनिक छाना
             </p>
             <p className="text-xs text-muted-foreground mt-1">
               छाना सुधार कार्यक्रम आवश्यक
@@ -167,7 +182,8 @@ export default function WardWiseHouseholdRoofAnalysisSection({
               {localizeNumber(modernRoofingPercentage, "ne")}%
             </p>
             <p className="text-sm text-muted-foreground">
-              {localizeNumber(modernRoofingTotal.toLocaleString(), "ne")} घरधुरीमा सिमेन्ट वा टायल छाना
+              {localizeNumber(modernRoofingTotal.toLocaleString(), "ne")}{" "}
+              घरधुरीमा सिमेन्ट वा टायल छाना
             </p>
             <div className="mt-2">
               <div className="flex justify-between text-xs">
@@ -177,19 +193,24 @@ export default function WardWiseHouseholdRoofAnalysisSection({
               <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
                 <div
                   className="bg-blue-600 h-2 rounded-full"
-                  style={{ width: `${Math.min(parseFloat(modernRoofingPercentage), 100)}%` }}
+                  style={{
+                    width: `${Math.min(parseFloat(modernRoofingPercentage), 100)}%`,
+                  }}
                 ></div>
               </div>
             </div>
           </div>
 
           <div className="bg-card p-4 rounded border">
-            <h4 className="font-medium text-orange-700 mb-2">आवास गुणस्तर सूचकांक</h4>
+            <h4 className="font-medium text-orange-700 mb-2">
+              आवास गुणस्तर सूचकांक
+            </h4>
             <p className="text-2xl font-bold text-orange-600">
               {localizeNumber(housingQualityIndex.toFixed(1), "ne")}/१००
             </p>
             <p className="text-sm text-muted-foreground">
-              गुणस्तर स्तर: <span className="font-medium">{housingQualityLevel}</span>
+              गुणस्तर स्तर:{" "}
+              <span className="font-medium">{housingQualityLevel}</span>
             </p>
             <div className="mt-2">
               <div className="flex justify-between text-xs">
@@ -210,18 +231,47 @@ export default function WardWiseHouseholdRoofAnalysisSection({
           <h4 className="font-medium mb-3">मुख्य निष्कर्षहरू</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
             <div>
-              <h5 className="font-medium text-green-600 mb-2">सकारात्मक पक्षहरू:</h5>
+              <h5 className="font-medium text-green-600 mb-2">
+                सकारात्मक पक्षहरू:
+              </h5>
               <ul className="space-y-1 text-muted-foreground">
-                <li>• {localizeNumber(modernRoofingPercentage, "ne")}% घरधुरीमा आधुनिक छाना</li>
-                <li>• सिमेन्ट छाना सबैभन्दा लोकप्रिय ({localizeNumber(roofCategoryPercentages.CEMENT.toFixed(1), "ne")}%)</li>
-                <li>• वडा {localizeNumber(bestRoofingWard?.wardNumber.toString() || "0", "ne")} मा उत्कृष्ट छाना गुणस्तर</li>
+                <li>
+                  • {localizeNumber(modernRoofingPercentage, "ne")}% घरधुरीमा
+                  आधुनिक छाना
+                </li>
+                <li>
+                  • सिमेन्ट छाना सबैभन्दा लोकप्रिय (
+                  {localizeNumber(
+                    roofCategoryPercentages.CEMENT.toFixed(1),
+                    "ne",
+                  )}
+                  %)
+                </li>
+                <li>
+                  • वडा{" "}
+                  {localizeNumber(
+                    bestRoofingWard?.wardNumber.toString() || "0",
+                    "ne",
+                  )}{" "}
+                  मा उत्कृष्ट छाना गुणस्तर
+                </li>
               </ul>
             </div>
             <div>
               <h5 className="font-medium text-red-600 mb-2">चुनौतीहरू:</h5>
               <ul className="space-y-1 text-muted-foreground">
-                <li>• {localizeNumber(traditionalRoofingPercentage, "ne")}% घरधुरीमा पारम्परिक छाना</li>
-                <li>• वडा {localizeNumber(worstRoofingWard?.wardNumber.toString() || "0", "ne")} मा सुधारको आवश्यकता</li>
+                <li>
+                  • {localizeNumber(traditionalRoofingPercentage, "ne")}%
+                  घरधुरीमा पारम्परिक छाना
+                </li>
+                <li>
+                  • वडा{" "}
+                  {localizeNumber(
+                    worstRoofingWard?.wardNumber.toString() || "0",
+                    "ne",
+                  )}{" "}
+                  मा सुधारको आवश्यकता
+                </li>
                 <li>• मौसमी प्रभावबाट जोगिन छाना सुधार आवश्यक</li>
               </ul>
             </div>

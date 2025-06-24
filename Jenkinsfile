@@ -2,21 +2,21 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'isresearch/khajura-integrated-profile'
+        DOCKER_IMAGE = 'isresearch/pariwartan-integrated-profile'
         DOCKER_CREDENTIALS = credentials('docker-hub-credentials')
         NODE_VERSION = '20'
         
         // Define environment variables from Jenkins credentials
-        DATABASE_URL = credentials('khajura-profile-database-url')
-        NEXT_PUBLIC_APP_URL = credentials('khajura-profile-next-public-app-url')
-        MINIO_ENDPOINT = credentials('khajura-profile-minio-endpoint')
-        MINIO_PORT = credentials('khajura-profile-minio-port')
-        MINIO_CLIENT_ACCESS_KEY = credentials('khajura-profile-minio-client-access-key')
-        MINIO_CLIENT_SECRET_KEY = credentials('khajura-profile-minio-client-secret-key')
-        MINIO_USE_SSL = credentials('khajura-profile-minio-use-ssl')
-        BUCKET_NAME = credentials('khajura-profile-bucket-name')
-        REDIS_URL = credentials('khajura-profile-redis-url')
-        REDIS_PASSWORD = credentials('khajura-profile-redis-password')
+        DATABASE_URL = credentials('pariwartan-profile-database-url')
+        NEXT_PUBLIC_APP_URL = credentials('pariwartan-profile-next-public-app-url')
+        MINIO_ENDPOINT = credentials('pariwartan-profile-minio-endpoint')
+        MINIO_PORT = credentials('pariwartan-profile-minio-port')
+        MINIO_CLIENT_ACCESS_KEY = credentials('pariwartan-profile-minio-client-access-key')
+        MINIO_CLIENT_SECRET_KEY = credentials('pariwartan-profile-minio-client-secret-key')
+        MINIO_USE_SSL = credentials('pariwartan-profile-minio-use-ssl')
+        BUCKET_NAME = credentials('pariwartan-profile-bucket-name')
+        REDIS_URL = credentials('pariwartan-profile-redis-url')
+        REDIS_PASSWORD = credentials('pariwartan-profile-redis-password')
     }
 
     stages {

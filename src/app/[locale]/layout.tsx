@@ -50,7 +50,8 @@ export async function generateMetadata(props: {
     const t = await getTranslations({ locale, namespace: "seo.default" });
 
     const baseUrl =
-      process.env.NEXT_PUBLIC_BASE_URL || "https://digital.khajuramun.gov.np";
+      process.env.NEXT_PUBLIC_BASE_URL ||
+      "https://digital.pariwartanmun.gov.np";
 
     const appUrl = process.env.APP_URL
       ? `${process.env.APP_URL}`
@@ -66,7 +67,7 @@ export async function generateMetadata(props: {
       },
       description: t("description"),
       keywords: [
-        "khajura",
+        "pariwartan",
         "Digital Profile",
         "Nepal",
         "Government",
@@ -211,12 +212,15 @@ export default async function RootLayout(props: {
     >
       <head>
         {/* Government required meta tags */}
-        <meta name="gov:portal" content="khajura Digital Profile" />
+        <meta name="gov:portal" content="Pariwartan Digital Profile" />
         <meta
           name="gov:department"
           content="Digital Profile Information System"
         />
         <meta name="gov:confidentiality" content="public" />
+        <meta name="gov:confidentiality" content="public" />
+        <meta name="author" content="त्रिलोचन भुसाल, सर्वज्ञ घो श्रेष्ठ" />
+        <meta name="author" content="Trilochan Bhusal, Sarbagya Gho Shrestha" />
       </head>
       <body className={fontClass}>
         <NextIntlClientProvider locale={locale} messages={messages}>

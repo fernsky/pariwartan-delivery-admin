@@ -9,7 +9,7 @@ export default function AspectSEO({ aspectData }: AspectSEOProps) {
   const generateStructuredData = () => {
     const aspectStats = aspectData.data.map((item) => ({
       "@type": "Observation",
-      name: `${item.direction_english} aspect area in Khajura Rural Municipality`,
+      name: `${item.direction_english} aspect area in pariwartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
@@ -17,16 +17,16 @@ export default function AspectSEO({ aspectData }: AspectSEOProps) {
         unitText: "square kilometers",
       },
       measuredValue: item.area_sq_km,
-      description: `${item.area_sq_km} sq. km. area in Khajura Rural Municipality faces ${item.direction_english} direction (${item.area_percentage.toFixed(2)}% of total area)`,
+      description: `${item.area_sq_km} sq. km. area in pariwartan Rural Municipality faces ${item.direction_english} direction (${item.area_percentage.toFixed(2)}% of total area)`,
     }));
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Aspect Distribution of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Area distribution by aspect (direction) data for Khajura Rural Municipality with a total area of ${aspectData.total.area_sq_km} sq. km.`,
+      name: "Aspect Distribution of pariwartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Area distribution by aspect (direction) data for pariwartan Rural Municipality with a total area of ${aspectData.total.area_sq_km} sq. km.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "pariwartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Aspect information",
         "Direction data",
@@ -37,16 +37,16 @@ export default function AspectSEO({ aspectData }: AspectSEOProps) {
         "मोहोडा विवरण",
         "दिशा तथ्याङ्क",
       ],
-      url: "https://digital.khajuramun.gov.np/profile/municipality-introduction/municipality-terrain-aspect",
+      url: "https://digital.pariwartanmun.gov.np/profile/municipality-introduction/municipality-terrain-aspect",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        name: "pariwartan Rural Municipality",
+        url: "https://digital.pariwartanmun.gov.np",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "pariwartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",

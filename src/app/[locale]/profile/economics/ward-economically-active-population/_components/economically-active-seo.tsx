@@ -45,7 +45,7 @@ export default function EconomicallyActiveSEO({
     // Convert age group stats to structured data format
     const ageGroupStats = ageGroupSummary.map((item) => ({
       "@type": "Observation",
-      name: `${AGE_GROUP_NAMES_EN[item.ageGroup] || item.ageGroup} economically active population in Khajura Rural Municipality`,
+      name: `${AGE_GROUP_NAMES_EN[item.ageGroup] || item.ageGroup} economically active population in pariwartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
@@ -53,13 +53,13 @@ export default function EconomicallyActiveSEO({
         unitText: "people",
       },
       measuredValue: item.population,
-      description: `${item.population.toLocaleString()} people in the ${AGE_GROUP_NAMES_EN[item.ageGroup] || item.ageGroup} age group are economically active in Khajura Rural Municipality (${((item.population / totalPopulation) * 100).toFixed(2)}% of total economically active population)`,
+      description: `${item.population.toLocaleString()} people in the ${AGE_GROUP_NAMES_EN[item.ageGroup] || item.ageGroup} age group are economically active in pariwartan Rural Municipality (${((item.population / totalPopulation) * 100).toFixed(2)}% of total economically active population)`,
     }));
 
     // Convert gender stats to structured data format
     const genderStats = genderSummary.map((item) => ({
       "@type": "Observation",
-      name: `${GENDER_NAMES_EN[item.gender] || item.gender} economically active population in Khajura Rural Municipality`,
+      name: `${GENDER_NAMES_EN[item.gender] || item.gender} economically active population in pariwartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
@@ -67,7 +67,7 @@ export default function EconomicallyActiveSEO({
         unitText: "people",
       },
       measuredValue: item.population,
-      description: `${item.population.toLocaleString()} ${GENDER_NAMES_EN[item.gender] || item.gender} people are economically active in Khajura Rural Municipality (${((item.population / totalPopulation) * 100).toFixed(2)}% of total economically active population)`,
+      description: `${item.population.toLocaleString()} ${GENDER_NAMES_EN[item.gender] || item.gender} people are economically active in pariwartan Rural Municipality (${((item.population / totalPopulation) * 100).toFixed(2)}% of total economically active population)`,
     }));
 
     // Calculate working age population (15-59)
@@ -78,10 +78,10 @@ export default function EconomicallyActiveSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Economically Active Population of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Economically active population distribution data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalPopulation.toLocaleString()} people, categorized by age groups and gender.`,
+      name: "Economically Active Population of pariwartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Economically active population distribution data across ${wardNumbers.length} wards of pariwartan Rural Municipality with a total of ${totalPopulation.toLocaleString()} people, categorized by age groups and gender.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "pariwartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Economically active population",
         "Working age population",
@@ -104,16 +104,16 @@ export default function EconomicallyActiveSEO({
           (name) => `${name} आर्थिक रूपमा सक्रिय जनसंख्या`,
         ),
       ],
-      url: "https://digital.khajuramun.gov.np/profile/economics/ward-economically-active-population",
+      url: "https://digital.pariwartanmun.gov.np/profile/economics/ward-economically-active-population",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        name: "pariwartan Rural Municipality",
+        url: "https://digital.pariwartanmun.gov.np",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "pariwartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",
@@ -151,7 +151,7 @@ export default function EconomicallyActiveSEO({
         "@type": "DataDownload",
         encodingFormat: "CSV",
         contentUrl:
-          "https://digital.khajuramun.gov.np/data/economically-active-population.csv",
+          "https://digital.pariwartanmun.gov.np/data/economically-active-population.csv",
       },
     };
   };

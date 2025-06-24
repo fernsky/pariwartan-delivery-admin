@@ -33,18 +33,18 @@ export default function AgricultureRepresentativesSEO({
       telephone: rep.contactNumber,
       worksFor: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality Agriculture Department",
+        name: "pariwartan Rural Municipality Agriculture Department",
         alternateName: "परिवर्तन गाउँपालिका कृषि शाखा",
         department: rep.branch,
       },
-      description: `${rep.positionFull} at ${rep.branch} department of Khajura Rural Municipality`,
+      description: `${rep.positionFull} at ${rep.branch} department of pariwartan Rural Municipality`,
     }));
 
     return {
       "@context": "https://schema.org",
       "@type": "ItemList",
-      name: "Agriculture Representatives of Khajura Rural Municipality",
-      description: `Complete list of ${totalRepresentatives} agriculture representatives working in Khajura Rural Municipality's Agriculture Department`,
+      name: "Agriculture Representatives of pariwartan Rural Municipality",
+      description: `Complete list of ${totalRepresentatives} agriculture representatives working in pariwartan Rural Municipality's Agriculture Department`,
       numberOfItems: totalRepresentatives,
       itemListElement: representativesList.map((rep, index) => ({
         "@type": "ListItem",
@@ -53,14 +53,14 @@ export default function AgricultureRepresentativesSEO({
       })),
       about: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "pariwartan Rural Municipality",
         alternateName: "परिवर्तन गाउँपालिका",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://digital.pariwartanmun.gov.np",
         address: {
           "@type": "PostalAddress",
           addressCountry: "Nepal",
           addressRegion: "Banke",
-          addressLocality: "Khajura",
+          addressLocality: "pariwartan",
         },
         department: {
           "@type": "Organization",
@@ -71,8 +71,8 @@ export default function AgricultureRepresentativesSEO({
       },
       provider: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        name: "pariwartan Rural Municipality",
+        url: "https://digital.pariwartanmun.gov.np",
       },
     };
   };

@@ -41,7 +41,7 @@ export default function WardWiseHealthInsuredHouseholdsSEO({
     const insuranceStats = wardInsuredPercentages.map((wardData) => {
       return {
         "@type": "Observation",
-        name: `Health Insurance Statistics in Ward ${wardData.wardNumber} of Khajura Rural Municipality`,
+        name: `Health Insurance Statistics in Ward ${wardData.wardNumber} of pariwartan Rural Municipality`,
         observationDate: new Date().toISOString().split("T")[0],
         measuredProperty: {
           "@type": "PropertyValue",
@@ -49,17 +49,17 @@ export default function WardWiseHealthInsuredHouseholdsSEO({
           unitText: "percentage",
         },
         measuredValue: parseFloat(wardData.percentage.toFixed(2)),
-        description: `In Ward ${wardData.wardNumber} of Khajura Rural Municipality, ${wardData.percentage.toFixed(2)}% of households have health insurance.`,
+        description: `In Ward ${wardData.wardNumber} of pariwartan Rural Municipality, ${wardData.percentage.toFixed(2)}% of households have health insurance.`,
       };
     });
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Health Insurance Coverage in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Analysis of health insurance coverage across wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${totalInsuredHouseholds.toLocaleString()} households (${insuredPercentage.toFixed(2)}%) have health insurance coverage. The highest coverage is in Ward ${bestInsuranceWard?.wardNumber || ""} with ${bestInsuranceWard?.percentage.toFixed(2) || ""}% insurance rate.`,
+      name: "Health Insurance Coverage in pariwartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Analysis of health insurance coverage across wards of pariwartan Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${totalInsuredHouseholds.toLocaleString()} households (${insuredPercentage.toFixed(2)}%) have health insurance coverage. The highest coverage is in Ward ${bestInsuranceWard?.wardNumber || ""} with ${bestInsuranceWard?.percentage.toFixed(2) || ""}% insurance rate.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "pariwartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Health insurance",
         "स्वास्थ्य बीमा",
@@ -71,16 +71,16 @@ export default function WardWiseHealthInsuredHouseholdsSEO({
         "Health insurance rate",
         "Insurance coverage index",
       ],
-      url: "https://digital.khajuramun.gov.np/profile/health/ward-wise-health-insured-households",
+      url: "https://digital.pariwartanmun.gov.np/profile/health/ward-wise-health-insured-households",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        name: "pariwartan Rural Municipality",
+        url: "https://digital.pariwartanmun.gov.np",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "pariwartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",
@@ -131,10 +131,10 @@ export default function WardWiseHealthInsuredHouseholdsSEO({
         name: "Municipality Health Survey",
         provider: {
           "@type": "GovernmentOrganization",
-          name: "Khajura Rural Municipality",
+          name: "pariwartan Rural Municipality",
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Khajura",
+            addressLocality: "pariwartan",
             addressRegion: "Banke",
             addressCountry: "Nepal",
           },

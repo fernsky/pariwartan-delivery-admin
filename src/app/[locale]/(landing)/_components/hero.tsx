@@ -92,11 +92,11 @@ const Hero: React.FC<HeroProps> = ({
             "@type": "GovernmentOrganization",
             name: municipalityName,
             alternateName: municipalityNameEn,
-            url: `https://${lng === "en" ? "en." : ""}digital.khajuramun.gov.np`,
-            logo: "https://digital.khajuramun.gov.np/logo.png",
+            url: `https://${lng === "en" ? "en." : ""}digital.pariwartanmun.gov.np`,
+            logo: "https://digital.pariwartanmun.gov.np/logo.png",
             areaServed: {
               "@type": "AdministrativeArea",
-              name: "Khajura",
+              name: "pariwartan",
               containedIn: "Banke District, Nepal",
               description: seoDescription,
               additionalProperty: [

@@ -18,7 +18,7 @@ export const createHouseholdProcedure = publicProcedure
       // Prepare household data
       const householdData = {
         id,
-        profileId: input.profileId || "khajura",
+        profileId: input.profileId || "pariwartan",
         
         // Location information
         province: input.province || null,

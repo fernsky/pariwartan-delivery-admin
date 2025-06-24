@@ -98,7 +98,7 @@ const Statistics = ({
     "@type": "Dataset",
     name: `${municipalityName} जनसांख्यिकीय तथ्याङ्क`,
     description: `${municipalityName}को प्रमुख जनसांख्यिकीय तथ्याङ्क, वडाअनुसार`,
-    url: `https://digital.khajuramun.gov.np/${lng}`,
+    url: `https://digital.pariwartanmun.gov.np/${lng}`,
     keywords: [
       `${municipalityName} जनसंख्या`,
       "ward demographics",

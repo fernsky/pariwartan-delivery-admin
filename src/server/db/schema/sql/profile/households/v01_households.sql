@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS
-    acme_khajura_household (
+    acme_pariwartan_household (
         id TEXT PRIMARY KEY NOT NULL,
-        profile_id TEXT DEFAULT 'khajura',
+        profile_id TEXT DEFAULT 'pariwartan',
         province TEXT,
         district TEXT,
         local_level TEXT,

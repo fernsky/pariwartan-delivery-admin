@@ -66,11 +66,11 @@ export default function ReligionCharts({
       >
         <meta
           itemProp="name"
-          content="Religion Distribution in Khajura Rural Municipality"
+          content="Religion Distribution in pariwartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content={`Religious composition of Khajura with a total population of ${totalPopulation}`}
+          content={`Religious composition of pariwartan with a total population of ${totalPopulation}`}
         />
 
         <div className="border-b px-4 py-3">
@@ -243,11 +243,11 @@ export default function ReligionCharts({
       >
         <meta
           itemProp="name"
-          content="Gender-wise Religion Distribution in Khajura Rural Municipality"
+          content="Gender-wise Religion Distribution in pariwartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Gender distribution across religions in Khajura"
+          content="Gender distribution across religions in pariwartan"
         />
 
         <div className="border-b px-4 py-3">

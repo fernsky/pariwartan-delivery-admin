@@ -60,7 +60,7 @@ export default function WardWiseSolidWasteManagementSEO({
 
         return {
           "@type": "Observation",
-          name: `Solid Waste Management Statistics in Ward ${wardNumber} of Khajura Rural Municipality`,
+          name: `Solid Waste Management Statistics in Ward ${wardNumber} of pariwartan Rural Municipality`,
           observationDate: new Date().toISOString().split("T")[0],
           measuredProperty: {
             "@type": "PropertyValue",
@@ -68,7 +68,7 @@ export default function WardWiseSolidWasteManagementSEO({
             unitText: "percentage",
           },
           measuredValue: parseFloat(homeCollectionPercent),
-          description: `In Ward ${wardNumber} of Khajura Rural Municipality, ${homeCollectionHouseholds.toLocaleString()} households (${homeCollectionPercent}%) use home waste collection methods out of a total of ${totalWardHouseholds.toLocaleString()} households.`,
+          description: `In Ward ${wardNumber} of pariwartan Rural Municipality, ${homeCollectionHouseholds.toLocaleString()} households (${homeCollectionPercent}%) use home waste collection methods out of a total of ${totalWardHouseholds.toLocaleString()} households.`,
         };
       })
       .filter(Boolean);
@@ -111,10 +111,10 @@ export default function WardWiseSolidWasteManagementSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Solid Waste Management in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Analysis of solid waste management methods across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${wasteManagementTotals.HOME_COLLECTION?.toLocaleString() || 0} households (${wasteManagementPercentages.HOME_COLLECTION?.toFixed(2) || 0}%) use home waste collection methods. The highest home collection rate is in Ward ${highestHomeCollectionWard?.wardNumber || ""} with ${highestHomeCollectionWard?.percentage.toFixed(2) || ""}%.`,
+      name: "Solid Waste Management in pariwartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Analysis of solid waste management methods across ${wardNumbers.length} wards of pariwartan Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${wasteManagementTotals.HOME_COLLECTION?.toLocaleString() || 0} households (${wasteManagementPercentages.HOME_COLLECTION?.toFixed(2) || 0}%) use home waste collection methods. The highest home collection rate is in Ward ${highestHomeCollectionWard?.wardNumber || ""} with ${highestHomeCollectionWard?.percentage.toFixed(2) || ""}%.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "pariwartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Solid waste management",
         "Home waste collection",
@@ -127,16 +127,16 @@ export default function WardWiseSolidWasteManagementSEO({
         "Household waste practices",
         "Waste collection services",
       ],
-      url: "https://digital.khajuramun.gov.np/profile/water-and-sanitation/ward-wise-solid-waste-management",
+      url: "https://digital.pariwartanmun.gov.np/profile/water-and-sanitation/ward-wise-solid-waste-management",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        name: "pariwartan Rural Municipality",
+        url: "https://digital.pariwartanmun.gov.np",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "pariwartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",
@@ -183,10 +183,10 @@ export default function WardWiseSolidWasteManagementSEO({
         name: "Municipality Waste Management Survey",
         provider: {
           "@type": "GovernmentOrganization",
-          name: "Khajura Rural Municipality",
+          name: "pariwartan Rural Municipality",
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Khajura",
+            addressLocality: "pariwartan",
             addressRegion: "Banke",
             addressCountry: "Nepal",
           },

@@ -31,7 +31,7 @@ export default function FruitSEO({
     // Convert fruit stats to structured data format
     const fruitStats = overallSummary.map((item) => ({
       "@type": "Observation",
-      name: `${FRUIT_TYPES_EN[item.type] || item.type} in Khajura Rural Municipality`,
+      name: `${FRUIT_TYPES_EN[item.type] || item.type} in pariwartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
@@ -39,7 +39,7 @@ export default function FruitSEO({
         unitText: "tonnes",
       },
       measuredValue: item.production,
-      description: `${item.production.toFixed(2)} tonnes of ${FRUIT_TYPES_EN[item.type] || item.type} produced in Khajura Rural Municipality (${((item.production / totalProduction) * 100).toFixed(2)}% of total production). Sales volume: ${item.sales.toFixed(2)} tonnes. Revenue: NPR ${item.revenue.toLocaleString()}.`,
+      description: `${item.production.toFixed(2)} tonnes of ${FRUIT_TYPES_EN[item.type] || item.type} produced in pariwartan Rural Municipality (${((item.production / totalProduction) * 100).toFixed(2)}% of total production). Sales volume: ${item.sales.toFixed(2)} tonnes. Revenue: NPR ${item.revenue.toLocaleString()}.`,
     }));
 
     // Find most produced fruit
@@ -63,8 +63,8 @@ export default function FruitSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Fruit Types in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Fruit production and sales statistics of Khajura Rural Municipality with a total production of ${totalProduction.toFixed(
+      name: "Fruit Types in pariwartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Fruit production and sales statistics of pariwartan Rural Municipality with a total production of ${totalProduction.toFixed(
         2,
       )} tonnes and sales of ${totalSales.toFixed(2)} tonnes (${(
         (totalSales / totalProduction) *
@@ -75,7 +75,7 @@ export default function FruitSEO({
         2,
       )} tonnes (${mostProducedPercentage}%). Self-consumption represents ${selfConsumptionPercentage}% of total production. Total revenue from fruit sales is NPR ${totalRevenue.toLocaleString()}.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "pariwartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Fruit production",
         "Fruit sales",
@@ -89,16 +89,16 @@ export default function FruitSEO({
         ),
         ...Object.values(FRUIT_TYPES).map((name) => `${name} उत्पादन तथ्याङ्क`),
       ],
-      url: "https://digital.khajuramun.gov.np/profile/economics/municipality-wide-fruits",
+      url: "https://digital.pariwartanmun.gov.np/profile/economics/municipality-wide-fruits",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        name: "pariwartan Rural Municipality",
+        url: "https://digital.pariwartanmun.gov.np",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "pariwartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",

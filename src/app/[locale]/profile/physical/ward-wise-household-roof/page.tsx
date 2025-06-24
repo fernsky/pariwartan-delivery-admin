@@ -58,14 +58,16 @@ export const revalidate = 86400; // Revalidate once per day
 // Generate metadata dynamically based on data
 export async function generateMetadata(): Promise<Metadata> {
   try {
-    const householdRoofData = await api.profile.physical.wardWiseHouseholdRoof.getAll.query();
-    
+    const householdRoofData =
+      await api.profile.physical.wardWiseHouseholdRoof.getAll.query();
+
     const totalHouseholds = householdRoofData.reduce(
       (sum, item) => sum + (item.households || 0),
-      0
+      0,
     );
 
-    const title = "परिवर्तन गाउँपालिका वडा अनुसार घरको छानाको प्रकार | डिजिटल प्रोफाइल";
+    const title =
+      "परिवर्तन गाउँपालिका वडा अनुसार घरको छानाको प्रकार | डिजिटल प्रोफाइल";
     const description = `परिवर्तन गाउँपालिकाका ${localizeNumber(totalHouseholds.toString(), "ne")} घरधुरीको छानाको प्रकार सम्बन्धी विस्तृत तथ्याङ्क र विश्लेषण। सिमेन्ट, जस्ता, टायल, खर र अन्य छानाका प्रकारहरूको वडावार वितरण।`;
 
     return {
@@ -135,7 +137,8 @@ export default async function WardWiseHouseholdRoofPage() {
   // Try to fetch summary data
   let summaryData = null;
   try {
-    summaryData = await api.profile.physical.wardWiseHouseholdRoof.summary.query();
+    summaryData =
+      await api.profile.physical.wardWiseHouseholdRoof.summary.query();
   } catch (error) {
     console.error("Error fetching summary data:", error);
   }
@@ -178,9 +181,10 @@ export default async function WardWiseHouseholdRoofPage() {
   // Calculate percentages
   const roofCategoryPercentages: Record<string, number> = {};
   Object.keys(roofCategoryTotals).forEach((category) => {
-    roofCategoryPercentages[category] = totalHouseholds > 0
-      ? (roofCategoryTotals[category] / totalHouseholds) * 100
-      : 0;
+    roofCategoryPercentages[category] =
+      totalHouseholds > 0
+        ? (roofCategoryTotals[category] / totalHouseholds) * 100
+        : 0;
   });
 
   // Get unique ward numbers
@@ -189,19 +193,22 @@ export default async function WardWiseHouseholdRoofPage() {
     .sort((a, b) => a - b);
 
   // Process data for pie chart
-  const pieChartData = Object.keys(ROOF_CATEGORIES).map((categoryKey) => {
-    const category = ROOF_CATEGORIES[categoryKey as keyof typeof ROOF_CATEGORIES];
-    const value = roofCategoryTotals[categoryKey];
-    const percentage = roofCategoryPercentages[categoryKey];
-    
-    return {
-      name: category.name,
-      nameEn: category.nameEn,
-      value,
-      percentage: percentage.toFixed(1),
-      color: category.color,
-    };
-  }).filter(item => item.value > 0);
+  const pieChartData = Object.keys(ROOF_CATEGORIES)
+    .map((categoryKey) => {
+      const category =
+        ROOF_CATEGORIES[categoryKey as keyof typeof ROOF_CATEGORIES];
+      const value = roofCategoryTotals[categoryKey];
+      const percentage = roofCategoryPercentages[categoryKey];
+
+      return {
+        name: category.name,
+        nameEn: category.nameEn,
+        value,
+        percentage: percentage.toFixed(1),
+        color: category.color,
+      };
+    })
+    .filter((item) => item.value > 0);
 
   // Process data for ward-wise visualization
   const wardWiseData = wardNumbers
@@ -211,7 +218,7 @@ export default async function WardWiseHouseholdRoofPage() {
 
       const wardTotal = wardData.reduce(
         (sum: number, item: any) => sum + (item.households || 0),
-        0
+        0,
       );
 
       const result: any = {
@@ -222,9 +229,10 @@ export default async function WardWiseHouseholdRoofPage() {
 
       // Add data for each roof category
       Object.keys(ROOF_CATEGORIES).forEach((categoryKey) => {
-        const category = ROOF_CATEGORIES[categoryKey as keyof typeof ROOF_CATEGORIES];
+        const category =
+          ROOF_CATEGORIES[categoryKey as keyof typeof ROOF_CATEGORIES];
         const categoryData = wardData.find(
-          (item: any) => item.roofType === categoryKey
+          (item: any) => item.roofType === categoryKey,
         );
         result[category.name] = categoryData ? categoryData.households : 0;
       });
@@ -235,10 +243,11 @@ export default async function WardWiseHouseholdRoofPage() {
 
   // Find the ward with highest and lowest percentages of modern roofing (cement + tile)
   const wardModernRoofingPercentages = wardWiseData.map((ward: any) => {
-    const modernRoofing = (ward[ROOF_CATEGORIES.CEMENT.name] || 0) + 
-                         (ward[ROOF_CATEGORIES.TILE.name] || 0);
+    const modernRoofing =
+      (ward[ROOF_CATEGORIES.CEMENT.name] || 0) +
+      (ward[ROOF_CATEGORIES.TILE.name] || 0);
     const percentage = ward.total > 0 ? (modernRoofing / ward.total) * 100 : 0;
-    
+
     return {
       wardNumber: ward.wardNumber,
       percentage,
@@ -282,12 +291,12 @@ export default async function WardWiseHouseholdRoofPage() {
           <h1 className="text-3xl md:text-4xl font-bold mb-4">
             वडा अनुसार घरको छानाको प्रकार
             <span className="sr-only">
-              Ward-wise Household Roof Types in Khajura Rural Municipality
+              Ward-wise Household Roof Types in pariwartan Rural Municipality
             </span>
           </h1>
           <p className="text-lg text-muted-foreground mb-6">
-            परिवर्तन गाउँपालिकाका विभिन्न वडाहरूमा प्रयोग हुने घरको छानाका प्रकारहरूको
-            विस्तृत विश्लेषण र तथ्याङ्क।
+            परिवर्तन गाउँपालिकाका विभिन्न वडाहरूमा प्रयोग हुने घरको छानाका
+            प्रकारहरूको विस्तृत विश्लेषण र तथ्याङ्क।
           </p>
 
           {/* Key Statistics */}
@@ -302,11 +311,16 @@ export default async function WardWiseHouseholdRoofPage() {
               <div className="text-2xl font-bold text-blue-600">
                 {localizeNumber(wardNumbers.length.toString(), "ne")}
               </div>
-              <div className="text-sm text-muted-foreground">कुल वडा संख्या</div>
+              <div className="text-sm text-muted-foreground">
+                कुल वडा संख्या
+              </div>
             </div>
             <div className="bg-card p-4 rounded-lg border">
               <div className="text-2xl font-bold text-green-600">
-                {localizeNumber(Object.keys(ROOF_CATEGORIES).length.toString(), "ne")}
+                {localizeNumber(
+                  Object.keys(ROOF_CATEGORIES).length.toString(),
+                  "ne",
+                )}
               </div>
               <div className="text-sm text-muted-foreground">छानाका प्रकार</div>
             </div>
@@ -314,7 +328,9 @@ export default async function WardWiseHouseholdRoofPage() {
               <div className="text-2xl font-bold text-orange-600">
                 {localizeNumber(housingQualityIndex.toFixed(1), "ne")}
               </div>
-              <div className="text-sm text-muted-foreground">आवास गुणस्तर सूचकांक</div>
+              <div className="text-sm text-muted-foreground">
+                आवास गुणस्तर सूचकांक
+              </div>
             </div>
           </div>
         </div>
@@ -324,16 +340,16 @@ export default async function WardWiseHouseholdRoofPage() {
           <h2 className="text-2xl font-semibold mb-4">परिचय</h2>
           <div className="prose prose-lg max-w-none">
             <p className="text-muted-foreground leading-relaxed">
-              घरको छानाको प्रकार भनेको आवासको गुणस्तर र स्थायित्वको महत्वपूर्ण सूचक हो।
-              यसले न केवल मौसमी सुरक्षा प्रदान गर्छ बल्कि घरको समग्र संरचनात्मक बलियोपन
-              र सौन्दर्यतालाई पनि प्रभाव पार्छ। परिवर्तन गाउँपालिकामा विभिन्न प्रकारका
-              छानाहरू प्रयोग गरिन्छन्, जसमा आधुनिक सिमेन्ट कंक्रिटदेखि परम्परागत
-              खर-पराल सम्म समावेश छन्।
+              घरको छानाको प्रकार भनेको आवासको गुणस्तर र स्थायित्वको महत्वपूर्ण
+              सूचक हो। यसले न केवल मौसमी सुरक्षा प्रदान गर्छ बल्कि घरको समग्र
+              संरचनात्मक बलियोपन र सौन्दर्यतालाई पनि प्रभाव पार्छ। परिवर्तन
+              गाउँपालिकामा विभिन्न प्रकारका छानाहरू प्रयोग गरिन्छन्, जसमा आधुनिक
+              सिमेन्ट कंक्रिटदेखि परम्परागत खर-पराल सम्म समावेश छन्।
             </p>
             <p className="text-muted-foreground leading-relaxed mt-4">
-              यो विश्लेषणले प्रत्येक वडामा प्रयोग हुने छानाका प्रकारहरूको विस्तृत
-              चित्र प्रस्तुत गर्दछ, जसले स्थानीय सरकारलाई आवास सुधार नीति निर्माण
-              र विकास योजना तर्जुमामा सहयोग पुर्‍याउँछ।
+              यो विश्लेषणले प्रत्येक वडामा प्रयोग हुने छानाका प्रकारहरूको
+              विस्तृत चित्र प्रस्तुत गर्दछ, जसले स्थानीय सरकारलाई आवास सुधार
+              नीति निर्माण र विकास योजना तर्जुमामा सहयोग पुर्‍याउँछ।
             </p>
           </div>
         </section>
@@ -355,10 +371,14 @@ export default async function WardWiseHouseholdRoofPage() {
 
         {/* Housing Quality Improvement Strategy */}
         <section id="housing-quality-improvement-strategy" className="mt-12">
-          <h2 className="text-2xl font-semibold mb-6">आवास गुणस्तर सुधार रणनीति</h2>
+          <h2 className="text-2xl font-semibold mb-6">
+            आवास गुणस्तर सुधार रणनीति
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-card p-6 rounded-lg border">
-              <h3 className="text-lg font-medium mb-4">तत्काल गर्नुपर्ने कामहरू</h3>
+              <h3 className="text-lg font-medium mb-4">
+                तत्काल गर्नुपर्ने कामहरू
+              </h3>
               <ul className="space-y-2 text-sm">
                 <li>• खराब छानाका घरहरूको पहिचान र सूचीकरण</li>
                 <li>• आपतकालीन मर्मत सामग्री वितरण</li>

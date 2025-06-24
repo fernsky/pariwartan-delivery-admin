@@ -24,7 +24,7 @@ export default function RemittanceExpensesSEO({
     // Convert remittance expense stats to structured data format
     const expenseStats = overallSummary.map((item) => ({
       "@type": "Observation",
-      name: `${EXPENSE_NAMES_EN[item.expense] || item.expense} in Khajura Rural Municipality`,
+      name: `${EXPENSE_NAMES_EN[item.expense] || item.expense} in pariwartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
@@ -32,16 +32,16 @@ export default function RemittanceExpensesSEO({
         unitText: "households",
       },
       measuredValue: item.households,
-      description: `${item.households.toLocaleString()} households in Khajura Rural Municipality spend their remittance on ${EXPENSE_NAMES_EN[item.expense] || item.expense} (${((item.households / totalHouseholds) * 100).toFixed(2)}% of total households receiving remittances)`,
+      description: `${item.households.toLocaleString()} households in pariwartan Rural Municipality spend their remittance on ${EXPENSE_NAMES_EN[item.expense] || item.expense} (${((item.households / totalHouseholds) * 100).toFixed(2)}% of total households receiving remittances)`,
     }));
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Remittance Expense Patterns of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Remittance expense distribution data across ${wardNumbers.length} wards of Khajura Rural Municipality with ${totalHouseholds.toLocaleString()} households receiving remittances.`,
+      name: "Remittance Expense Patterns of pariwartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Remittance expense distribution data across ${wardNumbers.length} wards of pariwartan Rural Municipality with ${totalHouseholds.toLocaleString()} households receiving remittances.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "pariwartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Remittance expenses",
         "Remittance utilization",
@@ -53,16 +53,16 @@ export default function RemittanceExpensesSEO({
           (name) => `${name} विप्रेषण खर्च`,
         ),
       ],
-      url: "https://khajura-rm.gov.np/profile/economics/ward-remittance-expenses",
+      url: "https://pariwartan-rm.gov.np/profile/economics/ward-remittance-expenses",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
-        url: "https://khajura-rm.gov.np",
+        name: "pariwartan Rural Municipality",
+        url: "https://pariwartan-rm.gov.np",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "pariwartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",

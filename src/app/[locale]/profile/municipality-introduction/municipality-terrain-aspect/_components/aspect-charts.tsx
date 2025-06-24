@@ -78,11 +78,11 @@ export default function AspectCharts({ aspectData }: AspectChartsProps) {
       >
         <meta
           itemProp="name"
-          content="Aspect Distribution in Khajura Rural Municipality"
+          content="Aspect Distribution in pariwartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content={`Area distribution by aspect in Khajura with a total area of ${aspectData.total.area_sq_km} sq. km.`}
+          content={`Area distribution by aspect in pariwartan with a total area of ${aspectData.total.area_sq_km} sq. km.`}
         />
 
         <div className="border-b px-4 py-3">
@@ -220,7 +220,7 @@ export default function AspectCharts({ aspectData }: AspectChartsProps) {
       >
         <meta
           itemProp="name"
-          content="Aspect Area Distribution Chart in Khajura Rural Municipality"
+          content="Aspect Area Distribution Chart in pariwartan Rural Municipality"
         />
 
         <div className="border-b px-4 py-3">

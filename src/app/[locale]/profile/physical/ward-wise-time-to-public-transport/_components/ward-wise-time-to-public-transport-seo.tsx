@@ -68,7 +68,7 @@ export default function WardWiseTimeToPublicTransportSEO({
 
         return {
           "@type": "Observation",
-          name: `Public Transport Access Statistics in Ward ${wardNumber} of Khajura Rural Municipality`,
+          name: `Public Transport Access Statistics in Ward ${wardNumber} of pariwartan Rural Municipality`,
           observationDate: new Date().toISOString().split("T")[0],
           measuredProperty: {
             "@type": "PropertyValue",
@@ -76,7 +76,7 @@ export default function WardWiseTimeToPublicTransportSEO({
             unitText: "percentage",
           },
           measuredValue: parseFloat(quickAccessPercent),
-          description: `In Ward ${wardNumber} of Khajura Rural Municipality, ${quickAccessHouseholds.toLocaleString()} households (${quickAccessPercent}%) can access public transportation within 30 minutes out of a total of ${totalWardHouseholds.toLocaleString()} households.`,
+          description: `In Ward ${wardNumber} of pariwartan Rural Municipality, ${quickAccessHouseholds.toLocaleString()} households (${quickAccessPercent}%) can access public transportation within 30 minutes out of a total of ${totalWardHouseholds.toLocaleString()} households.`,
         };
       })
       .filter(Boolean);
@@ -92,10 +92,10 @@ export default function WardWiseTimeToPublicTransportSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Time to Public Transport in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Analysis of time taken to reach public transportation across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${quickAccessTotal.toLocaleString()} households (${quickAccessPercentage}%) can reach public transportation within 30 minutes. The best accessibility is in Ward ${bestAccessWard?.wardNumber || ""} with ${bestAccessWard?.percentage.toFixed(2) || ""}% quick access rate.`,
+      name: "Time to Public Transport in pariwartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Analysis of time taken to reach public transportation across ${wardNumbers.length} wards of pariwartan Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${quickAccessTotal.toLocaleString()} households (${quickAccessPercentage}%) can reach public transportation within 30 minutes. The best accessibility is in Ward ${bestAccessWard?.wardNumber || ""} with ${bestAccessWard?.percentage.toFixed(2) || ""}% quick access rate.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "pariwartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Public transport access",
         "Transportation accessibility",
@@ -108,16 +108,16 @@ export default function WardWiseTimeToPublicTransportSEO({
         "Rural mobility",
         "Transport access index",
       ],
-      url: "https://digital.khajuramun.gov.np/profile/physical/ward-wise-time-to-public-transport",
+      url: "https://digital.pariwartanmun.gov.np/profile/physical/ward-wise-time-to-public-transport",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        name: "pariwartan Rural Municipality",
+        url: "https://digital.pariwartanmun.gov.np",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "pariwartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",
@@ -181,10 +181,10 @@ export default function WardWiseTimeToPublicTransportSEO({
         name: "Municipality Infrastructure Survey",
         provider: {
           "@type": "GovernmentOrganization",
-          name: "Khajura Rural Municipality",
+          name: "pariwartan Rural Municipality",
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Khajura",
+            addressLocality: "pariwartan",
             addressRegion: "Banke",
             addressCountry: "Nepal",
           },

@@ -37,9 +37,11 @@ export default function WardWiseHouseholdRoofSEO({
   housingQualityIndex,
 }: WardWiseHouseholdRoofSEOProps) {
   // Calculate modern roofing percentage (cement + tile)
-  const modernRoofingTotal = roofCategoryTotals.CEMENT + roofCategoryTotals.TILE;
+  const modernRoofingTotal =
+    roofCategoryTotals.CEMENT + roofCategoryTotals.TILE;
   const modernRoofingPercentage = (
-    (modernRoofingTotal / totalHouseholds) * 100
+    (modernRoofingTotal / totalHouseholds) *
+    100
   ).toFixed(2);
 
   // Create structured data for SEO
@@ -48,36 +50,42 @@ export default function WardWiseHouseholdRoofSEO({
     const roofStats = wardNumbers
       .map((wardNumber) => {
         const wardData = householdRoofData.filter(
-          (item) => item.wardNumber === wardNumber
+          (item) => item.wardNumber === wardNumber,
         );
-        
+
         if (wardData.length === 0) return null;
 
         const wardTotal = wardData.reduce(
           (sum, item) => sum + (item.households || 0),
-          0
+          0,
         );
 
-        const roofTypeDistribution = Object.keys(ROOF_CATEGORIES).map((roofType) => {
-          const roofData = wardData.find((item) => item.roofType === roofType);
-          const households = roofData ? roofData.households : 0;
-          const percentage = wardTotal > 0 ? (households / wardTotal) * 100 : 0;
+        const roofTypeDistribution = Object.keys(ROOF_CATEGORIES).map(
+          (roofType) => {
+            const roofData = wardData.find(
+              (item) => item.roofType === roofType,
+            );
+            const households = roofData ? roofData.households : 0;
+            const percentage =
+              wardTotal > 0 ? (households / wardTotal) * 100 : 0;
 
-          return {
-            "@type": "PropertyValue",
-            name: ROOF_CATEGORIES[roofType as keyof typeof ROOF_CATEGORIES].nameEn,
-            value: households,
-            unitText: "households",
-            description: `${percentage.toFixed(2)}% of households in Ward ${wardNumber}`,
-          };
-        });
+            return {
+              "@type": "PropertyValue",
+              name: ROOF_CATEGORIES[roofType as keyof typeof ROOF_CATEGORIES]
+                .nameEn,
+              value: households,
+              unitText: "households",
+              description: `${percentage.toFixed(2)}% of households in Ward ${wardNumber}`,
+            };
+          },
+        );
 
         return {
           "@type": "Place",
           name: `Ward ${wardNumber}`,
           geo: {
             "@type": "GeoCoordinates",
-            addressRegion: "Khajura Rural Municipality",
+            addressRegion: "pariwartan Rural Municipality",
             addressCountry: "Nepal",
           },
           additionalProperty: roofTypeDistribution,
@@ -88,10 +96,10 @@ export default function WardWiseHouseholdRoofSEO({
     return {
       "@context": "https://schema.org",
       "@type": ["Dataset", "GovernmentService"],
-      name: "Ward-wise Household Roof Types in Khajura Rural Municipality",
-      description: `Comprehensive analysis of household roof types across ${wardNumbers.length} wards in Khajura Rural Municipality, covering ${totalHouseholds} households with detailed breakdown by roof material including cement, tin, tile, straw, wood, stone, and other materials.`,
+      name: "Ward-wise Household Roof Types in pariwartan Rural Municipality",
+      description: `Comprehensive analysis of household roof types across ${wardNumbers.length} wards in pariwartan Rural Municipality, covering ${totalHouseholds} households with detailed breakdown by roof material including cement, tin, tile, straw, wood, stone, and other materials.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "pariwartan Rural Municipality",
         "household roof types",
         "housing quality",
         "building materials",
@@ -105,18 +113,18 @@ export default function WardWiseHouseholdRoofSEO({
       ],
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "pariwartan Rural Municipality",
         alternateName: "परिवर्तन गाउँपालिका",
-        url: "https://khajura.gov.np",
+        url: "https://pariwartan.gov.np",
       },
       publisher: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality Digital Profile",
+        name: "pariwartan Rural Municipality Digital Profile",
         alternateName: "परिवर्तन गाउँपालिका डिजिटल प्रोफाइल",
       },
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality",
+        name: "pariwartan Rural Municipality",
         alternateName: "परिवर्तन गाउँपालिका",
         geo: {
           "@type": "GeoCoordinates",
@@ -139,14 +147,16 @@ export default function WardWiseHouseholdRoofSEO({
           name: "Modern Roofing Rate",
           value: parseFloat(modernRoofingPercentage),
           unitText: "percent",
-          description: "Percentage of households with modern roofing (cement + tile)",
+          description:
+            "Percentage of households with modern roofing (cement + tile)",
         },
         {
           "@type": "PropertyValue",
           name: "Housing Quality Index",
           value: parseFloat(housingQualityIndex.toFixed(2)),
           unitText: "index score",
-          description: "Housing quality index based on roof type distribution (0-100 scale)",
+          description:
+            "Housing quality index based on roof type distribution (0-100 scale)",
         },
         ...Object.keys(ROOF_CATEGORIES).map((roofType) => ({
           "@type": "PropertyValue",
@@ -186,7 +196,8 @@ export default function WardWiseHouseholdRoofSEO({
       mainEntity: {
         "@type": "StatisticalVariable",
         name: "Household Roof Type Distribution",
-        description: "Distribution of different roof types across households in Khajura Rural Municipality",
+        description:
+          "Distribution of different roof types across households in pariwartan Rural Municipality",
         measurementTechnique: "Household survey and census data collection",
         unitText: "households",
       },
@@ -206,21 +217,15 @@ export default function WardWiseHouseholdRoofSEO({
       />
 
       {/* Additional SEO meta tags */}
-      <meta
-        name="geo.region"
-        content="NP-P1"
-      />
+      <meta name="geo.region" content="NP-P1" />
       <meta
         name="geo.placename"
-        content="Khajura Rural Municipality, Banke District, Nepal"
+        content="pariwartan Rural Municipality, Banke District, Nepal"
       />
-      <meta
-        name="ICBM"
-        content="28.1667, 81.6167"
-      />
+      <meta name="ICBM" content="28.1667, 81.6167" />
       <meta
         name="DC.title"
-        content="Ward-wise Household Roof Types Analysis - Khajura Rural Municipality"
+        content="Ward-wise Household Roof Types Analysis - pariwartan Rural Municipality"
       />
       <meta
         name="DC.description"
@@ -232,67 +237,31 @@ export default function WardWiseHouseholdRoofSEO({
       />
       <meta
         name="DC.coverage"
-        content="Khajura Rural Municipality, Banke District, Lumbini Province, Nepal"
+        content="pariwartan Rural Municipality, Banke District, Lumbini Province, Nepal"
       />
-      <meta
-        name="DC.type"
-        content="Dataset"
-      />
-      <meta
-        name="DC.format"
-        content="text/html"
-      />
-      <meta
-        name="DC.language"
-        content="ne, en"
-      />
+      <meta name="DC.type" content="Dataset" />
+      <meta name="DC.format" content="text/html" />
+      <meta name="DC.language" content="ne, en" />
       <meta
         name="DC.rights"
         content="Creative Commons Attribution 4.0 International License"
       />
 
       {/* OpenGraph structured properties */}
-      <meta
-        property="og:type"
-        content="article"
-      />
-      <meta
-        property="og:locale"
-        content="ne_NP"
-      />
-      <meta
-        property="og:locale:alternate"
-        content="en_US"
-      />
-      <meta
-        property="article:section"
-        content="Housing Infrastructure"
-      />
-      <meta
-        property="article:tag"
-        content="household roof types"
-      />
-      <meta
-        property="article:tag"
-        content="housing quality"
-      />
-      <meta
-        property="article:tag"
-        content="building materials"
-      />
-      <meta
-        property="article:tag"
-        content="infrastructure development"
-      />
+      <meta property="og:type" content="article" />
+      <meta property="og:locale" content="ne_NP" />
+      <meta property="og:locale:alternate" content="en_US" />
+      <meta property="article:section" content="Housing Infrastructure" />
+      <meta property="article:tag" content="household roof types" />
+      <meta property="article:tag" content="housing quality" />
+      <meta property="article:tag" content="building materials" />
+      <meta property="article:tag" content="infrastructure development" />
 
       {/* Twitter Card metadata */}
-      <meta
-        name="twitter:card"
-        content="summary_large_image"
-      />
+      <meta name="twitter:card" content="summary_large_image" />
       <meta
         name="twitter:title"
-        content="Ward-wise Household Roof Types - Khajura Rural Municipality"
+        content="Ward-wise Household Roof Types - pariwartan Rural Municipality"
       />
       <meta
         name="twitter:description"
@@ -300,19 +269,31 @@ export default function WardWiseHouseholdRoofSEO({
       />
 
       {/* Microdata for local business/organization */}
-      <div itemScope itemType="https://schema.org/GovernmentOrganization" style={{ display: 'none' }}>
-        <span itemProp="name">Khajura Rural Municipality</span>
+      <div
+        itemScope
+        itemType="https://schema.org/GovernmentOrganization"
+        style={{ display: "none" }}
+      >
+        <span itemProp="name">pariwartan Rural Municipality</span>
         <span itemProp="alternateName">परिवर्तन गाउँपालिका</span>
-        <div itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
+        <div
+          itemProp="address"
+          itemScope
+          itemType="https://schema.org/PostalAddress"
+        >
           <span itemProp="addressRegion">Banke District</span>
           <span itemProp="addressCountry">Nepal</span>
         </div>
-        <span itemProp="url">https://khajura.gov.np</span>
+        <span itemProp="url">https://pariwartan.gov.np</span>
       </div>
 
       {/* Performance hints */}
       <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossOrigin="anonymous"
+      />
     </>
   );
 }

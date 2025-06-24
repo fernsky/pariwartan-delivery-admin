@@ -43,12 +43,12 @@ export default function FarmersGroupSEO({
     // Convert group stats to structured data format
     const groupTypeStats = groupSummary.map((item) => ({
       "@type": "Dataset",
-      name: `${item.type} in Khajura Rural Municipality`,
-      description: `There are ${item.count} ${item.type} groups operating in Khajura Rural Municipality, representing ${item.percentage.toFixed(2)}% of total agricultural groups.`,
-      keywords: [item.type, "agriculture", "farming groups", "Khajura"],
+      name: `${item.type} in pariwartan Rural Municipality`,
+      description: `There are ${item.count} ${item.type} groups operating in pariwartan Rural Municipality, representing ${item.percentage.toFixed(2)}% of total agricultural groups.`,
+      keywords: [item.type, "agriculture", "farming groups", "pariwartan"],
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "pariwartan Rural Municipality",
       },
       variableMeasured: [
         {
@@ -76,7 +76,7 @@ export default function FarmersGroupSEO({
         .join(", ")}${ward.farms.length > 3 ? " and others" : ""}.`,
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "pariwartan Rural Municipality",
       },
       variableMeasured: {
         "@type": "PropertyValue",
@@ -92,10 +92,10 @@ export default function FarmersGroupSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Agriculture Related Farmers Groups in Khajura Rural Municipality",
-      description: `Comprehensive analysis of ${totalGroups} agriculture related farmers groups in Khajura Rural Municipality. The most common type is ${mostCommonGroupType} (${statistics.mostPopularGroupTypePercentage.toFixed(1)}%), and Ward ${statistics.wardWithMostGroups} has the highest concentration with ${statistics.maximumGroupsInAWard} groups. This dataset covers all 9 wards of the municipality.`,
+      name: "Agriculture Related Farmers Groups in pariwartan Rural Municipality",
+      description: `Comprehensive analysis of ${totalGroups} agriculture related farmers groups in pariwartan Rural Municipality. The most common type is ${mostCommonGroupType} (${statistics.mostPopularGroupTypePercentage.toFixed(1)}%), and Ward ${statistics.wardWithMostGroups} has the highest concentration with ${statistics.maximumGroupsInAWard} groups. This dataset covers all 9 wards of the municipality.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "pariwartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Agriculture",
         "Farmers Groups",
@@ -105,16 +105,16 @@ export default function FarmersGroupSEO({
         "Farming Groups",
         ...groupSummary.map((item) => item.type),
       ],
-      url: "https://digital.khajuramun.gov.np/profile/economics/agriculture-related-farmers-group",
+      url: "https://digital.pariwartanmun.gov.np/profile/economics/agriculture-related-farmers-group",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        name: "pariwartan Rural Municipality",
+        url: "https://digital.pariwartanmun.gov.np",
       },
       temporalCoverage: "2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "pariwartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",
@@ -169,8 +169,8 @@ export default function FarmersGroupSEO({
       ],
       isPartOf: {
         "@type": "Dataset",
-        name: "Khajura Rural Municipality Digital Profile",
-        url: "https://digital.khajuramun.gov.np",
+        name: "pariwartan Rural Municipality Digital Profile",
+        url: "https://digital.pariwartanmun.gov.np",
       },
     };
   };

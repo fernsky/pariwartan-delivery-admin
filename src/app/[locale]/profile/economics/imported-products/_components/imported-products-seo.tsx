@@ -28,7 +28,7 @@ export default function ImportedProductsSEO({
     // Convert category stats to structured data format
     const categoryStats = categoryDistribution.map((item) => ({
       "@type": "Observation",
-      name: `${CATEGORY_NAMES_EN[item.name] || item.name} imports in Khajura Rural Municipality`,
+      name: `${CATEGORY_NAMES_EN[item.name] || item.name} imports in pariwartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
@@ -38,16 +38,16 @@ export default function ImportedProductsSEO({
       measuredValue: item.value,
       description: `${item.value.toLocaleString()} products in ${
         CATEGORY_NAMES_EN[item.name] || item.name
-      } category are imported in Khajura Rural Municipality (${item.percentage}% of total imports)`,
+      } category are imported in pariwartan Rural Municipality (${item.percentage}% of total imports)`,
     }));
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Imported Products Catalog of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Comprehensive catalog of ${totalProducts.toLocaleString()} products imported into Khajura Rural Municipality, categorized by type and usage.`,
+      name: "Imported Products Catalog of pariwartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Comprehensive catalog of ${totalProducts.toLocaleString()} products imported into pariwartan Rural Municipality, categorized by type and usage.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "pariwartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Import catalog",
         "Economic profile",
@@ -56,16 +56,16 @@ export default function ImportedProductsSEO({
         ...Object.values(CATEGORY_NAMES_EN).map((name) => `${name} imports`),
         ...categoryDistribution.map((cat) => `${cat.name} आयातित वस्तु`),
       ],
-      url: "https://digital.khajuramun.gov.np/profile/economics/imported-products",
+      url: "https://digital.pariwartanmun.gov.np/profile/economics/imported-products",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        name: "pariwartan Rural Municipality",
+        url: "https://digital.pariwartanmun.gov.np",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "pariwartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",

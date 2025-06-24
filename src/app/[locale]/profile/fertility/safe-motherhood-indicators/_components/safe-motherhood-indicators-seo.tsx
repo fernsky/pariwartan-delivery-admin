@@ -51,7 +51,7 @@ export default function SafeMotherhoodIndicatorsSEO({
     const mainIndicatorStats = [
       {
         "@type": "Observation",
-        name: "Institutional Delivery Rate in Khajura Rural Municipality",
+        name: "Institutional Delivery Rate in pariwartan Rural Municipality",
         observationDate: `${latestYear}`,
         measuredProperty: {
           "@type": "PropertyValue",
@@ -59,11 +59,11 @@ export default function SafeMotherhoodIndicatorsSEO({
           unitText: "percentage",
         },
         measuredValue: institutionalDeliveries,
-        description: `Institutional delivery rate was ${institutionalDeliveries.toFixed(1)}% in year ${latestYear} in Khajura Rural Municipality.`,
+        description: `Institutional delivery rate was ${institutionalDeliveries.toFixed(1)}% in year ${latestYear} in pariwartan Rural Municipality.`,
       },
       {
         "@type": "Observation",
-        name: "ANC Checkup Protocol Adherence in Khajura Rural Municipality",
+        name: "ANC Checkup Protocol Adherence in pariwartan Rural Municipality",
         observationDate: `${latestYear}`,
         measuredProperty: {
           "@type": "PropertyValue",
@@ -71,11 +71,11 @@ export default function SafeMotherhoodIndicatorsSEO({
           unitText: "percentage",
         },
         measuredValue: ancCheckups,
-        description: `Percentage of pregnant women who had four ANC checkups as per protocol was ${ancCheckups.toFixed(1)}% in year ${latestYear} in Khajura Rural Municipality.`,
+        description: `Percentage of pregnant women who had four ANC checkups as per protocol was ${ancCheckups.toFixed(1)}% in year ${latestYear} in pariwartan Rural Municipality.`,
       },
       {
         "@type": "Observation",
-        name: "PNC Home Visits in Khajura Rural Municipality",
+        name: "PNC Home Visits in pariwartan Rural Municipality",
         observationDate: `${latestYear}`,
         measuredProperty: {
           "@type": "PropertyValue",
@@ -83,11 +83,11 @@ export default function SafeMotherhoodIndicatorsSEO({
           unitText: "percentage",
         },
         measuredValue: pncVisits,
-        description: `Percentage of postpartum mothers receiving two PNC home visits was ${pncVisits.toFixed(1)}% in year ${latestYear} in Khajura Rural Municipality.`,
+        description: `Percentage of postpartum mothers receiving two PNC home visits was ${pncVisits.toFixed(1)}% in year ${latestYear} in pariwartan Rural Municipality.`,
       },
       {
         "@type": "Observation",
-        name: "Newborn CHX Application in Khajura Rural Municipality",
+        name: "Newborn CHX Application in pariwartan Rural Municipality",
         observationDate: `${latestYear}`,
         measuredProperty: {
           "@type": "PropertyValue",
@@ -95,17 +95,17 @@ export default function SafeMotherhoodIndicatorsSEO({
           unitText: "percentage",
         },
         measuredValue: newbornCare,
-        description: `Percentage of newborns who had CHX applied immediately after birth was ${newbornCare.toFixed(1)}% in year ${latestYear} in Khajura Rural Municipality.`,
+        description: `Percentage of newborns who had CHX applied immediately after birth was ${newbornCare.toFixed(1)}% in year ${latestYear} in pariwartan Rural Municipality.`,
       },
     ];
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Safe Motherhood Indicators in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Analysis of safe motherhood services and indicators for year ${latestYear} in Khajura Rural Municipality. Key indicators include institutional delivery rate (${institutionalDeliveries.toFixed(1)}%), ANC checkups as per protocol (${ancCheckups.toFixed(1)}%), PNC home visits (${pncVisits.toFixed(1)}%), and newborn care (${newbornCare.toFixed(1)}%).`,
+      name: "Safe Motherhood Indicators in pariwartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Analysis of safe motherhood services and indicators for year ${latestYear} in pariwartan Rural Municipality. Key indicators include institutional delivery rate (${institutionalDeliveries.toFixed(1)}%), ANC checkups as per protocol (${ancCheckups.toFixed(1)}%), PNC home visits (${pncVisits.toFixed(1)}%), and newborn care (${newbornCare.toFixed(1)}%).`,
       keywords: [
-        "Khajura Rural Municipality",
+        "pariwartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Safe motherhood",
         "Maternal health",
@@ -118,16 +118,16 @@ export default function SafeMotherhoodIndicatorsSEO({
         "Rural maternal health",
         "Maternal mortality reduction",
       ],
-      url: "https://digital.khajuramun.gov.np/profile/health/safe-motherhood-indicators",
+      url: "https://digital.pariwartanmun.gov.np/profile/health/safe-motherhood-indicators",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        name: "pariwartan Rural Municipality",
+        url: "https://digital.pariwartanmun.gov.np",
       },
       temporalCoverage: latestYear.toString(),
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "pariwartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",
@@ -184,10 +184,10 @@ export default function SafeMotherhoodIndicatorsSEO({
         name: "Safe Motherhood Program",
         provider: {
           "@type": "GovernmentOrganization",
-          name: "Khajura Rural Municipality",
+          name: "pariwartan Rural Municipality",
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Khajura",
+            addressLocality: "pariwartan",
             addressRegion: "Banke",
             addressCountry: "Nepal",
           },

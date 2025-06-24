@@ -95,13 +95,6 @@ const physicalInfrastructureCategories = [
     href: "/profile/physical/ward-wise-household-floor",
     icon: <Home className="h-5 w-5" />,
   },
-  {
-    title: "आधुनिक सुविधामा पहुँच सम्बन्धी विवरण",
-    description:
-      "परिवर्तन गाउँपालिकामा घरपरिवारको आधुनिक सुविधा तथा घरायसी उपकरणहरूमा पहुँचको वडागत विश्लेषण।",
-    href: "/profile/physical/ward-wise-facilities",
-    icon: <Smartphone className="h-5 w-5" />,
-  },
 ];
 
 export default async function PhysicalInfrastructurePage() {
@@ -110,7 +103,6 @@ export default async function PhysicalInfrastructurePage() {
   let marketAccessData = null;
   let cookingFuelData = null;
   let electricitySourceData = null;
-  let facilitiesData = null;
 
   try {
     // Try to fetch public transport access data
@@ -136,15 +128,7 @@ export default async function PhysicalInfrastructurePage() {
         .query()
         .catch(() => null);
 
-    // Try to fetch facilities data
-    facilitiesData = await api.profile.physical.wardWiseFacilities.getAll
-      .query()
-      .catch(() => null);
-  } catch (error) {
-    console.error("Error fetching physical infrastructure data:", error);
-  }
-
-  // Calculate summary statistics if data is available
+      // Calculate summary statistics if data is available
   const quickPublicTransportAccess = publicTransportData
     ? publicTransportData
         .filter(
@@ -180,27 +164,6 @@ export default async function PhysicalInfrastructurePage() {
     ? electricitySourceData
         .filter((item) => item.electricitySource === "ELECTRICITY")
         .reduce((sum, item) => sum + (item.households || 0), 0)
-    : null;
-
-  // For facilities, let's approximate unique households with internet access
-  const internetAccess = facilitiesData
-    ? (() => {
-        const wardGroups = facilitiesData.reduce((acc: any, curr: any) => {
-          acc[curr.wardNumber] = acc[curr.wardNumber] || [];
-          acc[curr.wardNumber].push(curr);
-          return acc;
-        }, {});
-
-        let internetHouseholds = 0;
-        Object.values(wardGroups).forEach((wardData: any) => {
-          const internetItem = wardData.find(
-            (item: any) => item.facility === "INTERNET",
-          );
-          if (internetItem) internetHouseholds += internetItem.households;
-        });
-
-        return internetHouseholds;
-      })()
     : null;
 
   return (
@@ -247,7 +210,7 @@ export default async function PhysicalInfrastructurePage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Key stats cards */}
             <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
               <h3 className="text-lg font-medium mb-2">
@@ -281,17 +244,6 @@ export default async function PhysicalInfrastructurePage() {
               <p className="text-3xl font-bold text-primary">
                 {cleanCookingFuel !== null
                   ? localizeNumber(cleanCookingFuel.toLocaleString(), "ne")
-                  : "लोड हुँदैछ..."}
-              </p>
-            </div>
-
-            <div className="bg-muted/20 border rounded-lg shadow-sm p-6">
-              <h3 className="text-lg font-medium mb-2">
-                इन्टरनेट पहुँच भएका घरधुरी
-              </h3>
-              <p className="text-3xl font-bold text-primary">
-                {internetAccess !== null
-                  ? localizeNumber(internetAccess.toLocaleString(), "ne")
                   : "लोड हुँदैछ..."}
               </p>
             </div>

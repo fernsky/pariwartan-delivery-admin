@@ -32,7 +32,7 @@ export default function AnimalProductSEO({
     // Convert animal product stats to structured data format
     const animalProductStats = overallSummary.map((item) => ({
       "@type": "Observation",
-      name: `${ANIMAL_PRODUCT_TYPES_EN[item.type] || item.type} in Khajura Rural Municipality`,
+      name: `${ANIMAL_PRODUCT_TYPES_EN[item.type] || item.type} in pariwartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
@@ -40,7 +40,7 @@ export default function AnimalProductSEO({
         unitText: item.measurementUnit === "COUNT" ? "units" : "tonnes",
       },
       measuredValue: item.production,
-      description: `${item.production.toFixed(2)} ${item.measurementUnit === "COUNT" ? "units" : "tonnes"} of ${ANIMAL_PRODUCT_TYPES_EN[item.type] || item.type} produced in Khajura Rural Municipality (${((item.production / totalProduction) * 100).toFixed(2)}% of total production). Sales volume: ${item.sales.toFixed(2)} ${item.measurementUnit === "COUNT" ? "units" : "tonnes"}. Revenue: NPR ${item.revenue.toLocaleString()}.`,
+      description: `${item.production.toFixed(2)} ${item.measurementUnit === "COUNT" ? "units" : "tonnes"} of ${ANIMAL_PRODUCT_TYPES_EN[item.type] || item.type} produced in pariwartan Rural Municipality (${((item.production / totalProduction) * 100).toFixed(2)}% of total production). Sales volume: ${item.sales.toFixed(2)} ${item.measurementUnit === "COUNT" ? "units" : "tonnes"}. Revenue: NPR ${item.revenue.toLocaleString()}.`,
     }));
 
     // Find most produced animal product
@@ -65,8 +65,8 @@ export default function AnimalProductSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Animal Products in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Animal product production and sales statistics of Khajura Rural Municipality with a total production of ${totalProduction.toFixed(
+      name: "Animal Products in pariwartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Animal product production and sales statistics of pariwartan Rural Municipality with a total production of ${totalProduction.toFixed(
         2,
       )} tonnes/units and sales of ${totalSales.toFixed(2)} tonnes/units (${(
         (totalSales / totalProduction) *
@@ -77,7 +77,7 @@ export default function AnimalProductSEO({
         2,
       )} tonnes/units (${mostProducedPercentage}%). Self-consumption represents ${selfConsumptionPercentage}% of total production. Total revenue from animal product sales is NPR ${totalRevenue.toLocaleString()}.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "pariwartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Animal product production",
         "Animal product sales",
@@ -93,16 +93,16 @@ export default function AnimalProductSEO({
           (name) => `${name} उत्पादन तथ्याङ्क`,
         ),
       ],
-      url: "https://digital.khajuramun.gov.np/profile/economics/municipality-wide-animal-products",
+      url: "https://digital.pariwartanmun.gov.np/profile/economics/municipality-wide-animal-products",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        name: "pariwartan Rural Municipality",
+        url: "https://digital.pariwartanmun.gov.np",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "pariwartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",

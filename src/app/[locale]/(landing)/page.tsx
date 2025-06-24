@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // SEO metadata setup - municipality name and details
     const municipalityName = "परिवर्तन गाउँपालिका";
-    const municipalityNameEn = "Khajura Rural Municipality";
+    const municipalityNameEn = "pariwartan Rural Municipality";
     const districtName = "रोल्पा";
     const districtNameEn = "Banke";
     const provinceName = "लुम्बिनी प्रदेश";
@@ -88,7 +88,7 @@ export async function generateMetadata(): Promise<Metadata> {
         siteName: `${municipalityName} डिजिटल प्रोफाइल`,
         images: [
           {
-            url: "https://digital.khajuramun.gov.np/images/municipality-logo.png",
+            url: "https://digital.pariwartanmun.gov.np/images/municipality-logo.png",
             width: 1200,
             height: 630,
             alt: municipalityName,
@@ -100,7 +100,7 @@ export async function generateMetadata(): Promise<Metadata> {
         title: `${municipalityName} | आधिकारिक वेबसाइट`,
         description: descriptionNP,
         images: [
-          "https://digital.khajuramun.gov.np/images/municipality-logo.png",
+          "https://digital.pariwartanmun.gov.np/images/municipality-logo.png",
         ],
       },
     };
@@ -126,7 +126,7 @@ export default async function Page({ params }: LanguageParams) {
 
   // SEO metadata setup - municipality name and details
   const municipalityName = "परिवर्तन गाउँपालिका";
-  const municipalityNameEn = "Khajura Rural Municipality";
+  const municipalityNameEn = "pariwartan Rural Municipality";
   const districtName = "बाँके";
   const provinceNumber = 5;
   const provinceName = "लुम्बिनी प्रदेश";

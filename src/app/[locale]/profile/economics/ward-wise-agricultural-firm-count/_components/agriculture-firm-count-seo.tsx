@@ -21,7 +21,7 @@ export default function AgricultureFirmCountSEO({
     // Convert ward stats to structured data format
     const wardStats = overallSummary.map((item) => ({
       "@type": "Observation",
-      name: `Agriculture firms in ${item.ward} of Khajura Rural Municipality`,
+      name: `Agriculture firms in ${item.ward} of pariwartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
@@ -29,16 +29,16 @@ export default function AgricultureFirmCountSEO({
         unitText: "firms",
       },
       measuredValue: item.count,
-      description: `${item.count.toLocaleString()} agriculture firms in ${item.ward} of Khajura Rural Municipality (${item.percentage.toFixed(2)}% of total firms)`,
+      description: `${item.count.toLocaleString()} agriculture firms in ${item.ward} of pariwartan Rural Municipality (${item.percentage.toFixed(2)}% of total firms)`,
     }));
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Ward-wise Agriculture Firm Count of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Agriculture firm count distribution data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalFirms.toLocaleString()} registered agriculture firms.`,
+      name: "Ward-wise Agriculture Firm Count of pariwartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Agriculture firm count distribution data across ${wardNumbers.length} wards of pariwartan Rural Municipality with a total of ${totalFirms.toLocaleString()} registered agriculture firms.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "pariwartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Agriculture firms",
         "Ward-wise agriculture data",
@@ -50,16 +50,16 @@ export default function AgricultureFirmCountSEO({
         "कृषि समूह",
         "वडा अनुसार कृषि तथ्याङ्क",
       ],
-      url: "https://digital.khajuramun.gov.np/profile/economics/agriculture-firm-count",
+      url: "https://digital.pariwartanmun.gov.np/profile/economics/agriculture-firm-count",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        name: "pariwartan Rural Municipality",
+        url: "https://digital.pariwartanmun.gov.np",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "pariwartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",
