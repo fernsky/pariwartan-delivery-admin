@@ -96,11 +96,11 @@ export default function RemittanceSEO({
         "Remittance utilization",
         "Economic development through remittance",
       ],
-      url: "https://digital.khajuramun.gov.np/profile/economics/ward-wise-remittance",
+      url: "https://paribartan.digprofile.com/profile/economics/ward-wise-remittance",
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {

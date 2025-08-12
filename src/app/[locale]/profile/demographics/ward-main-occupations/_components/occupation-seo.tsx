@@ -91,11 +91,11 @@ export default function OccupationSEO({
         "Occupational distribution",
         ...Object.values(familyMainOccupationLabels),
       ],
-      url: "https://digital.khajuramun.gov.np/profile/demographics/ward-main-occupations",
+      url: "https://paribartan.digprofile.com/profile/demographics/ward-main-occupations",
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {

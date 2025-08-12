@@ -69,11 +69,11 @@ export default function ReligionSEO({
         ...Object.values(RELIGION_NAMES_EN).map((name) => `${name} population`),
         ...Object.values(RELIGION_NAMES).map((name) => `${name} जनसंख्या`),
       ],
-      url: "https://digital.khajuramun.gov.np/profile/demographics/ward-wise-religion-population",
+      url: "https://paribartan.digprofile.com/profile/demographics/ward-wise-religion-population",
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {

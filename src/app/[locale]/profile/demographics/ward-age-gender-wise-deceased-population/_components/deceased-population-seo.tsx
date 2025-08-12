@@ -152,11 +152,11 @@ export default function DeceasedPopulationSEO({
         ),
         ...Object.values(GENDER_NAMES).map((name) => `${name} मृत्यु तथ्याङ्क`),
       ],
-      url: "https://digital.khajuramun.gov.np/profile/demographics/ward-age-gender-wise-deceased-population",
+      url: "https://paribartan.digprofile.com/profile/demographics/ward-age-gender-wise-deceased-population",
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {

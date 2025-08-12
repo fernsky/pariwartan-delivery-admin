@@ -104,11 +104,11 @@ export default function WardWiseLiteracyStatusSEO({
         "Literacy distribution",
         "Literacy index",
       ],
-      url: "https://digital.khajuramun.gov.np/profile/education/ward-wise-literacy-status",
+      url: "https://paribartan.digprofile.com/profile/education/ward-wise-literacy-status",
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {

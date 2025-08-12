@@ -113,11 +113,11 @@ export default function WardWiseCookingFuelSEO({
         "Energy transition",
         "Indoor air pollution",
       ],
-      url: "https://digital.khajuramun.gov.np/profile/physical/ward-wise-cooking-fuel",
+      url: "https://paribartan.digprofile.com/profile/physical/ward-wise-cooking-fuel",
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {

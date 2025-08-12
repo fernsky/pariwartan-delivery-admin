@@ -108,11 +108,11 @@ export default function WardWiseTimeToPublicTransportSEO({
         "Rural mobility",
         "Transport access index",
       ],
-      url: "https://digital.khajuramun.gov.np/profile/physical/ward-wise-time-to-public-transport",
+      url: "https://paribartan.digprofile.com/profile/physical/ward-wise-time-to-public-transport",
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {

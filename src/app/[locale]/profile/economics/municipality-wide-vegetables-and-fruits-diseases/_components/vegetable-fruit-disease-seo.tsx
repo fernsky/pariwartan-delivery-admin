@@ -90,11 +90,11 @@ export default function VegetableFruitDiseaseSEO({
           (name) => `${name} रोग कीट`,
         ),
       ],
-      url: "https://digital.khajuramun.gov.np/profile/economics/municipality-wide-vegetables-and-fruits-diseases",
+      url: "https://paribartan.digprofile.com/profile/economics/municipality-wide-vegetables-and-fruits-diseases",
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {

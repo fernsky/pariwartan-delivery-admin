@@ -118,11 +118,11 @@ export default function SafeMotherhoodIndicatorsSEO({
         "Rural maternal health",
         "Maternal mortality reduction",
       ],
-      url: "https://digital.khajuramun.gov.np/profile/health/safe-motherhood-indicators",
+      url: "https://paribartan.digprofile.com/profile/health/safe-motherhood-indicators",
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: latestYear.toString(),
       spatialCoverage: {

@@ -45,11 +45,11 @@ export default function WardSEO({ wardData }: WardSEOProps) {
         "वडा जानकारी",
         "जनसंख्या तथ्याङ्क",
       ],
-      url: "https://digital.khajuramun.gov.np/profile/municipality-introduction/municipality-ward-information",
+      url: "https://paribartan.digprofile.com/profile/municipality-introduction/municipality-ward-information",
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {

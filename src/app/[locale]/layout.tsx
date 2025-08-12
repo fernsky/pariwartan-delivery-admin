@@ -50,7 +50,7 @@ export async function generateMetadata(props: {
     const t = await getTranslations({ locale, namespace: "seo.default" });
 
     const baseUrl =
-      process.env.NEXT_PUBLIC_BASE_URL || "https://digital.khajuramun.gov.np";
+      process.env.NEXT_PUBLIC_BASE_URL || "https://paribartan.digprofile.com";
 
     const appUrl = process.env.APP_URL
       ? `${process.env.APP_URL}`

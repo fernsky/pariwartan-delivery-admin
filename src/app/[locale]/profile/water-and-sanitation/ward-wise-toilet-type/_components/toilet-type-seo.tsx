@@ -91,11 +91,11 @@ export default function ToiletTypeSEO({
         "No toilet households",
         "Sanitation improvement",
       ],
-      url: "https://digital.khajuramun.gov.np/profile/water-and-sanitation/ward-wise-toilet-type",
+      url: "https://paribartan.digprofile.com/profile/water-and-sanitation/ward-wise-toilet-type",
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
@@ -150,7 +150,7 @@ export default function ToiletTypeSEO({
       isPartOf: {
         "@type": "WebSite",
         name: "Khajura Rural Municipality Digital Profile",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
       },
     };
   };

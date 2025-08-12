@@ -79,11 +79,11 @@ export default function LandOwnershipSEO({
           (name) => `${name} घरपरिवार संख्या`,
         ),
       ],
-      url: "https://digital.khajuramun.gov.np/profile/economics/ward-wise-land-ownership",
+      url: "https://paribartan.digprofile.com/profile/economics/ward-wise-land-ownership",
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {

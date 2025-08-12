@@ -5,7 +5,7 @@ import { locales } from "@/i18n/config";
 
 // Base URL from environment or default
 const baseUrl =
-  process.env.NEXT_PUBLIC_BASE_URL || "https://digital.khajuramun.gov.np";
+  process.env.NEXT_PUBLIC_BASE_URL || "https://paribartan.digprofile.com";
 
 export async function GET(
   request: NextRequest,

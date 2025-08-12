@@ -8,7 +8,7 @@ import { navItems } from "@/constants/nav-items";
 
 // Base URL from environment or default
 const baseUrl =
-  process.env.NEXT_PUBLIC_BASE_URL || "https://digital.khajuramun.gov.np";
+  process.env.NEXT_PUBLIC_BASE_URL || "https://paribartan.digprofile.com";
 
 interface SitemapRoute {
   url: string;

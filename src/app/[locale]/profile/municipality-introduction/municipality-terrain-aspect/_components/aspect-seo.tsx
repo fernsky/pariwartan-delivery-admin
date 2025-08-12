@@ -37,11 +37,11 @@ export default function AspectSEO({ aspectData }: AspectSEOProps) {
         "मोहोडा विवरण",
         "दिशा तथ्याङ्क",
       ],
-      url: "https://digital.khajuramun.gov.np/profile/municipality-introduction/municipality-terrain-aspect",
+      url: "https://paribartan.digprofile.com/profile/municipality-introduction/municipality-terrain-aspect",
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {

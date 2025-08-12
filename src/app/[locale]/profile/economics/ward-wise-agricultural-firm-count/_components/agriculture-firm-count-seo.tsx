@@ -50,11 +50,11 @@ export default function AgricultureFirmCountSEO({
         "कृषि समूह",
         "वडा अनुसार कृषि तथ्याङ्क",
       ],
-      url: "https://digital.khajuramun.gov.np/profile/economics/agriculture-firm-count",
+      url: "https://paribartan.digprofile.com/profile/economics/agriculture-firm-count",
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {

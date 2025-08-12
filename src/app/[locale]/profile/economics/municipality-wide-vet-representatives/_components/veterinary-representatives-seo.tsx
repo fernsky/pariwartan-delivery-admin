@@ -55,7 +55,7 @@ export default function VeterinaryRepresentativesSEO({
         "@type": "Organization",
         name: "Khajura Rural Municipality",
         alternateName: "परिवर्तन गाउँपालिका",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
         address: {
           "@type": "PostalAddress",
           addressCountry: "Nepal",
@@ -73,7 +73,7 @@ export default function VeterinaryRepresentativesSEO({
       provider: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
       },
     };
   };

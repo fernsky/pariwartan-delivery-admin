@@ -113,11 +113,11 @@ export default function WardWiseElectricitySourceSEO({
         "Energy transition",
         "Rural electrification",
       ],
-      url: "https://digital.khajuramun.gov.np/profile/physical/ward-wise-electricity-source",
+      url: "https://paribartan.digprofile.com/profile/physical/ward-wise-electricity-source",
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {

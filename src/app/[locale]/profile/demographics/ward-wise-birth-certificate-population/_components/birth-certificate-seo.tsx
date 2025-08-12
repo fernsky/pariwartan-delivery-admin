@@ -90,11 +90,11 @@ export default function BirthCertificateSEO({
         "Birth registration statistics",
         "Birth certificate coverage",
       ],
-      url: "https://digital.khajuramun.gov.np/profile/demographics/ward-wise-birth-certificate-population",
+      url: "https://paribartan.digprofile.com/profile/demographics/ward-wise-birth-certificate-population",
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {

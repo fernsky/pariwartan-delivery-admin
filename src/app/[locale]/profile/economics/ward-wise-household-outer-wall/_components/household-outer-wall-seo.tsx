@@ -81,11 +81,11 @@ export default function HouseholdOuterWallSEO({
           (name) => `${name} घरधुरी तथ्याङ्क`,
         ),
       ],
-      url: "https://digital.khajuramun.gov.np/profile/economics/ward-wise-household-outer-wall",
+      url: "https://paribartan.digprofile.com/profile/economics/ward-wise-household-outer-wall",
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {

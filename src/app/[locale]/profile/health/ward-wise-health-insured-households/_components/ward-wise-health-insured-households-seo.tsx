@@ -71,11 +71,11 @@ export default function WardWiseHealthInsuredHouseholdsSEO({
         "Health insurance rate",
         "Insurance coverage index",
       ],
-      url: "https://digital.khajuramun.gov.np/profile/health/ward-wise-health-insured-households",
+      url: "https://paribartan.digprofile.com/profile/health/ward-wise-health-insured-households",
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {

@@ -115,11 +115,11 @@ export default function WardWiseFormalEducationSEO({
         "Educational distribution",
         "Education access index",
       ],
-      url: "https://digital.khajuramun.gov.np/profile/education/ward-wise-formal-education",
+      url: "https://paribartan.digprofile.com/profile/education/ward-wise-formal-education",
       creator: {
         "@type": "Organization",
         name: "Khajura Rural Municipality",
-        url: "https://digital.khajuramun.gov.np",
+        url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
