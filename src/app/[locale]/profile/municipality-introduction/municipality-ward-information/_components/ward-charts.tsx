@@ -57,11 +57,11 @@ export default function WardCharts({ wardData }: WardChartsProps) {
       >
         <meta
           itemProp="name"
-          content="Ward Demographics in Khajura Rural Municipality"
+          content="Ward Demographics in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content={`Ward-wise population and area distribution in Khajura with ${wardData.totalWards} wards, total population ${wardData.totalPopulation}, and total area ${wardData.totalAreaSqKm} sq. km.`}
+          content={`Ward-wise population and area distribution in Paribartan with ${wardData.totalWards} wards, total population ${wardData.totalPopulation}, and total area ${wardData.totalAreaSqKm} sq. km.`}
         />
 
         <div className="border-b px-4 py-3">
@@ -243,7 +243,7 @@ export default function WardCharts({ wardData }: WardChartsProps) {
       >
         <meta
           itemProp="name"
-          content="Ward Demographics Comparison Chart in Khajura Rural Municipality"
+          content="Ward Demographics Comparison Chart in Paribartan Rural Municipality"
         />
 
         <div className="border-b px-4 py-3">

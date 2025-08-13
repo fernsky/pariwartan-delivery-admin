@@ -42,11 +42,14 @@ interface FinancialAccountsChartsProps {
   }>;
   bestInclusionWard: any;
   worstInclusionWard: any;
-  FINANCIAL_ACCOUNT_TYPES: Record<string, {
-    name: string;
-    nameEn: string;
-    color: string;
-  }>;
+  FINANCIAL_ACCOUNT_TYPES: Record<
+    string,
+    {
+      name: string;
+      nameEn: string;
+      color: string;
+    }
+  >;
 }
 
 export default function FinancialAccountsCharts({
@@ -71,14 +74,14 @@ export default function FinancialAccountsCharts({
   return (
     <>
       {/* Overall financial account distribution */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Financial Account Distribution in Khajura Rural Municipality"
+          content="Financial Account Distribution in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
@@ -90,7 +93,8 @@ export default function FinancialAccountsCharts({
             वित्तीय संस्थाको प्रकार अनुसार घरपरिवार वितरण
           </h3>
           <p className="text-sm text-muted-foreground">
-            कुल घरधुरी संख्या: {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
+            कुल घरधुरी संख्या:{" "}
+            {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
           </p>
         </div>
 
@@ -114,7 +118,9 @@ export default function FinancialAccountsCharts({
                 <thead>
                   <tr className="bg-muted sticky top-0">
                     <th className="border p-2 text-left">क्र.सं.</th>
-                    <th className="border p-2 text-left">वित्तीय खाताको प्रकार</th>
+                    <th className="border p-2 text-left">
+                      वित्तीय खाताको प्रकार
+                    </th>
                     <th className="border p-2 text-right">घरधुरी संख्या</th>
                     <th className="border p-2 text-right">प्रतिशत</th>
                   </tr>
@@ -122,7 +128,9 @@ export default function FinancialAccountsCharts({
                 <tbody>
                   <tr className="bg-muted/40">
                     <td className="border p-2">{localizeNumber("1", "ne")}</td>
-                    <td className="border p-2">{FINANCIAL_ACCOUNT_TYPES.BANK.name}</td>
+                    <td className="border p-2">
+                      {FINANCIAL_ACCOUNT_TYPES.BANK.name}
+                    </td>
                     <td className="border p-2 text-right">
                       {localizeNumber(bankTotal.toLocaleString(), "ne")}
                     </td>
@@ -132,7 +140,9 @@ export default function FinancialAccountsCharts({
                   </tr>
                   <tr>
                     <td className="border p-2">{localizeNumber("2", "ne")}</td>
-                    <td className="border p-2">{FINANCIAL_ACCOUNT_TYPES.FINANCE.name}</td>
+                    <td className="border p-2">
+                      {FINANCIAL_ACCOUNT_TYPES.FINANCE.name}
+                    </td>
                     <td className="border p-2 text-right">
                       {localizeNumber(financeTotal.toLocaleString(), "ne")}
                     </td>
@@ -142,7 +152,9 @@ export default function FinancialAccountsCharts({
                   </tr>
                   <tr className="bg-muted/40">
                     <td className="border p-2">{localizeNumber("3", "ne")}</td>
-                    <td className="border p-2">{FINANCIAL_ACCOUNT_TYPES.MICRO_FINANCE.name}</td>
+                    <td className="border p-2">
+                      {FINANCIAL_ACCOUNT_TYPES.MICRO_FINANCE.name}
+                    </td>
                     <td className="border p-2 text-right">
                       {localizeNumber(microfinanceTotal.toLocaleString(), "ne")}
                     </td>
@@ -152,7 +164,9 @@ export default function FinancialAccountsCharts({
                   </tr>
                   <tr>
                     <td className="border p-2">{localizeNumber("4", "ne")}</td>
-                    <td className="border p-2">{FINANCIAL_ACCOUNT_TYPES.COOPERATIVE.name}</td>
+                    <td className="border p-2">
+                      {FINANCIAL_ACCOUNT_TYPES.COOPERATIVE.name}
+                    </td>
                     <td className="border p-2 text-right">
                       {localizeNumber(cooperativeTotal.toLocaleString(), "ne")}
                     </td>
@@ -162,7 +176,9 @@ export default function FinancialAccountsCharts({
                   </tr>
                   <tr className="bg-muted/40">
                     <td className="border p-2">{localizeNumber("5", "ne")}</td>
-                    <td className="border p-2">{FINANCIAL_ACCOUNT_TYPES.NONE.name}</td>
+                    <td className="border p-2">
+                      {FINANCIAL_ACCOUNT_TYPES.NONE.name}
+                    </td>
                     <td className="border p-2 text-right">
                       {localizeNumber(noAccountTotal.toLocaleString(), "ne")}
                     </td>
@@ -220,7 +236,9 @@ export default function FinancialAccountsCharts({
             <div className="flex items-center gap-4">
               <div
                 className="w-3 h-3 rounded-full flex-shrink-0"
-                style={{ backgroundColor: FINANCIAL_ACCOUNT_TYPES.FINANCE.color }}
+                style={{
+                  backgroundColor: FINANCIAL_ACCOUNT_TYPES.FINANCE.color,
+                }}
               ></div>
               <div className="flex-grow">
                 <div className="flex justify-between items-center">
@@ -243,7 +261,9 @@ export default function FinancialAccountsCharts({
             <div className="flex items-center gap-4">
               <div
                 className="w-3 h-3 rounded-full flex-shrink-0"
-                style={{ backgroundColor: FINANCIAL_ACCOUNT_TYPES.MICRO_FINANCE.color }}
+                style={{
+                  backgroundColor: FINANCIAL_ACCOUNT_TYPES.MICRO_FINANCE.color,
+                }}
               ></div>
               <div className="flex-grow">
                 <div className="flex justify-between items-center">
@@ -257,7 +277,8 @@ export default function FinancialAccountsCharts({
                     className="h-full rounded-full"
                     style={{
                       width: `${microfinancePercentage}%`,
-                      backgroundColor: FINANCIAL_ACCOUNT_TYPES.MICRO_FINANCE.color,
+                      backgroundColor:
+                        FINANCIAL_ACCOUNT_TYPES.MICRO_FINANCE.color,
                     }}
                   ></div>
                 </div>
@@ -266,7 +287,9 @@ export default function FinancialAccountsCharts({
             <div className="flex items-center gap-4">
               <div
                 className="w-3 h-3 rounded-full flex-shrink-0"
-                style={{ backgroundColor: FINANCIAL_ACCOUNT_TYPES.COOPERATIVE.color }}
+                style={{
+                  backgroundColor: FINANCIAL_ACCOUNT_TYPES.COOPERATIVE.color,
+                }}
               ></div>
               <div className="flex-grow">
                 <div className="flex justify-between items-center">
@@ -280,7 +303,8 @@ export default function FinancialAccountsCharts({
                     className="h-full rounded-full"
                     style={{
                       width: `${cooperativePercentage}%`,
-                      backgroundColor: FINANCIAL_ACCOUNT_TYPES.COOPERATIVE.color,
+                      backgroundColor:
+                        FINANCIAL_ACCOUNT_TYPES.COOPERATIVE.color,
                     }}
                   ></div>
                 </div>
@@ -314,7 +338,7 @@ export default function FinancialAccountsCharts({
       </div>
 
       {/* Ward-wise distribution */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="ward-wise-financial-inclusion"
         itemScope
@@ -322,11 +346,11 @@ export default function FinancialAccountsCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise Financial Accounts in Khajura Rural Municipality"
+          content="Ward-wise Financial Accounts in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Distribution of financial accounts across wards in Khajura"
+          content="Distribution of financial accounts across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -349,18 +373,18 @@ export default function FinancialAccountsCharts({
       </div>
 
       {/* Ward-wise comparison */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Financial Inclusion Rate Comparison Across Wards in Khajura Rural Municipality"
+          content="Financial Inclusion Rate Comparison Across Wards in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Comparison of financial inclusion rates across wards in Khajura"
+          content="Comparison of financial inclusion rates across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -383,18 +407,18 @@ export default function FinancialAccountsCharts({
       </div>
 
       {/* Ward-wise analysis */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Ward-wise Financial Accounts Analysis in Khajura Rural Municipality"
+          content="Ward-wise Financial Accounts Analysis in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Detailed analysis of financial accounts by ward in Khajura"
+          content="Detailed analysis of financial accounts by ward in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -424,38 +448,75 @@ export default function FinancialAccountsCharts({
                 {wardWiseAnalysis.map((item, i) => {
                   return (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
-                      <td className="border p-2">वडा {localizeNumber(item.wardNumber, "ne")}</td>
-                      <td className="border p-2 text-right">
-                        {localizeNumber(item.totalHouseholds.toLocaleString(), "ne")}
+                      <td className="border p-2">
+                        वडा {localizeNumber(item.wardNumber, "ne")}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.bankHouseholds.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.totalHouseholds.toLocaleString(),
+                          "ne",
+                        )}
+                      </td>
+                      <td className="border p-2 text-right">
+                        {localizeNumber(
+                          item.bankHouseholds.toLocaleString(),
+                          "ne",
+                        )}
                         <div className="text-xs text-muted-foreground">
                           ({localizeNumber(item.bankPercent.toFixed(2), "ne")}%)
                         </div>
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.financeHouseholds.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.financeHouseholds.toLocaleString(),
+                          "ne",
+                        )}
                         <div className="text-xs text-muted-foreground">
-                          ({localizeNumber(item.financePercent.toFixed(2), "ne")}%)
+                          (
+                          {localizeNumber(item.financePercent.toFixed(2), "ne")}
+                          %)
                         </div>
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.microfinanceHouseholds.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.microfinanceHouseholds.toLocaleString(),
+                          "ne",
+                        )}
                         <div className="text-xs text-muted-foreground">
-                          ({localizeNumber(item.microfinancePercent.toFixed(2), "ne")}%)
+                          (
+                          {localizeNumber(
+                            item.microfinancePercent.toFixed(2),
+                            "ne",
+                          )}
+                          %)
                         </div>
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.cooperativeHouseholds.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.cooperativeHouseholds.toLocaleString(),
+                          "ne",
+                        )}
                         <div className="text-xs text-muted-foreground">
-                          ({localizeNumber(item.cooperativePercent.toFixed(2), "ne")}%)
+                          (
+                          {localizeNumber(
+                            item.cooperativePercent.toFixed(2),
+                            "ne",
+                          )}
+                          %)
                         </div>
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.noAccountHouseholds.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.noAccountHouseholds.toLocaleString(),
+                          "ne",
+                        )}
                         <div className="text-xs text-muted-foreground">
-                          ({localizeNumber(item.noAccountPercent.toFixed(2), "ne")}%)
+                          (
+                          {localizeNumber(
+                            item.noAccountPercent.toFixed(2),
+                            "ne",
+                          )}
+                          %)
                         </div>
                       </td>
                     </tr>
@@ -483,13 +544,15 @@ export default function FinancialAccountsCharts({
                   <td className="border p-2 text-right">
                     {localizeNumber(microfinanceTotal.toLocaleString(), "ne")}
                     <div className="text-xs">
-                      ({localizeNumber(microfinancePercentage.toFixed(2), "ne")}%)
+                      ({localizeNumber(microfinancePercentage.toFixed(2), "ne")}
+                      %)
                     </div>
                   </td>
                   <td className="border p-2 text-right">
                     {localizeNumber(cooperativeTotal.toLocaleString(), "ne")}
                     <div className="text-xs">
-                      ({localizeNumber(cooperativePercentage.toFixed(2), "ne")}%)
+                      ({localizeNumber(cooperativePercentage.toFixed(2), "ne")}
+                      %)
                     </div>
                   </td>
                   <td className="border p-2 text-right">
@@ -504,7 +567,9 @@ export default function FinancialAccountsCharts({
           </div>
 
           {/* Ward pie charts (client component) */}
-          <h4 className="text-lg font-medium mt-8 mb-4">वडागत वित्तीय खाता वितरण</h4>
+          <h4 className="text-lg font-medium mt-8 mb-4">
+            वडागत वित्तीय खाता वितरण
+          </h4>
           <WardFinancialAccountsPieCharts
             wardWiseData={wardWiseData}
             FINANCIAL_ACCOUNT_TYPES={FINANCIAL_ACCOUNT_TYPES}

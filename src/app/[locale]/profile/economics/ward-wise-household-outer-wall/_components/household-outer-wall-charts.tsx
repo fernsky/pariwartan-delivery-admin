@@ -56,35 +56,68 @@ export default function HouseholdOuterWallCharts({
   WALL_TYPE_COLORS,
 }: HouseholdOuterWallChartsProps) {
   // Calculate quality values for the entire municipality
-  const totalHighQuality = wardWiseAnalysis.reduce((sum, item) => sum + item.highQualityWalls, 0);
-  const totalMediumQuality = wardWiseAnalysis.reduce((sum, item) => sum + item.mediumQualityWalls, 0);
-  const totalLowQuality = wardWiseAnalysis.reduce((sum, item) => sum + item.lowQualityWalls, 0);
+  const totalHighQuality = wardWiseAnalysis.reduce(
+    (sum, item) => sum + item.highQualityWalls,
+    0,
+  );
+  const totalMediumQuality = wardWiseAnalysis.reduce(
+    (sum, item) => sum + item.mediumQualityWalls,
+    0,
+  );
+  const totalLowQuality = wardWiseAnalysis.reduce(
+    (sum, item) => sum + item.lowQualityWalls,
+    0,
+  );
 
-  const highQualityPercentage = totalHouseholds > 0 ? ((totalHighQuality / totalHouseholds) * 100).toFixed(1) : "0";
-  const mediumQualityPercentage = totalHouseholds > 0 ? ((totalMediumQuality / totalHouseholds) * 100).toFixed(1) : "0";
-  const lowQualityPercentage = totalHouseholds > 0 ? ((totalLowQuality / totalHouseholds) * 100).toFixed(1) : "0";
-  
+  const highQualityPercentage =
+    totalHouseholds > 0
+      ? ((totalHighQuality / totalHouseholds) * 100).toFixed(1)
+      : "0";
+  const mediumQualityPercentage =
+    totalHouseholds > 0
+      ? ((totalMediumQuality / totalHouseholds) * 100).toFixed(1)
+      : "0";
+  const lowQualityPercentage =
+    totalHouseholds > 0
+      ? ((totalLowQuality / totalHouseholds) * 100).toFixed(1)
+      : "0";
+
   const qualityData = [
-    { name: "उच्च गुणस्तर", value: totalHighQuality, percentage: highQualityPercentage, color: "#3498db" },
-    { name: "मध्यम गुणस्तर", value: totalMediumQuality, percentage: mediumQualityPercentage, color: "#f39c12" },
-    { name: "न्यून गुणस्तर", value: totalLowQuality, percentage: lowQualityPercentage, color: "#e74c3c" },
+    {
+      name: "उच्च गुणस्तर",
+      value: totalHighQuality,
+      percentage: highQualityPercentage,
+      color: "#3498db",
+    },
+    {
+      name: "मध्यम गुणस्तर",
+      value: totalMediumQuality,
+      percentage: mediumQualityPercentage,
+      color: "#f39c12",
+    },
+    {
+      name: "न्यून गुणस्तर",
+      value: totalLowQuality,
+      percentage: lowQualityPercentage,
+      color: "#e74c3c",
+    },
   ];
 
   return (
     <>
       {/* Overall household outer wall distribution - with pre-rendered table and client-side chart */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="House Outer Wall Types in Khajura Rural Municipality"
+          content="House Outer Wall Types in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content={`House outer wall distribution of Khajura with a total of ${totalHouseholds} households`}
+          content={`House outer wall distribution of Paribartan with a total of ${totalHouseholds} households`}
         />
 
         <div className="border-b px-4 py-3">
@@ -92,7 +125,8 @@ export default function HouseholdOuterWallCharts({
             घरको बाहिरी गारोको प्रकार अनुसार वितरण
           </h3>
           <p className="text-sm text-muted-foreground">
-            कुल घरधुरी संख्या: {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
+            कुल घरधुरी संख्या:{" "}
+            {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
           </p>
         </div>
 
@@ -117,7 +151,9 @@ export default function HouseholdOuterWallCharts({
                 <thead>
                   <tr className="bg-muted sticky top-0">
                     <th className="border p-2 text-left">क्र.सं.</th>
-                    <th className="border p-2 text-left">बाहिरी गारोको प्रकार</th>
+                    <th className="border p-2 text-left">
+                      बाहिरी गारोको प्रकार
+                    </th>
                     <th className="border p-2 text-right">घरधुरी संख्या</th>
                     <th className="border p-2 text-right">प्रतिशत</th>
                   </tr>
@@ -125,13 +161,21 @@ export default function HouseholdOuterWallCharts({
                 <tbody>
                   {overallSummary.map((item, i) => (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/40" : ""}>
-                      <td className="border p-2">{localizeNumber(i + 1, "ne")}</td>
+                      <td className="border p-2">
+                        {localizeNumber(i + 1, "ne")}
+                      </td>
                       <td className="border p-2">{item.wallTypeName}</td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.households.toLocaleString(), "ne")}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(((item.households / totalHouseholds) * 100).toFixed(2), "ne")}%
+                        {localizeNumber(
+                          ((item.households / totalHouseholds) * 100).toFixed(
+                            2,
+                          ),
+                          "ne",
+                        )}
+                        %
                       </td>
                     </tr>
                   ))}
@@ -151,7 +195,6 @@ export default function HouseholdOuterWallCharts({
                 </tfoot>
               </table>
             </div>
-            
           </div>
         </div>
 
@@ -173,9 +216,15 @@ export default function HouseholdOuterWallCharts({
                 ></div>
                 <div className="flex-grow">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm truncate">{item.wallTypeName.split('(')[0].trim()}</span>
+                    <span className="text-sm truncate">
+                      {item.wallTypeName.split("(")[0].trim()}
+                    </span>
                     <span className="font-medium">
-                      {localizeNumber(((item.households / totalHouseholds) * 100).toFixed(1), "ne")}%
+                      {localizeNumber(
+                        ((item.households / totalHouseholds) * 100).toFixed(1),
+                        "ne",
+                      )}
+                      %
                     </span>
                   </div>
                   <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -198,18 +247,18 @@ export default function HouseholdOuterWallCharts({
       </div>
 
       {/* Quality analysis chart */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Outer Wall Quality Analysis in Khajura Rural Municipality"
+          content="Outer Wall Quality Analysis in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Quality analysis of house outer walls in Khajura Rural Municipality"
+          content="Quality analysis of house outer walls in Paribartan Rural Municipality"
         />
 
         <div className="border-b px-4 py-3">
@@ -223,18 +272,19 @@ export default function HouseholdOuterWallCharts({
 
         <div className="p-6">
           <div className="prose prose-slate dark:prose-invert max-w-none mb-6">
-            <p>
-              गारोको प्रकारका आधारमा निम्न गुणस्तर वर्गीकरण गरिएको छ:
-            </p>
+            <p>गारोको प्रकारका आधारमा निम्न गुणस्तर वर्गीकरण गरिएको छ:</p>
             <ul>
               <li>
-                <strong>उच्च गुणस्तर:</strong> सिमेन्टको जोडाइ भएको इँटा/ढुङ्गा र प्रि फ्याब
+                <strong>उच्च गुणस्तर:</strong> सिमेन्टको जोडाइ भएको इँटा/ढुङ्गा
+                र प्रि फ्याब
               </li>
               <li>
-                <strong>मध्यम गुणस्तर:</strong> माटोको जोडाइ भएको इँटा/ढुङ्गा र काठ/फल्याक
+                <strong>मध्यम गुणस्तर:</strong> माटोको जोडाइ भएको इँटा/ढुङ्गा र
+                काठ/फल्याक
               </li>
               <li>
-                <strong>न्यून गुणस्तर:</strong> काँचो इँटा, जस्ता/टिन/च्यादर, बाँसजन्य सामग्री र अन्य
+                <strong>न्यून गुणस्तर:</strong> काँचो इँटा, जस्ता/टिन/च्यादर,
+                बाँसजन्य सामग्री र अन्य
               </li>
             </ul>
           </div>
@@ -258,42 +308,81 @@ export default function HouseholdOuterWallCharts({
                 </thead>
                 <tbody>
                   <tr className="bg-muted/40">
-                    <td className="border p-2 font-medium text-blue-600">उच्च गुणस्तर</td>
-                    <td className="border p-2 text-right">{localizeNumber(totalHighQuality.toLocaleString(), "ne")}</td>
-                    <td className="border p-2 text-right">{localizeNumber(highQualityPercentage, "ne")}%</td>
+                    <td className="border p-2 font-medium text-blue-600">
+                      उच्च गुणस्तर
+                    </td>
+                    <td className="border p-2 text-right">
+                      {localizeNumber(totalHighQuality.toLocaleString(), "ne")}
+                    </td>
+                    <td className="border p-2 text-right">
+                      {localizeNumber(highQualityPercentage, "ne")}%
+                    </td>
                   </tr>
                   <tr>
-                    <td className="border p-2 font-medium text-orange-500">मध्यम गुणस्तर</td>
-                    <td className="border p-2 text-right">{localizeNumber(totalMediumQuality.toLocaleString(), "ne")}</td>
-                    <td className="border p-2 text-right">{localizeNumber(mediumQualityPercentage, "ne")}%</td>
+                    <td className="border p-2 font-medium text-orange-500">
+                      मध्यम गुणस्तर
+                    </td>
+                    <td className="border p-2 text-right">
+                      {localizeNumber(
+                        totalMediumQuality.toLocaleString(),
+                        "ne",
+                      )}
+                    </td>
+                    <td className="border p-2 text-right">
+                      {localizeNumber(mediumQualityPercentage, "ne")}%
+                    </td>
                   </tr>
                   <tr className="bg-muted/40">
-                    <td className="border p-2 font-medium text-red-500">न्यून गुणस्तर</td>
-                    <td className="border p-2 text-right">{localizeNumber(totalLowQuality.toLocaleString(), "ne")}</td>
-                    <td className="border p-2 text-right">{localizeNumber(lowQualityPercentage, "ne")}%</td>
+                    <td className="border p-2 font-medium text-red-500">
+                      न्यून गुणस्तर
+                    </td>
+                    <td className="border p-2 text-right">
+                      {localizeNumber(totalLowQuality.toLocaleString(), "ne")}
+                    </td>
+                    <td className="border p-2 text-right">
+                      {localizeNumber(lowQualityPercentage, "ne")}%
+                    </td>
                   </tr>
                 </tbody>
                 <tfoot>
                   <tr className="font-semibold bg-muted/70">
                     <td className="border p-2">जम्मा</td>
-                    <td className="border p-2 text-right">{localizeNumber(totalHouseholds.toLocaleString(), "ne")}</td>
-                    <td className="border p-2 text-right">{localizeNumber("100.0", "ne")}%</td>
+                    <td className="border p-2 text-right">
+                      {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
+                    </td>
+                    <td className="border p-2 text-right">
+                      {localizeNumber("100.0", "ne")}%
+                    </td>
                   </tr>
                 </tfoot>
               </table>
 
               <div className="mt-6 space-y-4">
                 <div>
-                  <h5 className="text-medium font-semibold mb-2">उच्च गुणस्तर भएको अग्रणी वडा</h5>
+                  <h5 className="text-medium font-semibold mb-2">
+                    उच्च गुणस्तर भएको अग्रणी वडा
+                  </h5>
                   <div className="flex items-center">
                     {wardWiseAnalysis[0] && (
                       <>
                         <div className="text-3xl font-bold text-blue-600 mr-2">
-                          वडा {localizeNumber(wardWiseAnalysis[0].wardNumber.toString(), "ne")}
+                          वडा{" "}
+                          {localizeNumber(
+                            wardWiseAnalysis[0].wardNumber.toString(),
+                            "ne",
+                          )}
                         </div>
                         <div>
-                          <div className="text-sm text-muted-foreground">उच्च गुणस्तर</div>
-                          <div className="font-medium">{localizeNumber(wardWiseAnalysis[0].highQualityPercentage, "ne")}%</div>
+                          <div className="text-sm text-muted-foreground">
+                            उच्च गुणस्तर
+                          </div>
+                          <div className="font-medium">
+                            {localizeNumber(
+                              wardWiseAnalysis[0].highQualityPercentage,
+                              "ne",
+                            )}
+                            %
+                          </div>
                         </div>
                       </>
                     )}
@@ -301,16 +390,31 @@ export default function HouseholdOuterWallCharts({
                 </div>
 
                 <div>
-                  <h5 className="text-medium font-semibold mb-2">न्यून गुणस्तर भएको सबैभन्दा धेरै वडा</h5>
+                  <h5 className="text-medium font-semibold mb-2">
+                    न्यून गुणस्तर भएको सबैभन्दा धेरै वडा
+                  </h5>
                   <div className="flex items-center">
                     {wardWiseAnalysis.slice(-1)[0] && (
                       <>
                         <div className="text-3xl font-bold text-red-600 mr-2">
-                          वडा {localizeNumber(wardWiseAnalysis.slice(-1)[0].wardNumber.toString(), "ne")}
+                          वडा{" "}
+                          {localizeNumber(
+                            wardWiseAnalysis.slice(-1)[0].wardNumber.toString(),
+                            "ne",
+                          )}
                         </div>
                         <div>
-                          <div className="text-sm text-muted-foreground">न्यून गुणस्तर</div>
-                          <div className="font-medium">{localizeNumber(wardWiseAnalysis.slice(-1)[0].lowQualityPercentage, "ne")}%</div>
+                          <div className="text-sm text-muted-foreground">
+                            न्यून गुणस्तर
+                          </div>
+                          <div className="font-medium">
+                            {localizeNumber(
+                              wardWiseAnalysis.slice(-1)[0]
+                                .lowQualityPercentage,
+                              "ne",
+                            )}
+                            %
+                          </div>
                         </div>
                       </>
                     )}
@@ -323,7 +427,7 @@ export default function HouseholdOuterWallCharts({
       </div>
 
       {/* Ward-wise distribution - pre-rendered table with client-side chart */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="ward-wise-household-outer-wall"
         itemScope
@@ -331,11 +435,11 @@ export default function HouseholdOuterWallCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise House Outer Wall in Khajura Rural Municipality"
+          content="Ward-wise House Outer Wall in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="House outer wall distribution across wards in Khajura"
+          content="House outer wall distribution across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -359,18 +463,18 @@ export default function HouseholdOuterWallCharts({
       </div>
 
       {/* Ward-wise analysis - with pre-rendered HTML table for SEO */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Ward-wise House Outer Wall Analysis in Khajura Rural Municipality"
+          content="Ward-wise House Outer Wall Analysis in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Most common house outer wall types by ward in Khajura"
+          content="Most common house outer wall types by ward in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -399,12 +503,21 @@ export default function HouseholdOuterWallCharts({
                 {wardWiseAnalysis.map((item, i) => {
                   return (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
-                      <td className="border p-2">वडा {localizeNumber(item.wardNumber, "ne")}</td>
+                      <td className="border p-2">
+                        वडा {localizeNumber(item.wardNumber, "ne")}
+                      </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.totalHouseholds.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.totalHouseholds.toLocaleString(),
+                          "ne",
+                        )}
                       </td>
                       <td className="border p-2">
-                        {WALL_TYPE_NAMES[item.mostCommonType as keyof typeof WALL_TYPE_NAMES]?.split('(')[0].trim() || item.mostCommonType}
+                        {WALL_TYPE_NAMES[
+                          item.mostCommonType as keyof typeof WALL_TYPE_NAMES
+                        ]
+                          ?.split("(")[0]
+                          .trim() || item.mostCommonType}
                       </td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.highQualityPercentage, "ne")}%
@@ -426,7 +539,12 @@ export default function HouseholdOuterWallCharts({
                     {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
                   </td>
                   <td className="border p-2">
-                    {WALL_TYPE_NAMES[overallSummary[0]?.wallType as keyof typeof WALL_TYPE_NAMES]?.split('(')[0].trim() || overallSummary[0]?.wallType}
+                    {WALL_TYPE_NAMES[
+                      overallSummary[0]
+                        ?.wallType as keyof typeof WALL_TYPE_NAMES
+                    ]
+                      ?.split("(")[0]
+                      .trim() || overallSummary[0]?.wallType}
                   </td>
                   <td className="border p-2 text-right">
                     {localizeNumber(highQualityPercentage, "ne")}%
@@ -443,7 +561,9 @@ export default function HouseholdOuterWallCharts({
           </div>
 
           {/* Ward pie charts (client component) */}
-          <h4 className="text-lg font-medium mt-8 mb-4">वडागत बाहिरी गारोको वितरण</h4>
+          <h4 className="text-lg font-medium mt-8 mb-4">
+            वडागत बाहिरी गारोको वितरण
+          </h4>
           <WardHouseholdOuterWallPieCharts
             wardNumbers={wardNumbers}
             wallData={wallData}

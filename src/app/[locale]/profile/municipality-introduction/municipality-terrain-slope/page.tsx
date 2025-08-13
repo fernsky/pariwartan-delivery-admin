@@ -32,7 +32,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
     const descriptionNP = `परिवर्तन गाउँपालिकाको भिरालोपन विवरण र भौगोलिक विश्लेषण। कुल क्षेत्रफल ${localizeNumber(totalArea.toString(), "ne")} वर्ग कि.मि. मध्ये ${gentleSlope ? localizeNumber(gentleSlope.area_percentage.toFixed(1), "ne") : "७५.७"}% भाग सामान्य ढलान (०-५ डिग्री) रहेको छ।`;
 
-    const descriptionEN = `Slope information and geographical analysis of Khajura Rural Municipality. Out of total area ${totalArea} sq. km., ${gentleSlope ? gentleSlope.area_percentage.toFixed(1) : "75.7"}% has gentle slope (0-5 degrees).`;
+    const descriptionEN = `Slope information and geographical analysis of Paribartan Rural Municipality. Out of total area ${totalArea} sq. km., ${gentleSlope ? gentleSlope.area_percentage.toFixed(1) : "75.7"}% has gentle slope (0-5 degrees).`;
 
     return {
       title: `परिवर्तन गाउँपालिका | भिरालोपन विवरण | डिजिटल प्रोफाइल`,
@@ -40,10 +40,10 @@ export async function generateMetadata(): Promise<Metadata> {
       keywords: [
         "परिवर्तन गाउँपालिका भिरालोपन",
         "परिवर्तन भौगोलिक विवरण",
-        "Khajura slope information",
+        "Paribartan slope information",
         "Municipality geographical data",
         "Slope analysis Nepal",
-        "Terrain data Khajura",
+        "Terrain data Paribartan",
         `परिवर्तन कुल क्षेत्रफल ${localizeNumber(totalArea.toString(), "ne")} वर्ग कि.मि.`,
       ],
       alternates: {

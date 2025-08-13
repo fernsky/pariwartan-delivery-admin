@@ -61,11 +61,11 @@ export async function generateMetadata(): Promise<Metadata> {
         "अपाङ्गता तथ्याङ्क",
         "उमेर अनुसार अपाङ्गता",
         "परिवर्तन गाउँपालिका",
-        "खजुरा नगरपालिका",
+        "परिवर्तन गाऊँपालिका",
         "विकलाङ्गता",
         "Disability statistics",
         "Age-wise disability",
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "Disability distribution",
       ],
       openGraph: {
@@ -151,8 +151,6 @@ export default async function DisabilityCausePage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex gap-8">
-    
-
         {/* Main Content */}
         <main className="flex-1 min-w-0">
           {/* Header Section */}

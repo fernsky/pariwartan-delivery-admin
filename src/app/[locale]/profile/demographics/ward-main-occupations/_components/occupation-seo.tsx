@@ -28,7 +28,7 @@ export default function OccupationSEO({
     // Convert occupation stats to structured data format
     const occupationStats = occupationData.map((item) => ({
       "@type": "Observation",
-      name: `${familyMainOccupationLabels[item.occupation] || item.occupation} in Khajura Rural Municipality`,
+      name: `${familyMainOccupationLabels[item.occupation] || item.occupation} in Paribartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
@@ -36,7 +36,7 @@ export default function OccupationSEO({
         unitText: "people",
       },
       measuredValue: item.totalPopulation,
-      description: `${item.totalPopulation.toLocaleString()} people in Khajura Rural Municipality work in ${familyMainOccupationLabels[item.occupation] || item.occupation} (${item.percentage.toFixed(2)}% of total population)`,
+      description: `${item.totalPopulation.toLocaleString()} people in Paribartan Rural Municipality work in ${familyMainOccupationLabels[item.occupation] || item.occupation} (${item.percentage.toFixed(2)}% of total population)`,
       additionalProperty: [
         {
           "@type": "PropertyValue",
@@ -79,10 +79,10 @@ export default function OccupationSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Family Main Occupation Distribution of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Family main occupation distribution data of Khajura Rural Municipality with a total population of ${totalPopulation.toLocaleString()} people across different age groups.`,
+      name: "Family Main Occupation Distribution of Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Family main occupation distribution data of Paribartan Rural Municipality with a total population of ${totalPopulation.toLocaleString()} people across different age groups.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Family main occupation",
         "Employment statistics",
@@ -94,13 +94,13 @@ export default function OccupationSEO({
       url: "https://paribartan.digprofile.com/profile/demographics/ward-main-occupations",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",

@@ -60,7 +60,7 @@ export default function WardWiseLiteracyStatusSEO({
 
         return {
           "@type": "Observation",
-          name: `Literacy Statistics in Ward ${wardNumber} of Khajura Rural Municipality`,
+          name: `Literacy Statistics in Ward ${wardNumber} of Paribartan Rural Municipality`,
           observationDate: new Date().toISOString().split("T")[0],
           measuredProperty: {
             "@type": "PropertyValue",
@@ -68,7 +68,7 @@ export default function WardWiseLiteracyStatusSEO({
             unitText: "percentage",
           },
           measuredValue: parseFloat(bothReadingWritingPercent),
-          description: `In Ward ${wardNumber} of Khajura Rural Municipality, ${bothReadingWriting.toLocaleString()} people (${bothReadingWritingPercent}%) can read and write out of a total of ${totalWardPopulation.toLocaleString()} people.`,
+          description: `In Ward ${wardNumber} of Paribartan Rural Municipality, ${bothReadingWriting.toLocaleString()} people (${bothReadingWritingPercent}%) can read and write out of a total of ${totalWardPopulation.toLocaleString()} people.`,
         };
       })
       .filter(Boolean);
@@ -88,10 +88,10 @@ export default function WardWiseLiteracyStatusSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Literacy Status Distribution in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Analysis of literacy status across ${wardNumbers.length} wards of Khajura Rural Municipality with a total population of ${totalPopulation.toLocaleString()}. ${bothReadingWritingTotal.toLocaleString()} people (${bothReadingWritingPercentage.toFixed(2)}%) can both read and write, while ${illiterateTotal.toLocaleString()} people (${illiteratePercentage.toFixed(2)}%) are illiterate. The best literacy is in Ward ${bestLiteracyWard?.wardNumber || ""} with ${bestLiteracyWard?.bothReadingWritingPercent.toFixed(2) || ""}% of people who can read and write.`,
+      name: "Literacy Status Distribution in Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Analysis of literacy status across ${wardNumbers.length} wards of Paribartan Rural Municipality with a total population of ${totalPopulation.toLocaleString()}. ${bothReadingWritingTotal.toLocaleString()} people (${bothReadingWritingPercentage.toFixed(2)}%) can both read and write, while ${illiterateTotal.toLocaleString()} people (${illiteratePercentage.toFixed(2)}%) are illiterate. The best literacy is in Ward ${bestLiteracyWard?.wardNumber || ""} with ${bestLiteracyWard?.bothReadingWritingPercent.toFixed(2) || ""}% of people who can read and write.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Literacy status",
         "Literacy rate",
@@ -107,13 +107,13 @@ export default function WardWiseLiteracyStatusSEO({
       url: "https://paribartan.digprofile.com/profile/education/ward-wise-literacy-status",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",
@@ -171,10 +171,10 @@ export default function WardWiseLiteracyStatusSEO({
         name: "Municipality Literacy Survey",
         provider: {
           "@type": "GovernmentOrganization",
-          name: "Khajura Rural Municipality",
+          name: "Paribartan Rural Municipality",
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Khajura",
+            addressLocality: "Paribartan",
             addressRegion: "Banke",
             addressCountry: "Nepal",
           },

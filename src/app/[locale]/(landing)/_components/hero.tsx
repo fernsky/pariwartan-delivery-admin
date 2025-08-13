@@ -96,7 +96,7 @@ const Hero: React.FC<HeroProps> = ({
             logo: "https://paribartan.digprofile.com/logo.png",
             areaServed: {
               "@type": "AdministrativeArea",
-              name: "Khajura",
+              name: "Paribartan",
               containedIn: "Banke District, Nepal",
               description: seoDescription,
               additionalProperty: [

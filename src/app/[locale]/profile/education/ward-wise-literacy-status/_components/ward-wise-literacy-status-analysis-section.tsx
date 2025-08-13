@@ -62,7 +62,7 @@ export default function WardWiseLiteracyStatusAnalysisSection({
 
   // SEO attributes to include directly in JSX
   const seoAttributes = {
-    "data-municipality": "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
+    "data-municipality": "Paribartan Rural Municipality / परिवर्तन गाउँपालिका",
     "data-total-population": totalPopulation.toString(),
     "data-literacy-rate": literacyRate.toFixed(2),
     "data-illiteracy-rate": illiteracyRate.toFixed(2),
@@ -170,7 +170,9 @@ export default function WardWiseLiteracyStatusAnalysisSection({
       <div className="bg-muted/50 p-6 rounded-lg mt-8 border">
         <h3 className="text-xl font-medium mb-6">
           साक्षरता विस्तृत विश्लेषण
-          <span className="sr-only">Detailed Literacy Analysis of Khajura</span>
+          <span className="sr-only">
+            Detailed Literacy Analysis of Paribartan
+          </span>
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -183,7 +185,7 @@ export default function WardWiseLiteracyStatusAnalysisSection({
             <h4 className="font-medium mb-2">
               सर्वोत्तम साक्षरता दर भएको वडा
               <span className="sr-only">
-                Ward with Best Literacy Rate in Khajura Rural Municipality
+                Ward with Best Literacy Rate in Paribartan Rural Municipality
               </span>
             </h4>
             {bestLiteracyWard && (
@@ -310,7 +312,7 @@ export default function WardWiseLiteracyStatusAnalysisSection({
             <h4 className="font-medium mb-2">
               न्यून साक्षरता दर भएको वडा
               <span className="sr-only">
-                Ward with Low Literacy Rate in Khajura
+                Ward with Low Literacy Rate in Paribartan
               </span>
             </h4>
             {worstLiteracyWard && (

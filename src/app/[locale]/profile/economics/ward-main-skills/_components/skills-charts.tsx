@@ -81,11 +81,11 @@ export default function SkillsCharts({
       >
         <meta
           itemProp="name"
-          content="Skills Distribution in Khajura Rural Municipality"
+          content="Skills Distribution in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content={`Distribution of skills in Khajura with a total of ${totalPopulation} skilled population`}
+          content={`Distribution of skills in Paribartan with a total of ${totalPopulation} skilled population`}
         />
 
         <div className="border-b px-4 py-3">
@@ -136,8 +136,10 @@ export default function SkillsCharts({
                       </td>
                       <td className="border p-2 text-right">
                         {localizeNumber(
-                          ((item.population / totalPopulation) * 100).toFixed(2),
-                          "ne"
+                          ((item.population / totalPopulation) * 100).toFixed(
+                            2,
+                          ),
+                          "ne",
                         )}
                         %
                       </td>
@@ -159,7 +161,6 @@ export default function SkillsCharts({
                 </tfoot>
               </table>
             </div>
-           
           </div>
         </div>
 
@@ -184,7 +185,7 @@ export default function SkillsCharts({
                     <span className="font-medium">
                       {localizeNumber(
                         ((item.population / totalPopulation) * 100).toFixed(1),
-                        "ne"
+                        "ne",
                       )}
                       %
                     </span>
@@ -221,11 +222,11 @@ export default function SkillsCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise Skills Distribution in Khajura Rural Municipality"
+          content="Ward-wise Skills Distribution in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Skills distribution across wards in Khajura"
+          content="Skills distribution across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -256,11 +257,11 @@ export default function SkillsCharts({
       >
         <meta
           itemProp="name"
-          content="Detailed Skills Analysis by Ward in Khajura Rural Municipality"
+          content="Detailed Skills Analysis by Ward in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Detailed skills composition of each ward in Khajura"
+          content="Detailed skills composition of each ward in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -290,16 +291,16 @@ export default function SkillsCharts({
               <tbody>
                 {wardNumbers.map((wardNumber, i) => {
                   const wardItems = skillsData.filter(
-                    (item) => item.wardNumber === wardNumber
+                    (item) => item.wardNumber === wardNumber,
                   );
                   const wardTotal = wardItems.reduce(
                     (sum, item) => sum + (item.population || 0),
-                    0
+                    0,
                   );
 
                   // Sort by population to find primary and secondary skills
                   const sortedItems = [...wardItems].sort(
-                    (a, b) => (b.population || 0) - (a.population || 0)
+                    (a, b) => (b.population || 0) - (a.population || 0),
                   );
                   const primarySkill = sortedItems[0];
                   const secondarySkill = sortedItems[1];
@@ -319,17 +320,18 @@ export default function SkillsCharts({
                         {primarySkill?.population
                           ? localizeNumber(
                               primarySkill.population.toLocaleString(),
-                              "ne"
+                              "ne",
                             )
                           : "०"}
                       </td>
                       <td className="border p-2 text-right">
                         {wardTotal > 0 && primarySkill?.population
                           ? localizeNumber(
-                              ((primarySkill.population / wardTotal) * 100).toFixed(
-                                2
-                              ),
-                              "ne"
+                              (
+                                (primarySkill.population / wardTotal) *
+                                100
+                              ).toFixed(2),
+                              "ne",
                             ) + "%"
                           : "०%"}
                       </td>
@@ -343,17 +345,18 @@ export default function SkillsCharts({
                         {secondarySkill?.population
                           ? localizeNumber(
                               secondarySkill.population.toLocaleString(),
-                              "ne"
+                              "ne",
                             )
                           : "०"}
                       </td>
                       <td className="border p-2 text-right">
                         {wardTotal > 0 && secondarySkill?.population
                           ? localizeNumber(
-                              ((secondarySkill.population / wardTotal) * 100).toFixed(
-                                2
-                              ),
-                              "ne"
+                              (
+                                (secondarySkill.population / wardTotal) *
+                                100
+                              ).toFixed(2),
+                              "ne",
                             ) + "%"
                           : "०%"}
                       </td>
@@ -363,7 +366,6 @@ export default function SkillsCharts({
               </tbody>
             </table>
           </div>
-         
 
           {/* Ward pie charts (client component) */}
           <h4 className="text-lg font-medium mt-8 mb-4">वडागत पाई चार्ट</h4>

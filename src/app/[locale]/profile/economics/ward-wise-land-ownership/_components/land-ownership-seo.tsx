@@ -27,7 +27,7 @@ export default function LandOwnershipSEO({
     // Convert land ownership stats to structured data format
     const landOwnershipStats = overallSummary.map((item) => ({
       "@type": "Observation",
-      name: `${LAND_OWNERSHIP_TYPES_EN[item.type] || item.type} in Khajura Rural Municipality`,
+      name: `${LAND_OWNERSHIP_TYPES_EN[item.type] || item.type} in Paribartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
@@ -35,7 +35,7 @@ export default function LandOwnershipSEO({
         unitText: "households",
       },
       measuredValue: item.households,
-      description: `${item.households.toLocaleString()} households in Khajura Rural Municipality live on ${LAND_OWNERSHIP_TYPES_EN[item.type] || item.type} (${((item.households / totalHouseholds) * 100).toFixed(2)}% of total households)`,
+      description: `${item.households.toLocaleString()} households in Paribartan Rural Municipality live on ${LAND_OWNERSHIP_TYPES_EN[item.type] || item.type} (${((item.households / totalHouseholds) * 100).toFixed(2)}% of total households)`,
     }));
 
     // Find most common land ownership type
@@ -60,10 +60,10 @@ export default function LandOwnershipSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Land Ownership Types in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Land ownership statistics across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. The most common land ownership type is ${mostCommonTypeEN} with ${mostCommonType?.households.toLocaleString()} households (${mostCommonTypePercentage}%). Public/Eilani land accounts for ${publicLandPercentage}% of all households. Land security score is ${securityScore}%.`,
+      name: "Land Ownership Types in Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Land ownership statistics across ${wardNumbers.length} wards of Paribartan Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. The most common land ownership type is ${mostCommonTypeEN} with ${mostCommonType?.households.toLocaleString()} households (${mostCommonTypePercentage}%). Public/Eilani land accounts for ${publicLandPercentage}% of all households. Land security score is ${securityScore}%.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Land ownership",
         "Land ownership types",
@@ -82,13 +82,13 @@ export default function LandOwnershipSEO({
       url: "https://paribartan.digprofile.com/profile/economics/ward-wise-land-ownership",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",

@@ -39,10 +39,10 @@ interface TimeToFinancialOrganizationChartsProps {
   bestAccessWard: any;
   worstAccessWard: any;
   TIME_TO_FINANCIAL_ORG_STATUS: {
-    UNDER_15_MIN: { name: string; nameEn: string; color: string; };
-    UNDER_30_MIN: { name: string; nameEn: string; color: string; };
-    UNDER_1_HOUR: { name: string; nameEn: string; color: string; };
-    HOUR_OR_MORE: { name: string; nameEn: string; color: string; };
+    UNDER_15_MIN: { name: string; nameEn: string; color: string };
+    UNDER_30_MIN: { name: string; nameEn: string; color: string };
+    UNDER_1_HOUR: { name: string; nameEn: string; color: string };
+    HOUR_OR_MORE: { name: string; nameEn: string; color: string };
   };
 }
 
@@ -66,14 +66,14 @@ export default function TimeToFinancialOrganizationCharts({
   return (
     <>
       {/* Overall time to financial organization distribution */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Time to Financial Organizations Distribution in Khajura Rural Municipality"
+          content="Time to Financial Organizations Distribution in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
@@ -85,7 +85,8 @@ export default function TimeToFinancialOrganizationCharts({
             वित्तीय संस्थामा पुग्न लाग्ने समयको आधारमा घरपरिवार वितरण
           </h3>
           <p className="text-sm text-muted-foreground">
-            कुल घरधुरी संख्या: {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
+            कुल घरधुरी संख्या:{" "}
+            {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
           </p>
         </div>
 
@@ -109,7 +110,9 @@ export default function TimeToFinancialOrganizationCharts({
                 <thead>
                   <tr className="bg-muted sticky top-0">
                     <th className="border p-2 text-left">क्र.सं.</th>
-                    <th className="border p-2 text-left">वित्तीय संस्थामा पुग्न लाग्ने समय</th>
+                    <th className="border p-2 text-left">
+                      वित्तीय संस्थामा पुग्न लाग्ने समय
+                    </th>
                     <th className="border p-2 text-right">घरधुरी संख्या</th>
                     <th className="border p-2 text-right">प्रतिशत</th>
                   </tr>
@@ -117,7 +120,9 @@ export default function TimeToFinancialOrganizationCharts({
                 <tbody>
                   <tr className="bg-muted/40">
                     <td className="border p-2">{localizeNumber("1", "ne")}</td>
-                    <td className="border p-2">{TIME_TO_FINANCIAL_ORG_STATUS.UNDER_15_MIN.name}</td>
+                    <td className="border p-2">
+                      {TIME_TO_FINANCIAL_ORG_STATUS.UNDER_15_MIN.name}
+                    </td>
                     <td className="border p-2 text-right">
                       {localizeNumber(under15MinTotal.toLocaleString(), "ne")}
                     </td>
@@ -127,7 +132,9 @@ export default function TimeToFinancialOrganizationCharts({
                   </tr>
                   <tr>
                     <td className="border p-2">{localizeNumber("2", "ne")}</td>
-                    <td className="border p-2">{TIME_TO_FINANCIAL_ORG_STATUS.UNDER_30_MIN.name}</td>
+                    <td className="border p-2">
+                      {TIME_TO_FINANCIAL_ORG_STATUS.UNDER_30_MIN.name}
+                    </td>
                     <td className="border p-2 text-right">
                       {localizeNumber(under30MinTotal.toLocaleString(), "ne")}
                     </td>
@@ -137,7 +144,9 @@ export default function TimeToFinancialOrganizationCharts({
                   </tr>
                   <tr className="bg-muted/40">
                     <td className="border p-2">{localizeNumber("3", "ne")}</td>
-                    <td className="border p-2">{TIME_TO_FINANCIAL_ORG_STATUS.UNDER_1_HOUR.name}</td>
+                    <td className="border p-2">
+                      {TIME_TO_FINANCIAL_ORG_STATUS.UNDER_1_HOUR.name}
+                    </td>
                     <td className="border p-2 text-right">
                       {localizeNumber(under1HourTotal.toLocaleString(), "ne")}
                     </td>
@@ -147,7 +156,9 @@ export default function TimeToFinancialOrganizationCharts({
                   </tr>
                   <tr>
                     <td className="border p-2">{localizeNumber("4", "ne")}</td>
-                    <td className="border p-2">{TIME_TO_FINANCIAL_ORG_STATUS.HOUR_OR_MORE.name}</td>
+                    <td className="border p-2">
+                      {TIME_TO_FINANCIAL_ORG_STATUS.HOUR_OR_MORE.name}
+                    </td>
                     <td className="border p-2 text-right">
                       {localizeNumber(over1HourTotal.toLocaleString(), "ne")}
                     </td>
@@ -182,7 +193,10 @@ export default function TimeToFinancialOrganizationCharts({
             <div className="flex items-center gap-4">
               <div
                 className="w-3 h-3 rounded-full flex-shrink-0"
-                style={{ backgroundColor: TIME_TO_FINANCIAL_ORG_STATUS.UNDER_15_MIN.color }}
+                style={{
+                  backgroundColor:
+                    TIME_TO_FINANCIAL_ORG_STATUS.UNDER_15_MIN.color,
+                }}
               ></div>
               <div className="flex-grow">
                 <div className="flex justify-between items-center">
@@ -196,7 +210,8 @@ export default function TimeToFinancialOrganizationCharts({
                     className="h-full rounded-full"
                     style={{
                       width: `${under15MinPercentage}%`,
-                      backgroundColor: TIME_TO_FINANCIAL_ORG_STATUS.UNDER_15_MIN.color,
+                      backgroundColor:
+                        TIME_TO_FINANCIAL_ORG_STATUS.UNDER_15_MIN.color,
                     }}
                   ></div>
                 </div>
@@ -205,7 +220,10 @@ export default function TimeToFinancialOrganizationCharts({
             <div className="flex items-center gap-4">
               <div
                 className="w-3 h-3 rounded-full flex-shrink-0"
-                style={{ backgroundColor: TIME_TO_FINANCIAL_ORG_STATUS.UNDER_30_MIN.color }}
+                style={{
+                  backgroundColor:
+                    TIME_TO_FINANCIAL_ORG_STATUS.UNDER_30_MIN.color,
+                }}
               ></div>
               <div className="flex-grow">
                 <div className="flex justify-between items-center">
@@ -219,7 +237,8 @@ export default function TimeToFinancialOrganizationCharts({
                     className="h-full rounded-full"
                     style={{
                       width: `${under30MinPercentage}%`,
-                      backgroundColor: TIME_TO_FINANCIAL_ORG_STATUS.UNDER_30_MIN.color,
+                      backgroundColor:
+                        TIME_TO_FINANCIAL_ORG_STATUS.UNDER_30_MIN.color,
                     }}
                   ></div>
                 </div>
@@ -228,7 +247,10 @@ export default function TimeToFinancialOrganizationCharts({
             <div className="flex items-center gap-4">
               <div
                 className="w-3 h-3 rounded-full flex-shrink-0"
-                style={{ backgroundColor: TIME_TO_FINANCIAL_ORG_STATUS.UNDER_1_HOUR.color }}
+                style={{
+                  backgroundColor:
+                    TIME_TO_FINANCIAL_ORG_STATUS.UNDER_1_HOUR.color,
+                }}
               ></div>
               <div className="flex-grow">
                 <div className="flex justify-between items-center">
@@ -242,7 +264,8 @@ export default function TimeToFinancialOrganizationCharts({
                     className="h-full rounded-full"
                     style={{
                       width: `${under1HourPercentage}%`,
-                      backgroundColor: TIME_TO_FINANCIAL_ORG_STATUS.UNDER_1_HOUR.color,
+                      backgroundColor:
+                        TIME_TO_FINANCIAL_ORG_STATUS.UNDER_1_HOUR.color,
                     }}
                   ></div>
                 </div>
@@ -251,7 +274,10 @@ export default function TimeToFinancialOrganizationCharts({
             <div className="flex items-center gap-4">
               <div
                 className="w-3 h-3 rounded-full flex-shrink-0"
-                style={{ backgroundColor: TIME_TO_FINANCIAL_ORG_STATUS.HOUR_OR_MORE.color }}
+                style={{
+                  backgroundColor:
+                    TIME_TO_FINANCIAL_ORG_STATUS.HOUR_OR_MORE.color,
+                }}
               ></div>
               <div className="flex-grow">
                 <div className="flex justify-between items-center">
@@ -265,7 +291,8 @@ export default function TimeToFinancialOrganizationCharts({
                     className="h-full rounded-full"
                     style={{
                       width: `${over1HourPercentage}%`,
-                      backgroundColor: TIME_TO_FINANCIAL_ORG_STATUS.HOUR_OR_MORE.color,
+                      backgroundColor:
+                        TIME_TO_FINANCIAL_ORG_STATUS.HOUR_OR_MORE.color,
                     }}
                   ></div>
                 </div>
@@ -276,7 +303,7 @@ export default function TimeToFinancialOrganizationCharts({
       </div>
 
       {/* Ward-wise distribution */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="ward-wise-financial-access"
         itemScope
@@ -284,11 +311,11 @@ export default function TimeToFinancialOrganizationCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise Time to Financial Organizations in Khajura Rural Municipality"
+          content="Ward-wise Time to Financial Organizations in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Time to reach financial organizations across wards in Khajura"
+          content="Time to reach financial organizations across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -311,18 +338,18 @@ export default function TimeToFinancialOrganizationCharts({
       </div>
 
       {/* Ward-wise comparison */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Financial Access Rate Comparison Across Wards in Khajura Rural Municipality"
+          content="Financial Access Rate Comparison Across Wards in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Comparison of financial access rates across wards in Khajura"
+          content="Comparison of financial access rates across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -345,18 +372,18 @@ export default function TimeToFinancialOrganizationCharts({
       </div>
 
       {/* Ward-wise analysis */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Ward-wise Financial Access Analysis in Khajura Rural Municipality"
+          content="Ward-wise Financial Access Analysis in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Detailed analysis of time to reach financial organizations by ward in Khajura"
+          content="Detailed analysis of time to reach financial organizations by ward in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -375,42 +402,87 @@ export default function TimeToFinancialOrganizationCharts({
                 <tr className="bg-muted">
                   <th className="border p-2">वडा नं.</th>
                   <th className="border p-2 text-right">जम्मा घरधुरी</th>
-                  <th className="border p-2 text-right">{TIME_TO_FINANCIAL_ORG_STATUS.UNDER_15_MIN.name}</th>
-                  <th className="border p-2 text-right">{TIME_TO_FINANCIAL_ORG_STATUS.UNDER_30_MIN.name}</th>
-                  <th className="border p-2 text-right">{TIME_TO_FINANCIAL_ORG_STATUS.UNDER_1_HOUR.name}</th>
-                  <th className="border p-2 text-right">{TIME_TO_FINANCIAL_ORG_STATUS.HOUR_OR_MORE.name}</th>
+                  <th className="border p-2 text-right">
+                    {TIME_TO_FINANCIAL_ORG_STATUS.UNDER_15_MIN.name}
+                  </th>
+                  <th className="border p-2 text-right">
+                    {TIME_TO_FINANCIAL_ORG_STATUS.UNDER_30_MIN.name}
+                  </th>
+                  <th className="border p-2 text-right">
+                    {TIME_TO_FINANCIAL_ORG_STATUS.UNDER_1_HOUR.name}
+                  </th>
+                  <th className="border p-2 text-right">
+                    {TIME_TO_FINANCIAL_ORG_STATUS.HOUR_OR_MORE.name}
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {wardWiseAnalysis.map((item, i) => {
                   return (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
-                      <td className="border p-2">वडा {localizeNumber(item.wardNumber, "ne")}</td>
-                      <td className="border p-2 text-right">
-                        {localizeNumber(item.totalHouseholds.toLocaleString(), "ne")}
+                      <td className="border p-2">
+                        वडा {localizeNumber(item.wardNumber, "ne")}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.under15MinHouseholds.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.totalHouseholds.toLocaleString(),
+                          "ne",
+                        )}
+                      </td>
+                      <td className="border p-2 text-right">
+                        {localizeNumber(
+                          item.under15MinHouseholds.toLocaleString(),
+                          "ne",
+                        )}
                         <div className="text-xs text-muted-foreground">
-                          ({localizeNumber(item.under15MinPercent.toFixed(2), "ne")}%)
+                          (
+                          {localizeNumber(
+                            item.under15MinPercent.toFixed(2),
+                            "ne",
+                          )}
+                          %)
                         </div>
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.under30MinHouseholds.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.under30MinHouseholds.toLocaleString(),
+                          "ne",
+                        )}
                         <div className="text-xs text-muted-foreground">
-                          ({localizeNumber(item.under30MinPercent.toFixed(2), "ne")}%)
+                          (
+                          {localizeNumber(
+                            item.under30MinPercent.toFixed(2),
+                            "ne",
+                          )}
+                          %)
                         </div>
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.under1HourHouseholds.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.under1HourHouseholds.toLocaleString(),
+                          "ne",
+                        )}
                         <div className="text-xs text-muted-foreground">
-                          ({localizeNumber(item.under1HourPercent.toFixed(2), "ne")}%)
+                          (
+                          {localizeNumber(
+                            item.under1HourPercent.toFixed(2),
+                            "ne",
+                          )}
+                          %)
                         </div>
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.over1HourHouseholds.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.over1HourHouseholds.toLocaleString(),
+                          "ne",
+                        )}
                         <div className="text-xs text-muted-foreground">
-                          ({localizeNumber(item.over1HourPercent.toFixed(2), "ne")}%)
+                          (
+                          {localizeNumber(
+                            item.over1HourPercent.toFixed(2),
+                            "ne",
+                          )}
+                          %)
                         </div>
                       </td>
                     </tr>
@@ -453,7 +525,9 @@ export default function TimeToFinancialOrganizationCharts({
           </div>
 
           {/* Ward pie charts (client component) */}
-          <h4 className="text-lg font-medium mt-8 mb-4">वडागत वित्तीय पहुँच वितरण</h4>
+          <h4 className="text-lg font-medium mt-8 mb-4">
+            वडागत वित्तीय पहुँच वितरण
+          </h4>
           <WardTimeToFinancialOrganizationPieCharts
             wardWiseData={wardWiseData}
             TIME_TO_FINANCIAL_ORG_STATUS={TIME_TO_FINANCIAL_ORG_STATUS}

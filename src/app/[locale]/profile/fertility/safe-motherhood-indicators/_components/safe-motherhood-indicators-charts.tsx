@@ -36,16 +36,19 @@ export default function SafeMotherhoodIndicatorsCharts({
   maternalHealthIndex,
 }: SafeMotherhoodIndicatorsChartsProps) {
   // Calculate maternal health status based on the quality index
-  const maternalHealthStatus = 
-    maternalHealthIndex >= 90 ? "उत्कृष्ट (Excellent)" :
-    maternalHealthIndex >= 80 ? "राम्रो (Good)" :
-    maternalHealthIndex >= 70 ? "सन्तोषजनक (Satisfactory)" :
-    "सुधार आवश्यक (Needs Improvement)";
+  const maternalHealthStatus =
+    maternalHealthIndex >= 90
+      ? "उत्कृष्ट (Excellent)"
+      : maternalHealthIndex >= 80
+        ? "राम्रो (Good)"
+        : maternalHealthIndex >= 70
+          ? "सन्तोषजनक (Satisfactory)"
+          : "सुधार आवश्यक (Needs Improvement)";
 
   return (
     <>
       {/* Key Maternal Health Statistics Card */}
-      <div 
+      <div
         className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
         itemScope
         itemType="https://schema.org/Dataset"
@@ -56,57 +59,57 @@ export default function SafeMotherhoodIndicatorsCharts({
         />
 
         <div className="border rounded-lg p-4 shadow-sm bg-card">
-          <h3 className="text-sm font-medium text-muted-foreground">संस्थागत प्रसूति दर</h3>
+          <h3 className="text-sm font-medium text-muted-foreground">
+            संस्थागत प्रसूति दर
+          </h3>
           <div className="mt-2">
             <p className="text-3xl font-bold">
               {localizeNumber(institutionalDeliveries.toFixed(1), "ne")}%
             </p>
             <div className="mt-1 text-xs text-muted-foreground">
-              <span>
-                कुल प्रसूति मध्ये स्वास्थ्य संस्थामा
-              </span>
+              <span>कुल प्रसूति मध्ये स्वास्थ्य संस्थामा</span>
             </div>
           </div>
         </div>
 
         <div className="border rounded-lg p-4 shadow-sm bg-card">
-          <h3 className="text-sm font-medium text-muted-foreground">नियमित गर्भवती जाँच</h3>
+          <h3 className="text-sm font-medium text-muted-foreground">
+            नियमित गर्भवती जाँच
+          </h3>
           <div className="mt-2">
             <p className="text-3xl font-bold">
               {localizeNumber(ancCheckups.toFixed(1), "ne")}%
             </p>
             <div className="mt-1 text-xs text-muted-foreground">
-              <span>
-                प्रोटोकल अनुसार ४ पटक ANC जाँच
-              </span>
+              <span>प्रोटोकल अनुसार ४ पटक ANC जाँच</span>
             </div>
           </div>
         </div>
 
         <div className="border rounded-lg p-4 shadow-sm bg-card">
-          <h3 className="text-sm font-medium text-muted-foreground">सुत्केरी जाँच कभरेज</h3>
+          <h3 className="text-sm font-medium text-muted-foreground">
+            सुत्केरी जाँच कभरेज
+          </h3>
           <div className="mt-2">
             <p className="text-3xl font-bold">
               {localizeNumber(pncVisits.toFixed(1), "ne")}%
             </p>
             <div className="mt-1 text-xs text-muted-foreground">
-              <span>
-                सुत्केरी पछिको २ पटक घरभेट
-              </span>
+              <span>सुत्केरी पछिको २ पटक घरभेट</span>
             </div>
           </div>
         </div>
 
         <div className="border rounded-lg p-4 shadow-sm bg-card">
-          <h3 className="text-sm font-medium text-muted-foreground">मातृ स्वास्थ्य सूचकाङ्क</h3>
+          <h3 className="text-sm font-medium text-muted-foreground">
+            मातृ स्वास्थ्य सूचकाङ्क
+          </h3>
           <div className="mt-2">
             <p className="text-3xl font-bold">
               {localizeNumber(maternalHealthIndex.toFixed(1), "ne")}
             </p>
             <div className="mt-1 text-xs text-muted-foreground">
-              <span>
-                अवस्था: {maternalHealthStatus}
-              </span>
+              <span>अवस्था: {maternalHealthStatus}</span>
             </div>
           </div>
         </div>
@@ -115,7 +118,9 @@ export default function SafeMotherhoodIndicatorsCharts({
       {/* Maternal Health Gauge Chart */}
       <div className="mt-8 grid grid-cols-1 gap-6">
         <div className="border rounded-lg p-6 shadow-sm bg-card">
-          <h3 className="text-xl font-semibold mb-6">सुरक्षित मातृत्व सेवाको अवस्था</h3>
+          <h3 className="text-xl font-semibold mb-6">
+            सुरक्षित मातृत्व सेवाको अवस्था
+          </h3>
           <div className="h-[250px]">
             <MaternalHealthGaugeChart
               institutionalDeliveries={institutionalDeliveries}
@@ -128,7 +133,7 @@ export default function SafeMotherhoodIndicatorsCharts({
       </div>
 
       {/* Safe Motherhood Trend Chart */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="safe-motherhood-trends"
         itemScope
@@ -136,7 +141,7 @@ export default function SafeMotherhoodIndicatorsCharts({
       >
         <meta
           itemProp="name"
-          content="Safe Motherhood Trends in Khajura Rural Municipality"
+          content="Safe Motherhood Trends in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
@@ -154,7 +159,7 @@ export default function SafeMotherhoodIndicatorsCharts({
 
         <div className="p-6">
           <div className="h-[450px]">
-            <SafeMotherhoodTrendChart 
+            <SafeMotherhoodTrendChart
               trendData={trendData}
               indicatorLabels={indicatorLabels}
             />
@@ -163,7 +168,7 @@ export default function SafeMotherhoodIndicatorsCharts({
       </div>
 
       {/* Antenatal Care Chart */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="antenatal-care"
         itemScope
@@ -171,7 +176,7 @@ export default function SafeMotherhoodIndicatorsCharts({
       >
         <meta
           itemProp="name"
-          content={`Antenatal Care Indicators in Khajura for ${latestYear}`}
+          content={`Antenatal Care Indicators in Paribartan for ${latestYear}`}
         />
         <meta
           itemProp="description"
@@ -183,13 +188,14 @@ export default function SafeMotherhoodIndicatorsCharts({
             गर्भवती स्वास्थ्य सेवा
           </h3>
           <p className="text-sm text-muted-foreground">
-            वर्ष {localizeNumber(latestYear, "ne")} मा विभिन्न गर्भवती स्वास्थ्य सेवाको कभरेज
+            वर्ष {localizeNumber(latestYear, "ne")} मा विभिन्न गर्भवती स्वास्थ्य
+            सेवाको कभरेज
           </p>
         </div>
 
         <div className="p-6">
           <div className="h-[500px]">
-            <AntenatalCareChart 
+            <AntenatalCareChart
               antenatalData={antenatalData}
               indicatorLabels={indicatorLabels}
             />
@@ -212,13 +218,22 @@ export default function SafeMotherhoodIndicatorsCharts({
                       {indicatorLabels[item.indicator] || item.indicator}
                     </td>
                     <td className="border p-2 text-right">
-                      <span className={`font-medium ${
-                        item.value >= 90 ? "text-green-600" :
-                        item.value >= 80 ? "text-blue-600" :
-                        item.value >= 70 ? "text-amber-600" : 
-                        "text-red-600"
-                      }`}>
-                        {localizeNumber(parseFloat(item.value).toFixed(1), "ne")}%
+                      <span
+                        className={`font-medium ${
+                          item.value >= 90
+                            ? "text-green-600"
+                            : item.value >= 80
+                              ? "text-blue-600"
+                              : item.value >= 70
+                                ? "text-amber-600"
+                                : "text-red-600"
+                        }`}
+                      >
+                        {localizeNumber(
+                          parseFloat(item.value).toFixed(1),
+                          "ne",
+                        )}
+                        %
                       </span>
                     </td>
                   </tr>
@@ -230,7 +245,7 @@ export default function SafeMotherhoodIndicatorsCharts({
       </div>
 
       {/* Delivery Services Chart */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="institutional-delivery"
         itemScope
@@ -238,7 +253,7 @@ export default function SafeMotherhoodIndicatorsCharts({
       >
         <meta
           itemProp="name"
-          content={`Delivery Services in Khajura for ${latestYear}`}
+          content={`Delivery Services in Paribartan for ${latestYear}`}
         />
         <meta
           itemProp="description"
@@ -250,13 +265,14 @@ export default function SafeMotherhoodIndicatorsCharts({
             संस्थागत प्रसूति सेवा
           </h3>
           <p className="text-sm text-muted-foreground">
-            वर्ष {localizeNumber(latestYear, "ne")} मा संस्थागत प्रसूति र सम्बन्धित सूचकहरू
+            वर्ष {localizeNumber(latestYear, "ne")} मा संस्थागत प्रसूति र
+            सम्बन्धित सूचकहरू
           </p>
         </div>
 
         <div className="p-6">
           <div className="h-[500px]">
-            <DeliveryServicesChart 
+            <DeliveryServicesChart
               deliveryData={deliveryData}
               indicatorLabels={indicatorLabels}
             />
@@ -279,13 +295,22 @@ export default function SafeMotherhoodIndicatorsCharts({
                       {indicatorLabels[item.indicator] || item.indicator}
                     </td>
                     <td className="border p-2 text-right">
-                      <span className={`font-medium ${
-                        item.value >= 90 ? "text-green-600" :
-                        item.value >= 80 ? "text-blue-600" :
-                        item.value >= 70 ? "text-amber-600" : 
-                        "text-red-600"
-                      }`}>
-                        {localizeNumber(parseFloat(item.value).toFixed(1), "ne")}%
+                      <span
+                        className={`font-medium ${
+                          item.value >= 90
+                            ? "text-green-600"
+                            : item.value >= 80
+                              ? "text-blue-600"
+                              : item.value >= 70
+                                ? "text-amber-600"
+                                : "text-red-600"
+                        }`}
+                      >
+                        {localizeNumber(
+                          parseFloat(item.value).toFixed(1),
+                          "ne",
+                        )}
+                        %
                       </span>
                     </td>
                   </tr>
@@ -297,9 +322,7 @@ export default function SafeMotherhoodIndicatorsCharts({
       </div>
 
       {/* Postnatal Care and Newborn Health Charts */}
-      <div 
-        className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6"
-      >
+      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Postnatal Care */}
         <div
           className="border rounded-lg shadow-sm overflow-hidden bg-card"
@@ -309,7 +332,7 @@ export default function SafeMotherhoodIndicatorsCharts({
         >
           <meta
             itemProp="name"
-            content="Postnatal Care Indicators in Khajura"
+            content="Postnatal Care Indicators in Paribartan"
           />
 
           <div className="border-b px-4 py-3">
@@ -340,7 +363,7 @@ export default function SafeMotherhoodIndicatorsCharts({
         >
           <meta
             itemProp="name"
-            content="Newborn Health Indicators in Khajura"
+            content="Newborn Health Indicators in Paribartan"
           />
 
           <div className="border-b px-4 py-3">

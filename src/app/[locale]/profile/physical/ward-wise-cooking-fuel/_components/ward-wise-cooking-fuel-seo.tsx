@@ -70,7 +70,7 @@ export default function WardWiseCookingFuelSEO({
 
         return {
           "@type": "Observation",
-          name: `Cooking Fuel Usage Statistics in Ward ${wardNumber} of Khajura Rural Municipality`,
+          name: `Cooking Fuel Usage Statistics in Ward ${wardNumber} of Paribartan Rural Municipality`,
           observationDate: new Date().toISOString().split("T")[0],
           measuredProperty: {
             "@type": "PropertyValue",
@@ -78,7 +78,7 @@ export default function WardWiseCookingFuelSEO({
             unitText: "percentage",
           },
           measuredValue: parseFloat(cleanFuelPercent),
-          description: `In Ward ${wardNumber} of Khajura Rural Municipality, ${cleanFuelHouseholds.toLocaleString()} households (${cleanFuelPercent}%) use clean cooking fuels (LP Gas, Electricity, Biogas) out of a total of ${totalWardHouseholds.toLocaleString()} households.`,
+          description: `In Ward ${wardNumber} of Paribartan Rural Municipality, ${cleanFuelHouseholds.toLocaleString()} households (${cleanFuelPercent}%) use clean cooking fuels (LP Gas, Electricity, Biogas) out of a total of ${totalWardHouseholds.toLocaleString()} households.`,
         };
       })
       .filter(Boolean);
@@ -97,10 +97,10 @@ export default function WardWiseCookingFuelSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Cooking Fuel Usage in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Analysis of cooking fuel usage across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${cleanFuelTotal.toLocaleString()} households (${cleanFuelPercentageValue}%) use clean cooking fuels. The best adoption of clean fuel is in Ward ${bestWard?.wardNumber || ""} with ${bestWard?.percentage.toFixed(2) || ""}% clean fuel usage rate.`,
+      name: "Cooking Fuel Usage in Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Analysis of cooking fuel usage across ${wardNumbers.length} wards of Paribartan Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${cleanFuelTotal.toLocaleString()} households (${cleanFuelPercentageValue}%) use clean cooking fuels. The best adoption of clean fuel is in Ward ${bestWard?.wardNumber || ""} with ${bestWard?.percentage.toFixed(2) || ""}% clean fuel usage rate.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Cooking fuel",
         "Clean energy",
@@ -116,13 +116,13 @@ export default function WardWiseCookingFuelSEO({
       url: "https://paribartan.digprofile.com/profile/physical/ward-wise-cooking-fuel",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",
@@ -197,10 +197,10 @@ export default function WardWiseCookingFuelSEO({
         name: "Municipality Household Survey",
         provider: {
           "@type": "GovernmentOrganization",
-          name: "Khajura Rural Municipality",
+          name: "Paribartan Rural Municipality",
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Khajura",
+            addressLocality: "Paribartan",
             addressRegion: "Banke",
             addressCountry: "Nepal",
           },

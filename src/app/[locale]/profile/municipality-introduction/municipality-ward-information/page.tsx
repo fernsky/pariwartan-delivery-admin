@@ -33,7 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
     const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसारको जनसंख्या र क्षेत्रफल विवरण। कुल ${localizeNumber(totalWards.toString(), "ne")} वटा वडामा ${localizeNumber(totalPopulation.toString(), "ne")} जनसंख्या र ${localizeNumber(totalArea.toString(), "ne")} वर्ग कि.मि. क्षेत्रफल रहेको छ।`;
 
-    const descriptionEN = `Ward-wise population and area distribution of Khajura Rural Municipality. Total ${totalWards} wards with ${totalPopulation} population and ${totalArea} sq. km. area.`;
+    const descriptionEN = `Ward-wise population and area distribution of Paribartan Rural Municipality. Total ${totalWards} wards with ${totalPopulation} population and ${totalArea} sq. km. area.`;
 
     return {
       title: `परिवर्तन गाउँपालिका | वडा अनुसार जनसंख्या विवरण | डिजिटल प्रोफाइल`,
@@ -41,10 +41,10 @@ export async function generateMetadata(): Promise<Metadata> {
       keywords: [
         "परिवर्तन गाउँपालिका वडा विवरण",
         "परिवर्तन जनसंख्या तथ्याङ्क",
-        "Khajura ward information",
+        "Paribartan ward information",
         "Municipality ward data",
         "Population statistics Nepal",
-        "Ward demographics Khajura",
+        "Ward demographics Paribartan",
         `परिवर्तन कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")}`,
       ],
       alternates: {

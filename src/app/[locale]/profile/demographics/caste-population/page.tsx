@@ -34,7 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const casteData =
       await api.profile.demographics.castePopulation.getAll.query();
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Paribartan Rural Municipality
 
     // Ensure casteData is a valid array
     if (!casteData || !Array.isArray(casteData)) {
@@ -63,11 +63,11 @@ export async function generateMetadata(): Promise<Metadata> {
         "जातीय जनसंख्या",
         "लैंगिक वितरण",
         "परिवर्तन गाउँपालिका",
-        "खजुरा नगरपालिका",
+        "परिवर्तन गाऊँपालिका",
         "जनसंख्या तथ्याङ्क",
         "Ethnic population",
         "Gender distribution",
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "Population statistics",
         ...casteData.map((c) => c.casteTypeDisplay),
       ],
@@ -141,7 +141,6 @@ export default async function CastePopulationPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex gap-8">
-
         {/* Main Content */}
         <main className="flex-1 min-w-0">
           {/* Header Section */}

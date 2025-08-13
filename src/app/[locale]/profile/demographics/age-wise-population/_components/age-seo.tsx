@@ -60,7 +60,7 @@ export default function AgeSEO({
     // Convert age stats to structured data format
     const ageStats = overallSummaryByAge.map((item) => ({
       "@type": "Observation",
-      name: `${AGE_GROUP_NAMES_EN[item.ageGroup] || item.ageGroup} population in Khajura Rural Municipality`,
+      name: `${AGE_GROUP_NAMES_EN[item.ageGroup] || item.ageGroup} population in Paribartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
@@ -68,7 +68,7 @@ export default function AgeSEO({
         unitText: "people",
       },
       measuredValue: item.total,
-      description: `${item.total.toLocaleString()} people in Khajura Rural Municipality belong to age group ${
+      description: `${item.total.toLocaleString()} people in Paribartan Rural Municipality belong to age group ${
         AGE_GROUP_NAMES_EN[item.ageGroup] || item.ageGroup
       } (${((item.total / totalPopulation) * 100).toFixed(2)}% of total population)`,
     }));
@@ -77,20 +77,20 @@ export default function AgeSEO({
     const indicatorObservations = [
       {
         "@type": "Observation",
-        name: "Dependency Ratio in Khajura Rural Municipality",
+        name: "Dependency Ratio in Paribartan Rural Municipality",
         observationDate: new Date().toISOString().split("T")[0],
         measuredProperty: {
           "@type": "PropertyValue",
           name: "Dependency Ratio",
         },
         measuredValue: demographicIndicators.dependencyRatio.toFixed(1),
-        description: `The dependency ratio in Khajura Rural Municipality is ${demographicIndicators.dependencyRatio.toFixed(
+        description: `The dependency ratio in Paribartan Rural Municipality is ${demographicIndicators.dependencyRatio.toFixed(
           1,
         )}, indicating the ratio of dependents to the working-age population.`,
       },
       {
         "@type": "Observation",
-        name: "Median Age in Khajura Rural Municipality",
+        name: "Median Age in Paribartan Rural Municipality",
         observationDate: new Date().toISOString().split("T")[0],
         measuredProperty: {
           "@type": "PropertyValue",
@@ -98,7 +98,7 @@ export default function AgeSEO({
           unitText: "years",
         },
         measuredValue: Math.round(demographicIndicators.medianAge),
-        description: `The median age of the population in Khajura Rural Municipality is approximately ${Math.round(
+        description: `The median age of the population in Paribartan Rural Municipality is approximately ${Math.round(
           demographicIndicators.medianAge,
         )} years.`,
       },
@@ -107,14 +107,14 @@ export default function AgeSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Age Demographics of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Age distribution data of Khajura Rural Municipality with a total population of ${totalPopulation.toLocaleString()} people. The median age is approximately ${Math.round(
+      name: "Age Demographics of Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Age distribution data of Paribartan Rural Municipality with a total population of ${totalPopulation.toLocaleString()} people. The median age is approximately ${Math.round(
         demographicIndicators.medianAge,
       )} years with a dependency ratio of ${demographicIndicators.dependencyRatio.toFixed(
         1,
       )}.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Age demographics",
         "Population pyramid",
@@ -130,13 +130,13 @@ export default function AgeSEO({
       url: "https://paribartan.digprofile.com/profile/demographics/ward-age-wise-population",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",

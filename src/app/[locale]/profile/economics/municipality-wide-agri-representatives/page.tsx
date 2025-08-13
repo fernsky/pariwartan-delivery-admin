@@ -24,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const representativesData =
       await api.profile.economics.municipalityWideAgricultureRepresentatives.getAll.query();
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Paribartan Rural Municipality
 
     // Process data for SEO
     const totalRepresentatives = representativesData.length;
@@ -42,11 +42,11 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     const keywordsEN = [
-      "Khajura Rural Municipality agriculture representatives",
+      "Paribartan Rural Municipality agriculture representatives",
       "Agriculture staff list",
       "Assistant Administration Officer Agriculture",
       "Agriculture branch employees",
-      "Khajura agriculture team",
+      "Paribartan agriculture team",
       `Total agriculture staff ${totalRepresentatives}`,
       "Agriculture department contacts",
       "Agriculture service providers",
@@ -55,7 +55,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Create detailed description with actual data
     const descriptionNP = `परिवर्तन गाउँपालिकाको कृषि शाखामा कार्यरत कर्मचारीहरूको विस्तृत सूची। कुल ${totalRepresentatives} जना कृषि प्रतिनिधिहरूको नाम, पद, सम्पर्क नम्बर र अन्य विवरणहरू। कृषि सेवा र सहयोगका लागि सम्पर्क जानकारी।`;
 
-    const descriptionEN = `Detailed list of staff working in the Agriculture branch of Khajura Rural Municipality. Complete information of ${totalRepresentatives} agriculture representatives including names, positions, contact numbers and other details. Contact information for agriculture services and support.`;
+    const descriptionEN = `Detailed list of staff working in the Agriculture branch of Paribartan Rural Municipality. Complete information of ${totalRepresentatives} agriculture representatives including names, positions, contact numbers and other details. Contact information for agriculture services and support.`;
 
     return {
       title: `कृषि प्रतिनिधिहरूको विवरण | ${municipalityName} पालिका प्रोफाइल`,

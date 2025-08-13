@@ -50,11 +50,11 @@ export default function SlopeCharts({ slopeData }: SlopeChartsProps) {
       >
         <meta
           itemProp="name"
-          content="Slope Distribution in Khajura Rural Municipality"
+          content="Slope Distribution in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content={`Slope composition of Khajura with a total area of ${slopeData.total.total_area_sq_km} sq. km.`}
+          content={`Slope composition of Paribartan with a total area of ${slopeData.total.total_area_sq_km} sq. km.`}
         />
 
         <div className="border-b px-4 py-3">
@@ -194,7 +194,7 @@ export default function SlopeCharts({ slopeData }: SlopeChartsProps) {
       >
         <meta
           itemProp="name"
-          content="Slope Area Distribution Chart in Khajura Rural Municipality"
+          content="Slope Area Distribution Chart in Paribartan Rural Municipality"
         />
 
         <div className="border-b px-4 py-3">

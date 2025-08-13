@@ -44,7 +44,7 @@ export default function ReligionSEO({
     // Convert religion stats to structured data format
     const religionStats = religionData.map((item) => ({
       "@type": "Observation",
-      name: `${RELIGION_NAMES_EN[item.religionType] || item.religionType} population in Khajura Rural Municipality`,
+      name: `${RELIGION_NAMES_EN[item.religionType] || item.religionType} population in Paribartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
@@ -52,16 +52,16 @@ export default function ReligionSEO({
         unitText: "people",
       },
       measuredValue: item.totalPopulation,
-      description: `${item.totalPopulation.toLocaleString()} people in Khajura Rural Municipality follow ${RELIGION_NAMES_EN[item.religionType] || item.religionType} religion (${(item.percentage / 100).toFixed(2)}% of total population)`,
+      description: `${item.totalPopulation.toLocaleString()} people in Paribartan Rural Municipality follow ${RELIGION_NAMES_EN[item.religionType] || item.religionType} religion (${(item.percentage / 100).toFixed(2)}% of total population)`,
     }));
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Religious Demographics of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Religious population distribution data for Khajura Rural Municipality with a total population of ${totalPopulation.toLocaleString()} people.`,
+      name: "Religious Demographics of Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Religious population distribution data for Paribartan Rural Municipality with a total population of ${totalPopulation.toLocaleString()} people.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Religious demographics",
         "Religion data",
@@ -72,13 +72,13 @@ export default function ReligionSEO({
       url: "https://paribartan.digprofile.com/profile/demographics/ward-wise-religion-population",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",

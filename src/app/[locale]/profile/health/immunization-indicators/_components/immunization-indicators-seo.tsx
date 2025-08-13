@@ -49,7 +49,7 @@ export default function ImmunizationIndicatorsSEO({
     const mainCoverageStats = [
       {
         "@type": "Observation",
-        name: "BCG Vaccination Coverage in Khajura Rural Municipality",
+        name: "BCG Vaccination Coverage in Paribartan Rural Municipality",
         observationDate: `${fiscalYearLabel.replace("/", "-")}`,
         measuredProperty: {
           "@type": "PropertyValue",
@@ -57,11 +57,11 @@ export default function ImmunizationIndicatorsSEO({
           unitText: "percentage",
         },
         measuredValue: bcgCoverage,
-        description: `BCG vaccination coverage was ${bcgCoverage.toFixed(1)}% in fiscal year ${fiscalYearLabel} in Khajura Rural Municipality.`,
+        description: `BCG vaccination coverage was ${bcgCoverage.toFixed(1)}% in fiscal year ${fiscalYearLabel} in Paribartan Rural Municipality.`,
       },
       {
         "@type": "Observation",
-        name: "DPT-HepB-Hib3 Vaccination Coverage in Khajura Rural Municipality",
+        name: "DPT-HepB-Hib3 Vaccination Coverage in Paribartan Rural Municipality",
         observationDate: `${fiscalYearLabel.replace("/", "-")}`,
         measuredProperty: {
           "@type": "PropertyValue",
@@ -69,11 +69,11 @@ export default function ImmunizationIndicatorsSEO({
           unitText: "percentage",
         },
         measuredValue: dpt3Coverage,
-        description: `DPT-HepB-Hib3 vaccination coverage was ${dpt3Coverage.toFixed(1)}% in fiscal year ${fiscalYearLabel} in Khajura Rural Municipality.`,
+        description: `DPT-HepB-Hib3 vaccination coverage was ${dpt3Coverage.toFixed(1)}% in fiscal year ${fiscalYearLabel} in Paribartan Rural Municipality.`,
       },
       {
         "@type": "Observation",
-        name: "Measles-Rubella Vaccination Coverage in Khajura Rural Municipality",
+        name: "Measles-Rubella Vaccination Coverage in Paribartan Rural Municipality",
         observationDate: `${fiscalYearLabel.replace("/", "-")}`,
         measuredProperty: {
           "@type": "PropertyValue",
@@ -81,11 +81,11 @@ export default function ImmunizationIndicatorsSEO({
           unitText: "percentage",
         },
         measuredValue: measlesRubella1Coverage,
-        description: `Measles-Rubella vaccination coverage was ${measlesRubella1Coverage.toFixed(1)}% in fiscal year ${fiscalYearLabel} in Khajura Rural Municipality.`,
+        description: `Measles-Rubella vaccination coverage was ${measlesRubella1Coverage.toFixed(1)}% in fiscal year ${fiscalYearLabel} in Paribartan Rural Municipality.`,
       },
       {
         "@type": "Observation",
-        name: "Full Immunization Coverage in Khajura Rural Municipality",
+        name: "Full Immunization Coverage in Paribartan Rural Municipality",
         observationDate: `${fiscalYearLabel.replace("/", "-")}`,
         measuredProperty: {
           "@type": "PropertyValue",
@@ -93,17 +93,17 @@ export default function ImmunizationIndicatorsSEO({
           unitText: "percentage",
         },
         measuredValue: fullyImmunized,
-        description: `Full immunization coverage was ${fullyImmunized.toFixed(1)}% in fiscal year ${fiscalYearLabel} in Khajura Rural Municipality.`,
+        description: `Full immunization coverage was ${fullyImmunized.toFixed(1)}% in fiscal year ${fiscalYearLabel} in Paribartan Rural Municipality.`,
       },
     ];
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Immunization Indicators in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Analysis of immunization coverage and indicators for fiscal year ${fiscalYearLabel} in Khajura Rural Municipality. Key indicators include BCG coverage (${bcgCoverage.toFixed(1)}%), DPT-HepB-Hib3 coverage (${dpt3Coverage.toFixed(1)}%), Measles-Rubella coverage (${measlesRubella1Coverage.toFixed(1)}%), and full immunization rate (${fullyImmunized.toFixed(1)}%).`,
+      name: "Immunization Indicators in Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Analysis of immunization coverage and indicators for fiscal year ${fiscalYearLabel} in Paribartan Rural Municipality. Key indicators include BCG coverage (${bcgCoverage.toFixed(1)}%), DPT-HepB-Hib3 coverage (${dpt3Coverage.toFixed(1)}%), Measles-Rubella coverage (${measlesRubella1Coverage.toFixed(1)}%), and full immunization rate (${fullyImmunized.toFixed(1)}%).`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Immunization coverage",
         "Vaccination program",
@@ -119,13 +119,13 @@ export default function ImmunizationIndicatorsSEO({
       url: "https://paribartan.digprofile.com/profile/health/immunization-indicators",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: fiscalYearLabel,
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",
@@ -182,10 +182,10 @@ export default function ImmunizationIndicatorsSEO({
         name: "National Immunization Program",
         provider: {
           "@type": "GovernmentOrganization",
-          name: "Khajura Rural Municipality",
+          name: "Paribartan Rural Municipality",
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Khajura",
+            addressLocality: "Paribartan",
             addressRegion: "Banke",
             addressCountry: "Nepal",
           },

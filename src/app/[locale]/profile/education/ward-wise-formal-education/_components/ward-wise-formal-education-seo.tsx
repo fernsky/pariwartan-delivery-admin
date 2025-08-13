@@ -73,7 +73,7 @@ export default function WardWiseFormalEducationSEO({
 
         return {
           "@type": "Observation",
-          name: `Formal Education Status in Ward ${wardNumber} of Khajura Rural Municipality`,
+          name: `Formal Education Status in Ward ${wardNumber} of Paribartan Rural Municipality`,
           observationDate: new Date().toISOString().split("T")[0],
           measuredProperty: {
             "@type": "PropertyValue",
@@ -81,7 +81,7 @@ export default function WardWiseFormalEducationSEO({
             unitText: "percentage",
           },
           measuredValue: parseFloat(currentAttendancePercent),
-          description: `In Ward ${wardNumber} of Khajura Rural Municipality, ${currentlyAttending.toLocaleString()} people (${currentAttendancePercent}%) are currently attending school/college and ${neverAttended.toLocaleString()} people (${neverAttendedPercent}%) have never attended school/college out of a total of ${totalWardPopulation.toLocaleString()} people.`,
+          description: `In Ward ${wardNumber} of Paribartan Rural Municipality, ${currentlyAttending.toLocaleString()} people (${currentAttendancePercent}%) are currently attending school/college and ${neverAttended.toLocaleString()} people (${neverAttendedPercent}%) have never attended school/college out of a total of ${totalWardPopulation.toLocaleString()} people.`,
         };
       })
       .filter(Boolean);
@@ -97,10 +97,10 @@ export default function WardWiseFormalEducationSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Formal Education Status in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Analysis of formal education status across ${wardNumbers.length} wards of Khajura Rural Municipality with a total population of ${totalPopulation.toLocaleString()}. ${formalEducationTotals.currentlyAttending.toLocaleString()} people (${formalEducationPercelages.currentlyAttending}%) are currently attending school/college, while ${formalEducationTotals.neverAttended.toLocaleString()} people (${formalEducationPercelages.neverAttended}%) have never attended formal education. The highest current attendance rate is in Ward ${bestAttendanceWard?.wardNumber || ""} with ${bestAttendanceWard?.percentage.toFixed(2) || ""}%.`,
+      name: "Formal Education Status in Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Analysis of formal education status across ${wardNumbers.length} wards of Paribartan Rural Municipality with a total population of ${totalPopulation.toLocaleString()}. ${formalEducationTotals.currentlyAttending.toLocaleString()} people (${formalEducationPercelages.currentlyAttending}%) are currently attending school/college, while ${formalEducationTotals.neverAttended.toLocaleString()} people (${formalEducationPercelages.neverAttended}%) have never attended formal education. The highest current attendance rate is in Ward ${bestAttendanceWard?.wardNumber || ""} with ${bestAttendanceWard?.percentage.toFixed(2) || ""}%.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Formal education",
         "School attendance",
@@ -118,13 +118,13 @@ export default function WardWiseFormalEducationSEO({
       url: "https://paribartan.digprofile.com/profile/education/ward-wise-formal-education",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",
@@ -194,10 +194,10 @@ export default function WardWiseFormalEducationSEO({
         name: "Municipality Education Survey",
         provider: {
           "@type": "GovernmentOrganization",
-          name: "Khajura Rural Municipality",
+          name: "Paribartan Rural Municipality",
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Khajura",
+            addressLocality: "Paribartan",
             addressRegion: "Banke",
             addressCountry: "Nepal",
           },

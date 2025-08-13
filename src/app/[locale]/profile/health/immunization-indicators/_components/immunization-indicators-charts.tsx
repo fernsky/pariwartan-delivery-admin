@@ -42,25 +42,28 @@ export default function ImmunizationIndicatorsCharts({
   latestImmunizationData,
 }: ImmunizationIndicatorsChartsProps) {
   // Filter session indicators and pregnant women indicators data
-  const sessionData = latestImmunizationData.filter(
-    item => sessionIndicators.includes(item.indicator)
+  const sessionData = latestImmunizationData.filter((item) =>
+    sessionIndicators.includes(item.indicator),
   );
 
-  const pregnantWomenData = latestImmunizationData.filter(
-    item => pregnantWomenIndicators.includes(item.indicator)
+  const pregnantWomenData = latestImmunizationData.filter((item) =>
+    pregnantWomenIndicators.includes(item.indicator),
   );
 
   // Calculate immunization status based on the quality index
-  const immunizationStatus = 
-    immunizationQualityIndex >= 90 ? "उत्कृष्ट (Excellent)" :
-    immunizationQualityIndex >= 80 ? "राम्रो (Good)" :
-    immunizationQualityIndex >= 70 ? "सन्तोषजनक (Satisfactory)" :
-    "सुधार आवश्यक (Needs Improvement)";
+  const immunizationStatus =
+    immunizationQualityIndex >= 90
+      ? "उत्कृष्ट (Excellent)"
+      : immunizationQualityIndex >= 80
+        ? "राम्रो (Good)"
+        : immunizationQualityIndex >= 70
+          ? "सन्तोषजनक (Satisfactory)"
+          : "सुधार आवश्यक (Needs Improvement)";
 
   return (
     <>
       {/* Key Immunization Statistics Card */}
-      <div 
+      <div
         className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
         itemScope
         itemType="https://schema.org/Dataset"
@@ -71,15 +74,19 @@ export default function ImmunizationIndicatorsCharts({
         />
 
         <div className="border rounded-lg p-4 shadow-sm bg-card">
-          <h3 className="text-sm font-medium text-muted-foreground">पूर्ण खोप कभरेज</h3>
+          <h3 className="text-sm font-medium text-muted-foreground">
+            पूर्ण खोप कभरेज
+          </h3>
           <div className="mt-2">
             <p className="text-3xl font-bold">
               {localizeNumber(fullyImmunizedValue.toFixed(1), "ne")}%
             </p>
             <div className="flex items-center mt-1">
-              <span 
+              <span
                 className={`text-xs px-1.5 py-0.5 rounded-full ${
-                  fullyImmunizedChange >= 0 ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                  fullyImmunizedChange >= 0
+                    ? "bg-green-100 text-green-800"
+                    : "bg-red-100 text-red-800"
                 }`}
               >
                 {fullyImmunizedChange >= 0 ? "+" : ""}
@@ -101,9 +108,7 @@ export default function ImmunizationIndicatorsCharts({
               {localizeNumber(dpt3Value.toFixed(1), "ne")}%
             </p>
             <div className="mt-1 text-xs text-muted-foreground">
-              <span>
-                एक वर्षमुनिका बालबालिकाहरूमा
-              </span>
+              <span>एक वर्षमुनिका बालबालिकाहरूमा</span>
             </div>
           </div>
         </div>
@@ -118,36 +123,37 @@ export default function ImmunizationIndicatorsCharts({
             </p>
             <div className="mt-1 text-xs text-muted-foreground">
               <span>
-                <span className="english-font">DPT-HepB-Hib1</span> देखि <span className="english-font">DPT-HepB-Hib3</span> सम्म
+                <span className="english-font">DPT-HepB-Hib1</span> देखि{" "}
+                <span className="english-font">DPT-HepB-Hib3</span> सम्म
               </span>
             </div>
           </div>
         </div>
 
         <div className="border rounded-lg p-4 shadow-sm bg-card">
-          <h3 className="text-sm font-medium text-muted-foreground">खोप गुणस्तर सूचकाङ्क</h3>
+          <h3 className="text-sm font-medium text-muted-foreground">
+            खोप गुणस्तर सूचकाङ्क
+          </h3>
           <div className="mt-2">
             <p className="text-3xl font-bold">
               {localizeNumber(immunizationQualityIndex.toFixed(1), "ne")}
             </p>
             <div className="mt-1 text-xs text-muted-foreground">
-              <span>
-                अवस्था: {immunizationStatus}
-              </span>
+              <span>अवस्था: {immunizationStatus}</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Immunization Coverage Chart */}
-      <div 
+      <div
         className="mt-8 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content={`Immunization Coverage Rates in Khajura for ${fiscalYearLabels[currentFiscalYear]}`}
+          content={`Immunization Coverage Rates in Paribartan for ${fiscalYearLabels[currentFiscalYear]}`}
         />
         <meta
           itemProp="description"
@@ -159,13 +165,14 @@ export default function ImmunizationIndicatorsCharts({
             खोप कभरेज दर
           </h3>
           <p className="text-sm text-muted-foreground">
-            आर्थिक वर्ष {fiscalYearLabels[currentFiscalYear]} मा विभिन्न खोप सेवाको कभरेज
+            आर्थिक वर्ष {fiscalYearLabels[currentFiscalYear]} मा विभिन्न खोप
+            सेवाको कभरेज
           </p>
         </div>
 
         <div className="p-6">
           <div className="h-[500px]">
-            <ImmunizationCoverageChart 
+            <ImmunizationCoverageChart
               coverageData={coverageData}
               indicatorLabels={indicatorLabels}
             />
@@ -186,19 +193,23 @@ export default function ImmunizationIndicatorsCharts({
                   <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
                     <td className="border p-3">
                       <div className="flex flex-col">
-                       
                         <span className="text-sm">
                           {indicatorLabels[item.indicator] || ""}
                         </span>
                       </div>
                     </td>
                     <td className="border p-3 text-center">
-                      <span className={`font-bold text-lg ${
-                        item.value >= 90 ? "text-green-600" :
-                        item.value >= 80 ? "text-blue-600" :
-                        item.value >= 70 ? "text-amber-600" : 
-                        "text-red-600"
-                      }`}>
+                      <span
+                        className={`font-bold text-lg ${
+                          item.value >= 90
+                            ? "text-green-600"
+                            : item.value >= 80
+                              ? "text-blue-600"
+                              : item.value >= 70
+                                ? "text-amber-600"
+                                : "text-red-600"
+                        }`}
+                      >
                         {localizeNumber(item.value?.toFixed(1) || "0", "ne")}%
                       </span>
                     </td>
@@ -211,7 +222,7 @@ export default function ImmunizationIndicatorsCharts({
       </div>
 
       {/* Coverage Trend Chart */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="immunization-coverage-trends"
         itemScope
@@ -219,7 +230,7 @@ export default function ImmunizationIndicatorsCharts({
       >
         <meta
           itemProp="name"
-          content="Immunization Coverage Trends in Khajura Rural Municipality"
+          content="Immunization Coverage Trends in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
@@ -237,7 +248,7 @@ export default function ImmunizationIndicatorsCharts({
 
         <div className="p-6">
           <div className="h-[450px]">
-            <ImmunizationTrendChart 
+            <ImmunizationTrendChart
               trendData={trendData}
               indicatorLabels={indicatorLabels}
             />
@@ -248,7 +259,9 @@ export default function ImmunizationIndicatorsCharts({
       {/* Key Indicators Gauge */}
       <div className="mt-8 grid grid-cols-1 gap-6">
         <div className="border rounded-lg p-6 shadow-sm bg-card">
-          <h3 className="text-xl font-semibold mb-6">प्रमुख खोप सेवा सूचक अवस्था</h3>
+          <h3 className="text-xl font-semibold mb-6">
+            प्रमुख खोप सेवा सूचक अवस्था
+          </h3>
           <div className="h-[250px]">
             <KeyIndicatorsGaugeChart
               fullyImmunizedValue={fullyImmunizedValue}
@@ -260,9 +273,7 @@ export default function ImmunizationIndicatorsCharts({
       </div>
 
       {/* Session and Coverage Data */}
-      <div 
-        className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6"
-      >
+      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Session Data */}
         <div
           className="border rounded-lg shadow-sm overflow-hidden bg-card"
@@ -271,7 +282,7 @@ export default function ImmunizationIndicatorsCharts({
         >
           <meta
             itemProp="name"
-            content="Immunization Session Indicators in Khajura"
+            content="Immunization Session Indicators in Paribartan"
           />
 
           <div className="border-b px-4 py-3">
@@ -288,7 +299,8 @@ export default function ImmunizationIndicatorsCharts({
               <div key={i} className="mb-4 last:mb-0">
                 <div className="flex justify-between items-center mb-1">
                   <span className="text-sm">
-                    {indicatorLabels[item.indicator]?.split(" (")[0] || item.indicator}
+                    {indicatorLabels[item.indicator]?.split(" (")[0] ||
+                      item.indicator}
                   </span>
                   <span className="font-medium">
                     {localizeNumber(item.value?.toFixed(1) || "0", "ne")}%
@@ -297,12 +309,17 @@ export default function ImmunizationIndicatorsCharts({
                 <div className="w-full bg-muted h-2 rounded-full overflow-hidden">
                   <div
                     className={`h-full rounded-full ${
-                      item.value >= 90 ? "bg-green-500" :
-                      item.value >= 80 ? "bg-blue-500" :
-                      item.value >= 70 ? "bg-amber-500" : 
-                      "bg-red-500"
+                      item.value >= 90
+                        ? "bg-green-500"
+                        : item.value >= 80
+                          ? "bg-blue-500"
+                          : item.value >= 70
+                            ? "bg-amber-500"
+                            : "bg-red-500"
                     }`}
-                    style={{ width: `${Math.min(100, Math.max(0, item.value || 0))}%` }}
+                    style={{
+                      width: `${Math.min(100, Math.max(0, item.value || 0))}%`,
+                    }}
                   ></div>
                 </div>
               </div>
@@ -318,16 +335,14 @@ export default function ImmunizationIndicatorsCharts({
         >
           <meta
             itemProp="name"
-            content="Immunization Coverage for Pregnant Women in Khajura"
+            content="Immunization Coverage for Pregnant Women in Paribartan"
           />
 
           <div className="border-b px-4 py-3">
             <h3 className="text-xl font-semibold" itemProp="headline">
               गर्भवती महिलाको खोप कभरेज
             </h3>
-            <p className="text-sm text-muted-foreground">
-              टी.डी. खोप कभरेज दर
-            </p>
+            <p className="text-sm text-muted-foreground">टी.डी. खोप कभरेज दर</p>
           </div>
 
           <div className="p-4">
@@ -335,7 +350,8 @@ export default function ImmunizationIndicatorsCharts({
               <div key={i} className="mb-4 last:mb-0">
                 <div className="flex justify-between items-center mb-1">
                   <span className="text-sm">
-                    {indicatorLabels[item.indicator]?.split(" (")[0] || item.indicator}
+                    {indicatorLabels[item.indicator]?.split(" (")[0] ||
+                      item.indicator}
                   </span>
                   <span className="font-medium">
                     {localizeNumber(item.value?.toFixed(1) || "0", "ne")}%
@@ -344,12 +360,17 @@ export default function ImmunizationIndicatorsCharts({
                 <div className="w-full bg-muted h-2 rounded-full overflow-hidden">
                   <div
                     className={`h-full rounded-full ${
-                      item.value >= 90 ? "bg-green-500" :
-                      item.value >= 80 ? "bg-blue-500" :
-                      item.value >= 70 ? "bg-amber-500" : 
-                      "bg-red-500"
+                      item.value >= 90
+                        ? "bg-green-500"
+                        : item.value >= 80
+                          ? "bg-blue-500"
+                          : item.value >= 70
+                            ? "bg-amber-500"
+                            : "bg-red-500"
                     }`}
-                    style={{ width: `${Math.min(100, Math.max(0, item.value || 0))}%` }}
+                    style={{
+                      width: `${Math.min(100, Math.max(0, item.value || 0))}%`,
+                    }}
                   ></div>
                 </div>
               </div>
@@ -359,7 +380,7 @@ export default function ImmunizationIndicatorsCharts({
       </div>
 
       {/* Vaccine Dropout Rates */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="vaccine-dropout-rates"
         itemScope
@@ -367,7 +388,7 @@ export default function ImmunizationIndicatorsCharts({
       >
         <meta
           itemProp="name"
-          content="Vaccine Dropout Rates in Khajura Rural Municipality"
+          content="Vaccine Dropout Rates in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
@@ -394,7 +415,7 @@ export default function ImmunizationIndicatorsCharts({
       </div>
 
       {/* Vaccine Wastage Rates */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="vaccine-wastage-rates"
         itemScope
@@ -402,7 +423,7 @@ export default function ImmunizationIndicatorsCharts({
       >
         <meta
           itemProp="name"
-          content="Vaccine Wastage Rates in Khajura Rural Municipality"
+          content="Vaccine Wastage Rates in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"

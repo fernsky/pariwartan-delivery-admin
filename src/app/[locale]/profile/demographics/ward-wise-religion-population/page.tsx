@@ -26,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const religionData =
       await api.profile.demographics.wardWiseReligionPopulation.getAll.query();
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Paribartan Rural Municipality
 
     // Process data for SEO
     const totalPopulation = religionData.reduce(
@@ -90,21 +90,21 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     const keywordsEN = [
-      "Khajura Rural Municipality religious population",
-      "Khajura religious diversity",
-      `Khajura ${RELIGION_NAMES_EN[topReligions[0]]} population`,
+      "Paribartan Rural Municipality religious population",
+      "Paribartan religious diversity",
+      `Paribartan ${RELIGION_NAMES_EN[topReligions[0]]} population`,
       ...topReligions.map(
-        (r) => `${RELIGION_NAMES_EN[r]} population in Khajura`,
+        (r) => `${RELIGION_NAMES_EN[r]} population in Paribartan`,
       ),
       "Religious diversity statistics",
-      "Religious census Khajura",
-      `Khajura total population ${totalPopulation}`,
+      "Religious census Paribartan",
+      `Paribartan total population ${totalPopulation}`,
     ];
 
     // Create detailed description with actual data using localized numbers
     const descriptionNP = `परिवर्तन गाउँपालिकाको धार्मिक जनसंख्या वितरण, प्रवृत्ति र विश्लेषण। कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")} मध्ये ${RELIGION_NAMES_NP[topReligions[0]]} (${localizeNumber(religionCounts[topReligions[0]].toString(), "ne")}) सबैभन्दा ठूलो समूह हो, त्यसपछि ${RELIGION_NAMES_NP[topReligions[1]]} (${localizeNumber(religionCounts[topReligions[1]].toString(), "ne")}) र ${RELIGION_NAMES_NP[topReligions[2]]} (${localizeNumber(religionCounts[topReligions[2]].toString(), "ne")})। विभिन्न धर्मावलम्बीहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
 
-    const descriptionEN = `Religious population distribution, trends and analysis for Khajura Rural Municipality. Out of a total population of ${totalPopulation}, ${RELIGION_NAMES_EN[topReligions[0]]} (${religionCounts[topReligions[0]]}) is the largest group, followed by ${RELIGION_NAMES_EN[topReligions[1]]} (${religionCounts[topReligions[1]]}) and ${RELIGION_NAMES_EN[topReligions[2]]} (${religionCounts[topReligions[2]]})। Detailed statistics and visualizations of various religious communities.`;
+    const descriptionEN = `Religious population distribution, trends and analysis for Paribartan Rural Municipality. Out of a total population of ${totalPopulation}, ${RELIGION_NAMES_EN[topReligions[0]]} (${religionCounts[topReligions[0]]}) is the largest group, followed by ${RELIGION_NAMES_EN[topReligions[1]]} (${religionCounts[topReligions[1]]}) and ${RELIGION_NAMES_EN[topReligions[2]]} (${religionCounts[topReligions[2]]})। Detailed statistics and visualizations of various religious communities.`;
 
     return {
       title: `परिवर्तन गाउँपालिका | धर्म अनुसार जनसंख्या | डिजिटल प्रोफाइल`,
@@ -221,7 +221,7 @@ export default async function WardWiseReligionPopulationPage() {
               src="/images/religion-diversity.svg"
               width={1200}
               height={400}
-              alt="धार्मिक विविधता - परिवर्तन गाउँपालिका (Religious Diversity - Khajura Rural Municipality)"
+              alt="धार्मिक विविधता - परिवर्तन गाउँपालिका (Religious Diversity - Paribartan Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />

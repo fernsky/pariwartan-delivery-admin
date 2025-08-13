@@ -86,7 +86,7 @@ export async function generateMetadata(): Promise<Metadata> {
         "वडागत शिक्षा स्थिति",
         "औपचारिक शिक्षा विश्लेषण",
         "शिक्षा पहुँच दर",
-        "Khajura Rural Municipality formal education",
+        "Paribartan Rural Municipality formal education",
         "School college attendance",
         "Ward-wise education status",
       ],

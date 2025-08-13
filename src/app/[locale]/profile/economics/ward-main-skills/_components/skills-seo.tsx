@@ -25,7 +25,7 @@ export default function SkillsSEO({
     // Convert skills stats to structured data format
     const skillsStats = overallSummary.map((item) => ({
       "@type": "Observation",
-      name: `${SKILL_NAMES_EN[item.skill] || item.skill} in Khajura Rural Municipality`,
+      name: `${SKILL_NAMES_EN[item.skill] || item.skill} in Paribartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
@@ -33,17 +33,17 @@ export default function SkillsSEO({
         unitText: "people",
       },
       measuredValue: item.population,
-      description: `${item.population.toLocaleString()} people in Khajura Rural Municipality have skills in ${SKILL_NAMES_EN[item.skill] || item.skill} (${((item.population / totalPopulation) * 100).toFixed(2)}% of total skilled population)`,
+      description: `${item.population.toLocaleString()} people in Paribartan Rural Municipality have skills in ${SKILL_NAMES_EN[item.skill] || item.skill} (${((item.population / totalPopulation) * 100).toFixed(2)}% of total skilled population)`,
       alternateName: `${item.skillName} - ${localizeNumber(item.population.toString(), "ne")} व्यक्ति (${localizeNumber(((item.population / totalPopulation) * 100).toFixed(2), "ne")}%)`,
     }));
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Skills Distribution of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Skills distribution data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total skilled population of ${totalPopulation.toLocaleString()} people (${localizeNumber(totalPopulation.toString(), "ne")} व्यक्ति).`,
+      name: "Skills Distribution of Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Skills distribution data across ${wardNumbers.length} wards of Paribartan Rural Municipality with a total skilled population of ${totalPopulation.toLocaleString()} people (${localizeNumber(totalPopulation.toString(), "ne")} व्यक्ति).`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Skills distribution",
         "सीप वितरण",
@@ -58,17 +58,17 @@ export default function SkillsSEO({
         ...Object.values(SKILL_NAMES_EN).map((name) => `${name} population`),
         ...Object.values(skillLabels).map((name) => `${name} जनसंख्या`),
       ],
-      url: "https://khajura-rm.gov.np/profile/economics/ward-main-skills",
+      url: "https://Paribartan-rm.gov.np/profile/economics/ward-main-skills",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         alternateName: "परिवर्तन गाउँपालिका",
-        url: "https://khajura-rm.gov.np",
+        url: "https://Paribartan-rm.gov.np",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         alternateName: "परिवर्तन गाउँपालिका, बाँके, नेपाल",
         geo: {
           "@type": "GeoCoordinates",

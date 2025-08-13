@@ -67,7 +67,7 @@ export default function WardWiseFormalEducationAnalysisSection({
 
   // SEO attributes to include directly in JSX
   const seoAttributes = {
-    "data-municipality": "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
+    "data-municipality": "Paribartan Rural Municipality / परिवर्तन गाउँपालिका",
     "data-total-population": totalPopulation.toString(),
     "data-current-attendance-rate":
       formalEducationPercentages.currentlyAttending,
@@ -138,7 +138,7 @@ export default function WardWiseFormalEducationAnalysisSection({
         <h3 className="text-xl font-medium mb-6">
           औपचारिक शिक्षा विस्तृत विश्लेषण
           <span className="sr-only">
-            Detailed Formal Education Analysis of Khajura
+            Detailed Formal Education Analysis of Paribartan
           </span>
         </h3>
 
@@ -152,7 +152,7 @@ export default function WardWiseFormalEducationAnalysisSection({
             <h4 className="font-medium mb-2">
               सबैभन्दा बढी अध्ययन दर भएको वडा
               <span className="sr-only">
-                Ward with Highest Current Attendance Rate in Khajura Rural
+                Ward with Highest Current Attendance Rate in Paribartan Rural
                 Municipality
               </span>
             </h4>
@@ -222,7 +222,7 @@ export default function WardWiseFormalEducationAnalysisSection({
             <h4 className="font-medium mb-2">
               कम अध्ययन दर भएको वडा
               <span className="sr-only">
-                Ward with Low Current Attendance Rate in Khajura
+                Ward with Low Current Attendance Rate in Paribartan
               </span>
             </h4>
             {lowestAttendanceWard && (

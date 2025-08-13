@@ -68,7 +68,7 @@ export default function WardWiseEducationalLevelSEO({
 
         return {
           "@type": "Observation",
-          name: `Educational Level Statistics in Ward ${wardNumber} of Khajura Rural Municipality`,
+          name: `Educational Level Statistics in Ward ${wardNumber} of Paribartan Rural Municipality`,
           observationDate: new Date().toISOString().split("T")[0],
           measuredProperty: {
             "@type": "PropertyValue",
@@ -76,7 +76,7 @@ export default function WardWiseEducationalLevelSEO({
             unitText: "percentage",
           },
           measuredValue: parseFloat(higherEducationPercent),
-          description: `In Ward ${wardNumber} of Khajura Rural Municipality, ${higherEducation.toLocaleString()} people (${higherEducationPercent}%) have attained higher education out of a total of ${totalWardPopulation.toLocaleString()} people.`,
+          description: `In Ward ${wardNumber} of Paribartan Rural Municipality, ${higherEducation.toLocaleString()} people (${higherEducationPercent}%) have attained higher education out of a total of ${totalWardPopulation.toLocaleString()} people.`,
         };
       })
       .filter(Boolean);
@@ -94,10 +94,10 @@ export default function WardWiseEducationalLevelSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Educational Level Distribution in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Analysis of educational levels across ${wardNumbers.length} wards of Khajura Rural Municipality with a total population of ${totalPopulation.toLocaleString()}. ${educationGroupTotals.HIGHER_EDUCATION.toLocaleString()} people (${educationGroupPercentages.HIGHER_EDUCATION.toFixed(2)}%) have attained higher education. The highest educational level is in Ward ${bestEducatedWard?.wardNumber || ""} with ${bestEducatedWard?.percentage.toFixed(2) || ""}% of people having higher education.`,
+      name: "Educational Level Distribution in Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Analysis of educational levels across ${wardNumbers.length} wards of Paribartan Rural Municipality with a total population of ${totalPopulation.toLocaleString()}. ${educationGroupTotals.HIGHER_EDUCATION.toLocaleString()} people (${educationGroupPercentages.HIGHER_EDUCATION.toFixed(2)}%) have attained higher education. The highest educational level is in Ward ${bestEducatedWard?.wardNumber || ""} with ${bestEducatedWard?.percentage.toFixed(2) || ""}% of people having higher education.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Educational level",
         "Higher education rate",
@@ -115,13 +115,13 @@ export default function WardWiseEducationalLevelSEO({
       url: "https://paribartan.digprofile.com/profile/education/ward-wise-educational-level",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",
@@ -192,10 +192,10 @@ export default function WardWiseEducationalLevelSEO({
         name: "Municipality Education Survey",
         provider: {
           "@type": "GovernmentOrganization",
-          name: "Khajura Rural Municipality",
+          name: "Paribartan Rural Municipality",
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Khajura",
+            addressLocality: "Paribartan",
             addressRegion: "Banke",
             addressCountry: "Nepal",
           },

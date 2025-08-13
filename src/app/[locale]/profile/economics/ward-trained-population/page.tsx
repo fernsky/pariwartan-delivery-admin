@@ -24,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const trainedPopulationData =
       await api.profile.economics.wardWiseTrainedPopulation.getAll.query();
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Paribartan Rural Municipality
 
     // Process data for SEO
     const totalPopulation = trainedPopulationData.reduce(
@@ -49,19 +49,19 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     const keywordsEN = [
-      "Khajura Rural Municipality trained population",
-      "Khajura skill development",
-      "Khajura trained workforce",
+      "Paribartan Rural Municipality trained population",
+      "Paribartan skill development",
+      "Paribartan trained workforce",
       "Ward-wise trained population",
       "Vocational training statistics",
-      "Skill development survey Khajura",
-      `Khajura total trained population ${totalPopulation}`,
+      "Skill development survey Paribartan",
+      `Paribartan total trained population ${totalPopulation}`,
     ];
 
     // Create detailed description with actual data
     const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार तालिम प्राप्त जनसंख्या वितरण, प्रवृत्ति र विश्लेषण। कुल तालिम प्राप्त जनसंख्या ${totalPopulation} रहेको छ, जसमध्ये वडा नं. ${highestTrainedWard?.wardNumber || ""} मा सबैभन्दा धेरै ${highestTrainedWard?.trainedPopulation || 0} जना रहेका छन्। विभिन्न वडाहरूको तालिम प्राप्त जनसंख्याको विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
 
-    const descriptionEN = `Ward-wise trained population distribution, trends and analysis for Khajura Rural Municipality. Out of a total trained population of ${totalPopulation}, Ward No. ${highestTrainedWard?.wardNumber || ""} has the highest with ${highestTrainedWard?.trainedPopulation || 0} people. Detailed statistics and visualizations of trained population across various wards.`;
+    const descriptionEN = `Ward-wise trained population distribution, trends and analysis for Paribartan Rural Municipality. Out of a total trained population of ${totalPopulation}, Ward No. ${highestTrainedWard?.wardNumber || ""} has the highest with ${highestTrainedWard?.trainedPopulation || 0} people. Detailed statistics and visualizations of trained population across various wards.`;
 
     return {
       title: `तालिम प्राप्त जनसंख्या | ${municipalityName} पालिका प्रोफाइल`,
@@ -162,7 +162,7 @@ export default async function WardTrainedPopulationPage() {
               src="/images/trained-population.svg"
               width={1200}
               height={400}
-              alt="तालिम प्राप्त जनसंख्या - परिवर्तन गाउँपालिका (Trained Population - Khajura Rural Municipality)"
+              alt="तालिम प्राप्त जनसंख्या - परिवर्तन गाउँपालिका (Trained Population - Paribartan Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />

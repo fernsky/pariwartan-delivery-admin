@@ -9,7 +9,7 @@ export default function WardSEO({ wardData }: WardSEOProps) {
   const generateStructuredData = () => {
     const wardStats = wardData.wards.map((ward) => ({
       "@type": "Observation",
-      name: `Ward ${ward.wardNo} demographics in Khajura Rural Municipality`,
+      name: `Ward ${ward.wardNo} demographics in Paribartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: [
         {
@@ -25,16 +25,16 @@ export default function WardSEO({ wardData }: WardSEOProps) {
           value: ward.areaSqKm,
         },
       ],
-      description: `Ward ${ward.wardNo} of Khajura Rural Municipality includes ${ward.includedVdcOrMunicipality} with ${ward.population} population and ${ward.areaSqKm} sq. km. area`,
+      description: `Ward ${ward.wardNo} of Paribartan Rural Municipality includes ${ward.includedVdcOrMunicipality} with ${ward.population} population and ${ward.areaSqKm} sq. km. area`,
     }));
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Ward Demographics of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Ward-wise population and area distribution data for Khajura Rural Municipality with ${wardData.totalWards} wards, total population ${wardData.totalPopulation}, and total area ${wardData.totalAreaSqKm} sq. km.`,
+      name: "Ward Demographics of Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Ward-wise population and area distribution data for Paribartan Rural Municipality with ${wardData.totalWards} wards, total population ${wardData.totalPopulation}, and total area ${wardData.totalAreaSqKm} sq. km.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Ward demographics",
         "Population statistics",
@@ -48,13 +48,13 @@ export default function WardSEO({ wardData }: WardSEOProps) {
       url: "https://paribartan.digprofile.com/profile/municipality-introduction/municipality-ward-information",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",

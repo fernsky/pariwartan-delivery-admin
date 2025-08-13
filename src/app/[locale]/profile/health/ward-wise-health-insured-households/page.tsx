@@ -24,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     const healthInsuredData =
       await api.profile.health.wardWiseHealthInsuredHouseholds.getAll.query();
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Paribartan Rural Municipality
 
     // Calculate total households and insured rates
     let totalInsuredHouseholds = 0;
@@ -54,7 +54,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     const keywordsEN = [
-      "Khajura Rural Municipality health insurance",
+      "Paribartan Rural Municipality health insurance",
       "Health insurance coverage",
       "Ward-wise health insurance rate",
       `Health insured households ${insuredPercentage}%`,
@@ -64,7 +64,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Create description
     const descriptionNP = `परिवर्तन गाउँपालिकामा स्वास्थ्य बीमा सम्बन्धी विश्लेषण। कुल ${localizeNumber(totalHouseholds.toLocaleString(), "ne")} घरधुरी मध्ये ${localizeNumber(insuredPercentage, "ne")}% (${localizeNumber(totalInsuredHouseholds.toLocaleString(), "ne")}) घरधुरीले स्वास्थ्य बीमा गरेका छन्।`;
 
-    const descriptionEN = `Analysis of health insurance coverage in Khajura Rural Municipality. Out of a total of ${totalHouseholds.toLocaleString()} households, ${insuredPercentage}% (${totalInsuredHouseholds.toLocaleString()}) households have health insurance.`;
+    const descriptionEN = `Analysis of health insurance coverage in Paribartan Rural Municipality. Out of a total of ${totalHouseholds.toLocaleString()} households, ${insuredPercentage}% (${totalInsuredHouseholds.toLocaleString()}) households have health insurance.`;
 
     return {
       title: `स्वास्थ्य बीमा गरेका घरधुरीको अवस्था | ${municipalityName} डिजिटल प्रोफाइल`,
@@ -242,7 +242,7 @@ export default async function WardWiseHealthInsuredHouseholdsPage() {
               src="/images/health-insurance.svg"
               width={1200}
               height={400}
-              alt="स्वास्थ्य बीमा गरेका घरधुरीको अवस्था - परिवर्तन गाउँपालिका (Health Insured Households - Khajura Rural Municipality)"
+              alt="स्वास्थ्य बीमा गरेका घरधुरीको अवस्था - परिवर्तन गाउँपालिका (Health Insured Households - Paribartan Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />

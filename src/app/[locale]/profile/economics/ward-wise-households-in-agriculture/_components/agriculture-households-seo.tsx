@@ -49,7 +49,7 @@ export default function AgricultureHouseholdsSEO({
 
         return {
           "@type": "Observation",
-          name: `Agriculture Households in Ward ${wardNumber} of Khajura Rural Municipality`,
+          name: `Agriculture Households in Ward ${wardNumber} of Paribartan Rural Municipality`,
           observationDate: new Date().toISOString().split("T")[0],
           measuredProperty: {
             "@type": "PropertyValue",
@@ -57,7 +57,7 @@ export default function AgricultureHouseholdsSEO({
             unitText: "percentage",
           },
           measuredValue: parseFloat(involvedPercentage),
-          description: `In Ward ${wardNumber} of Khajura Rural Municipality, ${wardData.involvedInAgriculture.toLocaleString()} households (${involvedPercentage}%) are involved in agriculture or animal husbandry out of a total of ${total.toLocaleString()} households.`,
+          description: `In Ward ${wardNumber} of Paribartan Rural Municipality, ${wardData.involvedInAgriculture.toLocaleString()} households (${involvedPercentage}%) are involved in agriculture or animal husbandry out of a total of ${total.toLocaleString()} households.`,
         };
       })
       .filter(Boolean);
@@ -65,10 +65,10 @@ export default function AgricultureHouseholdsSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Agricultural Households Distribution in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Distribution of households involved in agriculture or animal husbandry across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${totalInvolved.toLocaleString()} households (${involvedPercentage.toFixed(2)}%) are involved in agriculture or animal husbandry. The highest agricultural involvement is in Ward ${highestInvolvementWard?.wardNumber || ""} with ${highestInvolvementWard?.involvedPercentage.toFixed(2) || ""}% involvement rate.`,
+      name: "Agricultural Households Distribution in Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Distribution of households involved in agriculture or animal husbandry across ${wardNumbers.length} wards of Paribartan Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${totalInvolved.toLocaleString()} households (${involvedPercentage.toFixed(2)}%) are involved in agriculture or animal husbandry. The highest agricultural involvement is in Ward ${highestInvolvementWard?.wardNumber || ""} with ${highestInvolvementWard?.involvedPercentage.toFixed(2) || ""}% involvement rate.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Agricultural households",
         "Farming families",
@@ -78,19 +78,19 @@ export default function AgricultureHouseholdsSEO({
         "Rural economy statistics",
         "Agricultural involvement",
         "Non-agricultural households",
-        "Khajura farming statistics",
+        "Paribartan farming statistics",
         "Ward-wise farming distribution",
       ],
       url: "https://paribartan.digprofile.com/profile/economics/ward-wise-households-in-agriculture",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",

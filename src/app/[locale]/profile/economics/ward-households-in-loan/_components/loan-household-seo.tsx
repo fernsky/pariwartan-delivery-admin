@@ -19,7 +19,7 @@ export default function LoanHouseholdSEO({
     // Convert loan statistics to structured data format
     const loanStats = loanData.map((item) => ({
       "@type": "Observation",
-      name: `Ward ${item.wardNumber} households with loans in Khajura Rural Municipality`,
+      name: `Ward ${item.wardNumber} households with loans in Paribartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
@@ -27,16 +27,16 @@ export default function LoanHouseholdSEO({
         unitText: "households",
       },
       measuredValue: item.households,
-      description: `${item.households.toLocaleString()} households in Ward ${item.wardNumber} of Khajura Rural Municipality have taken loans (${((item.households / totalHouseholdsOnLoan) * 100).toFixed(2)}% of total households with loans)`,
+      description: `${item.households.toLocaleString()} households in Ward ${item.wardNumber} of Paribartan Rural Municipality have taken loans (${((item.households / totalHouseholdsOnLoan) * 100).toFixed(2)}% of total households with loans)`,
     }));
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Households with Loans in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Distribution of households with loans across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholdsOnLoan.toLocaleString()} households having loans.`,
+      name: "Households with Loans in Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Distribution of households with loans across ${wardNumbers.length} wards of Paribartan Rural Municipality with a total of ${totalHouseholdsOnLoan.toLocaleString()} households having loans.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Household loans",
         "Ward-wise loan data",
@@ -47,16 +47,16 @@ export default function LoanHouseholdSEO({
         "ऋणी घरपरिवार",
         "आर्थिक सर्वेक्षण",
       ],
-      url: "https://khajura-rm.gov.np/profile/economics/ward-households-in-loan",
+      url: "https://Paribartan-rm.gov.np/profile/economics/ward-households-in-loan",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
-        url: "https://khajura-rm.gov.np",
+        name: "Paribartan Rural Municipality",
+        url: "https://Paribartan-rm.gov.np",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",

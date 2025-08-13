@@ -39,16 +39,22 @@ interface WardWiseFacilitiesChartsProps {
     computerPercentage: number;
     mobilePercentage: number;
   };
-  FACILITY_CATEGORIES: Record<string, {
-    name: string;
-    nameEn: string;
-    color: string;
-  }>;
+  FACILITY_CATEGORIES: Record<
+    string,
+    {
+      name: string;
+      nameEn: string;
+      color: string;
+    }
+  >;
   digitalAccessIndex: number;
-  categoryStats: Record<string, {
-    total: number;
-    percentage: number;
-  }>;
+  categoryStats: Record<
+    string,
+    {
+      total: number;
+      percentage: number;
+    }
+  >;
 }
 
 export default function WardWiseFacilitiesCharts({
@@ -70,7 +76,13 @@ export default function WardWiseFacilitiesCharts({
     communication: {
       name: "सञ्चार उपकरणहरू",
       nameEn: "Communication Devices",
-      types: ["MOBILE_PHONE", "RADIO", "TELEVISION", "INTERNET", "DAILY_NATIONAL_NEWSPAPER_ACCESS"],
+      types: [
+        "MOBILE_PHONE",
+        "RADIO",
+        "TELEVISION",
+        "INTERNET",
+        "DAILY_NATIONAL_NEWSPAPER_ACCESS",
+      ],
       percentage: categoryStats.communication.percentage,
       total: categoryStats.communication.total,
       color: "#1E88E5", // Blue
@@ -86,7 +98,13 @@ export default function WardWiseFacilitiesCharts({
     appliances: {
       name: "घरायसी उपकरणहरू",
       nameEn: "Household Appliances",
-      types: ["REFRIGERATOR", "WASHING_MACHINE", "AIR_CONDITIONER", "ELECTRICAL_FAN", "MICROWAVE_OVEN"],
+      types: [
+        "REFRIGERATOR",
+        "WASHING_MACHINE",
+        "AIR_CONDITIONER",
+        "ELECTRICAL_FAN",
+        "MICROWAVE_OVEN",
+      ],
       percentage: categoryStats.appliances.percentage,
       total: categoryStats.appliances.total,
       color: "#43A047", // Green
@@ -98,7 +116,7 @@ export default function WardWiseFacilitiesCharts({
       percentage: categoryStats.digital.percentage,
       total: categoryStats.digital.total,
       color: "#FFA000", // Amber
-    }
+    },
   };
 
   // Generate data for category comparison chart
@@ -107,39 +125,39 @@ export default function WardWiseFacilitiesCharts({
       name: facilityCategoriesGrouped.communication.name,
       nameEn: facilityCategoriesGrouped.communication.nameEn,
       percentage: facilityCategoriesGrouped.communication.percentage,
-      color: facilityCategoriesGrouped.communication.color
+      color: facilityCategoriesGrouped.communication.color,
     },
     {
       name: facilityCategoriesGrouped.digital.name,
       nameEn: facilityCategoriesGrouped.digital.nameEn,
       percentage: facilityCategoriesGrouped.digital.percentage,
-      color: facilityCategoriesGrouped.digital.color
+      color: facilityCategoriesGrouped.digital.color,
     },
     {
       name: facilityCategoriesGrouped.transportation.name,
       nameEn: facilityCategoriesGrouped.transportation.nameEn,
       percentage: facilityCategoriesGrouped.transportation.percentage,
-      color: facilityCategoriesGrouped.transportation.color
+      color: facilityCategoriesGrouped.transportation.color,
     },
     {
       name: facilityCategoriesGrouped.appliances.name,
       nameEn: facilityCategoriesGrouped.appliances.nameEn,
       percentage: facilityCategoriesGrouped.appliances.percentage,
-      color: facilityCategoriesGrouped.appliances.color
-    }
+      color: facilityCategoriesGrouped.appliances.color,
+    },
   ].sort((a, b) => b.percentage - a.percentage);
 
   return (
     <>
       {/* Overall facilities distribution */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Household Facilities Distribution in Khajura Rural Municipality"
+          content="Household Facilities Distribution in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
@@ -151,14 +169,17 @@ export default function WardWiseFacilitiesCharts({
             घरायसी सुविधा अनुसार वितरण
           </h3>
           <p className="text-sm text-muted-foreground">
-            कुल अनुमानित घरधुरी: {localizeNumber(approximateUniqueHouseholds.toLocaleString(), "ne")}
+            कुल अनुमानित घरधुरी:{" "}
+            {localizeNumber(approximateUniqueHouseholds.toLocaleString(), "ne")}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-4">
           {/* Client-side pie chart */}
           <div className="lg:col-span-1">
-            <h4 className="text-lg font-medium mb-4 text-center">शीर्ष १० सुविधाहरू - पाई चार्ट</h4>
+            <h4 className="text-lg font-medium mb-4 text-center">
+              शीर्ष १० सुविधाहरू - पाई चार्ट
+            </h4>
             <div className="h-[420px]">
               <FacilitiesPieChart
                 pieChartData={pieChartData}
@@ -182,8 +203,13 @@ export default function WardWiseFacilitiesCharts({
                 </thead>
                 <tbody>
                   {pieChartData.map((item, index) => (
-                    <tr key={index} className={index % 2 === 0 ? "bg-muted/40" : ""}>
-                      <td className="border p-2">{localizeNumber((index + 1).toString(), "ne")}</td>
+                    <tr
+                      key={index}
+                      className={index % 2 === 0 ? "bg-muted/40" : ""}
+                    >
+                      <td className="border p-2">
+                        {localizeNumber((index + 1).toString(), "ne")}
+                      </td>
                       <td className="border p-2">{item.name}</td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.value.toLocaleString(), "ne")}
@@ -234,18 +260,18 @@ export default function WardWiseFacilitiesCharts({
       </div>
 
       {/* Facility Category Comparison */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Facility Category Comparison in Khajura Rural Municipality"
+          content="Facility Category Comparison in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Comparison of different facility categories in households of Khajura"
+          content="Comparison of different facility categories in households of Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -267,7 +293,7 @@ export default function WardWiseFacilitiesCharts({
       </div>
 
       {/* Ward-wise distribution */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="ward-wise-facilities-usage"
         itemScope
@@ -275,11 +301,11 @@ export default function WardWiseFacilitiesCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise Facilities Usage in Khajura Rural Municipality"
+          content="Ward-wise Facilities Usage in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Distribution of household facilities types across wards in Khajura"
+          content="Distribution of household facilities types across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -303,18 +329,18 @@ export default function WardWiseFacilitiesCharts({
       </div>
 
       {/* Ward-wise comparison */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Digital Access Comparison Across Wards in Khajura Rural Municipality"
+          content="Digital Access Comparison Across Wards in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Comparison of digital access across wards in Khajura"
+          content="Comparison of digital access across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -322,7 +348,8 @@ export default function WardWiseFacilitiesCharts({
             वडागत डिजिटल पहुँच
           </h3>
           <p className="text-sm text-muted-foreground">
-            विभिन्न वडाहरूमा डिजिटल सुविधा (इन्टरनेट, कम्प्युटर, मोबाइल फोन) पहुँचको तुलना
+            विभिन्न वडाहरूमा डिजिटल सुविधा (इन्टरनेट, कम्प्युटर, मोबाइल फोन)
+            पहुँचको तुलना
           </p>
         </div>
 
@@ -340,18 +367,18 @@ export default function WardWiseFacilitiesCharts({
       </div>
 
       {/* Ward-wise analysis */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Ward-wise Facilities Analysis in Khajura Rural Municipality"
+          content="Ward-wise Facilities Analysis in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Detailed analysis of facilities usage by ward in Khajura"
+          content="Detailed analysis of facilities usage by ward in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -383,13 +410,25 @@ export default function WardWiseFacilitiesCharts({
                   const total = item.total;
                   return (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
-                      <td className="border p-2">वडा {localizeNumber(item.wardNumber, "ne")}</td>
+                      <td className="border p-2">
+                        वडा {localizeNumber(item.wardNumber, "ne")}
+                      </td>
                       <td className="border p-2 text-right">
                         {localizeNumber(total.toLocaleString(), "ne")}
                       </td>
-                      {["मोबाइल फोन", "टेलिभिजन", "इन्टरनेट सुविधा", "कम्प्युटर/ल्यापटप", "मोटरसाइकल/स्कुटर", "रेफ्रिजेरेटर/फ्रिज"].map((facilityName, index) => {
+                      {[
+                        "मोबाइल फोन",
+                        "टेलिभिजन",
+                        "इन्टरनेट सुविधा",
+                        "कम्प्युटर/ल्यापटप",
+                        "मोटरसाइकल/स्कुटर",
+                        "रेफ्रिजेरेटर/फ्रिज",
+                      ].map((facilityName, index) => {
                         const value = item[facilityName] || 0;
-                        const percentage = total > 0 ? ((value / total) * 100).toFixed(2) : "0.00";
+                        const percentage =
+                          total > 0
+                            ? ((value / total) * 100).toFixed(2)
+                            : "0.00";
                         return (
                           <td key={index} className="border p-2 text-right">
                             {localizeNumber(value.toLocaleString(), "ne")}
@@ -407,7 +446,9 @@ export default function WardWiseFacilitiesCharts({
           </div>
 
           {/* Ward pie charts (client component) */}
-          <h4 className="text-lg font-medium mt-8 mb-4">वडागत घरायसी सुविधाको वितरण</h4>
+          <h4 className="text-lg font-medium mt-8 mb-4">
+            वडागत घरायसी सुविधाको वितरण
+          </h4>
           <WardFacilitiesPieCharts
             wardWiseData={wardWiseData}
             FACILITY_CATEGORIES={FACILITY_CATEGORIES}

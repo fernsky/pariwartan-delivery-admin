@@ -71,7 +71,7 @@ export async function generateMetadata(): Promise<Metadata> {
         "पेशा तथ्याङ्क",
         "उमेर अनुसार पेशा",
         "Main occupation distribution",
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "Occupation statistics",
         "Age-wise occupation",
         ...occupationData.map((c) => familyMainOccupationLabels[c.occupation]),
@@ -172,8 +172,6 @@ export default async function WardMainOccupationsPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex gap-8">
-        
-
         {/* Main Content */}
         <main className="flex-1 min-w-0">
           {/* SEO Component */}

@@ -67,7 +67,7 @@ export default function WardWiseFacilitiesAnalysisSection({
 
   // SEO attributes to include directly in JSX
   const seoAttributes = {
-    "data-municipality": "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
+    "data-municipality": "Paribartan Rural Municipality / परिवर्तन गाउँपालिका",
     "data-total-households": approximateUniqueHouseholds.toString(),
     "data-mobile-rate":
       facilityTypePercentages.MOBILE_PHONE?.toFixed(2) || "0.00",
@@ -133,7 +133,7 @@ export default function WardWiseFacilitiesAnalysisSection({
         <h3 className="text-xl font-medium mb-6">
           घरायसी सुविधाको प्रयोगको विस्तृत विश्लेषण
           <span className="sr-only">
-            Detailed Household Facility Usage Analysis of Khajura
+            Detailed Household Facility Usage Analysis of Paribartan
           </span>
         </h3>
 
@@ -147,7 +147,7 @@ export default function WardWiseFacilitiesAnalysisSection({
             <h4 className="font-medium mb-2">
               डिजिटल पहुँचमा अग्रणी वडा
               <span className="sr-only">
-                Ward with Best Digital Access in Khajura Rural Municipality
+                Ward with Best Digital Access in Paribartan Rural Municipality
               </span>
             </h4>
             {bestDigitalWard && (
@@ -216,7 +216,7 @@ export default function WardWiseFacilitiesAnalysisSection({
             <h4 className="font-medium mb-2">
               डिजिटल पहुँचमा पछाडि परेको वडा
               <span className="sr-only">
-                Ward with Lowest Digital Access in Khajura
+                Ward with Lowest Digital Access in Paribartan
               </span>
             </h4>
             {worstDigitalWard && (

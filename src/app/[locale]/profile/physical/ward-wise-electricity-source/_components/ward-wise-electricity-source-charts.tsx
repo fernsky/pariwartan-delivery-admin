@@ -32,11 +32,14 @@ interface WardWiseElectricitySourceChartsProps {
     percentage: number;
     households: number;
   };
-  ELECTRICITY_SOURCE_CATEGORIES: Record<string, {
-    name: string;
-    nameEn: string;
-    color: string;
-  }>;
+  ELECTRICITY_SOURCE_CATEGORIES: Record<
+    string,
+    {
+      name: string;
+      nameEn: string;
+      color: string;
+    }
+  >;
   electricityAccessIndex: number;
   modernSources: string[];
   traditionalSources: string[];
@@ -66,23 +69,32 @@ export default function WardWiseElectricitySourceCharts({
       nameEn: "Modern Sources",
       types: modernSources,
       percentage: modernSourcePercentage,
-      total: modernSources.reduce((sum, source) => sum + (sourceTypeTotals[source] || 0), 0),
+      total: modernSources.reduce(
+        (sum, source) => sum + (sourceTypeTotals[source] || 0),
+        0,
+      ),
       color: "#1E88E5", // Blue
     },
     traditional: {
       name: "परम्परागत स्रोत",
       nameEn: "Traditional Sources",
       types: traditionalSources,
-      percentage: traditionalSources.reduce((sum, source) => sum + (sourceTypePercentages[source] || 0), 0),
-      total: traditionalSources.reduce((sum, source) => sum + (sourceTypeTotals[source] || 0), 0),
+      percentage: traditionalSources.reduce(
+        (sum, source) => sum + (sourceTypePercentages[source] || 0),
+        0,
+      ),
+      total: traditionalSources.reduce(
+        (sum, source) => sum + (sourceTypeTotals[source] || 0),
+        0,
+      ),
       color: "#F44336", // Red
     },
     other: {
       name: "अन्य स्रोत",
       nameEn: "Other Sources",
       types: ["BIOGAS"],
-      percentage: (sourceTypePercentages.BIOGAS || 0),
-      total: (sourceTypeTotals.BIOGAS || 0),
+      percentage: sourceTypePercentages.BIOGAS || 0,
+      total: sourceTypeTotals.BIOGAS || 0,
       color: "#43A047", // Green
     },
   };
@@ -90,14 +102,14 @@ export default function WardWiseElectricitySourceCharts({
   return (
     <>
       {/* Overall electricity source distribution */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Electricity Source Distribution in Khajura Rural Municipality"
+          content="Electricity Source Distribution in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
@@ -140,8 +152,13 @@ export default function WardWiseElectricitySourceCharts({
                 </thead>
                 <tbody>
                   {pieChartData.map((item, index) => (
-                    <tr key={index} className={index % 2 === 0 ? "bg-muted/40" : ""}>
-                      <td className="border p-2">{localizeNumber((index + 1).toString(), "ne")}</td>
+                    <tr
+                      key={index}
+                      className={index % 2 === 0 ? "bg-muted/40" : ""}
+                    >
+                      <td className="border p-2">
+                        {localizeNumber((index + 1).toString(), "ne")}
+                      </td>
                       <td className="border p-2">{item.name}</td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.value.toLocaleString(), "ne")}
@@ -205,7 +222,7 @@ export default function WardWiseElectricitySourceCharts({
       </div>
 
       {/* Ward-wise distribution */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="ward-wise-electricity-source-usage"
         itemScope
@@ -213,11 +230,11 @@ export default function WardWiseElectricitySourceCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise Electricity Source Usage in Khajura Rural Municipality"
+          content="Ward-wise Electricity Source Usage in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Distribution of electricity source types across wards in Khajura"
+          content="Distribution of electricity source types across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -240,18 +257,18 @@ export default function WardWiseElectricitySourceCharts({
       </div>
 
       {/* Ward-wise comparison */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Modern Electricity Source Usage Comparison Across Wards in Khajura Rural Municipality"
+          content="Modern Electricity Source Usage Comparison Across Wards in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Comparison of modern electricity source usage across wards in Khajura"
+          content="Comparison of modern electricity source usage across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -259,7 +276,8 @@ export default function WardWiseElectricitySourceCharts({
             वडागत आधुनिक विद्युत स्रोत प्रयोग
           </h3>
           <p className="text-sm text-muted-foreground">
-            विभिन्न वडाहरूमा आधुनिक विद्युत स्रोत (केन्द्रीय विद्युत प्रणाली, सौर्य ऊर्जा) प्रयोग गर्ने घरधुरीको तुलना
+            विभिन्न वडाहरूमा आधुनिक विद्युत स्रोत (केन्द्रीय विद्युत प्रणाली,
+            सौर्य ऊर्जा) प्रयोग गर्ने घरधुरीको तुलना
           </p>
         </div>
 
@@ -277,18 +295,18 @@ export default function WardWiseElectricitySourceCharts({
       </div>
 
       {/* Ward-wise analysis */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Ward-wise Electricity Source Analysis in Khajura Rural Municipality"
+          content="Ward-wise Electricity Source Analysis in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Detailed analysis of electricity source usage by ward in Khajura"
+          content="Detailed analysis of electricity source usage by ward in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -307,9 +325,13 @@ export default function WardWiseElectricitySourceCharts({
                 <tr className="bg-muted">
                   <th className="border p-2">वडा नं.</th>
                   <th className="border p-2 text-right">जम्मा घरधुरी</th>
-                  {Object.keys(ELECTRICITY_SOURCE_CATEGORIES).map(key => (
+                  {Object.keys(ELECTRICITY_SOURCE_CATEGORIES).map((key) => (
                     <th key={key} className="border p-2 text-right">
-                      {ELECTRICITY_SOURCE_CATEGORIES[key as keyof typeof ELECTRICITY_SOURCE_CATEGORIES].name}
+                      {
+                        ELECTRICITY_SOURCE_CATEGORIES[
+                          key as keyof typeof ELECTRICITY_SOURCE_CATEGORIES
+                        ].name
+                      }
                     </th>
                   ))}
                 </tr>
@@ -319,14 +341,22 @@ export default function WardWiseElectricitySourceCharts({
                   const total = item.total;
                   return (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
-                      <td className="border p-2">वडा {localizeNumber(item.wardNumber, "ne")}</td>
+                      <td className="border p-2">
+                        वडा {localizeNumber(item.wardNumber, "ne")}
+                      </td>
                       <td className="border p-2 text-right">
                         {localizeNumber(total.toLocaleString(), "ne")}
                       </td>
-                      {Object.keys(ELECTRICITY_SOURCE_CATEGORIES).map(key => {
-                        const sourceName = ELECTRICITY_SOURCE_CATEGORIES[key as keyof typeof ELECTRICITY_SOURCE_CATEGORIES].name;
+                      {Object.keys(ELECTRICITY_SOURCE_CATEGORIES).map((key) => {
+                        const sourceName =
+                          ELECTRICITY_SOURCE_CATEGORIES[
+                            key as keyof typeof ELECTRICITY_SOURCE_CATEGORIES
+                          ].name;
                         const value = item[sourceName] || 0;
-                        const percentage = total > 0 ? ((value / total) * 100).toFixed(2) : "0.00";
+                        const percentage =
+                          total > 0
+                            ? ((value / total) * 100).toFixed(2)
+                            : "0.00";
                         return (
                           <td key={key} className="border p-2 text-right">
                             {localizeNumber(value.toLocaleString(), "ne")}
@@ -346,9 +376,10 @@ export default function WardWiseElectricitySourceCharts({
                   <td className="border p-2 text-right">
                     {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
                   </td>
-                  {Object.keys(ELECTRICITY_SOURCE_CATEGORIES).map(key => {
+                  {Object.keys(ELECTRICITY_SOURCE_CATEGORIES).map((key) => {
                     const value = sourceTypeTotals[key] || 0;
-                    const percentage = sourceTypePercentages[key]?.toFixed(2) || "0.00";
+                    const percentage =
+                      sourceTypePercentages[key]?.toFixed(2) || "0.00";
                     return (
                       <td key={key} className="border p-2 text-right">
                         {localizeNumber(value.toLocaleString(), "ne")}
@@ -364,7 +395,9 @@ export default function WardWiseElectricitySourceCharts({
           </div>
 
           {/* Ward pie charts (client component) */}
-          <h4 className="text-lg font-medium mt-8 mb-4">वडागत विद्युतको स्रोतको वितरण</h4>
+          <h4 className="text-lg font-medium mt-8 mb-4">
+            वडागत विद्युतको स्रोतको वितरण
+          </h4>
           <WardElectricitySourcePieCharts
             wardWiseData={wardWiseData}
             ELECTRICITY_SOURCE_CATEGORIES={ELECTRICITY_SOURCE_CATEGORIES}

@@ -21,7 +21,7 @@ export default function LandPossessionSEO({
     // Convert land possession stats to structured data format
     const landPossessionStats = landPossessionData.map((item) => ({
       "@type": "Observation",
-      name: `Ward ${item.wardNumber} land-owning households in Khajura Rural Municipality`,
+      name: `Ward ${item.wardNumber} land-owning households in Paribartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
@@ -29,16 +29,16 @@ export default function LandPossessionSEO({
         unitText: "households",
       },
       measuredValue: item.households,
-      description: `${item.households.toLocaleString()} households in Ward ${item.wardNumber} of Khajura Rural Municipality own land (${((item.households / totalHouseholdsWithLand) * 100).toFixed(2)}% of total land-owning households)`,
+      description: `${item.households.toLocaleString()} households in Ward ${item.wardNumber} of Paribartan Rural Municipality own land (${((item.households / totalHouseholdsWithLand) * 100).toFixed(2)}% of total land-owning households)`,
     }));
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Household Land Ownership in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Land ownership distribution data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholdsWithLand.toLocaleString()} land-owning households.`,
+      name: "Household Land Ownership in Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Land ownership distribution data across ${wardNumbers.length} wards of Paribartan Rural Municipality with a total of ${totalHouseholdsWithLand.toLocaleString()} land-owning households.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Land ownership",
         "Household land possession",
@@ -50,16 +50,16 @@ export default function LandPossessionSEO({
         "भूमिको वितरण",
         "आर्थिक सर्वेक्षण",
       ],
-      url: "https://khajura-rm.gov.np/profile/economics/ward-household-land-possessions",
+      url: "https://Paribartan-rm.gov.np/profile/economics/ward-household-land-possessions",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
-        url: "https://khajura-rm.gov.np",
+        name: "Paribartan Rural Municipality",
+        url: "https://Paribartan-rm.gov.np",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",

@@ -43,7 +43,7 @@ export default function LanguageSEO({
     // Convert language stats to structured data format
     const languageStats = overallSummary.map((item) => ({
       "@type": "Observation",
-      name: `${LANGUAGE_NAMES_EN[item.language] || item.language} speakers in Khajura Rural Municipality`,
+      name: `${LANGUAGE_NAMES_EN[item.language] || item.language} speakers in Paribartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
@@ -51,16 +51,16 @@ export default function LanguageSEO({
         unitText: "people",
       },
       measuredValue: item.population,
-      description: `${item.population.toLocaleString()} people in Khajura Rural Municipality speak ${LANGUAGE_NAMES_EN[item.language] || item.language} as their mother tongue (${((item.population / totalPopulation) * 100).toFixed(2)}% of total population)`,
+      description: `${item.population.toLocaleString()} people in Paribartan Rural Municipality speak ${LANGUAGE_NAMES_EN[item.language] || item.language} as their mother tongue (${((item.population / totalPopulation) * 100).toFixed(2)}% of total population)`,
     }));
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Linguistic Demographics of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Mother tongue distribution data across ${wardIds.length} wards of Khajura Rural Municipality with a total population of ${totalPopulation.toLocaleString()} people.`,
+      name: "Linguistic Demographics of Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Mother tongue distribution data across ${wardIds.length} wards of Paribartan Rural Municipality with a total population of ${totalPopulation.toLocaleString()} people.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Linguistic demographics",
         "Mother tongue statistics",
@@ -72,13 +72,13 @@ export default function LanguageSEO({
       url: "https://paribartan.digprofile.com/profile/demographics/ward-wise-mother-tongue-population",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",

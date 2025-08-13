@@ -29,11 +29,14 @@ interface WardWiseDeliveryPlaceChartsProps {
     wardNumber: number;
     percentage: number;
   };
-  DELIVERY_PLACE_CATEGORIES: Record<string, {
-    name: string;
-    nameEn: string;
-    color: string;
-  }>;
+  DELIVERY_PLACE_CATEGORIES: Record<
+    string,
+    {
+      name: string;
+      nameEn: string;
+      color: string;
+    }
+  >;
   institutionalDeliveryIndex: number;
 }
 
@@ -53,14 +56,14 @@ export default function WardWiseDeliveryPlaceCharts({
   return (
     <>
       {/* Overall delivery place distribution */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Delivery Place Distribution in Khajura Rural Municipality"
+          content="Delivery Place Distribution in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
@@ -72,7 +75,8 @@ export default function WardWiseDeliveryPlaceCharts({
             प्रसूती स्थान अनुसार वितरण
           </h3>
           <p className="text-sm text-muted-foreground">
-            कुल प्रसूती: {localizeNumber(totalDeliveries.toLocaleString(), "ne")}
+            कुल प्रसूती:{" "}
+            {localizeNumber(totalDeliveries.toLocaleString(), "ne")}
           </p>
         </div>
 
@@ -103,8 +107,13 @@ export default function WardWiseDeliveryPlaceCharts({
                 </thead>
                 <tbody>
                   {pieChartData.map((item, index) => (
-                    <tr key={index} className={index % 2 === 0 ? "bg-muted/40" : ""}>
-                      <td className="border p-2">{localizeNumber((index + 1).toString(), "ne")}</td>
+                    <tr
+                      key={index}
+                      className={index % 2 === 0 ? "bg-muted/40" : ""}
+                    >
+                      <td className="border p-2">
+                        {localizeNumber((index + 1).toString(), "ne")}
+                      </td>
                       <td className="border p-2">{item.name}</td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.value.toLocaleString(), "ne")}
@@ -168,7 +177,7 @@ export default function WardWiseDeliveryPlaceCharts({
       </div>
 
       {/* Ward-wise distribution */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="ward-wise-delivery-places"
         itemScope
@@ -176,11 +185,11 @@ export default function WardWiseDeliveryPlaceCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise Delivery Places in Khajura Rural Municipality"
+          content="Ward-wise Delivery Places in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Distribution of childbirth locations across wards in Khajura"
+          content="Distribution of childbirth locations across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -203,18 +212,18 @@ export default function WardWiseDeliveryPlaceCharts({
       </div>
 
       {/* Ward-wise comparison */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Institutional Delivery Comparison Across Wards in Khajura Rural Municipality"
+          content="Institutional Delivery Comparison Across Wards in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Comparison of institutional delivery rates across wards in Khajura"
+          content="Comparison of institutional delivery rates across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -239,18 +248,18 @@ export default function WardWiseDeliveryPlaceCharts({
       </div>
 
       {/* Ward-wise analysis */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Ward-wise Delivery Place Analysis in Khajura Rural Municipality"
+          content="Ward-wise Delivery Place Analysis in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Detailed analysis of childbirth locations by ward in Khajura"
+          content="Detailed analysis of childbirth locations by ward in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -269,9 +278,13 @@ export default function WardWiseDeliveryPlaceCharts({
                 <tr className="bg-muted">
                   <th className="border p-2">वडा नं.</th>
                   <th className="border p-2 text-right">जम्मा प्रसूती</th>
-                  {Object.keys(DELIVERY_PLACE_CATEGORIES).map(key => (
+                  {Object.keys(DELIVERY_PLACE_CATEGORIES).map((key) => (
                     <th key={key} className="border p-2 text-right">
-                      {DELIVERY_PLACE_CATEGORIES[key as keyof typeof DELIVERY_PLACE_CATEGORIES].name}
+                      {
+                        DELIVERY_PLACE_CATEGORIES[
+                          key as keyof typeof DELIVERY_PLACE_CATEGORIES
+                        ].name
+                      }
                     </th>
                   ))}
                 </tr>
@@ -281,14 +294,22 @@ export default function WardWiseDeliveryPlaceCharts({
                   const total = item.total;
                   return (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
-                      <td className="border p-2">वडा {localizeNumber(item.wardNumber, "ne")}</td>
+                      <td className="border p-2">
+                        वडा {localizeNumber(item.wardNumber, "ne")}
+                      </td>
                       <td className="border p-2 text-right">
                         {localizeNumber(total.toLocaleString(), "ne")}
                       </td>
-                      {Object.keys(DELIVERY_PLACE_CATEGORIES).map(key => {
-                        const placeName = DELIVERY_PLACE_CATEGORIES[key as keyof typeof DELIVERY_PLACE_CATEGORIES].name;
+                      {Object.keys(DELIVERY_PLACE_CATEGORIES).map((key) => {
+                        const placeName =
+                          DELIVERY_PLACE_CATEGORIES[
+                            key as keyof typeof DELIVERY_PLACE_CATEGORIES
+                          ].name;
                         const value = item[placeName] || 0;
-                        const percentage = total > 0 ? ((value / total) * 100).toFixed(2) : "0.00";
+                        const percentage =
+                          total > 0
+                            ? ((value / total) * 100).toFixed(2)
+                            : "0.00";
                         return (
                           <td key={key} className="border p-2 text-right">
                             {localizeNumber(value.toLocaleString(), "ne")}
@@ -308,9 +329,10 @@ export default function WardWiseDeliveryPlaceCharts({
                   <td className="border p-2 text-right">
                     {localizeNumber(totalDeliveries.toLocaleString(), "ne")}
                   </td>
-                  {Object.keys(DELIVERY_PLACE_CATEGORIES).map(key => {
+                  {Object.keys(DELIVERY_PLACE_CATEGORIES).map((key) => {
                     const value = deliveryCategoryTotals[key];
-                    const percentage = deliveryCategoryPercentages[key].toFixed(2);
+                    const percentage =
+                      deliveryCategoryPercentages[key].toFixed(2);
                     return (
                       <td key={key} className="border p-2 text-right">
                         {localizeNumber(value.toLocaleString(), "ne")}
@@ -326,7 +348,9 @@ export default function WardWiseDeliveryPlaceCharts({
           </div>
 
           {/* Ward pie charts (client component) */}
-          <h4 className="text-lg font-medium mt-8 mb-4">वडागत प्रसूती स्थानको वितरण</h4>
+          <h4 className="text-lg font-medium mt-8 mb-4">
+            वडागत प्रसूती स्थानको वितरण
+          </h4>
           <WardDeliveryPlacePieCharts
             wardWiseData={wardWiseData}
             DELIVERY_PLACE_CATEGORIES={DELIVERY_PLACE_CATEGORIES}

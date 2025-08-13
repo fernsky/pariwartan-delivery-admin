@@ -42,7 +42,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const birthplaceData =
       await api.profile.demographics.birthplaceHouseholds.getAll.query();
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Paribartan Rural Municipality
 
     // Process data for SEO
     const totalPopulation = birthplaceData.reduce(
@@ -77,19 +77,19 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     const keywordsEN = [
-      "Khajura Rural Municipality birthplace households",
-      "Khajura household birthplace distribution",
+      "Paribartan Rural Municipality birthplace households",
+      "Paribartan household birthplace distribution",
       "Ward-wise birthplace data",
       "Household birthplace analysis",
-      "Local households in Khajura",
+      "Local households in Paribartan",
       "Inter-district migration",
-      `Khajura total households ${totalPopulation}`,
+      `Paribartan total households ${totalPopulation}`,
     ];
 
     // Create detailed description with actual data
     const descriptionNP = `परिवर्तन गाउँपालिकाको उमेर समूह अनुसार जन्मस्थानको वितरण र विश्लेषण। कुल जनसंख्या ${localizeNumber(totalPopulation.toString(), "ne")} रहेको छ। विभिन्न उमेर समूहहरूमा जन्मस्थानको विस्तृत विश्लेषण।`;
 
-    const descriptionEN = `Age-group-wise distribution and analysis of birthplaces in Khajura Rural Municipality. Total population is ${totalPopulation}. Detailed analysis of birthplaces across various age groups.`;
+    const descriptionEN = `Age-group-wise distribution and analysis of birthplaces in Paribartan Rural Municipality. Total population is ${totalPopulation}. Detailed analysis of birthplaces across various age groups.`;
 
     return {
       title: `घरपरिवारको जन्मस्थान | ${municipalityName} डिजिटल प्रोफाइल`,
@@ -293,7 +293,7 @@ export default async function WardWiseBirthplaceHouseholdsPage() {
               src="/images/birthplace-households.svg"
               width={1200}
               height={400}
-              alt="घरपरिवारको जन्मस्थान - परिवर्तन गाउँपालिका (Household Birthplaces - Khajura Rural Municipality)"
+              alt="घरपरिवारको जन्मस्थान - परिवर्तन गाउँपालिका (Household Birthplaces - Paribartan Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />

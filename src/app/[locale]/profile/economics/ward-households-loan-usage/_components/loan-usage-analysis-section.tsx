@@ -84,7 +84,7 @@ export default function LoanUsageAnalysisSection({
     if (document && document.body) {
       document.body.setAttribute(
         "data-municipality",
-        "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
+        "Paribartan Rural Municipality / परिवर्तन गाउँपालिका",
       );
       document.body.setAttribute(
         "data-total-households-with-loans",
@@ -215,7 +215,7 @@ export default function LoanUsageAnalysisSection({
       <div className="bg-muted/50 p-4 rounded-lg mt-8">
         <h3 className="text-xl font-medium mb-4">
           कर्जा प्रयोजन विश्लेषण
-          <span className="sr-only">Loan Purpose Analysis of Khajura</span>
+          <span className="sr-only">Loan Purpose Analysis of Paribartan</span>
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div

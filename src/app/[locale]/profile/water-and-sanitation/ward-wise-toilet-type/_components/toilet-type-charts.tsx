@@ -68,18 +68,18 @@ export default function ToiletTypeCharts({
   return (
     <>
       {/* Overall toilet type distribution - with pre-rendered table and client-side chart */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Toilet Types in Khajura Rural Municipality"
+          content="Toilet Types in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content={`Toilet type distribution of Khajura with a total of ${totalHouseholds} households`}
+          content={`Toilet type distribution of Paribartan with a total of ${totalHouseholds} households`}
         />
 
         <div className="border-b px-4 py-3">
@@ -87,7 +87,8 @@ export default function ToiletTypeCharts({
             शौचालय प्रकार अनुसार वितरण
           </h3>
           <p className="text-sm text-muted-foreground">
-            कुल घरधुरी संख्या: {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
+            कुल घरधुरी संख्या:{" "}
+            {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
           </p>
         </div>
 
@@ -120,13 +121,21 @@ export default function ToiletTypeCharts({
                 <tbody>
                   {overallSummary.map((item, i) => (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/40" : ""}>
-                      <td className="border p-2">{localizeNumber(i + 1, "ne")}</td>
+                      <td className="border p-2">
+                        {localizeNumber(i + 1, "ne")}
+                      </td>
                       <td className="border p-2">{item.toiletTypeName}</td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.households.toLocaleString(), "ne")}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(((item.households / totalHouseholds) * 100).toFixed(2), "ne")}%
+                        {localizeNumber(
+                          ((item.households / totalHouseholds) * 100).toFixed(
+                            2,
+                          ),
+                          "ne",
+                        )}
+                        %
                       </td>
                     </tr>
                   ))}
@@ -146,7 +155,6 @@ export default function ToiletTypeCharts({
                 </tfoot>
               </table>
             </div>
-            
           </div>
         </div>
 
@@ -170,7 +178,11 @@ export default function ToiletTypeCharts({
                   <div className="flex justify-between items-center">
                     <span>{item.toiletTypeName}</span>
                     <span className="font-medium">
-                      {localizeNumber(((item.households / totalHouseholds) * 100).toFixed(1), "ne")}%
+                      {localizeNumber(
+                        ((item.households / totalHouseholds) * 100).toFixed(1),
+                        "ne",
+                      )}
+                      %
                     </span>
                   </div>
                   <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -193,7 +205,7 @@ export default function ToiletTypeCharts({
       </div>
 
       {/* Ward-wise distribution - pre-rendered table with client-side chart */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="ward-wise-toilet-types"
         itemScope
@@ -201,11 +213,11 @@ export default function ToiletTypeCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise Toilet Types in Khajura Rural Municipality"
+          content="Ward-wise Toilet Types in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Toilet types distribution across wards in Khajura"
+          content="Toilet types distribution across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -229,18 +241,18 @@ export default function ToiletTypeCharts({
       </div>
 
       {/* Sanitation comparison across wards */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Sanitation Rate Comparison Across Wards in Khajura Rural Municipality"
+          content="Sanitation Rate Comparison Across Wards in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Comparison of sanitation rates across wards in Khajura"
+          content="Comparison of sanitation rates across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -265,18 +277,18 @@ export default function ToiletTypeCharts({
       </div>
 
       {/* Ward-wise analysis - with pre-rendered HTML table for SEO */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Ward-wise Toilet Type Analysis in Khajura Rural Municipality"
+          content="Ward-wise Toilet Type Analysis in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Most common toilet types by ward in Khajura"
+          content="Most common toilet types by ward in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -296,7 +308,9 @@ export default function ToiletTypeCharts({
                   <th className="border p-2">वडा नं.</th>
                   <th className="border p-2 text-right">जम्मा घरधुरी</th>
                   <th className="border p-2">प्रमुख शौचालय प्रकार</th>
-                  <th className="border p-2 text-right">प्रमुख प्रकारको घरधुरी</th>
+                  <th className="border p-2 text-right">
+                    प्रमुख प्रकारको घरधुरी
+                  </th>
                   <th className="border p-2 text-right">प्रतिशत</th>
                   <th className="border p-2 text-right">आधुनिक शौचालय</th>
                   <th className="border p-2 text-right">शौचालय नभएका</th>
@@ -306,15 +320,21 @@ export default function ToiletTypeCharts({
                 {wardWiseAnalysis.map((item, i) => {
                   return (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
-                      <td className="border p-2">वडा {localizeNumber(item.wardNumber, "ne")}</td>
-                      <td className="border p-2 text-right">
-                        {localizeNumber(item.totalHouseholds.toLocaleString(), "ne")}
-                      </td>
                       <td className="border p-2">
-                        {item.mostCommonTypeName}
+                        वडा {localizeNumber(item.wardNumber, "ne")}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.mostCommonTypeHouseholds.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.totalHouseholds.toLocaleString(),
+                          "ne",
+                        )}
+                      </td>
+                      <td className="border p-2">{item.mostCommonTypeName}</td>
+                      <td className="border p-2 text-right">
+                        {localizeNumber(
+                          item.mostCommonTypeHouseholds.toLocaleString(),
+                          "ne",
+                        )}
                       </td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.mostCommonTypePercentage, "ne")}%
@@ -336,33 +356,55 @@ export default function ToiletTypeCharts({
                     {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
                   </td>
                   <td className="border p-2">
-                    {overallSummary.length > 0 ? overallSummary[0].toiletTypeName : ""}
+                    {overallSummary.length > 0
+                      ? overallSummary[0].toiletTypeName
+                      : ""}
                   </td>
                   <td className="border p-2 text-right">
-                    {localizeNumber((overallSummary[0]?.households || 0).toLocaleString(), "ne")}
+                    {localizeNumber(
+                      (overallSummary[0]?.households || 0).toLocaleString(),
+                      "ne",
+                    )}
                   </td>
                   <td className="border p-2 text-right">
-                    {localizeNumber(((overallSummary[0]?.households || 0) / totalHouseholds * 100).toFixed(2), "ne")}%
+                    {localizeNumber(
+                      (
+                        ((overallSummary[0]?.households || 0) /
+                          totalHouseholds) *
+                        100
+                      ).toFixed(2),
+                      "ne",
+                    )}
+                    %
                   </td>
                   <td className="border p-2 text-right">
                     {localizeNumber(
                       (
                         (overallSummary
-                          .filter(item => item.toiletType === 'FLUSH_WITH_SEPTIC_TANK')
-                          .reduce((sum, item) => sum + item.households, 0) / totalHouseholds) * 100
+                          .filter(
+                            (item) =>
+                              item.toiletType === "FLUSH_WITH_SEPTIC_TANK",
+                          )
+                          .reduce((sum, item) => sum + item.households, 0) /
+                          totalHouseholds) *
+                        100
                       ).toFixed(2),
-                      "ne"
-                    )}%
+                      "ne",
+                    )}
+                    %
                   </td>
                   <td className="border p-2 text-right">
                     {localizeNumber(
                       (
                         (overallSummary
-                          .filter(item => item.toiletType === 'NO_TOILET')
-                          .reduce((sum, item) => sum + item.households, 0) / totalHouseholds) * 100
+                          .filter((item) => item.toiletType === "NO_TOILET")
+                          .reduce((sum, item) => sum + item.households, 0) /
+                          totalHouseholds) *
+                        100
                       ).toFixed(2),
-                      "ne"
-                    )}%
+                      "ne",
+                    )}
+                    %
                   </td>
                 </tr>
               </tfoot>
@@ -370,7 +412,9 @@ export default function ToiletTypeCharts({
           </div>
 
           {/* Ward pie charts (client component) */}
-          <h4 className="text-lg font-medium mt-8 mb-4">वडागत शौचालय प्रकारको वितरण</h4>
+          <h4 className="text-lg font-medium mt-8 mb-4">
+            वडागत शौचालय प्रकारको वितरण
+          </h4>
           <WardToiletTypePieCharts
             wardNumbers={wardNumbers}
             toiletTypeData={toiletTypeData}

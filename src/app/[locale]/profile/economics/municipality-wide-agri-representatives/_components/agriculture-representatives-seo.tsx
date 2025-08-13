@@ -33,18 +33,18 @@ export default function AgricultureRepresentativesSEO({
       telephone: rep.contactNumber,
       worksFor: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality Agriculture Department",
+        name: "Paribartan Rural Municipality Agriculture Department",
         alternateName: "परिवर्तन गाउँपालिका कृषि शाखा",
         department: rep.branch,
       },
-      description: `${rep.positionFull} at ${rep.branch} department of Khajura Rural Municipality`,
+      description: `${rep.positionFull} at ${rep.branch} department of Paribartan Rural Municipality`,
     }));
 
     return {
       "@context": "https://schema.org",
       "@type": "ItemList",
-      name: "Agriculture Representatives of Khajura Rural Municipality",
-      description: `Complete list of ${totalRepresentatives} agriculture representatives working in Khajura Rural Municipality's Agriculture Department`,
+      name: "Agriculture Representatives of Paribartan Rural Municipality",
+      description: `Complete list of ${totalRepresentatives} agriculture representatives working in Paribartan Rural Municipality's Agriculture Department`,
       numberOfItems: totalRepresentatives,
       itemListElement: representativesList.map((rep, index) => ({
         "@type": "ListItem",
@@ -53,14 +53,14 @@ export default function AgricultureRepresentativesSEO({
       })),
       about: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         alternateName: "परिवर्तन गाउँपालिका",
         url: "https://paribartan.digprofile.com",
         address: {
           "@type": "PostalAddress",
           addressCountry: "Nepal",
           addressRegion: "Banke",
-          addressLocality: "Khajura",
+          addressLocality: "Paribartan",
         },
         department: {
           "@type": "Organization",
@@ -71,7 +71,7 @@ export default function AgricultureRepresentativesSEO({
       },
       provider: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
     };

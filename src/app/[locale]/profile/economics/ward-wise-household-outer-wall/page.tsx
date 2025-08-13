@@ -56,7 +56,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const wallData =
       await api.profile.economics.wardWiseHouseholdOuterWall.getAll.query();
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Paribartan Rural Municipality
 
     // Process data for SEO
     const totalHouseholds = wallData.reduce(
@@ -100,21 +100,21 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     const keywordsEN = [
-      "Khajura Rural Municipality house outer wall",
-      "Khajura house outer wall distribution",
+      "Paribartan Rural Municipality house outer wall",
+      "Paribartan house outer wall distribution",
       "Ward-wise house outer wall",
       "House outer wall details",
-      "Cement-bonded walls in Khajura",
+      "Cement-bonded walls in Paribartan",
       "Mud-bonded wall households",
-      `Khajura household outer wall count ${totalHouseholds}`,
-      "Khajura housing safety",
-      "Khajura housing structure",
+      `Paribartan household outer wall count ${totalHouseholds}`,
+      "Paribartan housing safety",
+      "Paribartan housing structure",
     ];
 
     // Create detailed description with actual data
     const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार घरको बाहिरी गारोको वितरण र विश्लेषण। कुल घरधुरी संख्या ${localizeNumber(totalHouseholds.toString(), "ne")} मध्ये ${localizeNumber(mostCommonPercentage, "ne")}% (${localizeNumber(mostCommonCount.toString(), "ne")}) ${WALL_TYPE_NAMES[mostCommonType] || mostCommonType} प्रकारको बाहिरी गारो भएका घरहरू रहेका छन्। विभिन्न वडाहरूमा घरको बाहिरी गारोको विस्तृत विश्लेषण।`;
 
-    const descriptionEN = `Ward-wise distribution and analysis of house outer wall types in Khajura Rural Municipality. Out of a total of ${totalHouseholds} households, ${mostCommonPercentage}% (${mostCommonCount}) have ${WALL_TYPE_NAMES_EN[mostCommonType] || mostCommonType} outer walls. Detailed analysis of house outer wall types across various wards.`;
+    const descriptionEN = `Ward-wise distribution and analysis of house outer wall types in Paribartan Rural Municipality. Out of a total of ${totalHouseholds} households, ${mostCommonPercentage}% (${mostCommonCount}) have ${WALL_TYPE_NAMES_EN[mostCommonType] || mostCommonType} outer walls. Detailed analysis of house outer wall types across various wards.`;
 
     return {
       title: `घरको बाहिरी गारोको वितरण | ${municipalityName} डिजिटल प्रोफाइल`,
@@ -354,7 +354,7 @@ export default async function WardWiseHouseholdOuterWallPage() {
               src="/images/house-wall.svg"
               width={1200}
               height={400}
-              alt="घरको बाहिरी गारोको वितरण - परिवर्तन गाउँपालिका (House Outer Wall Distribution - Khajura Rural Municipality)"
+              alt="घरको बाहिरी गारोको वितरण - परिवर्तन गाउँपालिका (House Outer Wall Distribution - Paribartan Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />

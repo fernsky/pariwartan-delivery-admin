@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
     const descriptionNP = `परिवर्तन गाउँपालिकाको मोहोडा अनुसारको क्षेत्रफल विवरण र भौगोलिक विश्लेषण। कुल क्षेत्रफल ${localizeNumber(totalArea.toString(), "ne")} वर्ग कि.मि. मध्ये ${localizeNumber(highestAspect.area_percentage.toFixed(1), "ne")}% भाग ${highestAspect.direction} मोहोडामा रहेको छ।`;
 
-    const descriptionEN = `Area distribution by aspect (direction) and geographical analysis of Khajura Rural Municipality. Out of total area ${totalArea} sq. km., ${highestAspect.area_percentage.toFixed(1)}% faces ${highestAspect.direction_english} direction.`;
+    const descriptionEN = `Area distribution by aspect (direction) and geographical analysis of Paribartan Rural Municipality. Out of total area ${totalArea} sq. km., ${highestAspect.area_percentage.toFixed(1)}% faces ${highestAspect.direction_english} direction.`;
 
     return {
       title: `परिवर्तन गाउँपालिका | मोहोडा अनुसार क्षेत्रफल विवरण | डिजिटल प्रोफाइल`,
@@ -38,10 +38,10 @@ export async function generateMetadata(): Promise<Metadata> {
       keywords: [
         "परिवर्तन गाउँपालिका मोहोडा",
         "परिवर्तन दिशा विवरण",
-        "Khajura aspect information",
+        "Paribartan aspect information",
         "Municipality directional data",
         "Aspect analysis Nepal",
-        "Terrain aspect Khajura",
+        "Terrain aspect Paribartan",
         `परिवर्तन कुल क्षेत्रफल ${localizeNumber(totalArea.toString(), "ne")} वर्ग कि.मि.`,
       ],
       alternates: {

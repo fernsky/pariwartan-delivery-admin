@@ -144,7 +144,7 @@ export default function ReligionAnalysisSection({
         <h3 className="text-xl font-medium mb-4">
           परिवर्तन गाउँपालिकाको धार्मिक विविधता विश्लेषण
           <span className="sr-only">
-            Religious Diversity Analysis of Khajura
+            Religious Diversity Analysis of Paribartan
           </span>
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -152,7 +152,7 @@ export default function ReligionAnalysisSection({
             <h4 className="font-medium mb-2">
               परिवर्तन गाउँपालिकाको प्रमुख धर्म
               <span className="sr-only">
-                Main Religion in Khajura Rural Municipality
+                Main Religion in Paribartan Rural Municipality
               </span>
             </h4>
             <p className="text-3xl font-bold">
@@ -167,7 +167,7 @@ export default function ReligionAnalysisSection({
                 : ""}
               <span className="sr-only">
                 {topReligion
-                  ? `${topReligion.percentage.toFixed(2)}% of total population in Khajura Rural Municipality`
+                  ? `${topReligion.percentage.toFixed(2)}% of total population in Paribartan Rural Municipality`
                   : ""}
               </span>
             </p>
@@ -177,7 +177,7 @@ export default function ReligionAnalysisSection({
             <h4 className="font-medium mb-2">
               परिवर्तन गाउँपालिकाको प्रमुख-दोस्रो धर्म अनुपात
               <span className="sr-only">
-                Primary to Secondary Religion Ratio in Khajura
+                Primary to Secondary Religion Ratio in Paribartan
               </span>
             </h4>
             <p className="text-3xl font-bold">
@@ -189,7 +189,7 @@ export default function ReligionAnalysisSection({
                 : ""}
               <span className="sr-only">
                 {topReligion && secondReligion
-                  ? `For every ${topTwoReligionRatio} ${topReligion.religionType.toLowerCase()} followers, there is 1 ${secondReligion.religionType.toLowerCase()} follower in Khajura Rural Municipality`
+                  ? `For every ${topTwoReligionRatio} ${topReligion.religionType.toLowerCase()} followers, there is 1 ${secondReligion.religionType.toLowerCase()} follower in Paribartan Rural Municipality`
                   : ""}
               </span>
             </p>
@@ -206,7 +206,7 @@ export default function ReligionAnalysisSection({
             <p className="text-sm text-muted-foreground mt-2">
               परिवर्तन गाउँपालिकामा विभिन्न धर्मावलम्बी बसोबास गर्छन्
               <span className="sr-only">
-                Different religious communities live in Khajura Rural
+                Different religious communities live in Paribartan Rural
                 Municipality
               </span>
             </p>

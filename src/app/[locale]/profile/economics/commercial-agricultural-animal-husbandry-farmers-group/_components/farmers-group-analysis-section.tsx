@@ -91,7 +91,7 @@ export default function FarmersGroupAnalysisSection({
 
   // SEO attributes to include in JSX
   const seoAttributes = {
-    "data-municipality": "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
+    "data-municipality": "Paribartan Rural Municipality / परिवर्तन गाउँपालिका",
     "data-total-farms": totalGroups.toString(),
     "data-most-common-business":
       primaryBusiness &&
@@ -142,7 +142,7 @@ export default function FarmersGroupAnalysisSection({
         <h3 className="text-xl font-medium mb-6">
           व्यावसायिक कृषि तथा पशुपालन समूहहरूको विस्तृत विश्लेषण
           <span className="sr-only">
-            Detailed Agricultural and Animal Husbandry Analysis of Khajura
+            Detailed Agricultural and Animal Husbandry Analysis of Paribartan
           </span>
         </h3>
 
@@ -151,7 +151,7 @@ export default function FarmersGroupAnalysisSection({
             <h4 className="font-medium mb-2">
               प्रमुख व्यवसाय
               <span className="sr-only">
-                Main Business in Khajura Rural Municipality
+                Main Business in Paribartan Rural Municipality
               </span>
             </h4>
             {primaryBusiness && (

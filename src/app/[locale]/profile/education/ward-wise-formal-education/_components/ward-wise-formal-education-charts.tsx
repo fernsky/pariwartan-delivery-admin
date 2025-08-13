@@ -71,7 +71,7 @@ export default function WardWiseFormalEducationCharts({
       >
         <meta
           itemProp="name"
-          content="Formal Education Distribution in Khajura Rural Municipality"
+          content="Formal Education Distribution in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"

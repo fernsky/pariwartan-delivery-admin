@@ -58,7 +58,7 @@ export default function LandPossessionAnalysisSection({
     if (document && document.body) {
       document.body.setAttribute(
         "data-municipality",
-        "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
+        "Paribartan Rural Municipality / परिवर्तन गाउँपालिका",
       );
       document.body.setAttribute(
         "data-total-landowner-households",

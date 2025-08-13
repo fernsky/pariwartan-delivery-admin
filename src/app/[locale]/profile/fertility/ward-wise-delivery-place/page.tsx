@@ -49,7 +49,7 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     const deliveryPlaceData =
       await api.profile.fertility.wardWiseDeliveryPlaces.getAll.query();
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Paribartan Rural Municipality
 
     // Group by ward number
     const wardGroups = deliveryPlaceData.reduce((acc: any, curr: any) => {
@@ -98,7 +98,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     const keywordsEN = [
-      "Khajura Rural Municipality childbirth places",
+      "Paribartan Rural Municipality childbirth places",
       "Institutional delivery",
       "Ward-wise delivery statistics",
       "Home delivery rate",
@@ -109,7 +109,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Create description
     const descriptionNP = `परिवर्तन गाउँपालिकामा प्रसूती स्थान सम्बन्धी विश्लेषण। कुल ${localizeNumber(totalDeliveries.toLocaleString(), "ne")} प्रसूती मध्ये ${localizeNumber(institutionalPercentage, "ne")}% (${localizeNumber(institutionalDeliveries.toLocaleString(), "ne")}) संस्थागत प्रसूती र ${localizeNumber(homePercentage, "ne")}% (${localizeNumber(homeDeliveries.toLocaleString(), "ne")}) घरमा भएका प्रसूती रहेका छन्।`;
 
-    const descriptionEN = `Analysis of childbirth locations in Khajura Rural Municipality. Out of a total of ${totalDeliveries.toLocaleString()} deliveries, ${institutionalPercentage}% (${institutionalDeliveries.toLocaleString()}) were institutional deliveries and ${homePercentage}% (${homeDeliveries.toLocaleString()}) were home deliveries.`;
+    const descriptionEN = `Analysis of childbirth locations in Paribartan Rural Municipality. Out of a total of ${totalDeliveries.toLocaleString()} deliveries, ${institutionalPercentage}% (${institutionalDeliveries.toLocaleString()}) were institutional deliveries and ${homePercentage}% (${homeDeliveries.toLocaleString()}) were home deliveries.`;
 
     return {
       title: `प्रसूती स्थानको अवस्था | ${municipalityName} डिजिटल प्रोफाइल`,
@@ -334,7 +334,7 @@ export default async function WardWiseDeliveryPlacePage() {
               src="/images/delivery-place-statistics.svg"
               width={1200}
               height={400}
-              alt="प्रसूती स्थानको अवस्था - परिवर्तन गाउँपालिका (Delivery Place Statistics - Khajura Rural Municipality)"
+              alt="प्रसूती स्थानको अवस्था - परिवर्तन गाउँपालिका (Delivery Place Statistics - Paribartan Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />

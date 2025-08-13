@@ -47,14 +47,14 @@ export default function WardWiseSolidWasteManagementCharts({
   return (
     <>
       {/* Overall solid waste management distribution */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Solid Waste Management Distribution in Khajura Rural Municipality"
+          content="Solid Waste Management Distribution in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
@@ -90,15 +90,22 @@ export default function WardWiseSolidWasteManagementCharts({
                 <thead>
                   <tr className="bg-muted sticky top-0">
                     <th className="border p-2 text-left">क्र.सं.</th>
-                    <th className="border p-2 text-left">फोहोरमैला व्यवस्थापन विधि</th>
+                    <th className="border p-2 text-left">
+                      फोहोरमैला व्यवस्थापन विधि
+                    </th>
                     <th className="border p-2 text-right">घरधुरी</th>
                     <th className="border p-2 text-right">प्रतिशत</th>
                   </tr>
                 </thead>
                 <tbody>
                   {pieChartData.map((item, index) => (
-                    <tr key={index} className={index % 2 === 0 ? "bg-muted/40" : ""}>
-                      <td className="border p-2">{localizeNumber((index + 1).toString(), "ne")}</td>
+                    <tr
+                      key={index}
+                      className={index % 2 === 0 ? "bg-muted/40" : ""}
+                    >
+                      <td className="border p-2">
+                        {localizeNumber((index + 1).toString(), "ne")}
+                      </td>
                       <td className="border p-2">{item.name}</td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.value.toLocaleString(), "ne")}
@@ -162,7 +169,7 @@ export default function WardWiseSolidWasteManagementCharts({
       </div>
 
       {/* Ward-wise distribution */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="ward-wise-solid-waste-management"
         itemScope
@@ -170,11 +177,11 @@ export default function WardWiseSolidWasteManagementCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise Solid Waste Management in Khajura Rural Municipality"
+          content="Ward-wise Solid Waste Management in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Distribution of solid waste management methods across wards in Khajura"
+          content="Distribution of solid waste management methods across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -182,7 +189,8 @@ export default function WardWiseSolidWasteManagementCharts({
             वडा अनुसार फोहोरमैला व्यवस्थापन
           </h3>
           <p className="text-sm text-muted-foreground">
-            वडा अनुसार विभिन्न फोहोरमैला व्यवस्थापन विधिहरू प्रयोग गर्ने घरधुरीहरूको वितरण
+            वडा अनुसार विभिन्न फोहोरमैला व्यवस्थापन विधिहरू प्रयोग गर्ने
+            घरधुरीहरूको वितरण
           </p>
         </div>
 
@@ -198,18 +206,18 @@ export default function WardWiseSolidWasteManagementCharts({
       </div>
 
       {/* Ward-wise comparison */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Home Waste Collection Comparison Across Wards in Khajura Rural Municipality"
+          content="Home Waste Collection Comparison Across Wards in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Comparison of home waste collection rates across wards in Khajura"
+          content="Comparison of home waste collection rates across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -217,14 +225,17 @@ export default function WardWiseSolidWasteManagementCharts({
             वडागत घरमै फोहोर संकलन दर
           </h3>
           <p className="text-sm text-muted-foreground">
-            विभिन्न वडाहरूमा घरमै फोहोर संकलन विधि प्रयोग गर्ने घरधुरीहरूको तुलना
+            विभिन्न वडाहरूमा घरमै फोहोर संकलन विधि प्रयोग गर्ने घरधुरीहरूको
+            तुलना
           </p>
         </div>
 
         <div className="p-6">
           <div className="h-[400px]">
             <SolidWasteManagementComparisonChart
-              wardWiseHomeCollectionPercentage={wardWiseHomeCollectionPercentage}
+              wardWiseHomeCollectionPercentage={
+                wardWiseHomeCollectionPercentage
+              }
               highestHomeCollectionWard={highestHomeCollectionWard}
               lowestHomeCollectionWard={lowestHomeCollectionWard}
               WASTE_MANAGEMENT_COLORS={WASTE_MANAGEMENT_COLORS}
@@ -234,18 +245,18 @@ export default function WardWiseSolidWasteManagementCharts({
       </div>
 
       {/* Ward-wise analysis */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Ward-wise Solid Waste Management Analysis in Khajura Rural Municipality"
+          content="Ward-wise Solid Waste Management Analysis in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Detailed analysis of solid waste management by ward in Khajura"
+          content="Detailed analysis of solid waste management by ward in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -276,13 +287,18 @@ export default function WardWiseSolidWasteManagementCharts({
                   const total = item.total;
                   return (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
-                      <td className="border p-2">वडा {localizeNumber(item.wardNumber, "ne")}</td>
+                      <td className="border p-2">
+                        वडा {localizeNumber(item.wardNumber, "ne")}
+                      </td>
                       <td className="border p-2 text-right">
                         {localizeNumber(total.toLocaleString(), "ne")}
                       </td>
                       {Object.entries(sourceMap).map(([key, name]) => {
                         const value = item[name] || 0;
-                        const percentage = total > 0 ? ((value / total) * 100).toFixed(2) : "0.00";
+                        const percentage =
+                          total > 0
+                            ? ((value / total) * 100).toFixed(2)
+                            : "0.00";
                         return (
                           <td key={key} className="border p-2 text-right">
                             {localizeNumber(value.toLocaleString(), "ne")}
@@ -304,7 +320,10 @@ export default function WardWiseSolidWasteManagementCharts({
                   </td>
                   {Object.entries(sourceMap).map(([key, name]) => {
                     const value = wasteManagementTotals[key] || 0;
-                    const percentage = ((value / totalHouseholds) * 100).toFixed(2);
+                    const percentage = (
+                      (value / totalHouseholds) *
+                      100
+                    ).toFixed(2);
                     return (
                       <td key={key} className="border p-2 text-right">
                         {localizeNumber(value.toLocaleString(), "ne")}
@@ -320,7 +339,9 @@ export default function WardWiseSolidWasteManagementCharts({
           </div>
 
           {/* Ward pie charts (client component) */}
-          <h4 className="text-lg font-medium mt-8 mb-4">वडागत फोहोरमैला व्यवस्थापनको वितरण</h4>
+          <h4 className="text-lg font-medium mt-8 mb-4">
+            वडागत फोहोरमैला व्यवस्थापनको वितरण
+          </h4>
           <WardSolidWasteManagementPieCharts
             wardWiseData={wardWiseData}
             WASTE_MANAGEMENT_COLORS={WASTE_MANAGEMENT_COLORS}

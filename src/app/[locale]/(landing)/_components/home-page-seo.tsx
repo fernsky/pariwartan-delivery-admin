@@ -64,9 +64,9 @@ export default function HomePageSEO({
       email: "info@paribartan.digprofile.com",
     },
     sameAs: [
-      "https://www.facebook.com/khajuraruralmun/",
-      "https://twitter.com/khajurarural",
-      "https://www.youtube.com/channel/khajuraruralmun",
+      "https://www.facebook.com/Paribartanruralmun/",
+      "https://twitter.com/Paribartanrural",
+      "https://www.youtube.com/channel/Paribartanruralmun",
     ],
     areaServed: {
       "@type": "AdministrativeArea",
@@ -91,7 +91,7 @@ export default function HomePageSEO({
     url: "https://paribartan.digprofile.com/profile/demographics",
     keywords: [
       "परिवर्तन गाउँपालिका जनसंख्या",
-      "Khajura Rural Municipality demographics",
+      "Paribartan Rural Municipality demographics",
       "परिवर्तन जनगणना",
       "बाँके जनसंख्या",
       "नेपालको जनसंख्या",

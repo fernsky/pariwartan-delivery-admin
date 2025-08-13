@@ -82,18 +82,18 @@ export default function DeathCauseCharts({
   return (
     <>
       {/* Overall death cause distribution - with pre-rendered table and client-side chart */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Death Cause Distribution in Khajura Rural Municipality"
+          content="Death Cause Distribution in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content={`Distribution of death causes in Khajura with a total of ${totalDeaths} deaths`}
+          content={`Distribution of death causes in Paribartan with a total of ${totalDeaths} deaths`}
         />
 
         <div className="border-b px-4 py-3">
@@ -101,7 +101,8 @@ export default function DeathCauseCharts({
             मृत्युका कारणहरू अनुसार वितरण
           </h3>
           <p className="text-sm text-muted-foreground">
-            कुल मृत्यु संख्या: {localizeNumber(totalDeaths.toLocaleString(), "ne")}
+            कुल मृत्यु संख्या:{" "}
+            {localizeNumber(totalDeaths.toLocaleString(), "ne")}
           </p>
         </div>
 
@@ -134,13 +135,19 @@ export default function DeathCauseCharts({
                 <tbody>
                   {overallSummary.map((item, i) => (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/40" : ""}>
-                      <td className="border p-2">{localizeNumber(i + 1, "ne")}</td>
+                      <td className="border p-2">
+                        {localizeNumber(i + 1, "ne")}
+                      </td>
                       <td className="border p-2">{item.deathCauseName}</td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.population.toLocaleString(), "ne")}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(((item.population / totalDeaths) * 100).toFixed(2), "ne")}%
+                        {localizeNumber(
+                          ((item.population / totalDeaths) * 100).toFixed(2),
+                          "ne",
+                        )}
+                        %
                       </td>
                     </tr>
                   ))}
@@ -183,7 +190,11 @@ export default function DeathCauseCharts({
                   <div className="flex justify-between items-center">
                     <span>{item.deathCauseName}</span>
                     <span className="font-medium">
-                      {localizeNumber(((item.population / totalDeaths) * 100).toFixed(1), "ne")}%
+                      {localizeNumber(
+                        ((item.population / totalDeaths) * 100).toFixed(1),
+                        "ne",
+                      )}
+                      %
                     </span>
                   </div>
                   <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -211,18 +222,18 @@ export default function DeathCauseCharts({
       </div>
 
       {/* Ward-wise distribution - pre-rendered table with client-side chart */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Ward-wise Death Cause Distribution in Khajura Rural Municipality"
+          content="Ward-wise Death Cause Distribution in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Death cause distribution across wards in Khajura"
+          content="Death cause distribution across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -246,18 +257,18 @@ export default function DeathCauseCharts({
       </div>
 
       {/* Detailed ward analysis - with pre-rendered HTML table for SEO */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Detailed Death Cause Analysis by Ward in Khajura Rural Municipality"
+          content="Detailed Death Cause Analysis by Ward in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Detailed death cause composition of each ward in Khajura"
+          content="Detailed death cause composition of each ward in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -270,7 +281,9 @@ export default function DeathCauseCharts({
         </div>
 
         <div className="p-6">
-          <h4 className="text-lg font-medium mb-4">वडागत मृत्युका कारण तालिका</h4>
+          <h4 className="text-lg font-medium mb-4">
+            वडागत मृत्युका कारण तालिका
+          </h4>
           <div className="overflow-auto max-h-[600px]">
             <table className="w-full border-collapse min-w-[800px]">
               <thead className="sticky top-0 z-10">
@@ -303,7 +316,9 @@ export default function DeathCauseCharts({
 
                   return (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
-                      <td className="border p-2">वडा {localizeNumber(wardNumber, "ne")}</td>
+                      <td className="border p-2">
+                        वडा {localizeNumber(wardNumber, "ne")}
+                      </td>
                       <td className="border p-2">
                         {primaryDeathCause
                           ? deathCauseLabels[primaryDeathCause.deathCause] ||
@@ -312,14 +327,20 @@ export default function DeathCauseCharts({
                       </td>
                       <td className="border p-2 text-right">
                         {primaryDeathCause?.population
-                          ? localizeNumber(primaryDeathCause.population.toLocaleString(), "ne")
+                          ? localizeNumber(
+                              primaryDeathCause.population.toLocaleString(),
+                              "ne",
+                            )
                           : "०"}
                       </td>
                       <td className="border p-2 text-right">
                         {wardTotal > 0 && primaryDeathCause?.population
                           ? localizeNumber(
-                              ((primaryDeathCause.population / wardTotal) * 100).toFixed(2),
-                              "ne"
+                              (
+                                (primaryDeathCause.population / wardTotal) *
+                                100
+                              ).toFixed(2),
+                              "ne",
                             ) + "%"
                           : "०%"}
                       </td>
@@ -331,14 +352,20 @@ export default function DeathCauseCharts({
                       </td>
                       <td className="border p-2 text-right">
                         {secondaryDeathCause?.population
-                          ? localizeNumber(secondaryDeathCause.population.toLocaleString(), "ne")
+                          ? localizeNumber(
+                              secondaryDeathCause.population.toLocaleString(),
+                              "ne",
+                            )
                           : "०"}
                       </td>
                       <td className="border p-2 text-right">
                         {wardTotal > 0 && secondaryDeathCause?.population
                           ? localizeNumber(
-                              ((secondaryDeathCause.population / wardTotal) * 100).toFixed(2),
-                              "ne"
+                              (
+                                (secondaryDeathCause.population / wardTotal) *
+                                100
+                              ).toFixed(2),
+                              "ne",
                             ) + "%"
                           : "०%"}
                       </td>

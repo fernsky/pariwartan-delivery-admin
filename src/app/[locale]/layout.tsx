@@ -66,7 +66,7 @@ export async function generateMetadata(props: {
       },
       description: t("description"),
       keywords: [
-        "khajura",
+        "Paribartan",
         "Digital Profile",
         "Nepal",
         "Government",
@@ -211,7 +211,7 @@ export default async function RootLayout(props: {
     >
       <head>
         {/* Government required meta tags */}
-        <meta name="gov:portal" content="khajura Digital Profile" />
+        <meta name="gov:portal" content="Paribartan Digital Profile" />
         <meta
           name="gov:department"
           content="Digital Profile Information System"

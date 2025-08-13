@@ -30,12 +30,15 @@ interface WardWiseDrinkingWaterSourceChartsProps {
     wardNumber: number;
     percentage: number;
   };
-  WATER_SOURCE_GROUPS: Record<string, {
-    name: string;
-    nameEn: string;
-    color: string;
-    sources: string[];
-  }>;
+  WATER_SOURCE_GROUPS: Record<
+    string,
+    {
+      name: string;
+      nameEn: string;
+      color: string;
+      sources: string[];
+    }
+  >;
 }
 
 export default function WardWiseDrinkingWaterSourceCharts({
@@ -54,14 +57,14 @@ export default function WardWiseDrinkingWaterSourceCharts({
   return (
     <>
       {/* Overall drinking water source distribution */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Drinking Water Source Distribution in Khajura Rural Municipality"
+          content="Drinking Water Source Distribution in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
@@ -104,8 +107,13 @@ export default function WardWiseDrinkingWaterSourceCharts({
                 </thead>
                 <tbody>
                   {pieChartData.map((item, index) => (
-                    <tr key={index} className={index % 2 === 0 ? "bg-muted/40" : ""}>
-                      <td className="border p-2">{localizeNumber((index + 1).toString(), "ne")}</td>
+                    <tr
+                      key={index}
+                      className={index % 2 === 0 ? "bg-muted/40" : ""}
+                    >
+                      <td className="border p-2">
+                        {localizeNumber((index + 1).toString(), "ne")}
+                      </td>
                       <td className="border p-2">{item.name}</td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.value.toLocaleString(), "ne")}
@@ -169,7 +177,7 @@ export default function WardWiseDrinkingWaterSourceCharts({
       </div>
 
       {/* Ward-wise distribution */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="ward-wise-drinking-water-sources"
         itemScope
@@ -177,11 +185,11 @@ export default function WardWiseDrinkingWaterSourceCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise Drinking Water Sources in Khajura Rural Municipality"
+          content="Ward-wise Drinking Water Sources in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Distribution of drinking water sources across wards in Khajura"
+          content="Distribution of drinking water sources across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -189,7 +197,8 @@ export default function WardWiseDrinkingWaterSourceCharts({
             वडा अनुसार खानेपानीका स्रोतहरू
           </h3>
           <p className="text-sm text-muted-foreground">
-            वडा अनुसार विभिन्न खानेपानीका स्रोतहरू प्रयोग गर्ने घरधुरीहरूको वितरण
+            वडा अनुसार विभिन्न खानेपानीका स्रोतहरू प्रयोग गर्ने घरधुरीहरूको
+            वितरण
           </p>
         </div>
 
@@ -204,18 +213,18 @@ export default function WardWiseDrinkingWaterSourceCharts({
       </div>
 
       {/* Ward-wise comparison */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Piped Water Access Comparison Across Wards in Khajura Rural Municipality"
+          content="Piped Water Access Comparison Across Wards in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Comparison of piped water access rates across wards in Khajura"
+          content="Comparison of piped water access rates across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -240,18 +249,18 @@ export default function WardWiseDrinkingWaterSourceCharts({
       </div>
 
       {/* Ward-wise analysis */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Ward-wise Drinking Water Source Analysis in Khajura Rural Municipality"
+          content="Ward-wise Drinking Water Source Analysis in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Detailed analysis of drinking water sources by ward in Khajura"
+          content="Detailed analysis of drinking water sources by ward in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -270,9 +279,13 @@ export default function WardWiseDrinkingWaterSourceCharts({
                 <tr className="bg-muted">
                   <th className="border p-2">वडा नं.</th>
                   <th className="border p-2 text-right">जम्मा घरधुरी</th>
-                  {Object.keys(WATER_SOURCE_GROUPS).map(key => (
+                  {Object.keys(WATER_SOURCE_GROUPS).map((key) => (
                     <th key={key} className="border p-2 text-right">
-                      {WATER_SOURCE_GROUPS[key as keyof typeof WATER_SOURCE_GROUPS].name}
+                      {
+                        WATER_SOURCE_GROUPS[
+                          key as keyof typeof WATER_SOURCE_GROUPS
+                        ].name
+                      }
                     </th>
                   ))}
                 </tr>
@@ -282,14 +295,22 @@ export default function WardWiseDrinkingWaterSourceCharts({
                   const total = item.total;
                   return (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
-                      <td className="border p-2">वडा {localizeNumber(item.wardNumber, "ne")}</td>
+                      <td className="border p-2">
+                        वडा {localizeNumber(item.wardNumber, "ne")}
+                      </td>
                       <td className="border p-2 text-right">
                         {localizeNumber(total.toLocaleString(), "ne")}
                       </td>
-                      {Object.keys(WATER_SOURCE_GROUPS).map(key => {
-                        const groupName = WATER_SOURCE_GROUPS[key as keyof typeof WATER_SOURCE_GROUPS].name;
+                      {Object.keys(WATER_SOURCE_GROUPS).map((key) => {
+                        const groupName =
+                          WATER_SOURCE_GROUPS[
+                            key as keyof typeof WATER_SOURCE_GROUPS
+                          ].name;
                         const value = item[groupName] || 0;
-                        const percentage = total > 0 ? ((value / total) * 100).toFixed(2) : "0.00";
+                        const percentage =
+                          total > 0
+                            ? ((value / total) * 100).toFixed(2)
+                            : "0.00";
                         return (
                           <td key={key} className="border p-2 text-right">
                             {localizeNumber(value.toLocaleString(), "ne")}
@@ -309,9 +330,10 @@ export default function WardWiseDrinkingWaterSourceCharts({
                   <td className="border p-2 text-right">
                     {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
                   </td>
-                  {Object.keys(WATER_SOURCE_GROUPS).map(key => {
+                  {Object.keys(WATER_SOURCE_GROUPS).map((key) => {
                     const value = waterSourceGroupTotals[key];
-                    const percentage = waterSourceGroupPercentages[key].toFixed(2);
+                    const percentage =
+                      waterSourceGroupPercentages[key].toFixed(2);
                     return (
                       <td key={key} className="border p-2 text-right">
                         {localizeNumber(value.toLocaleString(), "ne")}
@@ -327,7 +349,9 @@ export default function WardWiseDrinkingWaterSourceCharts({
           </div>
 
           {/* Ward pie charts (client component) */}
-          <h4 className="text-lg font-medium mt-8 mb-4">वडागत खानेपानीका स्रोतहरूको वितरण</h4>
+          <h4 className="text-lg font-medium mt-8 mb-4">
+            वडागत खानेपानीका स्रोतहरूको वितरण
+          </h4>
           <WardDrinkingWaterSourcePieCharts
             wardWiseData={wardWiseData}
             WATER_SOURCE_GROUPS={WATER_SOURCE_GROUPS}

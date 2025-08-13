@@ -66,18 +66,18 @@ export default function LandOwnershipCharts({
   return (
     <>
       {/* Overall land ownership distribution - with pre-rendered table and client-side chart */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Land Ownership Types in Khajura Rural Municipality"
+          content="Land Ownership Types in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content={`Land ownership types of Khajura with a total of ${totalHouseholds} households`}
+          content={`Land ownership types of Paribartan with a total of ${totalHouseholds} households`}
         />
 
         <div className="border-b px-4 py-3">
@@ -85,7 +85,8 @@ export default function LandOwnershipCharts({
             जग्गा स्वामित्वका प्रमुख प्रकारहरू
           </h3>
           <p className="text-sm text-muted-foreground">
-            कुल परिवार संख्या: {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
+            कुल परिवार संख्या:{" "}
+            {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
           </p>
         </div>
 
@@ -118,13 +119,21 @@ export default function LandOwnershipCharts({
                 <tbody>
                   {overallSummary.map((item, i) => (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/40" : ""}>
-                      <td className="border p-2">{localizeNumber(i + 1, "ne")}</td>
+                      <td className="border p-2">
+                        {localizeNumber(i + 1, "ne")}
+                      </td>
                       <td className="border p-2">{item.typeName}</td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.households.toLocaleString(), "ne")}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(((item.households / totalHouseholds) * 100).toFixed(2), "ne")}%
+                        {localizeNumber(
+                          ((item.households / totalHouseholds) * 100).toFixed(
+                            2,
+                          ),
+                          "ne",
+                        )}
+                        %
                       </td>
                     </tr>
                   ))}
@@ -144,14 +153,17 @@ export default function LandOwnershipCharts({
                 </tfoot>
               </table>
             </div>
-            
+
             <div className="mt-8">
-              <h4 className="text-lg font-medium mb-4 text-center">जग्गा सुरक्षा स्कोर</h4>
+              <h4 className="text-lg font-medium mb-4 text-center">
+                जग्गा सुरक्षा स्कोर
+              </h4>
               <div className="p-4">
                 <LandSecurityChart securityScore={securityScore} />
               </div>
               <p className="text-sm text-muted-foreground mt-4 text-center">
-                नोट: जग्गा सुरक्षा स्कोर निजी र गुठी जग्गामा बसोबास गर्ने घरपरिवारको प्रतिशतमा आधारित छ।
+                नोट: जग्गा सुरक्षा स्कोर निजी र गुठी जग्गामा बसोबास गर्ने
+                घरपरिवारको प्रतिशतमा आधारित छ।
               </p>
             </div>
           </div>
@@ -177,7 +189,11 @@ export default function LandOwnershipCharts({
                   <div className="flex justify-between items-center">
                     <span className="text-sm truncate">{item.typeName}</span>
                     <span className="font-medium">
-                      {localizeNumber(((item.households / totalHouseholds) * 100).toFixed(1), "ne")}%
+                      {localizeNumber(
+                        ((item.households / totalHouseholds) * 100).toFixed(1),
+                        "ne",
+                      )}
+                      %
                     </span>
                   </div>
                   <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -200,7 +216,7 @@ export default function LandOwnershipCharts({
       </div>
 
       {/* Ward-wise distribution - pre-rendered table with client-side chart */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="ward-wise-land-ownership"
         itemScope
@@ -208,11 +224,11 @@ export default function LandOwnershipCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise Land Ownership in Khajura Rural Municipality"
+          content="Ward-wise Land Ownership in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Land ownership distribution across wards in Khajura"
+          content="Land ownership distribution across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -236,7 +252,7 @@ export default function LandOwnershipCharts({
       </div>
 
       {/* Ward-wise analysis - with pre-rendered HTML table for SEO */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="land-ownership-trends"
         itemScope
@@ -244,11 +260,11 @@ export default function LandOwnershipCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise Land Ownership Analysis in Khajura Rural Municipality"
+          content="Ward-wise Land Ownership Analysis in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Land ownership patterns by ward in Khajura"
+          content="Land ownership patterns by ward in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -277,12 +293,19 @@ export default function LandOwnershipCharts({
                 {wardWiseAnalysis.map((item, i) => {
                   return (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
-                      <td className="border p-2">वडा {localizeNumber(item.wardNumber, "ne")}</td>
+                      <td className="border p-2">
+                        वडा {localizeNumber(item.wardNumber, "ne")}
+                      </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.totalHouseholds.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.totalHouseholds.toLocaleString(),
+                          "ne",
+                        )}
                       </td>
                       <td className="border p-2">
-                        {LAND_OWNERSHIP_TYPES[item.mostCommonType as keyof typeof LAND_OWNERSHIP_TYPES] || item.mostCommonType}
+                        {LAND_OWNERSHIP_TYPES[
+                          item.mostCommonType as keyof typeof LAND_OWNERSHIP_TYPES
+                        ] || item.mostCommonType}
                       </td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.privatePercentage, "ne")}%
@@ -291,7 +314,15 @@ export default function LandOwnershipCharts({
                         {localizeNumber(item.publicEilaniPercentage, "ne")}%
                       </td>
                       <td className="border p-2 text-right">
-                        <span className={item.securityScore >= 75 ? "text-green-600" : item.securityScore >= 50 ? "text-amber-600" : "text-red-600"}>
+                        <span
+                          className={
+                            item.securityScore >= 75
+                              ? "text-green-600"
+                              : item.securityScore >= 50
+                                ? "text-amber-600"
+                                : "text-red-600"
+                          }
+                        >
                           {localizeNumber(item.securityScore.toString(), "ne")}%
                         </span>
                       </td>
@@ -306,22 +337,45 @@ export default function LandOwnershipCharts({
                     {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
                   </td>
                   <td className="border p-2">
-                    {LAND_OWNERSHIP_TYPES[overallSummary[0]?.type as keyof typeof LAND_OWNERSHIP_TYPES] || overallSummary[0]?.type}
+                    {LAND_OWNERSHIP_TYPES[
+                      overallSummary[0]
+                        ?.type as keyof typeof LAND_OWNERSHIP_TYPES
+                    ] || overallSummary[0]?.type}
                   </td>
                   <td className="border p-2 text-right">
                     {localizeNumber(
-                      ((overallSummary.find(s => s.type === "PRIVATE")?.households || 0) / totalHouseholds * 100).toFixed(2),
-                      "ne"
-                    )}%
+                      (
+                        ((overallSummary.find((s) => s.type === "PRIVATE")
+                          ?.households || 0) /
+                          totalHouseholds) *
+                        100
+                      ).toFixed(2),
+                      "ne",
+                    )}
+                    %
                   </td>
                   <td className="border p-2 text-right">
                     {localizeNumber(
-                      ((overallSummary.find(s => s.type === "PUBLIC_EILANI")?.households || 0) / totalHouseholds * 100).toFixed(2),
-                      "ne"
-                    )}%
+                      (
+                        ((overallSummary.find((s) => s.type === "PUBLIC_EILANI")
+                          ?.households || 0) /
+                          totalHouseholds) *
+                        100
+                      ).toFixed(2),
+                      "ne",
+                    )}
+                    %
                   </td>
                   <td className="border p-2 text-right">
-                    <span className={securityScore >= 75 ? "text-green-600" : securityScore >= 50 ? "text-amber-600" : "text-red-600"}>
+                    <span
+                      className={
+                        securityScore >= 75
+                          ? "text-green-600"
+                          : securityScore >= 50
+                            ? "text-amber-600"
+                            : "text-red-600"
+                      }
+                    >
                       {localizeNumber(securityScore.toString(), "ne")}%
                     </span>
                   </td>
@@ -331,7 +385,9 @@ export default function LandOwnershipCharts({
           </div>
 
           {/* Ward pie charts (client component) */}
-          <h4 className="text-lg font-medium mt-8 mb-4">वडागत जग्गा स्वामित्वको वितरण</h4>
+          <h4 className="text-lg font-medium mt-8 mb-4">
+            वडागत जग्गा स्वामित्वको वितरण
+          </h4>
           <WardLandOwnershipPieCharts
             wardNumbers={wardNumbers}
             landOwnershipData={landOwnershipData}

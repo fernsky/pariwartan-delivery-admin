@@ -24,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const representativesData =
       await api.profile.economics.municipalityWideVeterinaryRepresentatives.getAll.query();
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Paribartan Rural Municipality
 
     // Process data for SEO
     const totalRepresentatives = representativesData.length;
@@ -42,11 +42,11 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     const keywordsEN = [
-      "Khajura Rural Municipality veterinary representatives",
+      "Paribartan Rural Municipality veterinary representatives",
       "Veterinary staff list",
       "Animal Health Technician",
       "Animal Service Branch employees",
-      "Khajura veterinary team",
+      "Paribartan veterinary team",
       `Total veterinary staff ${totalRepresentatives}`,
       "Veterinary department contacts",
       "Animal service providers",
@@ -55,7 +55,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Create detailed description with actual data
     const descriptionNP = `परिवर्तन गाउँपालिकाको पशु सेवा शाखामा कार्यरत कर्मचारीहरूको विस्तृत सूची। कुल ${totalRepresentatives} जना पशु चिकित्सा प्रतिनिधिहरूको नाम, पद, सम्पर्क नम्बर र अन्य विवरणहरू। पशु स्वास्थ्य सेवा र सहयोगका लागि सम्पर्क जानकारी।`;
 
-    const descriptionEN = `Detailed list of staff working in the Animal Service branch of Khajura Rural Municipality. Complete information of ${totalRepresentatives} veterinary representatives including names, positions, contact numbers and other details. Contact information for animal health services and support.`;
+    const descriptionEN = `Detailed list of staff working in the Animal Service branch of Paribartan Rural Municipality. Complete information of ${totalRepresentatives} veterinary representatives including names, positions, contact numbers and other details. Contact information for animal health services and support.`;
 
     return {
       title: `पशु चिकित्सा प्रतिनिधिहरूको विवरण | ${municipalityName} पालिका प्रोफाइल`,

@@ -52,11 +52,11 @@ export default function CasteCharts({
         >
           <meta
             itemProp="name"
-            content="Gender Distribution in Khajura Rural Municipality"
+            content="Gender Distribution in Paribartan Rural Municipality"
           />
           <meta
             itemProp="description"
-            content={`Gender composition of Khajura with a total population of ${totalPopulation}`}
+            content={`Gender composition of Paribartan with a total population of ${totalPopulation}`}
           />
 
           <div className="border-b px-4 py-3">
@@ -168,11 +168,11 @@ export default function CasteCharts({
         >
           <meta
             itemProp="name"
-            content="Caste Population Distribution in Khajura Rural Municipality"
+            content="Caste Population Distribution in Paribartan Rural Municipality"
           />
           <meta
             itemProp="description"
-            content={`Caste-wise population distribution in Khajura with total population of ${totalPopulation}`}
+            content={`Caste-wise population distribution in Paribartan with total population of ${totalPopulation}`}
           />
 
           <div className="border-b px-4 py-3">
@@ -273,11 +273,11 @@ export default function CasteCharts({
         >
           <meta
             itemProp="name"
-            content="Caste-wise Gender Distribution in Khajura Rural Municipality"
+            content="Caste-wise Gender Distribution in Paribartan Rural Municipality"
           />
           <meta
             itemProp="description"
-            content="Gender distribution across different castes in Khajura"
+            content="Gender distribution across different castes in Paribartan"
           />
 
           <div className="border-b px-4 py-3">

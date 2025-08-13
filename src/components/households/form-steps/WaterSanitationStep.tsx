@@ -177,7 +177,7 @@ export default function WaterSanitationStep() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="municipal">
-                        नगरपालिकाको गाडी
+                        गाऊँपालिकाको गाडी
                       </SelectItem>
                       <SelectItem value="private">निजी संस्था</SelectItem>
                       <SelectItem value="composting">कम्पोस्ट</SelectItem>

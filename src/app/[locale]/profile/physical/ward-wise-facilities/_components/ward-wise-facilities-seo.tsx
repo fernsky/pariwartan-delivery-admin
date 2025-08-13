@@ -85,7 +85,7 @@ export default function WardWiseFacilitiesSEO({
 
         return {
           "@type": "Observation",
-          name: `Household Facilities Statistics in Ward ${wardNumber} of Khajura Rural Municipality`,
+          name: `Household Facilities Statistics in Ward ${wardNumber} of Paribartan Rural Municipality`,
           observationDate: new Date().toISOString().split("T")[0],
           measuredProperty: {
             "@type": "PropertyValue",
@@ -93,7 +93,7 @@ export default function WardWiseFacilitiesSEO({
             unitText: "percentage",
           },
           measuredValue: parseFloat(internetPercentage),
-          description: `In Ward ${wardNumber} of Khajura Rural Municipality, ${internetItem?.households || 0} households (${internetPercentage}%) have internet access out of approximately ${totalWardHouseholds} households.`,
+          description: `In Ward ${wardNumber} of Paribartan Rural Municipality, ${internetItem?.households || 0} households (${internetPercentage}%) have internet access out of approximately ${totalWardHouseholds} households.`,
         };
       })
       .filter(Boolean);
@@ -111,10 +111,10 @@ export default function WardWiseFacilitiesSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Household Facilities Usage in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Analysis of household facilities usage across ${wardNumbers.length} wards of Khajura Rural Municipality with approximately ${approximateUniqueHouseholds.toLocaleString()} households. ${facilityTypeTotals.MOBILE_PHONE?.toLocaleString() || 0} households (${mobilePercentage}%) have mobile phones, ${facilityTypeTotals.INTERNET?.toLocaleString() || 0} households (${internetPercentage}%) have internet access. The best digital access is in Ward ${bestDigitalWard?.wardNumber || ""} with ${bestDigitalWard?.score.toFixed(2) || ""}% digital access score.`,
+      name: "Household Facilities Usage in Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Analysis of household facilities usage across ${wardNumbers.length} wards of Paribartan Rural Municipality with approximately ${approximateUniqueHouseholds.toLocaleString()} households. ${facilityTypeTotals.MOBILE_PHONE?.toLocaleString() || 0} households (${mobilePercentage}%) have mobile phones, ${facilityTypeTotals.INTERNET?.toLocaleString() || 0} households (${internetPercentage}%) have internet access. The best digital access is in Ward ${bestDigitalWard?.wardNumber || ""} with ${bestDigitalWard?.score.toFixed(2) || ""}% digital access score.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Household facilities",
         "Mobile phone access",
@@ -130,13 +130,13 @@ export default function WardWiseFacilitiesSEO({
       url: "https://paribartan.digprofile.com/profile/physical/ward-wise-facilities",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",
@@ -207,10 +207,10 @@ export default function WardWiseFacilitiesSEO({
         name: "Municipality Household Survey",
         provider: {
           "@type": "GovernmentOrganization",
-          name: "Khajura Rural Municipality",
+          name: "Paribartan Rural Municipality",
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Khajura",
+            addressLocality: "Paribartan",
             addressRegion: "Banke",
             addressCountry: "Nepal",
           },

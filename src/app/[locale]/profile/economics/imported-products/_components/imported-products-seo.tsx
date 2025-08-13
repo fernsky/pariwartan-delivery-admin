@@ -28,7 +28,7 @@ export default function ImportedProductsSEO({
     // Convert category stats to structured data format
     const categoryStats = categoryDistribution.map((item) => ({
       "@type": "Observation",
-      name: `${CATEGORY_NAMES_EN[item.name] || item.name} imports in Khajura Rural Municipality`,
+      name: `${CATEGORY_NAMES_EN[item.name] || item.name} imports in Paribartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
@@ -38,16 +38,16 @@ export default function ImportedProductsSEO({
       measuredValue: item.value,
       description: `${item.value.toLocaleString()} products in ${
         CATEGORY_NAMES_EN[item.name] || item.name
-      } category are imported in Khajura Rural Municipality (${item.percentage}% of total imports)`,
+      } category are imported in Paribartan Rural Municipality (${item.percentage}% of total imports)`,
     }));
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Imported Products Catalog of Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Comprehensive catalog of ${totalProducts.toLocaleString()} products imported into Khajura Rural Municipality, categorized by type and usage.`,
+      name: "Imported Products Catalog of Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Comprehensive catalog of ${totalProducts.toLocaleString()} products imported into Paribartan Rural Municipality, categorized by type and usage.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Import catalog",
         "Economic profile",
@@ -59,13 +59,13 @@ export default function ImportedProductsSEO({
       url: "https://paribartan.digprofile.com/profile/economics/imported-products",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",

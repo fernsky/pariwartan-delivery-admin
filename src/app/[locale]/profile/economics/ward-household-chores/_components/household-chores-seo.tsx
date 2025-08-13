@@ -32,7 +32,7 @@ export default function HouseholdChoresSEO({
     // Convert time spent category stats to structured data format
     const timeSpentStats = overallSummary.map((item) => ({
       "@type": "Observation",
-      name: `${TIME_SPENT_NAMES_EN[item.timeSpent] || item.timeSpent} spent on household chores in Khajura Rural Municipality`,
+      name: `${TIME_SPENT_NAMES_EN[item.timeSpent] || item.timeSpent} spent on household chores in Paribartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
@@ -40,16 +40,16 @@ export default function HouseholdChoresSEO({
         unitText: "people",
       },
       measuredValue: item.population,
-      description: `${item.population.toLocaleString()} people in Khajura Rural Municipality spend ${TIME_SPENT_NAMES_EN[item.timeSpent] || item.timeSpent} on household chores (${((item.population / totalPopulation) * 100).toFixed(2)}% of total population)`,
+      description: `${item.population.toLocaleString()} people in Paribartan Rural Municipality spend ${TIME_SPENT_NAMES_EN[item.timeSpent] || item.timeSpent} on household chores (${((item.population / totalPopulation) * 100).toFixed(2)}% of total population)`,
     }));
 
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Household Chores Time Distribution in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Time spent on household chores distribution data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalPopulation.toLocaleString()} people surveyed.`,
+      name: "Household Chores Time Distribution in Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Time spent on household chores distribution data across ${wardNumbers.length} wards of Paribartan Rural Municipality with a total of ${totalPopulation.toLocaleString()} people surveyed.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Household chores",
         "Time spent on household work",
@@ -67,13 +67,13 @@ export default function HouseholdChoresSEO({
       url: "https://paribartan.digprofile.com/profile/economics/ward-household-chores",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",

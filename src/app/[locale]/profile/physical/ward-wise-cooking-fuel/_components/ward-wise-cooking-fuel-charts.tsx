@@ -32,11 +32,14 @@ interface WardWiseCookingFuelChartsProps {
     percentage: number;
     households: number;
   };
-  COOKING_FUEL_CATEGORIES: Record<string, {
-    name: string;
-    nameEn: string;
-    color: string;
-  }>;
+  COOKING_FUEL_CATEGORIES: Record<
+    string,
+    {
+      name: string;
+      nameEn: string;
+      color: string;
+    }
+  >;
   cleanFuelIndex: number;
   cleanFuels: string[];
   traditionalFuels: string[];
@@ -66,22 +69,32 @@ export default function WardWiseCookingFuelCharts({
       nameEn: "Clean Fuels",
       types: cleanFuels,
       percentage: cleanFuelPercentage,
-      total: cleanFuels.reduce((sum, fuel) => sum + (fuelTypeTotals[fuel] || 0), 0),
+      total: cleanFuels.reduce(
+        (sum, fuel) => sum + (fuelTypeTotals[fuel] || 0),
+        0,
+      ),
       color: "#34A853", // Green
     },
     traditional: {
       name: "परम्परागत इन्धन",
       nameEn: "Traditional Fuels",
       types: traditionalFuels,
-      percentage: traditionalFuels.reduce((sum, fuel) => sum + (fuelTypePercentages[fuel] || 0), 0),
-      total: traditionalFuels.reduce((sum, fuel) => sum + (fuelTypeTotals[fuel] || 0), 0),
+      percentage: traditionalFuels.reduce(
+        (sum, fuel) => sum + (fuelTypePercentages[fuel] || 0),
+        0,
+      ),
+      total: traditionalFuels.reduce(
+        (sum, fuel) => sum + (fuelTypeTotals[fuel] || 0),
+        0,
+      ),
       color: "#A52A2A", // Brown
     },
     other: {
       name: "अन्य इन्धन",
       nameEn: "Other Fuels",
       types: ["KEROSENE", "OTHER"],
-      percentage: (fuelTypePercentages.KEROSENE || 0) + (fuelTypePercentages.OTHER || 0),
+      percentage:
+        (fuelTypePercentages.KEROSENE || 0) + (fuelTypePercentages.OTHER || 0),
       total: (fuelTypeTotals.KEROSENE || 0) + (fuelTypeTotals.OTHER || 0),
       color: "#757575", // Gray
     },
@@ -90,14 +103,14 @@ export default function WardWiseCookingFuelCharts({
   return (
     <>
       {/* Overall cooking fuel distribution */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Cooking Fuel Distribution in Khajura Rural Municipality"
+          content="Cooking Fuel Distribution in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
@@ -133,15 +146,22 @@ export default function WardWiseCookingFuelCharts({
                 <thead>
                   <tr className="bg-muted sticky top-0">
                     <th className="border p-2 text-left">क्र.सं.</th>
-                    <th className="border p-2 text-left">खाना पकाउने इन्धनको प्रकार</th>
+                    <th className="border p-2 text-left">
+                      खाना पकाउने इन्धनको प्रकार
+                    </th>
                     <th className="border p-2 text-right">घरधुरी</th>
                     <th className="border p-2 text-right">प्रतिशत</th>
                   </tr>
                 </thead>
                 <tbody>
                   {pieChartData.map((item, index) => (
-                    <tr key={index} className={index % 2 === 0 ? "bg-muted/40" : ""}>
-                      <td className="border p-2">{localizeNumber((index + 1).toString(), "ne")}</td>
+                    <tr
+                      key={index}
+                      className={index % 2 === 0 ? "bg-muted/40" : ""}
+                    >
+                      <td className="border p-2">
+                        {localizeNumber((index + 1).toString(), "ne")}
+                      </td>
                       <td className="border p-2">{item.name}</td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.value.toLocaleString(), "ne")}
@@ -205,7 +225,7 @@ export default function WardWiseCookingFuelCharts({
       </div>
 
       {/* Ward-wise distribution */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="ward-wise-cooking-fuel-usage"
         itemScope
@@ -213,11 +233,11 @@ export default function WardWiseCookingFuelCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise Cooking Fuel Usage in Khajura Rural Municipality"
+          content="Ward-wise Cooking Fuel Usage in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Distribution of cooking fuel types across wards in Khajura"
+          content="Distribution of cooking fuel types across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -240,18 +260,18 @@ export default function WardWiseCookingFuelCharts({
       </div>
 
       {/* Ward-wise comparison */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Clean Cooking Fuel Usage Comparison Across Wards in Khajura Rural Municipality"
+          content="Clean Cooking Fuel Usage Comparison Across Wards in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Comparison of clean cooking fuel usage across wards in Khajura"
+          content="Comparison of clean cooking fuel usage across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -259,7 +279,8 @@ export default function WardWiseCookingFuelCharts({
             वडागत स्वच्छ इन्धन प्रयोग
           </h3>
           <p className="text-sm text-muted-foreground">
-            विभिन्न वडाहरूमा स्वच्छ इन्धन (एल.पी. ग्याँस, विद्युत, बायोग्यास) प्रयोग गर्ने घरधुरीको तुलना
+            विभिन्न वडाहरूमा स्वच्छ इन्धन (एल.पी. ग्याँस, विद्युत, बायोग्यास)
+            प्रयोग गर्ने घरधुरीको तुलना
           </p>
         </div>
 
@@ -277,18 +298,18 @@ export default function WardWiseCookingFuelCharts({
       </div>
 
       {/* Ward-wise analysis */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Ward-wise Cooking Fuel Analysis in Khajura Rural Municipality"
+          content="Ward-wise Cooking Fuel Analysis in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Detailed analysis of cooking fuel usage by ward in Khajura"
+          content="Detailed analysis of cooking fuel usage by ward in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -307,9 +328,13 @@ export default function WardWiseCookingFuelCharts({
                 <tr className="bg-muted">
                   <th className="border p-2">वडा नं.</th>
                   <th className="border p-2 text-right">जम्मा घरधुरी</th>
-                  {Object.keys(COOKING_FUEL_CATEGORIES).map(key => (
+                  {Object.keys(COOKING_FUEL_CATEGORIES).map((key) => (
                     <th key={key} className="border p-2 text-right">
-                      {COOKING_FUEL_CATEGORIES[key as keyof typeof COOKING_FUEL_CATEGORIES].name}
+                      {
+                        COOKING_FUEL_CATEGORIES[
+                          key as keyof typeof COOKING_FUEL_CATEGORIES
+                        ].name
+                      }
                     </th>
                   ))}
                 </tr>
@@ -319,14 +344,22 @@ export default function WardWiseCookingFuelCharts({
                   const total = item.total;
                   return (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
-                      <td className="border p-2">वडा {localizeNumber(item.wardNumber, "ne")}</td>
+                      <td className="border p-2">
+                        वडा {localizeNumber(item.wardNumber, "ne")}
+                      </td>
                       <td className="border p-2 text-right">
                         {localizeNumber(total.toLocaleString(), "ne")}
                       </td>
-                      {Object.keys(COOKING_FUEL_CATEGORIES).map(key => {
-                        const fuelName = COOKING_FUEL_CATEGORIES[key as keyof typeof COOKING_FUEL_CATEGORIES].name;
+                      {Object.keys(COOKING_FUEL_CATEGORIES).map((key) => {
+                        const fuelName =
+                          COOKING_FUEL_CATEGORIES[
+                            key as keyof typeof COOKING_FUEL_CATEGORIES
+                          ].name;
                         const value = item[fuelName] || 0;
-                        const percentage = total > 0 ? ((value / total) * 100).toFixed(2) : "0.00";
+                        const percentage =
+                          total > 0
+                            ? ((value / total) * 100).toFixed(2)
+                            : "0.00";
                         return (
                           <td key={key} className="border p-2 text-right">
                             {localizeNumber(value.toLocaleString(), "ne")}
@@ -346,9 +379,10 @@ export default function WardWiseCookingFuelCharts({
                   <td className="border p-2 text-right">
                     {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
                   </td>
-                  {Object.keys(COOKING_FUEL_CATEGORIES).map(key => {
+                  {Object.keys(COOKING_FUEL_CATEGORIES).map((key) => {
                     const value = fuelTypeTotals[key] || 0;
-                    const percentage = fuelTypePercentages[key]?.toFixed(2) || "0.00";
+                    const percentage =
+                      fuelTypePercentages[key]?.toFixed(2) || "0.00";
                     return (
                       <td key={key} className="border p-2 text-right">
                         {localizeNumber(value.toLocaleString(), "ne")}
@@ -364,7 +398,9 @@ export default function WardWiseCookingFuelCharts({
           </div>
 
           {/* Ward pie charts (client component) */}
-          <h4 className="text-lg font-medium mt-8 mb-4">वडागत खाना पकाउने इन्धनको वितरण</h4>
+          <h4 className="text-lg font-medium mt-8 mb-4">
+            वडागत खाना पकाउने इन्धनको वितरण
+          </h4>
           <WardCookingFuelPieCharts
             wardWiseData={wardWiseData}
             COOKING_FUEL_CATEGORIES={COOKING_FUEL_CATEGORIES}

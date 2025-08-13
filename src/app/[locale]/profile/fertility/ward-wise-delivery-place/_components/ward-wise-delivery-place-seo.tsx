@@ -71,7 +71,7 @@ export default function WardWiseDeliveryPlaceSEO({
 
         return {
           "@type": "Observation",
-          name: `Childbirth Location Statistics in Ward ${wardNumber} of Khajura Rural Municipality`,
+          name: `Childbirth Location Statistics in Ward ${wardNumber} of Paribartan Rural Municipality`,
           observationDate: new Date().toISOString().split("T")[0],
           measuredProperty: {
             "@type": "PropertyValue",
@@ -79,7 +79,7 @@ export default function WardWiseDeliveryPlaceSEO({
             unitText: "percentage",
           },
           measuredValue: parseFloat(institutionalPercent),
-          description: `In Ward ${wardNumber} of Khajura Rural Municipality, ${institutionalDeliveries.toLocaleString()} deliveries (${institutionalPercent}%) occurred in health institutions out of a total of ${totalWardDeliveries.toLocaleString()} deliveries.`,
+          description: `In Ward ${wardNumber} of Paribartan Rural Municipality, ${institutionalDeliveries.toLocaleString()} deliveries (${institutionalPercent}%) occurred in health institutions out of a total of ${totalWardDeliveries.toLocaleString()} deliveries.`,
         };
       })
       .filter(Boolean);
@@ -96,10 +96,10 @@ export default function WardWiseDeliveryPlaceSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Childbirth Locations in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Analysis of childbirth locations across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalDeliveries.toLocaleString()} deliveries. ${institutionalTotal.toLocaleString()} deliveries (${institutionalPercentage}%) occurred in health institutions. The best institutional delivery rate is in Ward ${bestWard?.wardNumber || ""} with ${bestWard?.percentage.toFixed(2) || ""}%.`,
+      name: "Childbirth Locations in Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Analysis of childbirth locations across ${wardNumbers.length} wards of Paribartan Rural Municipality with a total of ${totalDeliveries.toLocaleString()} deliveries. ${institutionalTotal.toLocaleString()} deliveries (${institutionalPercentage}%) occurred in health institutions. The best institutional delivery rate is in Ward ${bestWard?.wardNumber || ""} with ${bestWard?.percentage.toFixed(2) || ""}%.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Institutional delivery",
         "Home delivery",
@@ -114,13 +114,13 @@ export default function WardWiseDeliveryPlaceSEO({
       url: "https://paribartan.digprofile.com/profile/fertility/ward-wise-delivery-place",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",
@@ -183,10 +183,10 @@ export default function WardWiseDeliveryPlaceSEO({
         name: "Municipality Health Survey",
         provider: {
           "@type": "GovernmentOrganization",
-          name: "Khajura Rural Municipality",
+          name: "Paribartan Rural Municipality",
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Khajura",
+            addressLocality: "Paribartan",
             addressRegion: "Banke",
             addressCountry: "Nepal",
           },

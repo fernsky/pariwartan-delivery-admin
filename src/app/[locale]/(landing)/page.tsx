@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // SEO metadata setup - municipality name and details
     const municipalityName = "परिवर्तन गाउँपालिका";
-    const municipalityNameEn = "Khajura Rural Municipality";
+    const municipalityNameEn = "Paribartan Rural Municipality";
     const districtName = "रोल्पा";
     const districtNameEn = "Banke";
     const provinceName = "लुम्बिनी प्रदेश";
@@ -126,7 +126,7 @@ export default async function Page({ params }: LanguageParams) {
 
   // SEO metadata setup - municipality name and details
   const municipalityName = "परिवर्तन गाउँपालिका";
-  const municipalityNameEn = "Khajura Rural Municipality";
+  const municipalityNameEn = "Paribartan Rural Municipality";
   const districtName = "बाँके";
   const provinceNumber = 5;
   const provinceName = "लुम्बिनी प्रदेश";

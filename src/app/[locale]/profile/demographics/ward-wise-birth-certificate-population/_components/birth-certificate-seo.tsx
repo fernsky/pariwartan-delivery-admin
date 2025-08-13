@@ -35,7 +35,7 @@ export default function BirthCertificateSEO({
 
       return {
         "@type": "Observation",
-        name: `Birth Certificate Status for Children Under 5 Years in Ward ${item.wardNumber} of Khajura Rural Municipality`,
+        name: `Birth Certificate Status for Children Under 5 Years in Ward ${item.wardNumber} of Paribartan Rural Municipality`,
         observationDate: new Date().toISOString().split("T")[0],
         measuredProperty: [
           {
@@ -57,7 +57,7 @@ export default function BirthCertificateSEO({
             value: coverageRate,
           },
         ],
-        description: `Ward ${item.wardNumber} of Khajura Rural Municipality has ${item.withBirthCertificate} children with birth certificates and ${item.withoutBirthCertificate} without birth certificates, representing a ${coverageRate}% coverage rate.`,
+        description: `Ward ${item.wardNumber} of Paribartan Rural Municipality has ${item.withBirthCertificate} children with birth certificates and ${item.withoutBirthCertificate} without birth certificates, representing a ${coverageRate}% coverage rate.`,
       };
     });
 
@@ -78,10 +78,10 @@ export default function BirthCertificateSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Birth Certificate Status for Children Under 5 Years in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Birth certificate data for children under 5 years across ${wardNumbers.length} wards of Khajura Rural Municipality. Total population: ${totalPopulation.toLocaleString()} children, with ${totalWithCertificate.toLocaleString()} having birth certificates (${overallCoverageRate}% coverage) and ${totalWithoutCertificate.toLocaleString()} without birth certificates.`,
+      name: "Birth Certificate Status for Children Under 5 Years in Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Birth certificate data for children under 5 years across ${wardNumbers.length} wards of Paribartan Rural Municipality. Total population: ${totalPopulation.toLocaleString()} children, with ${totalWithCertificate.toLocaleString()} having birth certificates (${overallCoverageRate}% coverage) and ${totalWithoutCertificate.toLocaleString()} without birth certificates.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Birth certificates",
         "Children under five",
@@ -93,13 +93,13 @@ export default function BirthCertificateSEO({
       url: "https://paribartan.digprofile.com/profile/demographics/ward-wise-birth-certificate-population",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",

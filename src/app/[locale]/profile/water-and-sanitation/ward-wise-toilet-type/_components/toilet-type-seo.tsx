@@ -41,7 +41,7 @@ export default function ToiletTypeSEO({
     // Create English descriptions for SEO
     const toiletTypeStats = overallSummary.map((item) => ({
       "@type": "Observation",
-      name: `${item.toiletTypeName} toilet facilities in Khajura Rural Municipality`,
+      name: `${item.toiletTypeName} toilet facilities in Paribartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
@@ -49,7 +49,7 @@ export default function ToiletTypeSEO({
         unitText: "households",
       },
       measuredValue: item.households,
-      description: `${item.households.toLocaleString()} households in Khajura Rural Municipality use ${item.toiletTypeName} (${((item.households / totalHouseholds) * 100).toFixed(2)}% of total households)`,
+      description: `${item.households.toLocaleString()} households in Paribartan Rural Municipality use ${item.toiletTypeName} (${((item.households / totalHouseholds) * 100).toFixed(2)}% of total households)`,
     }));
 
     // Find most common toilet type
@@ -75,10 +75,10 @@ export default function ToiletTypeSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Toilet Types in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Analysis of toilet types across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${sanitizedPercentage}% of households have proper toilet facilities. The most common toilet type is ${mostCommonTypeName} with ${mostCommonType?.households.toLocaleString()} households (${mostCommonTypePercentage}%).`,
+      name: "Toilet Types in Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Analysis of toilet types across ${wardNumbers.length} wards of Paribartan Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${sanitizedPercentage}% of households have proper toilet facilities. The most common toilet type is ${mostCommonTypeName} with ${mostCommonType?.households.toLocaleString()} households (${mostCommonTypePercentage}%).`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Toilet types",
         "Sanitation facilities",
@@ -94,13 +94,13 @@ export default function ToiletTypeSEO({
       url: "https://paribartan.digprofile.com/profile/water-and-sanitation/ward-wise-toilet-type",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",
@@ -149,7 +149,7 @@ export default function ToiletTypeSEO({
       isAccessibleForFree: true,
       isPartOf: {
         "@type": "WebSite",
-        name: "Khajura Rural Municipality Digital Profile",
+        name: "Paribartan Rural Municipality Digital Profile",
         url: "https://paribartan.digprofile.com",
       },
     };

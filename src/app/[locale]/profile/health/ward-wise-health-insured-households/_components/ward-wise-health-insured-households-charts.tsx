@@ -1,4 +1,3 @@
-
 import { localizeNumber } from "@/lib/utils/localize-number";
 import HealthInsuredHouseholdsPieChart from "./charts/health-insured-households-pie-chart";
 import HealthInsuredHouseholdsBarChart from "./charts/health-insured-households-bar-chart";
@@ -50,14 +49,14 @@ export default function WardWiseHealthInsuredHouseholdsCharts({
   return (
     <>
       {/* Overall health insurance distribution */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Health Insurance Distribution in Khajura Rural Municipality"
+          content="Health Insurance Distribution in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
@@ -78,9 +77,7 @@ export default function WardWiseHealthInsuredHouseholdsCharts({
           <div className="lg:col-span-1">
             <h4 className="text-lg font-medium mb-4 text-center">पाई चार्ट</h4>
             <div className="h-[420px]">
-              <HealthInsuredHouseholdsPieChart
-                pieChartData={pieChartData}
-              />
+              <HealthInsuredHouseholdsPieChart pieChartData={pieChartData} />
             </div>
           </div>
 
@@ -92,15 +89,22 @@ export default function WardWiseHealthInsuredHouseholdsCharts({
                 <thead>
                   <tr className="bg-muted sticky top-0">
                     <th className="border p-2 text-left">क्र.सं.</th>
-                    <th className="border p-2 text-left">स्वास्थ्य बीमा स्थिति</th>
+                    <th className="border p-2 text-left">
+                      स्वास्थ्य बीमा स्थिति
+                    </th>
                     <th className="border p-2 text-right">घरधुरी</th>
                     <th className="border p-2 text-right">प्रतिशत</th>
                   </tr>
                 </thead>
                 <tbody>
                   {pieChartData.map((item, index) => (
-                    <tr key={index} className={index % 2 === 0 ? "bg-muted/40" : ""}>
-                      <td className="border p-2">{localizeNumber((index + 1).toString(), "ne")}</td>
+                    <tr
+                      key={index}
+                      className={index % 2 === 0 ? "bg-muted/40" : ""}
+                    >
+                      <td className="border p-2">
+                        {localizeNumber((index + 1).toString(), "ne")}
+                      </td>
                       <td className="border p-2">{item.name}</td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.value.toLocaleString(), "ne")}
@@ -164,7 +168,7 @@ export default function WardWiseHealthInsuredHouseholdsCharts({
       </div>
 
       {/* Ward-wise distribution */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="ward-wise-health-insurance-status"
         itemScope
@@ -172,11 +176,11 @@ export default function WardWiseHealthInsuredHouseholdsCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise Health Insurance Status in Khajura Rural Municipality"
+          content="Ward-wise Health Insurance Status in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Distribution of health insured households across wards in Khajura"
+          content="Distribution of health insured households across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -190,26 +194,24 @@ export default function WardWiseHealthInsuredHouseholdsCharts({
 
         <div className="p-6">
           <div className="h-[500px]">
-            <HealthInsuredHouseholdsBarChart
-              wardWiseData={wardWiseData}
-            />
+            <HealthInsuredHouseholdsBarChart wardWiseData={wardWiseData} />
           </div>
         </div>
       </div>
 
       {/* Ward-wise comparison */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Health Insurance Coverage Comparison Across Wards in Khajura Rural Municipality"
+          content="Health Insurance Coverage Comparison Across Wards in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Comparison of health insurance coverage across wards in Khajura"
+          content="Comparison of health insurance coverage across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -233,18 +235,18 @@ export default function WardWiseHealthInsuredHouseholdsCharts({
       </div>
 
       {/* Ward-wise analysis */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Ward-wise Health Insurance Analysis in Khajura Rural Municipality"
+          content="Ward-wise Health Insurance Analysis in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Detailed analysis of health insurance coverage by ward in Khajura"
+          content="Detailed analysis of health insurance coverage by ward in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -273,11 +275,14 @@ export default function WardWiseHealthInsuredHouseholdsCharts({
                   const total = item.total;
                   const insured = item["बीमा गरेका"];
                   const nonInsured = item["बीमा नगरेका"];
-                  const insuredRate = total > 0 ? ((insured / total) * 100).toFixed(2) : "0.00";
-                  
+                  const insuredRate =
+                    total > 0 ? ((insured / total) * 100).toFixed(2) : "0.00";
+
                   return (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
-                      <td className="border p-2">वडा {localizeNumber(item.wardNumber, "ne")}</td>
+                      <td className="border p-2">
+                        वडा {localizeNumber(item.wardNumber, "ne")}
+                      </td>
                       <td className="border p-2 text-right">
                         {localizeNumber(total.toLocaleString(), "ne")}
                       </td>
@@ -301,10 +306,16 @@ export default function WardWiseHealthInsuredHouseholdsCharts({
                     {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
                   </td>
                   <td className="border p-2 text-right">
-                    {localizeNumber(totalInsuredHouseholds.toLocaleString(), "ne")}
+                    {localizeNumber(
+                      totalInsuredHouseholds.toLocaleString(),
+                      "ne",
+                    )}
                   </td>
                   <td className="border p-2 text-right">
-                    {localizeNumber(totalNonInsuredHouseholds.toLocaleString(), "ne")}
+                    {localizeNumber(
+                      totalNonInsuredHouseholds.toLocaleString(),
+                      "ne",
+                    )}
                   </td>
                   <td className="border p-2 text-right">
                     {localizeNumber(insuredPercentage.toFixed(2), "ne")}%
@@ -315,10 +326,10 @@ export default function WardWiseHealthInsuredHouseholdsCharts({
           </div>
 
           {/* Ward pie charts (client component) */}
-          <h4 className="text-lg font-medium mt-8 mb-4">वडागत स्वास्थ्य बीमा स्थितिको वितरण</h4>
-          <WardHealthInsuredHouseholdsPieCharts
-            wardWiseData={wardWiseData}
-          />
+          <h4 className="text-lg font-medium mt-8 mb-4">
+            वडागत स्वास्थ्य बीमा स्थितिको वितरण
+          </h4>
+          <WardHealthInsuredHouseholdsPieCharts wardWiseData={wardWiseData} />
         </div>
       </div>
     </>

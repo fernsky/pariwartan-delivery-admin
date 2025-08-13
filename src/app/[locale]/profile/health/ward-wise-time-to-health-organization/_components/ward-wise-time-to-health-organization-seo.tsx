@@ -68,7 +68,7 @@ export default function WardWiseTimeToHealthOrganizationSEO({
 
         return {
           "@type": "Observation",
-          name: `Health Facility Access Statistics in Ward ${wardNumber} of Khajura Rural Municipality`,
+          name: `Health Facility Access Statistics in Ward ${wardNumber} of Paribartan Rural Municipality`,
           observationDate: new Date().toISOString().split("T")[0],
           measuredProperty: {
             "@type": "PropertyValue",
@@ -76,7 +76,7 @@ export default function WardWiseTimeToHealthOrganizationSEO({
             unitText: "percentage",
           },
           measuredValue: parseFloat(quickAccessPercent),
-          description: `In Ward ${wardNumber} of Khajura Rural Municipality, ${quickAccessHouseholds.toLocaleString()} households (${quickAccessPercent}%) can access a health facility within 30 minutes out of a total of ${totalWardHouseholds.toLocaleString()} households.`,
+          description: `In Ward ${wardNumber} of Paribartan Rural Municipality, ${quickAccessHouseholds.toLocaleString()} households (${quickAccessPercent}%) can access a health facility within 30 minutes out of a total of ${totalWardHouseholds.toLocaleString()} households.`,
         };
       })
       .filter(Boolean);
@@ -92,10 +92,10 @@ export default function WardWiseTimeToHealthOrganizationSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Time to Health Organization in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Analysis of time taken to reach health organizations across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${quickAccessTotal.toLocaleString()} households (${quickAccessPercentage}%) can reach a health facility within 30 minutes. The best accessibility is in Ward ${bestAccessWard?.wardNumber || ""} with ${bestAccessWard?.percentage.toFixed(2) || ""}% quick access rate.`,
+      name: "Time to Health Organization in Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Analysis of time taken to reach health organizations across ${wardNumbers.length} wards of Paribartan Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${quickAccessTotal.toLocaleString()} households (${quickAccessPercentage}%) can reach a health facility within 30 minutes. The best accessibility is in Ward ${bestAccessWard?.wardNumber || ""} with ${bestAccessWard?.percentage.toFixed(2) || ""}% quick access rate.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Health facility access",
         "Healthcare accessibility",
@@ -111,13 +111,13 @@ export default function WardWiseTimeToHealthOrganizationSEO({
       url: "https://paribartan.digprofile.com/profile/health/ward-wise-time-to-health-organization",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",
@@ -181,10 +181,10 @@ export default function WardWiseTimeToHealthOrganizationSEO({
         name: "Municipality Health Survey",
         provider: {
           "@type": "GovernmentOrganization",
-          name: "Khajura Rural Municipality",
+          name: "Paribartan Rural Municipality",
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Khajura",
+            addressLocality: "Paribartan",
             addressRegion: "Banke",
             addressCountry: "Nepal",
           },

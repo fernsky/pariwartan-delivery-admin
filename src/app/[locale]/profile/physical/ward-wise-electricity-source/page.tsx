@@ -54,7 +54,7 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     const electricitySourceData =
       await api.profile.physical.wardWiseElectricitySource.getAll.query();
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Paribartan Rural Municipality
 
     // Group by electricity source type
     const sourceGroups = electricitySourceData.reduce((acc: any, curr: any) => {
@@ -101,7 +101,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     const keywordsEN = [
-      "Khajura Rural Municipality electricity source",
+      "Paribartan Rural Municipality electricity source",
       "Ward-wise electricity source usage",
       "Grid electricity usage rate",
       "Solar power usage rate",
@@ -112,7 +112,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Create description
     const descriptionNP = `परिवर्तन गाउँपालिकामा विद्युतको स्रोत प्रयोगको विश्लेषण। कुल ${localizeNumber(totalHouseholds.toLocaleString(), "ne")} घरधुरी मध्ये ${localizeNumber(mainGridPercentage, "ne")}% घरधुरीले केन्द्रीय विद्युत प्रणाली र ${localizeNumber(solarPercentage, "ne")}% घरधुरीले सौर्य ऊर्जा प्रयोग गर्दछन्।`;
 
-    const descriptionEN = `Analysis of electricity source usage in Khajura Rural Municipality. Out of a total of ${totalHouseholds.toLocaleString()} households, ${mainGridPercentage}% use central electricity grid and ${solarPercentage}% use solar energy.`;
+    const descriptionEN = `Analysis of electricity source usage in Paribartan Rural Municipality. Out of a total of ${totalHouseholds.toLocaleString()} households, ${mainGridPercentage}% use central electricity grid and ${solarPercentage}% use solar energy.`;
 
     return {
       title: `विद्युतको स्रोत प्रयोगको अवस्था | ${municipalityName} डिजिटल प्रोफाइल`,
@@ -352,7 +352,7 @@ export default async function WardWiseElectricitySourcePage() {
               src="/images/electricity-source.svg"
               width={1200}
               height={400}
-              alt="विद्युतको स्रोतको प्रयोगको अवस्था - परिवर्तन गाउँपालिका (Electricity Source Usage - Khajura Rural Municipality)"
+              alt="विद्युतको स्रोतको प्रयोगको अवस्था - परिवर्तन गाउँपालिका (Electricity Source Usage - Paribartan Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />

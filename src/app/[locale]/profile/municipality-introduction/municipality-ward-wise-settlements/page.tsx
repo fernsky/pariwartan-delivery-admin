@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
           municipalityId: 1,
         },
       );
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Paribartan Rural Municipality
 
     // Process data for SEO
     const totalSettlements = settlementData.data.reduce(
@@ -56,9 +56,9 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     const keywordsEN = [
-      "Khajura Rural Municipality settlement distribution",
-      "Khajura ward settlements",
-      `Khajura total ${totalSettlements} settlements`,
+      "Paribartan Rural Municipality settlement distribution",
+      "Paribartan ward settlements",
+      `Paribartan total ${totalSettlements} settlements`,
       `Ward ${wardWithMostSettlements.ward_number_english} most settlements`,
       "Rural municipality settlement list",
       "Ward-wise settlement details",
@@ -69,7 +69,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Create detailed description with actual data
     const descriptionNP = `परिवर्तन गाउँपालिकाको वडागत बस्ती वितरण र विवरण। कुल ${localizeNumber(totalSettlements.toString(), "ne")} बस्तीहरू ${localizeNumber(settlementData.metadata.total_wards.toString(), "ne")} वडामा फैलिएका छन्। वडा ${wardWithMostSettlements.ward_number} मा सबैभन्दा धेरै ${localizeNumber(wardWithMostSettlements.settlements.length.toString(), "ne")} बस्तीहरू रहेका छन्। स्थानीय समुदाय र भौगोलिक क्षेत्रको विस्तृत तथ्याङ्क।`;
 
-    const descriptionEN = `Ward-wise settlement distribution and details for Khajura Rural Municipality. Total ${totalSettlements} settlements are spread across ${settlementData.metadata.total_wards} wards. Ward ${wardWithMostSettlements.ward_number_english} has the highest number of settlements with ${wardWithMostSettlements.settlements.length} settlements. Comprehensive data on local communities and geographical areas.`;
+    const descriptionEN = `Ward-wise settlement distribution and details for Paribartan Rural Municipality. Total ${totalSettlements} settlements are spread across ${settlementData.metadata.total_wards} wards. Ward ${wardWithMostSettlements.ward_number_english} has the highest number of settlements with ${wardWithMostSettlements.settlements.length} settlements. Comprehensive data on local communities and geographical areas.`;
 
     return {
       title: `परिवर्तन गाउँपालिका | वडागत बस्ती विवरण | डिजिटल प्रोफाइल`,
@@ -144,7 +144,7 @@ export default async function MunicipalityWardWiseSettlementsPage() {
               src="/images/ward-wise-settlement.svg"
               width={1200}
               height={400}
-              alt="वडागत बस्ती वितरण - परिवर्तन गाउँपालिका (Ward-wise Settlement Distribution - Khajura Rural Municipality)"
+              alt="वडागत बस्ती वितरण - परिवर्तन गाउँपालिका (Ward-wise Settlement Distribution - Paribartan Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />

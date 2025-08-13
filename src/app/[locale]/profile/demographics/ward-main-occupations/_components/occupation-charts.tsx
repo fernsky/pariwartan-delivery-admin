@@ -90,11 +90,11 @@ export default function OccupationCharts({
         >
           <meta
             itemProp="name"
-            content="Occupation Distribution in Khajura Rural Municipality"
+            content="Occupation Distribution in Paribartan Rural Municipality"
           />
           <meta
             itemProp="description"
-            content={`Occupational composition of Khajura with a total population of ${totalPopulation}`}
+            content={`Occupational composition of Paribartan with a total population of ${totalPopulation}`}
           />
 
           <div className="border-b px-4 py-3">
@@ -192,11 +192,11 @@ export default function OccupationCharts({
         >
           <meta
             itemProp="name"
-            content="Age-wise Occupation Distribution in Khajura Rural Municipality"
+            content="Age-wise Occupation Distribution in Paribartan Rural Municipality"
           />
           <meta
             itemProp="description"
-            content="Age group-wise occupation distribution in Khajura"
+            content="Age group-wise occupation distribution in Paribartan"
           />
 
           <div className="border-b px-4 py-3">
@@ -360,7 +360,7 @@ export default function OccupationCharts({
         >
           <meta
             itemProp="name"
-            content="Occupation Comparison in Khajura Rural Municipality"
+            content="Occupation Comparison in Paribartan Rural Municipality"
           />
           <meta
             itemProp="description"

@@ -31,7 +31,7 @@ export default function OilSeedSEO({
     // Convert oil seed stats to structured data format
     const oilSeedStats = overallSummary.map((item) => ({
       "@type": "Observation",
-      name: `${OIL_SEED_TYPES_EN[item.type] || item.type} in Khajura Rural Municipality`,
+      name: `${OIL_SEED_TYPES_EN[item.type] || item.type} in Paribartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
@@ -39,7 +39,7 @@ export default function OilSeedSEO({
         unitText: "tonnes",
       },
       measuredValue: item.production,
-      description: `${item.production.toFixed(2)} tonnes of ${OIL_SEED_TYPES_EN[item.type] || item.type} produced in Khajura Rural Municipality (${((item.production / totalProduction) * 100).toFixed(2)}% of total production). Sales volume: ${item.sales.toFixed(2)} tonnes. Revenue: NPR ${item.revenue.toLocaleString()}.`,
+      description: `${item.production.toFixed(2)} tonnes of ${OIL_SEED_TYPES_EN[item.type] || item.type} produced in Paribartan Rural Municipality (${((item.production / totalProduction) * 100).toFixed(2)}% of total production). Sales volume: ${item.sales.toFixed(2)} tonnes. Revenue: NPR ${item.revenue.toLocaleString()}.`,
     }));
 
     // Find most produced crop
@@ -63,10 +63,10 @@ export default function OilSeedSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Oil Seed Types in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Oil seed production and sales statistics of Khajura Rural Municipality with a total production of ${totalProduction.toFixed(2)} tonnes and sales of ${totalSales.toFixed(2)} tonnes (${((totalSales / totalProduction) * 100).toFixed(2)}% of production). The most common oil seed crop is ${mostProducedOilSeedEN} with ${mostProducedOilSeed?.production.toFixed(2)} tonnes (${mostProducedPercentage}%). Self-consumption represents ${selfConsumptionPercentage}% of total production. Total revenue from oil seed sales is NPR ${totalRevenue.toLocaleString()}.`,
+      name: "Oil Seed Types in Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Oil seed production and sales statistics of Paribartan Rural Municipality with a total production of ${totalProduction.toFixed(2)} tonnes and sales of ${totalSales.toFixed(2)} tonnes (${((totalSales / totalProduction) * 100).toFixed(2)}% of production). The most common oil seed crop is ${mostProducedOilSeedEN} with ${mostProducedOilSeed?.production.toFixed(2)} tonnes (${mostProducedPercentage}%). Self-consumption represents ${selfConsumptionPercentage}% of total production. Total revenue from oil seed sales is NPR ${totalRevenue.toLocaleString()}.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Oil seed production",
         "Oil seed sales",
@@ -85,13 +85,13 @@ export default function OilSeedSEO({
       url: "https://paribartan.digprofile.com/profile/economics/municipality-wide-oil-seeds",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",

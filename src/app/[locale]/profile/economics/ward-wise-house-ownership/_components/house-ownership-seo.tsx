@@ -25,7 +25,7 @@ export default function HouseOwnershipSEO({
     // Convert ownership type stats to structured data format
     const ownershipTypeStats = overallSummary.map((item) => ({
       "@type": "Observation",
-      name: `${OWNERSHIP_TYPE_NAMES_EN[item.ownershipType] || item.ownershipType} in Khajura Rural Municipality`,
+      name: `${OWNERSHIP_TYPE_NAMES_EN[item.ownershipType] || item.ownershipType} in Paribartan Rural Municipality`,
       observationDate: new Date().toISOString().split("T")[0],
       measuredProperty: {
         "@type": "PropertyValue",
@@ -33,7 +33,7 @@ export default function HouseOwnershipSEO({
         unitText: "households",
       },
       measuredValue: item.households,
-      description: `${item.households.toLocaleString()} households in Khajura Rural Municipality have ${OWNERSHIP_TYPE_NAMES_EN[item.ownershipType] || item.ownershipType} (${((item.households / totalHouseholds) * 100).toFixed(2)}% of total households)`,
+      description: `${item.households.toLocaleString()} households in Paribartan Rural Municipality have ${OWNERSHIP_TYPE_NAMES_EN[item.ownershipType] || item.ownershipType} (${((item.households / totalHouseholds) * 100).toFixed(2)}% of total households)`,
     }));
 
     // Find most common ownership type
@@ -50,10 +50,10 @@ export default function HouseOwnershipSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "House Ownership Types in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `House ownership data across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. The most common type is ${mostCommonTypeEN} with ${mostCommonType?.households.toLocaleString()} households (${mostCommonTypePercentage}%).`,
+      name: "House Ownership Types in Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `House ownership data across ${wardNumbers.length} wards of Paribartan Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. The most common type is ${mostCommonTypeEN} with ${mostCommonType?.households.toLocaleString()} households (${mostCommonTypePercentage}%).`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "House ownership",
         "Ownership distribution",
@@ -70,13 +70,13 @@ export default function HouseOwnershipSEO({
       url: "https://paribartan.digprofile.com/profile/economics/ward-wise-house-ownership",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",

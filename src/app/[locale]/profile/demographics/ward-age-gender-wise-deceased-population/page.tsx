@@ -137,7 +137,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const deceasedData =
       await api.profile.demographics.ageGenderWiseDeceasedPopulation.getAll.query();
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Paribartan Rural Municipality
 
     // Ensure deceasedData is a valid array
     if (!deceasedData || !Array.isArray(deceasedData)) {
@@ -179,13 +179,13 @@ export async function generateMetadata(): Promise<Metadata> {
         "उमेर अनुसार मृत्यु",
         "लिङ्ग अनुसार मृत्यु",
         "परिवर्तन गाउँपालिका",
-        "खजुरा नगरपालिका",
+        "परिवर्तन गाऊँपालिका",
         "मृत्यु तथ्याङ्क",
         "Deceased population",
         "Ward-wise mortality",
         "Age-wise mortality",
         "Gender-wise mortality",
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "Mortality statistics",
         ...Object.values(AGE_GROUP_NAMES),
       ],

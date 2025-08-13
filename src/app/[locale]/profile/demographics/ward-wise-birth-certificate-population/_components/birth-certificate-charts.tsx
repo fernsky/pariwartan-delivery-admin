@@ -194,11 +194,11 @@ export default function BirthCertificateCharts({
       >
         <meta
           itemProp="name"
-          content="Birth Certificate Status for Children Under 5 Years in Khajura Rural Municipality"
+          content="Birth Certificate Status for Children Under 5 Years in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content={`Birth certificate distribution of children under 5 years in Khajura showing both with and without certificates`}
+          content={`Birth certificate distribution of children under 5 years in Paribartan showing both with and without certificates`}
         />
 
         <div className="border-b px-4 py-3">
@@ -400,11 +400,11 @@ export default function BirthCertificateCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise Birth Certificate Coverage in Khajura Rural Municipality"
+          content="Ward-wise Birth Certificate Coverage in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Ward-wise coverage rates of birth certificates for children under 5 years in Khajura"
+          content="Ward-wise coverage rates of birth certificates for children under 5 years in Paribartan"
         />
 
         <div className="border-b px-4 py-3">

@@ -60,26 +60,32 @@ export default function DeceasedPopulationCharts({
   return (
     <>
       {/* Overall gender distribution - with pre-rendered table and client-side chart */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Gender-wise Deceased Population in Khajura Rural Municipality"
+          content="Gender-wise Deceased Population in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content={`Gender-wise distribution of deceased population in Khajura with a total of ${totalDeceasedPopulation}`}
+          content={`Gender-wise distribution of deceased population in Paribartan with a total of ${totalDeceasedPopulation}`}
         />
 
         <div className="border-b px-4 py-3">
-          <h3 className="text-xl font-semibold" id="gender-wise-mortality" itemProp="headline">
+          <h3
+            className="text-xl font-semibold"
+            id="gender-wise-mortality"
+            itemProp="headline"
+          >
             लिङ्ग अनुसार मृत्यु विवरण
           </h3>
           <p className="text-sm text-muted-foreground">
-            कुल मृत्यु संख्या: {localizeNumber(totalDeceasedPopulation.toLocaleString(), "ne")} व्यक्ति
+            कुल मृत्यु संख्या:{" "}
+            {localizeNumber(totalDeceasedPopulation.toLocaleString(), "ne")}{" "}
+            व्यक्ति
           </p>
         </div>
 
@@ -112,7 +118,9 @@ export default function DeceasedPopulationCharts({
                 <tbody>
                   {genderPieChartData.map((item, i) => (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/40" : ""}>
-                      <td className="border p-2">{localizeNumber(i + 1, "ne")}</td>
+                      <td className="border p-2">
+                        {localizeNumber(i + 1, "ne")}
+                      </td>
                       <td className="border p-2">{item.name}</td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.value.toLocaleString(), "ne")}
@@ -129,7 +137,10 @@ export default function DeceasedPopulationCharts({
                       जम्मा
                     </td>
                     <td className="border p-2 text-right">
-                      {localizeNumber(totalDeceasedPopulation.toLocaleString(), "ne")}
+                      {localizeNumber(
+                        totalDeceasedPopulation.toLocaleString(),
+                        "ne",
+                      )}
                     </td>
                     <td className="border p-2 text-right">
                       {localizeNumber("100.00", "ne")}%
@@ -154,7 +165,7 @@ export default function DeceasedPopulationCharts({
                     backgroundColor:
                       GENDER_COLORS[
                         Object.keys(GENDER_NAMES).find(
-                          key => GENDER_NAMES[key] === item.name
+                          (key) => GENDER_NAMES[key] === item.name,
                         ) as keyof typeof GENDER_COLORS
                       ] || "#888",
                   }}
@@ -174,7 +185,7 @@ export default function DeceasedPopulationCharts({
                         backgroundColor:
                           GENDER_COLORS[
                             Object.keys(GENDER_NAMES).find(
-                              key => GENDER_NAMES[key] === item.name
+                              (key) => GENDER_NAMES[key] === item.name,
                             ) as keyof typeof GENDER_COLORS
                           ] || "#888",
                       }}
@@ -188,18 +199,18 @@ export default function DeceasedPopulationCharts({
       </div>
 
       {/* Age Group Mortality Chart */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Age Group-wise Deceased Population in Khajura Rural Municipality"
+          content="Age Group-wise Deceased Population in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Distribution of deceased population by age groups in Khajura"
+          content="Distribution of deceased population by age groups in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -220,39 +231,57 @@ export default function DeceasedPopulationCharts({
             />
           </div>
         </div>
-        
+
         {/* Age Group table */}
         <div className="p-6 border-t">
-          <h4 className="text-lg font-medium mb-4">उमेर समूह अनुसार मृत्यु संख्या</h4>
+          <h4 className="text-lg font-medium mb-4">
+            उमेर समूह अनुसार मृत्यु संख्या
+          </h4>
           <div className="overflow-x-auto">
             <table className="w-full border-collapse min-w-[800px]">
               <thead>
                 <tr className="bg-muted">
                   <th className="border p-2 text-left">उमेर समूह</th>
                   <th className="border p-2 text-right">{GENDER_NAMES.MALE}</th>
-                  <th className="border p-2 text-right">{GENDER_NAMES.FEMALE}</th>
-                  <th className="border p-2 text-right">{GENDER_NAMES.OTHER}</th>
+                  <th className="border p-2 text-right">
+                    {GENDER_NAMES.FEMALE}
+                  </th>
+                  <th className="border p-2 text-right">
+                    {GENDER_NAMES.OTHER}
+                  </th>
                   <th className="border p-2 text-right">जम्मा</th>
                   <th className="border p-2 text-right">प्रतिशत</th>
                 </tr>
               </thead>
               <tbody>
                 {ageGroupChartData.map((item, i) => {
-                  const percentage = totalDeceasedPopulation > 0 
-                    ? ((item.total / totalDeceasedPopulation) * 100).toFixed(2)
-                    : "0";
-                  
+                  const percentage =
+                    totalDeceasedPopulation > 0
+                      ? ((item.total / totalDeceasedPopulation) * 100).toFixed(
+                          2,
+                        )
+                      : "0";
+
                   return (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/40" : ""}>
                       <td className="border p-2">{item.ageGroup}</td>
                       <td className="border p-2 text-right">
-                        {localizeNumber((item[GENDER_NAMES.MALE] || 0).toString(), "ne")}
+                        {localizeNumber(
+                          (item[GENDER_NAMES.MALE] || 0).toString(),
+                          "ne",
+                        )}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber((item[GENDER_NAMES.FEMALE] || 0).toString(), "ne")}
+                        {localizeNumber(
+                          (item[GENDER_NAMES.FEMALE] || 0).toString(),
+                          "ne",
+                        )}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber((item[GENDER_NAMES.OTHER] || 0).toString(), "ne")}
+                        {localizeNumber(
+                          (item[GENDER_NAMES.OTHER] || 0).toString(),
+                          "ne",
+                        )}
                       </td>
                       <td className="border p-2 text-right font-medium">
                         {localizeNumber(item.total.toString(), "ne")}
@@ -269,20 +298,38 @@ export default function DeceasedPopulationCharts({
                   <td className="border p-2">जम्मा</td>
                   <td className="border p-2 text-right">
                     {localizeNumber(
-                      ageGroupChartData.reduce((sum, item) => sum + (item[GENDER_NAMES.MALE] as number || 0), 0).toString(), 
-                      "ne"
+                      ageGroupChartData
+                        .reduce(
+                          (sum, item) =>
+                            sum + ((item[GENDER_NAMES.MALE] as number) || 0),
+                          0,
+                        )
+                        .toString(),
+                      "ne",
                     )}
                   </td>
                   <td className="border p-2 text-right">
                     {localizeNumber(
-                      ageGroupChartData.reduce((sum, item) => sum + (item[GENDER_NAMES.FEMALE] as number || 0), 0).toString(), 
-                      "ne"
+                      ageGroupChartData
+                        .reduce(
+                          (sum, item) =>
+                            sum + ((item[GENDER_NAMES.FEMALE] as number) || 0),
+                          0,
+                        )
+                        .toString(),
+                      "ne",
                     )}
                   </td>
                   <td className="border p-2 text-right">
                     {localizeNumber(
-                      ageGroupChartData.reduce((sum, item) => sum + (item[GENDER_NAMES.OTHER] as number || 0), 0).toString(), 
-                      "ne"
+                      ageGroupChartData
+                        .reduce(
+                          (sum, item) =>
+                            sum + ((item[GENDER_NAMES.OTHER] as number) || 0),
+                          0,
+                        )
+                        .toString(),
+                      "ne",
                     )}
                   </td>
                   <td className="border p-2 text-right">
@@ -299,7 +346,7 @@ export default function DeceasedPopulationCharts({
       </div>
 
       {/* Ward Mortality Chart */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="ward-wise-mortality"
         itemScope
@@ -307,11 +354,11 @@ export default function DeceasedPopulationCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise Deceased Population in Khajura Rural Municipality"
+          content="Ward-wise Deceased Population in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Distribution of deceased population across wards in Khajura"
+          content="Distribution of deceased population across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -332,7 +379,7 @@ export default function DeceasedPopulationCharts({
             />
           </div>
         </div>
-        
+
         {/* Ward table */}
         <div className="p-6 border-t">
           <h4 className="text-lg font-medium mb-4">वडा अनुसार मृत्यु संख्या</h4>
@@ -342,29 +389,48 @@ export default function DeceasedPopulationCharts({
                 <tr className="bg-muted">
                   <th className="border p-2 text-left">वडा</th>
                   <th className="border p-2 text-right">{GENDER_NAMES.MALE}</th>
-                  <th className="border p-2 text-right">{GENDER_NAMES.FEMALE}</th>
-                  <th className="border p-2 text-right">{GENDER_NAMES.OTHER}</th>
+                  <th className="border p-2 text-right">
+                    {GENDER_NAMES.FEMALE}
+                  </th>
+                  <th className="border p-2 text-right">
+                    {GENDER_NAMES.OTHER}
+                  </th>
                   <th className="border p-2 text-right">जम्मा</th>
                   <th className="border p-2 text-right">प्रतिशत</th>
                 </tr>
               </thead>
               <tbody>
                 {wardChartData.map((item, i) => {
-                  const percentage = totalDeceasedPopulation > 0 
-                    ? ((item.total / totalDeceasedPopulation) * 100).toFixed(2)
-                    : "0";
-                  
+                  const percentage =
+                    totalDeceasedPopulation > 0
+                      ? ((item.total / totalDeceasedPopulation) * 100).toFixed(
+                          2,
+                        )
+                      : "0";
+
                   return (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/40" : ""}>
-                      <td className="border p-2">वडा नं {localizeNumber(item.wardNumber.toString(), "ne")}</td>
-                      <td className="border p-2 text-right">
-                        {localizeNumber((item[GENDER_NAMES.MALE] || 0).toString(), "ne")}
+                      <td className="border p-2">
+                        वडा नं{" "}
+                        {localizeNumber(item.wardNumber.toString(), "ne")}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber((item[GENDER_NAMES.FEMALE] || 0).toString(), "ne")}
+                        {localizeNumber(
+                          (item[GENDER_NAMES.MALE] || 0).toString(),
+                          "ne",
+                        )}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber((item[GENDER_NAMES.OTHER] || 0).toString(), "ne")}
+                        {localizeNumber(
+                          (item[GENDER_NAMES.FEMALE] || 0).toString(),
+                          "ne",
+                        )}
+                      </td>
+                      <td className="border p-2 text-right">
+                        {localizeNumber(
+                          (item[GENDER_NAMES.OTHER] || 0).toString(),
+                          "ne",
+                        )}
                       </td>
                       <td className="border p-2 text-right font-medium">
                         {localizeNumber(item.total.toString(), "ne")}
@@ -381,20 +447,38 @@ export default function DeceasedPopulationCharts({
                   <td className="border p-2">जम्मा</td>
                   <td className="border p-2 text-right">
                     {localizeNumber(
-                      wardChartData.reduce((sum, item) => sum + (item[GENDER_NAMES.MALE] as number || 0), 0).toString(), 
-                      "ne"
+                      wardChartData
+                        .reduce(
+                          (sum, item) =>
+                            sum + ((item[GENDER_NAMES.MALE] as number) || 0),
+                          0,
+                        )
+                        .toString(),
+                      "ne",
                     )}
                   </td>
                   <td className="border p-2 text-right">
                     {localizeNumber(
-                      wardChartData.reduce((sum, item) => sum + (item[GENDER_NAMES.FEMALE] as number || 0), 0).toString(), 
-                      "ne"
+                      wardChartData
+                        .reduce(
+                          (sum, item) =>
+                            sum + ((item[GENDER_NAMES.FEMALE] as number) || 0),
+                          0,
+                        )
+                        .toString(),
+                      "ne",
                     )}
                   </td>
                   <td className="border p-2 text-right">
                     {localizeNumber(
-                      wardChartData.reduce((sum, item) => sum + (item[GENDER_NAMES.OTHER] as number || 0), 0).toString(), 
-                      "ne"
+                      wardChartData
+                        .reduce(
+                          (sum, item) =>
+                            sum + ((item[GENDER_NAMES.OTHER] as number) || 0),
+                          0,
+                        )
+                        .toString(),
+                      "ne",
                     )}
                   </td>
                   <td className="border p-2 text-right">
@@ -411,18 +495,18 @@ export default function DeceasedPopulationCharts({
       </div>
 
       {/* Ward-wise age-gender distribution */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Ward-wise Age-Gender Mortality Analysis in Khajura Rural Municipality"
+          content="Ward-wise Age-Gender Mortality Analysis in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Detailed age and gender mortality distribution by ward in Khajura"
+          content="Detailed age and gender mortality distribution by ward in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -436,7 +520,9 @@ export default function DeceasedPopulationCharts({
 
         <div className="p-6">
           {/* Ward age-gender charts (client component) */}
-          <h4 className="text-lg font-medium mb-6">वडागत उमेर र लिङ्ग अनुसारको मृत्यु विवरण</h4>
+          <h4 className="text-lg font-medium mb-6">
+            वडागत उमेर र लिङ्ग अनुसारको मृत्यु विवरण
+          </h4>
           <WardAgeGenderMortalityCharts
             wardNumbers={wardNumbers}
             deceasedData={deceasedData}

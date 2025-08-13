@@ -67,7 +67,10 @@ interface RemittanceChartsProps {
     percentage: string;
     color: string;
   }>;
-  AMOUNT_RANGE_MAP: Record<string, { min: number; max: number | null; color: string; label: string }>;
+  AMOUNT_RANGE_MAP: Record<
+    string,
+    { min: number; max: number | null; color: string; label: string }
+  >;
   remittanceAmountGroupOptions: Array<{
     value: string;
     label: string;
@@ -104,50 +107,55 @@ export default function RemittanceCharts({
 }: RemittanceChartsProps) {
   const downloadCSV = () => {
     // Create CSV header
-    const header = ['वडा नम्बर', ...remittanceAmountGroupOptions.map(option => option.label), 'कुल'];
+    const header = [
+      "वडा नम्बर",
+      ...remittanceAmountGroupOptions.map((option) => option.label),
+      "कुल",
+    ];
 
     // Create CSV rows
-    const rows = wardWiseAnalysis.map(ward => {
+    const rows = wardWiseAnalysis.map((ward) => {
       const row = [ward.wardNumber];
-      
+
       // Add data for each amount group
-      remittanceAmountGroupOptions.forEach(option => {
+      remittanceAmountGroupOptions.forEach((option) => {
         const item = remittanceData.find(
-          d => d.wardNumber === ward.wardNumber && d.amountGroup === option.value
+          (d) =>
+            d.wardNumber === ward.wardNumber && d.amountGroup === option.value,
         );
         row.push(item ? item.sendingPopulation : 0);
       });
-      
+
       // Add total for this ward
       row.push(ward.totalSendingPopulation);
-      
+
       return row;
     });
-    
+
     // Add a summary row
-    const summaryRow = ['जम्मा'];
-    remittanceAmountGroupOptions.forEach(option => {
+    const summaryRow = ["जम्मा"];
+    remittanceAmountGroupOptions.forEach((option) => {
       const sum = remittanceData
-        .filter(d => d.amountGroup === option.value)
+        .filter((d) => d.amountGroup === option.value)
         .reduce((acc, curr) => acc + curr.sendingPopulation, 0);
       summaryRow.push(sum.toString());
     });
     summaryRow.push(totalSendingPopulation.toString());
-    
+
     rows.push(summaryRow as unknown as number[]);
-    
+
     // Convert to CSV format
-    const csvContent = 
-      'data:text/csv;charset=utf-8,' + 
-      [header, ...rows].map(row => row.join(',')).join('\n');
-    
+    const csvContent =
+      "data:text/csv;charset=utf-8," +
+      [header, ...rows].map((row) => row.join(",")).join("\n");
+
     // Create download link
     const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'वडा_अनुसार_रेमिट्यान्स_वितरण.csv');
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "वडा_अनुसार_रेमिट्यान्स_वितरण.csv");
     document.body.appendChild(link);
-    
+
     // Trigger download
     link.click();
     document.body.removeChild(link);
@@ -156,14 +164,14 @@ export default function RemittanceCharts({
   return (
     <>
       {/* Overall remittance distribution - with pre-rendered table and client-side chart */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Ward-wise Remittance Distribution in Khajura Rural Municipality"
+          content="Ward-wise Remittance Distribution in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
@@ -172,7 +180,11 @@ export default function RemittanceCharts({
 
         <div className="border-b px-4 py-3">
           <div className="flex flex-wrap justify-between items-center">
-            <h3 className="text-xl font-semibold" itemProp="headline" id="remittance-categorization">
+            <h3
+              className="text-xl font-semibold"
+              itemProp="headline"
+              id="remittance-categorization"
+            >
               रेमिट्यान्स रकम अनुसार वितरण
             </h3>
             <Button
@@ -186,7 +198,8 @@ export default function RemittanceCharts({
             </Button>
           </div>
           <p className="text-sm text-muted-foreground">
-            कुल रेमिट्यान्स पठाउने जनसंख्या: {localizeNumber(totalSendingPopulation.toLocaleString(), "ne")}
+            कुल रेमिट्यान्स पठाउने जनसंख्या:{" "}
+            {localizeNumber(totalSendingPopulation.toLocaleString(), "ne")}
           </p>
         </div>
 
@@ -210,7 +223,9 @@ export default function RemittanceCharts({
                 <thead>
                   <tr className="bg-muted sticky top-0">
                     <th className="border p-2 text-left">क्र.सं.</th>
-                    <th className="border p-2 text-left">रेमिट्यान्स रकम समूह</th>
+                    <th className="border p-2 text-left">
+                      रेमिट्यान्स रकम समूह
+                    </th>
                     <th className="border p-2 text-right">जनसंख्या</th>
                     <th className="border p-2 text-right">प्रतिशत</th>
                   </tr>
@@ -218,13 +233,25 @@ export default function RemittanceCharts({
                 <tbody>
                   {overallSummary.map((item, i) => (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/40" : ""}>
-                      <td className="border p-2">{localizeNumber(i + 1, "ne")}</td>
+                      <td className="border p-2">
+                        {localizeNumber(i + 1, "ne")}
+                      </td>
                       <td className="border p-2">{item.amountGroupLabel}</td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.sendingPopulation.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.sendingPopulation.toLocaleString(),
+                          "ne",
+                        )}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(((item.sendingPopulation / totalSendingPopulation) * 100).toFixed(2), "ne")}%
+                        {localizeNumber(
+                          (
+                            (item.sendingPopulation / totalSendingPopulation) *
+                            100
+                          ).toFixed(2),
+                          "ne",
+                        )}
+                        %
                       </td>
                     </tr>
                   ))}
@@ -235,7 +262,10 @@ export default function RemittanceCharts({
                       जम्मा
                     </td>
                     <td className="border p-2 text-right">
-                      {localizeNumber(totalSendingPopulation.toLocaleString(), "ne")}
+                      {localizeNumber(
+                        totalSendingPopulation.toLocaleString(),
+                        "ne",
+                      )}
                     </td>
                     <td className="border p-2 text-right">
                       {localizeNumber("100.00", "ne")}%
@@ -244,7 +274,7 @@ export default function RemittanceCharts({
                 </tfoot>
               </table>
             </div>
-            
+
             <div className="md:hidden mt-4">
               <Button
                 size="sm"
@@ -272,9 +302,20 @@ export default function RemittanceCharts({
                 ></div>
                 <div className="flex-grow">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm truncate">{item.amountGroupLabel.length > 15 ? `${item.amountGroupLabel.substring(0, 15)}...` : item.amountGroupLabel}</span>
+                    <span className="text-sm truncate">
+                      {item.amountGroupLabel.length > 15
+                        ? `${item.amountGroupLabel.substring(0, 15)}...`
+                        : item.amountGroupLabel}
+                    </span>
                     <span className="font-medium">
-                      {localizeNumber(((item.sendingPopulation / totalSendingPopulation) * 100).toFixed(1), "ne")}%
+                      {localizeNumber(
+                        (
+                          (item.sendingPopulation / totalSendingPopulation) *
+                          100
+                        ).toFixed(1),
+                        "ne",
+                      )}
+                      %
                     </span>
                   </div>
                   <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -306,7 +347,9 @@ export default function RemittanceCharts({
 
         <div className="p-4">
           <div className="h-[400px]">
-            <RemittanceRangeBarChart remittanceRangeData={remittanceRangeData} />
+            <RemittanceRangeBarChart
+              remittanceRangeData={remittanceRangeData}
+            />
           </div>
         </div>
       </div>
@@ -324,7 +367,9 @@ export default function RemittanceCharts({
 
         <div className="p-4">
           <div className="h-[400px]">
-            <RemittanceLevelDistributionChart remittanceLevelData={remittanceLevelData} />
+            <RemittanceLevelDistributionChart
+              remittanceLevelData={remittanceLevelData}
+            />
           </div>
         </div>
       </div>
@@ -376,9 +421,7 @@ export default function RemittanceCharts({
       {/* Ward-wise pie charts */}
       <div className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card">
         <div className="border-b px-4 py-3">
-          <h3 className="text-xl font-semibold">
-            वडागत रेमिट्यान्स विश्लेषण
-          </h3>
+          <h3 className="text-xl font-semibold">वडागत रेमिट्यान्स विश्लेषण</h3>
           <p className="text-sm text-muted-foreground">
             प्रत्येक वडाको रेमिट्यान्स वितरणको विस्तृत विश्लेषण
           </p>

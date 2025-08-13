@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const incomeSourcesData =
       await api.profile.economics.wardWiseHouseholdIncomeSource.getAll.query();
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Paribartan Rural Municipality
 
     // Process data for SEO
     const totalHouseholds = incomeSourcesData.reduce(
@@ -82,22 +82,22 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     const keywordsEN = [
-      "Khajura Rural Municipality income sources",
-      "Khajura household income",
-      `Khajura ${INCOME_SOURCE_NAMES_EN[topIncomeSources[0]]} households`,
+      "Paribartan Rural Municipality income sources",
+      "Paribartan household income",
+      `Paribartan ${INCOME_SOURCE_NAMES_EN[topIncomeSources[0]]} households`,
       ...topIncomeSources.map(
-        (r) => `${INCOME_SOURCE_NAMES_EN[r]} income in Khajura`,
+        (r) => `${INCOME_SOURCE_NAMES_EN[r]} income in Paribartan`,
       ),
       "Ward-wise income sources",
       "Income diversity statistics",
-      "Economic census Khajura",
-      `Khajura total households ${totalHouseholds}`,
+      "Economic census Paribartan",
+      `Paribartan total households ${totalHouseholds}`,
     ];
 
     // Create detailed description with actual data
     const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार घरपरिवारको आयस्रोत वितरण, प्रवृत्ति र विश्लेषण। कुल घरपरिवार ${totalHouseholds} मध्ये ${INCOME_SOURCE_NAMES_NP[topIncomeSources[0]]} (${incomeCounts[topIncomeSources[0]]}) सबैभन्दा ठूलो समूह हो, त्यसपछि ${INCOME_SOURCE_NAMES_NP[topIncomeSources[1]]} (${incomeCounts[topIncomeSources[1]]}) र ${INCOME_SOURCE_NAMES_NP[topIncomeSources[2]]} (${incomeCounts[topIncomeSources[2]]})। विभिन्न आयस्रोतहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
 
-    const descriptionEN = `Ward-wise household income source distribution, trends and analysis for Khajura Rural Municipality. Out of total ${totalHouseholds} households, ${INCOME_SOURCE_NAMES_EN[topIncomeSources[0]]} (${incomeCounts[topIncomeSources[0]]}) is the largest group, followed by ${INCOME_SOURCE_NAMES_EN[topIncomeSources[1]]} (${incomeCounts[topIncomeSources[1]]}) and ${INCOME_SOURCE_NAMES_EN[topIncomeSources[2]]} (${incomeCounts[topIncomeSources[2]]})। Detailed statistics and visualizations of various income sources.`;
+    const descriptionEN = `Ward-wise household income source distribution, trends and analysis for Paribartan Rural Municipality. Out of total ${totalHouseholds} households, ${INCOME_SOURCE_NAMES_EN[topIncomeSources[0]]} (${incomeCounts[topIncomeSources[0]]}) is the largest group, followed by ${INCOME_SOURCE_NAMES_EN[topIncomeSources[1]]} (${incomeCounts[topIncomeSources[1]]}) and ${INCOME_SOURCE_NAMES_EN[topIncomeSources[2]]} (${incomeCounts[topIncomeSources[2]]})। Detailed statistics and visualizations of various income sources.`;
 
     return {
       title: `घरपरिवारको आयस्रोत | ${municipalityName} पालिका प्रोफाइल`,
@@ -252,7 +252,7 @@ export default async function IncomeSourcesPage() {
               src="/images/income-sources.svg"
               width={1200}
               height={400}
-              alt="घरपरिवारको आयस्रोत - परिवर्तन गाउँपालिका (Household Income Sources - Khajura Rural Municipality)"
+              alt="घरपरिवारको आयस्रोत - परिवर्तन गाउँपालिका (Household Income Sources - Paribartan Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />

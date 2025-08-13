@@ -68,7 +68,7 @@ export default function BirthplaceHouseholdAnalysisSection({
     if (document && document.body) {
       document.body.setAttribute(
         "data-municipality",
-        "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
+        "Paribartan Rural Municipality / परिवर्तन गाउँपालिका",
       );
       document.body.setAttribute(
         "data-total-households",
@@ -167,7 +167,7 @@ export default function BirthplaceHouseholdAnalysisSection({
       <div className="bg-muted/50 p-4 rounded-lg mt-8">
         <h3 className="text-xl font-medium mb-4">
           जन्मस्थान विश्लेषण
-          <span className="sr-only">Birthplace Analysis of Khajura</span>
+          <span className="sr-only">Birthplace Analysis of Paribartan</span>
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div
@@ -185,7 +185,7 @@ export default function BirthplaceHouseholdAnalysisSection({
             <h4 className="font-medium mb-2">
               प्रमुख जन्मस्थान
               <span className="sr-only">
-                Most Common Birthplace in Khajura Rural Municipality
+                Most Common Birthplace in Paribartan Rural Municipality
               </span>
             </h4>
             <p className="text-3xl font-bold">
@@ -232,7 +232,7 @@ export default function BirthplaceHouseholdAnalysisSection({
             <h4 className="font-medium mb-2">
               स्थानीय जन्मस्थान भएको जनसंख्या
               <span className="sr-only">
-                Population with Local Birthplace in Khajura
+                Population with Local Birthplace in Paribartan
               </span>
             </h4>
             <p className="text-3xl font-bold">

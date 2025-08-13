@@ -46,7 +46,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const expensesData =
       await api.profile.economics.wardWiseRemittanceExpenses.getAll.query();
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Paribartan Rural Municipality
 
     // Process data for SEO
     const totalHouseholds = expensesData.reduce(
@@ -84,23 +84,23 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     const keywordsEN = [
-      "Khajura Rural Municipality remittance expenses",
-      "Khajura remittance utilization",
-      `Khajura ${EXPENSE_NAMES_EN[topExpenses[0] as RemittanceExpenseType]} expenses`,
+      "Paribartan Rural Municipality remittance expenses",
+      "Paribartan remittance utilization",
+      `Paribartan ${EXPENSE_NAMES_EN[topExpenses[0] as RemittanceExpenseType]} expenses`,
       ...topExpenses.map(
         (r) =>
-          `${EXPENSE_NAMES_EN[r as RemittanceExpenseType]} expenses in Khajura`,
+          `${EXPENSE_NAMES_EN[r as RemittanceExpenseType]} expenses in Paribartan`,
       ),
       "Ward-wise remittance expenses",
       "Remittance utilization statistics",
-      "Remittance survey Khajura",
-      `Khajura households receiving remittance ${totalHouseholds}`,
+      "Remittance survey Paribartan",
+      `Paribartan households receiving remittance ${totalHouseholds}`,
     ];
 
     // Create detailed description with actual data
     const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार रेमिट्यान्स (विप्रेषण) खर्च वितरण, प्रवृत्ति र विश्लेषण। कुल विप्रेषण प्राप्त घरपरिवार संख्या ${totalHouseholds} मध्ये ${remittanceExpenseLabels[topExpenses[0] as RemittanceExpenseType]} (${expenseCounts[topExpenses[0]]}) सबैभन्दा ठूलो समूह हो, त्यसपछि ${remittanceExpenseLabels[topExpenses[1] as RemittanceExpenseType]} (${expenseCounts[topExpenses[1]]}) र ${remittanceExpenseLabels[topExpenses[2] as RemittanceExpenseType]} (${expenseCounts[topExpenses[2]]})। विभिन्न विप्रेषण खर्च प्रकारहरूको विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
 
-    const descriptionEN = `Ward-wise remittance expense distribution, trends and analysis for Khajura Rural Municipality. Out of ${totalHouseholds} households receiving remittances, ${EXPENSE_NAMES_EN[topExpenses[0] as RemittanceExpenseType]} (${expenseCounts[topExpenses[0]]}) is the largest expense category, followed by ${EXPENSE_NAMES_EN[topExpenses[1] as RemittanceExpenseType]} (${expenseCounts[topExpenses[1]]}) and ${EXPENSE_NAMES_EN[topExpenses[2] as RemittanceExpenseType]} (${expenseCounts[topExpenses[2]]})। Detailed statistics and visualizations of various remittance expense patterns.`;
+    const descriptionEN = `Ward-wise remittance expense distribution, trends and analysis for Paribartan Rural Municipality. Out of ${totalHouseholds} households receiving remittances, ${EXPENSE_NAMES_EN[topExpenses[0] as RemittanceExpenseType]} (${expenseCounts[topExpenses[0]]}) is the largest expense category, followed by ${EXPENSE_NAMES_EN[topExpenses[1] as RemittanceExpenseType]} (${expenseCounts[topExpenses[1]]}) and ${EXPENSE_NAMES_EN[topExpenses[2] as RemittanceExpenseType]} (${expenseCounts[topExpenses[2]]})। Detailed statistics and visualizations of various remittance expense patterns.`;
 
     return {
       title: `रेमिट्यान्स खर्च | ${municipalityName} पालिका प्रोफाइल`,
@@ -276,7 +276,7 @@ export default async function WardRemittanceExpensesPage() {
               src="/images/remittance-expenses.svg"
               width={1200}
               height={400}
-              alt="रेमिट्यान्स खर्च - परिवर्तन गाउँपालिका (Remittance Expenses - Khajura Rural Municipality)"
+              alt="रेमिट्यान्स खर्च - परिवर्तन गाउँपालिका (Remittance Expenses - Paribartan Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />

@@ -56,7 +56,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const animalProductData =
       await api.profile.economics.municipalityWideAnimalProducts.getAll.query();
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Paribartan Rural Municipality
 
     // Process data for SEO
     const totalProduction = animalProductData.reduce(
@@ -110,20 +110,20 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     const keywordsEN = [
-      "Khajura Rural Municipality animal products",
-      "Khajura milk production",
+      "Paribartan Rural Municipality animal products",
+      "Paribartan milk production",
       "Municipality-wide animal product statistics",
-      "Milk production in Khajura",
+      "Milk production in Paribartan",
       "Meat production statistics",
       "Egg production data",
-      `Khajura animal product sales ${totalSales.toFixed(2)} tonnes`,
-      `Khajura animal product revenue ${(totalRevenue / 1000).toFixed(2)} thousand rupees`,
+      `Paribartan animal product sales ${totalSales.toFixed(2)} tonnes`,
+      `Paribartan animal product revenue ${(totalRevenue / 1000).toFixed(2)} thousand rupees`,
     ];
 
     // Create detailed description with actual data
     const descriptionNP = `परिवर्तन गाउँपालिकाको पशुपन्छीजन्य उत्पादन र बिक्री विश्लेषण। कुल ${localizeNumber(totalProduction.toFixed(2), "ne")} मेट्रिक टन पशुजन्य उत्पादन मध्ये ${localizeNumber(mostProducedPercentage, "ne")}% (${localizeNumber(mostProducedAmount.toFixed(2), "ne")} टन) ${ANIMAL_PRODUCT_TYPES[mostProducedProduct] || mostProducedProduct} रहेको छ। पालिका स्तरीय पशुपन्छीजन्य उत्पादन र बिक्रीको विस्तृत विश्लेषण।`;
 
-    const descriptionEN = `Analysis of animal product production and sales in Khajura Rural Municipality. Out of total ${totalProduction.toFixed(2)} metric tonnes of animal products, ${mostProducedPercentage}% (${mostProducedAmount.toFixed(2)} tonnes) is ${ANIMAL_PRODUCT_TYPES_EN[mostProducedProduct] || mostProducedProduct}. Detailed analysis of municipality-wide animal product patterns.`;
+    const descriptionEN = `Analysis of animal product production and sales in Paribartan Rural Municipality. Out of total ${totalProduction.toFixed(2)} metric tonnes of animal products, ${mostProducedPercentage}% (${mostProducedAmount.toFixed(2)} tonnes) is ${ANIMAL_PRODUCT_TYPES_EN[mostProducedProduct] || mostProducedProduct}. Detailed analysis of municipality-wide animal product patterns.`;
 
     return {
       title: `पशुपन्छीजन्य वस्तुको प्रकार अनुसार उत्पादन र बिक्री | ${municipalityName} डिजिटल प्रोफाइल`,
@@ -350,7 +350,7 @@ export default async function MunicipalityWideAnimalProductsPage() {
               src="/images/animal-products.svg"
               width={1200}
               height={400}
-              alt="पशुपन्छीजन्य वस्तुको प्रकार अनुसार उत्पादन र बिक्री - परिवर्तन गाउँपालिका (Animal Products by Production and Sales - Khajura Rural Municipality)"
+              alt="पशुपन्छीजन्य वस्तुको प्रकार अनुसार उत्पादन र बिक्री - परिवर्तन गाउँपालिका (Animal Products by Production and Sales - Paribartan Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />

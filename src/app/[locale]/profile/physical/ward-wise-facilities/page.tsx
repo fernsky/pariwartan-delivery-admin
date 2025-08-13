@@ -104,7 +104,7 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     const facilitiesData =
       await api.profile.physical.wardWiseFacilities.getAll.query();
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Paribartan Rural Municipality
 
     // Group by facility type
     const facilityGroups = facilitiesData.reduce((acc: any, curr: any) => {
@@ -177,7 +177,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     const keywordsEN = [
-      "Khajura Rural Municipality household facilities",
+      "Paribartan Rural Municipality household facilities",
       "Ward-wise household facilities usage",
       "Mobile phone usage rate",
       "Television usage rate",
@@ -188,7 +188,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Create description
     const descriptionNP = `परिवर्तन गाउँपालिकामा घरायसी सुविधाको प्रयोगको विश्लेषण। ${localizeNumber(mobilePercentage, "ne")}% घरहरूमा मोबाइल फोन, ${localizeNumber(televisionPercentage, "ne")}% घरहरूमा टेलिभिजन र ${localizeNumber(internetPercentage, "ne")}% घरहरूमा इन्टरनेट सुविधा रहेको छ।`;
 
-    const descriptionEN = `Analysis of household facilities usage in Khajura Rural Municipality. ${mobilePercentage}% of households have mobile phones, ${televisionPercentage}% have television and ${internetPercentage}% have internet access.`;
+    const descriptionEN = `Analysis of household facilities usage in Paribartan Rural Municipality. ${mobilePercentage}% of households have mobile phones, ${televisionPercentage}% have television and ${internetPercentage}% have internet access.`;
 
     return {
       title: `घरायसी सुविधाको प्रयोगको अवस्था | ${municipalityName} डिजिटल प्रोफाइल`,
@@ -464,7 +464,7 @@ export default async function WardWiseFacilitiesPage() {
               src="/images/household-facilities.svg"
               width={1200}
               height={400}
-              alt="घरायसी सुविधाको प्रयोगको अवस्था - परिवर्तन गाउँपालिका (Household Facilities Usage - Khajura Rural Municipality)"
+              alt="घरायसी सुविधाको प्रयोगको अवस्था - परिवर्तन गाउँपालिका (Household Facilities Usage - Paribartan Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />

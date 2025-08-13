@@ -40,7 +40,7 @@ export default function AgricultureFirmCountAnalysisSection({
     if (document && document.body) {
       document.body.setAttribute(
         "data-municipality",
-        "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
+        "Paribartan Rural Municipality / परिवर्तन गाउँपालिका",
       );
       document.body.setAttribute(
         "data-total-agriculture-firms",
@@ -129,7 +129,9 @@ export default function AgricultureFirmCountAnalysisSection({
       <div className="bg-muted/50 p-4 rounded-lg mt-6">
         <h3 className="text-lg font-medium mb-4">
           कृषि फर्म विश्लेषण
-          <span className="sr-only">Agriculture Firms Analysis of Khajura</span>
+          <span className="sr-only">
+            Agriculture Firms Analysis of Paribartan
+          </span>
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div
@@ -141,7 +143,7 @@ export default function AgricultureFirmCountAnalysisSection({
             <h4 className="font-medium mb-2 text-sm">
               सर्वाधिक कृषि फर्म भएको वडा
               <span className="sr-only">
-                Ward with most agriculture firms in Khajura
+                Ward with most agriculture firms in Paribartan
               </span>
             </h4>
             <p className="text-2xl font-bold">
@@ -165,7 +167,7 @@ export default function AgricultureFirmCountAnalysisSection({
             <h4 className="font-medium mb-2 text-sm">
               प्रति वडा औसत
               <span className="sr-only">
-                Average agriculture firms per ward in Khajura
+                Average agriculture firms per ward in Paribartan
               </span>
             </h4>
             <p className="text-2xl font-bold">
@@ -186,7 +188,7 @@ export default function AgricultureFirmCountAnalysisSection({
             <h4 className="font-medium mb-2 text-sm">
               न्यूनतम कृषि फर्म भएको वडा
               <span className="sr-only">
-                Ward with least agriculture firms in Khajura
+                Ward with least agriculture firms in Paribartan
               </span>
             </h4>
             <p className="text-2xl font-bold">
@@ -208,7 +210,7 @@ export default function AgricultureFirmCountAnalysisSection({
         <h3 className="text-lg font-medium mb-3">
           कृषि फर्म वितरण विश्लेषण
           <span className="sr-only">
-            Agriculture Firms Distribution Analysis of Khajura Rural
+            Agriculture Firms Distribution Analysis of Paribartan Rural
             Municipality
           </span>
         </h3>

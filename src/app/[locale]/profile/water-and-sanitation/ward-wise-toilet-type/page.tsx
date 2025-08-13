@@ -34,7 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     const toiletTypeData =
       await api.profile.waterAndSanitation.wardWiseToiletType.getAll.query();
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Paribartan Rural Municipality
 
     // Process data for SEO
     const totalHouseholds = toiletTypeData.reduce(
@@ -84,12 +84,12 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     const keywordsEN = [
-      "Khajura Rural Municipality toilet types",
+      "Paribartan Rural Municipality toilet types",
       "Ward-wise toilet facilities",
       "Flush toilet with septic tank households",
       "Public toilet usage",
       "Households without toilet",
-      `Khajura toilet facilities data ${totalHouseholds}`,
+      `Paribartan toilet facilities data ${totalHouseholds}`,
     ];
 
     // Create detailed description with actual data
@@ -101,7 +101,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "ne",
     )}) मा ${mostCommonTypeName} प्रकारका शौचालय छन्। विभिन्न वडाहरूमा शौचालय प्रकारहरूको विस्तृत विश्लेषण।`;
 
-    const descriptionEN = `Ward-wise distribution and analysis of toilet types in Khajura Rural Municipality. Out of a total of ${totalHouseholds} households, ${mostCommonPercentage}% (${mostCommonCount}) use ${mostCommonTypeName}. Detailed analysis of toilet types across various wards.`;
+    const descriptionEN = `Ward-wise distribution and analysis of toilet types in Paribartan Rural Municipality. Out of a total of ${totalHouseholds} households, ${mostCommonPercentage}% (${mostCommonCount}) use ${mostCommonTypeName}. Detailed analysis of toilet types across various wards.`;
 
     return {
       title: `शौचालय प्रकारहरू | ${municipalityName} डिजिटल प्रोफाइल`,
@@ -384,7 +384,7 @@ export default async function WardWiseToiletTypePage() {
               src="/images/toilet-types.svg"
               width={1200}
               height={400}
-              alt="शौचालय प्रकारहरू - परिवर्तन गाउँपालिका (Toilet Types - Khajura Rural Municipality)"
+              alt="शौचालय प्रकारहरू - परिवर्तन गाउँपालिका (Toilet Types - Paribartan Rural Municipality)"
               className="w-full h-[250px] object-cover rounded-sm"
               priority
             />

@@ -54,7 +54,7 @@ export default function IncomeSourcesAnalysisSection({
     if (document && document.body) {
       document.body.setAttribute(
         "data-municipality",
-        "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
+        "Paribartan Rural Municipality / परिवर्तन गाउँपालिका",
       );
       document.body.setAttribute(
         "data-total-households",
@@ -173,7 +173,7 @@ export default function IncomeSourcesAnalysisSection({
       <div className="bg-muted/50 p-4 rounded-lg mt-8">
         <h3 className="text-xl font-medium mb-4">
           आयस्रोत विश्लेषण
-          <span className="sr-only">Income Sources Analysis of Khajura</span>
+          <span className="sr-only">Income Sources Analysis of Paribartan</span>
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div
@@ -189,7 +189,7 @@ export default function IncomeSourcesAnalysisSection({
             <h4 className="font-medium mb-2">
               प्रमुख आयस्रोत
               <span className="sr-only">
-                Main Income Source in Khajura Rural Municipality
+                Main Income Source in Paribartan Rural Municipality
               </span>
             </h4>
             <p className="text-3xl font-bold">
@@ -201,7 +201,7 @@ export default function IncomeSourcesAnalysisSection({
                 : ""}
               <span className="sr-only">
                 {topSource
-                  ? `${((topSource.households / totalHouseholds) * 100).toFixed(2)}% of total households in Khajura Rural Municipality`
+                  ? `${((topSource.households / totalHouseholds) * 100).toFixed(2)}% of total households in Paribartan Rural Municipality`
                   : ""}
               </span>
             </p>
@@ -217,7 +217,7 @@ export default function IncomeSourcesAnalysisSection({
             <h4 className="font-medium mb-2">
               प्रमुख-दोस्रो आयस्रोत अनुपात
               <span className="sr-only">
-                Primary to Secondary Income Source Ratio in Khajura
+                Primary to Secondary Income Source Ratio in Paribartan
               </span>
             </h4>
             <p className="text-3xl font-bold">{topTwoSourceRatio}</p>
@@ -227,7 +227,7 @@ export default function IncomeSourcesAnalysisSection({
                 : ""}
               <span className="sr-only">
                 {topSource && secondSource
-                  ? `For every ${topTwoSourceRatio} ${topSource.incomeSource.toLowerCase()} dependent households, there is 1 ${secondSource.incomeSource.toLowerCase()} dependent household in Khajura Rural Municipality`
+                  ? `For every ${topTwoSourceRatio} ${topSource.incomeSource.toLowerCase()} dependent households, there is 1 ${secondSource.incomeSource.toLowerCase()} dependent household in Paribartan Rural Municipality`
                   : ""}
               </span>
             </p>
@@ -239,7 +239,8 @@ export default function IncomeSourcesAnalysisSection({
         <h3 className="text-xl font-medium mb-4">
           आयस्रोत विविधिकरण विश्लेषण
           <span className="sr-only">
-            Income Source Diversification Analysis of Khajura Rural Municipality
+            Income Source Diversification Analysis of Paribartan Rural
+            Municipality
           </span>
         </h3>
 

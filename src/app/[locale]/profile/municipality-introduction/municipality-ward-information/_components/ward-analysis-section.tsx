@@ -96,7 +96,7 @@ export default function WardAnalysisSection({
         <h3 className="text-xl font-medium mb-4">
           परिवर्तन गाउँपालिकाको जनसांख्यिक विश्लेषण
           <span className="sr-only">
-            Demographic Analysis of Khajura Rural Municipality
+            Demographic Analysis of Paribartan Rural Municipality
           </span>
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

@@ -66,18 +66,18 @@ export default function WaterPurificationCharts({
   return (
     <>
       {/* Overall water purification distribution - with pre-rendered table and client-side chart */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Water Purification Methods in Khajura Rural Municipality"
+          content="Water Purification Methods in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content={`Water purification method distribution of Khajura with a total of ${totalHouseholds} households`}
+          content={`Water purification method distribution of Paribartan with a total of ${totalHouseholds} households`}
         />
 
         <div className="border-b px-4 py-3">
@@ -85,7 +85,8 @@ export default function WaterPurificationCharts({
             पानी शुद्धिकरण विधि अनुसार वितरण
           </h3>
           <p className="text-sm text-muted-foreground">
-            कुल घरधुरी संख्या: {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
+            कुल घरधुरी संख्या:{" "}
+            {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
           </p>
         </div>
 
@@ -110,7 +111,9 @@ export default function WaterPurificationCharts({
                 <thead>
                   <tr className="bg-muted sticky top-0">
                     <th className="border p-2 text-left">क्र.सं.</th>
-                    <th className="border p-2 text-left">पानी शुद्धिकरण विधि</th>
+                    <th className="border p-2 text-left">
+                      पानी शुद्धिकरण विधि
+                    </th>
                     <th className="border p-2 text-right">घरधुरी संख्या</th>
                     <th className="border p-2 text-right">प्रतिशत</th>
                   </tr>
@@ -118,13 +121,23 @@ export default function WaterPurificationCharts({
                 <tbody>
                   {overallSummary.map((item, i) => (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/40" : ""}>
-                      <td className="border p-2">{localizeNumber(i + 1, "ne")}</td>
-                      <td className="border p-2">{item.waterPurificationName}</td>
+                      <td className="border p-2">
+                        {localizeNumber(i + 1, "ne")}
+                      </td>
+                      <td className="border p-2">
+                        {item.waterPurificationName}
+                      </td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.households.toLocaleString(), "ne")}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(((item.households / totalHouseholds) * 100).toFixed(2), "ne")}%
+                        {localizeNumber(
+                          ((item.households / totalHouseholds) * 100).toFixed(
+                            2,
+                          ),
+                          "ne",
+                        )}
+                        %
                       </td>
                     </tr>
                   ))}
@@ -144,7 +157,6 @@ export default function WaterPurificationCharts({
                 </tfoot>
               </table>
             </div>
-            
           </div>
         </div>
 
@@ -168,7 +180,11 @@ export default function WaterPurificationCharts({
                   <div className="flex justify-between items-center">
                     <span>{item.waterPurificationName}</span>
                     <span className="font-medium">
-                      {localizeNumber(((item.households / totalHouseholds) * 100).toFixed(1), "ne")}%
+                      {localizeNumber(
+                        ((item.households / totalHouseholds) * 100).toFixed(1),
+                        "ne",
+                      )}
+                      %
                     </span>
                   </div>
                   <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -191,7 +207,7 @@ export default function WaterPurificationCharts({
       </div>
 
       {/* Ward-wise distribution - pre-rendered table with client-side chart */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="ward-wise-water-purification"
         itemScope
@@ -199,11 +215,11 @@ export default function WaterPurificationCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise Water Purification in Khajura Rural Municipality"
+          content="Ward-wise Water Purification in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Water purification methods distribution across wards in Khajura"
+          content="Water purification methods distribution across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -227,18 +243,18 @@ export default function WaterPurificationCharts({
       </div>
 
       {/* Water treatment comparison across wards */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Water Treatment Rate Comparison Across Wards in Khajura Rural Municipality"
+          content="Water Treatment Rate Comparison Across Wards in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Comparison of water treatment rates across wards in Khajura"
+          content="Comparison of water treatment rates across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -263,18 +279,18 @@ export default function WaterPurificationCharts({
       </div>
 
       {/* Ward-wise analysis - with pre-rendered HTML table for SEO */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Ward-wise Water Purification Analysis in Khajura Rural Municipality"
+          content="Ward-wise Water Purification Analysis in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Most common water purification methods by ward in Khajura"
+          content="Most common water purification methods by ward in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -294,7 +310,9 @@ export default function WaterPurificationCharts({
                   <th className="border p-2">वडा नं.</th>
                   <th className="border p-2 text-right">जम्मा घरधुरी</th>
                   <th className="border p-2">प्रमुख शुद्धिकरण विधि</th>
-                  <th className="border p-2 text-right">प्रमुख विधिको घरधुरी</th>
+                  <th className="border p-2 text-right">
+                    प्रमुख विधिको घरधुरी
+                  </th>
                   <th className="border p-2 text-right">प्रतिशत</th>
                   <th className="border p-2 text-right">पानी उपचार दर</th>
                 </tr>
@@ -303,15 +321,23 @@ export default function WaterPurificationCharts({
                 {wardWiseAnalysis.map((item, i) => {
                   return (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
-                      <td className="border p-2">वडा {localizeNumber(item.wardNumber, "ne")}</td>
+                      <td className="border p-2">
+                        वडा {localizeNumber(item.wardNumber, "ne")}
+                      </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.totalHouseholds.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.totalHouseholds.toLocaleString(),
+                          "ne",
+                        )}
                       </td>
                       <td className="border p-2">
                         {item.mostCommonMethodName}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.mostCommonMethodHouseholds.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.mostCommonMethodHouseholds.toLocaleString(),
+                          "ne",
+                        )}
                       </td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.mostCommonMethodPercentage, "ne")}%
@@ -330,23 +356,42 @@ export default function WaterPurificationCharts({
                     {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
                   </td>
                   <td className="border p-2">
-                    {overallSummary.length > 0 ? overallSummary[0].waterPurificationName : ""}
+                    {overallSummary.length > 0
+                      ? overallSummary[0].waterPurificationName
+                      : ""}
                   </td>
                   <td className="border p-2 text-right">
-                    {localizeNumber((overallSummary[0]?.households || 0).toLocaleString(), "ne")}
+                    {localizeNumber(
+                      (overallSummary[0]?.households || 0).toLocaleString(),
+                      "ne",
+                    )}
                   </td>
                   <td className="border p-2 text-right">
-                    {localizeNumber(((overallSummary[0]?.households || 0) / totalHouseholds * 100).toFixed(2), "ne")}%
+                    {localizeNumber(
+                      (
+                        ((overallSummary[0]?.households || 0) /
+                          totalHouseholds) *
+                        100
+                      ).toFixed(2),
+                      "ne",
+                    )}
+                    %
                   </td>
                   <td className="border p-2 text-right">
                     {localizeNumber(
                       (
                         (overallSummary
-                          .filter(item => item.waterPurification !== 'NO_ANY_FILTERING')
-                          .reduce((sum, item) => sum + item.households, 0) / totalHouseholds) * 100
+                          .filter(
+                            (item) =>
+                              item.waterPurification !== "NO_ANY_FILTERING",
+                          )
+                          .reduce((sum, item) => sum + item.households, 0) /
+                          totalHouseholds) *
+                        100
                       ).toFixed(2),
-                      "ne"
-                    )}%
+                      "ne",
+                    )}
+                    %
                   </td>
                 </tr>
               </tfoot>
@@ -354,7 +399,9 @@ export default function WaterPurificationCharts({
           </div>
 
           {/* Ward pie charts (client component) */}
-          <h4 className="text-lg font-medium mt-8 mb-4">वडागत पानी शुद्धिकरण विधिको वितरण</h4>
+          <h4 className="text-lg font-medium mt-8 mb-4">
+            वडागत पानी शुद्धिकरण विधिको वितरण
+          </h4>
           <WardWaterPurificationPieCharts
             wardNumbers={wardNumbers}
             waterPurificationData={waterPurificationData}

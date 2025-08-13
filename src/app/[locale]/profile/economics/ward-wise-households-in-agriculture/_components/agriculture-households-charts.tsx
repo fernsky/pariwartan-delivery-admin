@@ -30,8 +30,8 @@ interface AgricultureHouseholdsChartsProps {
   highestInvolvementWard: any;
   lowestInvolvementWard: any;
   AGRICULTURE_STATUS: {
-    INVOLVED: { name: string; nameEn: string; color: string; };
-    NOT_INVOLVED: { name: string; nameEn: string; color: string; };
+    INVOLVED: { name: string; nameEn: string; color: string };
+    NOT_INVOLVED: { name: string; nameEn: string; color: string };
   };
 }
 
@@ -51,14 +51,14 @@ export default function AgricultureHouseholdsCharts({
   return (
     <>
       {/* Overall agriculture households distribution */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Agriculture Households Distribution in Khajura Rural Municipality"
+          content="Agriculture Households Distribution in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
@@ -70,7 +70,8 @@ export default function AgricultureHouseholdsCharts({
             कृषि वा पशुपालनमा आबद्धताको आधारमा घरपरिवार वितरण
           </h3>
           <p className="text-sm text-muted-foreground">
-            कुल घरधुरी संख्या: {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
+            कुल घरधुरी संख्या:{" "}
+            {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
           </p>
         </div>
 
@@ -94,7 +95,9 @@ export default function AgricultureHouseholdsCharts({
                 <thead>
                   <tr className="bg-muted sticky top-0">
                     <th className="border p-2 text-left">क्र.सं.</th>
-                    <th className="border p-2 text-left">कृषि आबद्धताको स्थिति</th>
+                    <th className="border p-2 text-left">
+                      कृषि आबद्धताको स्थिति
+                    </th>
                     <th className="border p-2 text-right">घरधुरी संख्या</th>
                     <th className="border p-2 text-right">प्रतिशत</th>
                   </tr>
@@ -102,7 +105,9 @@ export default function AgricultureHouseholdsCharts({
                 <tbody>
                   <tr className="bg-muted/40">
                     <td className="border p-2">{localizeNumber("1", "ne")}</td>
-                    <td className="border p-2">{AGRICULTURE_STATUS.INVOLVED.name}</td>
+                    <td className="border p-2">
+                      {AGRICULTURE_STATUS.INVOLVED.name}
+                    </td>
                     <td className="border p-2 text-right">
                       {localizeNumber(totalInvolved.toLocaleString(), "ne")}
                     </td>
@@ -112,7 +117,9 @@ export default function AgricultureHouseholdsCharts({
                   </tr>
                   <tr>
                     <td className="border p-2">{localizeNumber("2", "ne")}</td>
-                    <td className="border p-2">{AGRICULTURE_STATUS.NOT_INVOLVED.name}</td>
+                    <td className="border p-2">
+                      {AGRICULTURE_STATUS.NOT_INVOLVED.name}
+                    </td>
                     <td className="border p-2 text-right">
                       {localizeNumber(totalNonInvolved.toLocaleString(), "ne")}
                     </td>
@@ -170,7 +177,9 @@ export default function AgricultureHouseholdsCharts({
             <div className="flex items-center gap-4">
               <div
                 className="w-3 h-3 rounded-full flex-shrink-0"
-                style={{ backgroundColor: AGRICULTURE_STATUS.NOT_INVOLVED.color }}
+                style={{
+                  backgroundColor: AGRICULTURE_STATUS.NOT_INVOLVED.color,
+                }}
               ></div>
               <div className="flex-grow">
                 <div className="flex justify-between items-center">
@@ -195,7 +204,7 @@ export default function AgricultureHouseholdsCharts({
       </div>
 
       {/* Ward-wise distribution */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="ward-wise-agriculture-involvement"
         itemScope
@@ -203,11 +212,11 @@ export default function AgricultureHouseholdsCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise Agriculture Households in Khajura Rural Municipality"
+          content="Ward-wise Agriculture Households in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Agricultural household distribution across wards in Khajura"
+          content="Agricultural household distribution across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -230,18 +239,18 @@ export default function AgricultureHouseholdsCharts({
       </div>
 
       {/* Ward-wise comparison */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Agriculture Involvement Rate Comparison Across Wards in Khajura Rural Municipality"
+          content="Agriculture Involvement Rate Comparison Across Wards in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Comparison of agriculture involvement rates across wards in Khajura"
+          content="Comparison of agriculture involvement rates across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -264,18 +273,18 @@ export default function AgricultureHouseholdsCharts({
       </div>
 
       {/* Ward-wise analysis */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Ward-wise Agriculture Involvement Analysis in Khajura Rural Municipality"
+          content="Ward-wise Agriculture Involvement Analysis in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Detailed analysis of agricultural involvement by ward in Khajura"
+          content="Detailed analysis of agricultural involvement by ward in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -295,7 +304,9 @@ export default function AgricultureHouseholdsCharts({
                   <th className="border p-2">वडा नं.</th>
                   <th className="border p-2 text-right">जम्मा घरधुरी</th>
                   <th className="border p-2 text-right">कृषिमा आबद्ध घरधुरी</th>
-                  <th className="border p-2 text-right">कृषिमा आबद्ध नभएका घरधुरी</th>
+                  <th className="border p-2 text-right">
+                    कृषिमा आबद्ध नभएका घरधुरी
+                  </th>
                   <th className="border p-2 text-right">कृषि आबद्धता दर</th>
                 </tr>
               </thead>
@@ -303,18 +314,33 @@ export default function AgricultureHouseholdsCharts({
                 {wardWiseAnalysis.map((item, i) => {
                   return (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
-                      <td className="border p-2">वडा {localizeNumber(item.wardNumber, "ne")}</td>
-                      <td className="border p-2 text-right">
-                        {localizeNumber(item.totalHouseholds.toLocaleString(), "ne")}
+                      <td className="border p-2">
+                        वडा {localizeNumber(item.wardNumber, "ne")}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.involvedHouseholds.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.totalHouseholds.toLocaleString(),
+                          "ne",
+                        )}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.nonInvolvedHouseholds.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.involvedHouseholds.toLocaleString(),
+                          "ne",
+                        )}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.involvedPercentage.toFixed(2), "ne")}%
+                        {localizeNumber(
+                          item.nonInvolvedHouseholds.toLocaleString(),
+                          "ne",
+                        )}
+                      </td>
+                      <td className="border p-2 text-right">
+                        {localizeNumber(
+                          item.involvedPercentage.toFixed(2),
+                          "ne",
+                        )}
+                        %
                       </td>
                     </tr>
                   );
@@ -341,7 +367,9 @@ export default function AgricultureHouseholdsCharts({
           </div>
 
           {/* Ward pie charts (client component) */}
-          <h4 className="text-lg font-medium mt-8 mb-4">वडागत कृषि आबद्धता वितरण</h4>
+          <h4 className="text-lg font-medium mt-8 mb-4">
+            वडागत कृषि आबद्धता वितरण
+          </h4>
           <WardAgricultureHouseholdsPieCharts
             wardWiseData={wardWiseData}
             AGRICULTURE_STATUS={AGRICULTURE_STATUS}

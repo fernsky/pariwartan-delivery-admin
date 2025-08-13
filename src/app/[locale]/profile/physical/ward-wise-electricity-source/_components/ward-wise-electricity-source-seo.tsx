@@ -70,7 +70,7 @@ export default function WardWiseElectricitySourceSEO({
 
         return {
           "@type": "Observation",
-          name: `Electricity Source Usage Statistics in Ward ${wardNumber} of Khajura Rural Municipality`,
+          name: `Electricity Source Usage Statistics in Ward ${wardNumber} of Paribartan Rural Municipality`,
           observationDate: new Date().toISOString().split("T")[0],
           measuredProperty: {
             "@type": "PropertyValue",
@@ -78,7 +78,7 @@ export default function WardWiseElectricitySourceSEO({
             unitText: "percentage",
           },
           measuredValue: parseFloat(modernSourcePercent),
-          description: `In Ward ${wardNumber} of Khajura Rural Municipality, ${modernSourceHouseholds.toLocaleString()} households (${modernSourcePercent}%) use modern electricity sources (Grid, Solar) out of a total of ${totalWardHouseholds.toLocaleString()} households.`,
+          description: `In Ward ${wardNumber} of Paribartan Rural Municipality, ${modernSourceHouseholds.toLocaleString()} households (${modernSourcePercent}%) use modern electricity sources (Grid, Solar) out of a total of ${totalWardHouseholds.toLocaleString()} households.`,
         };
       })
       .filter(Boolean);
@@ -97,10 +97,10 @@ export default function WardWiseElectricitySourceSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Electricity Source Usage in Khajura Rural Municipality (परिवर्तन गाउँपालिका)",
-      description: `Analysis of electricity source usage across ${wardNumbers.length} wards of Khajura Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${modernSourceTotal.toLocaleString()} households (${modernSourcePercentageValue}%) use modern electricity sources. The best adoption of modern sources is in Ward ${bestWard?.wardNumber || ""} with ${bestWard?.percentage.toFixed(2) || ""}% modern electricity source usage rate.`,
+      name: "Electricity Source Usage in Paribartan Rural Municipality (परिवर्तन गाउँपालिका)",
+      description: `Analysis of electricity source usage across ${wardNumbers.length} wards of Paribartan Rural Municipality with a total of ${totalHouseholds.toLocaleString()} households. ${modernSourceTotal.toLocaleString()} households (${modernSourcePercentageValue}%) use modern electricity sources. The best adoption of modern sources is in Ward ${bestWard?.wardNumber || ""} with ${bestWard?.percentage.toFixed(2) || ""}% modern electricity source usage rate.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Electricity source",
         "Grid electricity",
@@ -116,13 +116,13 @@ export default function WardWiseElectricitySourceSEO({
       url: "https://paribartan.digprofile.com/profile/physical/ward-wise-electricity-source",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2021/2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",
@@ -192,10 +192,10 @@ export default function WardWiseElectricitySourceSEO({
         name: "Municipality Household Survey",
         provider: {
           "@type": "GovernmentOrganization",
-          name: "Khajura Rural Municipality",
+          name: "Paribartan Rural Municipality",
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Khajura",
+            addressLocality: "Paribartan",
             addressRegion: "Banke",
             addressCountry: "Nepal",
           },

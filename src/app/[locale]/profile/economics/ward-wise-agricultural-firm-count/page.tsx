@@ -24,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fetch data for SEO using tRPC
     const agricultureFirmData =
       await api.profile.economics.wardWiseAgricultureFirmCount.getAll.query();
-    const municipalityName = "परिवर्तन गाउँपालिका"; // Khajura Rural Municipality
+    const municipalityName = "परिवर्तन गाउँपालिका"; // Paribartan Rural Municipality
 
     // Process data for SEO
     const totalFirms = agricultureFirmData.reduce(
@@ -61,12 +61,12 @@ export async function generateMetadata(): Promise<Metadata> {
     ];
 
     const keywordsEN = [
-      "Khajura Rural Municipality agriculture firms",
-      "Khajura agricultural groups count",
+      "Paribartan Rural Municipality agriculture firms",
+      "Paribartan agricultural groups count",
       "Ward-wise agriculture firms",
       "Agricultural enterprise statistics",
-      "Agriculture development Khajura",
-      `Khajura total agriculture firms ${totalFirms}`,
+      "Agriculture development Paribartan",
+      `Paribartan total agriculture firms ${totalFirms}`,
       `Ward ${highestWard.wardNumber} highest agriculture firms`,
       "Registered agricultural groups",
     ];
@@ -74,7 +74,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Create detailed description with actual data
     const descriptionNP = `परिवर्तन गाउँपालिकाको वडा अनुसार नगिकरण भएका कृषि फर्म र समूहहरूको संख्या र वितरण। कुल ${totalFirms} कृषि फर्म मध्ये वडा नं ${highestWard.wardNumber} मा सबैभन्दा धेरै (${highestWard.count}) र वडा नं ${lowestWard.wardNumber} मा सबैभन्दा कम (${lowestWard.count}) कृषि फर्म रहेका छन्। विस्तृत तथ्याङ्क र विजुअलाइजेसन।`;
 
-    const descriptionEN = `Ward-wise count and distribution of registered agriculture firms and groups in Khajura Rural Municipality. Out of total ${totalFirms} agriculture firms, Ward No. ${highestWard.wardNumber} has the highest count (${highestWard.count}) and Ward No. ${lowestWard.wardNumber} has the lowest count (${lowestWard.count}). Detailed statistics and visualizations.`;
+    const descriptionEN = `Ward-wise count and distribution of registered agriculture firms and groups in Paribartan Rural Municipality. Out of total ${totalFirms} agriculture firms, Ward No. ${highestWard.wardNumber} has the highest count (${highestWard.count}) and Ward No. ${lowestWard.wardNumber} has the lowest count (${lowestWard.count}). Detailed statistics and visualizations.`;
 
     return {
       title: `नगिकरण भएका कृषि फर्मको संख्या | ${municipalityName} पालिका प्रोफाइल`,

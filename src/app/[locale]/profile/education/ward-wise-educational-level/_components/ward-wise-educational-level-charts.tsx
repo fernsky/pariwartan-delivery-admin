@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { FileDown } from "lucide-react";
 import { localizeNumber } from "@/lib/utils/localize-number";
@@ -33,12 +32,15 @@ interface WardWiseEducationalLevelChartsProps {
     wardNumber: number;
     percentage: number;
   };
-  EDUCATIONAL_LEVEL_GROUPS: Record<string, {
-    name: string;
-    nameEn: string;
-    color: string;
-    levels: string[];
-  }>;
+  EDUCATIONAL_LEVEL_GROUPS: Record<
+    string,
+    {
+      name: string;
+      nameEn: string;
+      color: string;
+      levels: string[];
+    }
+  >;
 }
 
 export default function WardWiseEducationalLevelCharts({
@@ -57,14 +59,14 @@ export default function WardWiseEducationalLevelCharts({
   return (
     <>
       {/* Overall educational level distribution */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Educational Level Distribution in Khajura Rural Municipality"
+          content="Educational Level Distribution in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
@@ -76,7 +78,8 @@ export default function WardWiseEducationalLevelCharts({
             शैक्षिक स्तर अनुसार जनसंख्या वितरण
           </h3>
           <p className="text-sm text-muted-foreground">
-            कुल जनसंख्या: {localizeNumber(totalPopulation.toLocaleString(), "ne")}
+            कुल जनसंख्या:{" "}
+            {localizeNumber(totalPopulation.toLocaleString(), "ne")}
           </p>
         </div>
 
@@ -107,8 +110,13 @@ export default function WardWiseEducationalLevelCharts({
                 </thead>
                 <tbody>
                   {pieChartData.map((item, index) => (
-                    <tr key={index} className={index % 2 === 0 ? "bg-muted/40" : ""}>
-                      <td className="border p-2">{localizeNumber((index + 1).toString(), "ne")}</td>
+                    <tr
+                      key={index}
+                      className={index % 2 === 0 ? "bg-muted/40" : ""}
+                    >
+                      <td className="border p-2">
+                        {localizeNumber((index + 1).toString(), "ne")}
+                      </td>
                       <td className="border p-2">{item.name}</td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.value.toLocaleString(), "ne")}
@@ -172,7 +180,7 @@ export default function WardWiseEducationalLevelCharts({
       </div>
 
       {/* Ward-wise distribution */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="ward-wise-educational-level"
         itemScope
@@ -180,11 +188,11 @@ export default function WardWiseEducationalLevelCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise Educational Level in Khajura Rural Municipality"
+          content="Ward-wise Educational Level in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Distribution of educational levels across wards in Khajura"
+          content="Distribution of educational levels across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -207,18 +215,18 @@ export default function WardWiseEducationalLevelCharts({
       </div>
 
       {/* Ward-wise comparison */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Higher Education Comparison Across Wards in Khajura Rural Municipality"
+          content="Higher Education Comparison Across Wards in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Comparison of higher education rates across wards in Khajura"
+          content="Comparison of higher education rates across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -243,18 +251,18 @@ export default function WardWiseEducationalLevelCharts({
       </div>
 
       {/* Ward-wise analysis */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Ward-wise Educational Level Analysis in Khajura Rural Municipality"
+          content="Ward-wise Educational Level Analysis in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Detailed analysis of educational levels by ward in Khajura"
+          content="Detailed analysis of educational levels by ward in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -273,9 +281,13 @@ export default function WardWiseEducationalLevelCharts({
                 <tr className="bg-muted">
                   <th className="border p-2">वडा नं.</th>
                   <th className="border p-2 text-right">जम्मा जनसंख्या</th>
-                  {Object.keys(EDUCATIONAL_LEVEL_GROUPS).map(key => (
+                  {Object.keys(EDUCATIONAL_LEVEL_GROUPS).map((key) => (
                     <th key={key} className="border p-2 text-right">
-                      {EDUCATIONAL_LEVEL_GROUPS[key as keyof typeof EDUCATIONAL_LEVEL_GROUPS].name}
+                      {
+                        EDUCATIONAL_LEVEL_GROUPS[
+                          key as keyof typeof EDUCATIONAL_LEVEL_GROUPS
+                        ].name
+                      }
                     </th>
                   ))}
                 </tr>
@@ -285,14 +297,22 @@ export default function WardWiseEducationalLevelCharts({
                   const total = item.total;
                   return (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
-                      <td className="border p-2">वडा {localizeNumber(item.wardNumber, "ne")}</td>
+                      <td className="border p-2">
+                        वडा {localizeNumber(item.wardNumber, "ne")}
+                      </td>
                       <td className="border p-2 text-right">
                         {localizeNumber(total.toLocaleString(), "ne")}
                       </td>
-                      {Object.keys(EDUCATIONAL_LEVEL_GROUPS).map(key => {
-                        const groupName = EDUCATIONAL_LEVEL_GROUPS[key as keyof typeof EDUCATIONAL_LEVEL_GROUPS].name;
+                      {Object.keys(EDUCATIONAL_LEVEL_GROUPS).map((key) => {
+                        const groupName =
+                          EDUCATIONAL_LEVEL_GROUPS[
+                            key as keyof typeof EDUCATIONAL_LEVEL_GROUPS
+                          ].name;
                         const value = item[groupName] || 0;
-                        const percentage = total > 0 ? ((value / total) * 100).toFixed(2) : "0.00";
+                        const percentage =
+                          total > 0
+                            ? ((value / total) * 100).toFixed(2)
+                            : "0.00";
                         return (
                           <td key={key} className="border p-2 text-right">
                             {localizeNumber(value.toLocaleString(), "ne")}
@@ -312,9 +332,10 @@ export default function WardWiseEducationalLevelCharts({
                   <td className="border p-2 text-right">
                     {localizeNumber(totalPopulation.toLocaleString(), "ne")}
                   </td>
-                  {Object.keys(EDUCATIONAL_LEVEL_GROUPS).map(key => {
+                  {Object.keys(EDUCATIONAL_LEVEL_GROUPS).map((key) => {
                     const value = educationGroupTotals[key];
-                    const percentage = educationGroupPercentages[key].toFixed(2);
+                    const percentage =
+                      educationGroupPercentages[key].toFixed(2);
                     return (
                       <td key={key} className="border p-2 text-right">
                         {localizeNumber(value.toLocaleString(), "ne")}
@@ -330,7 +351,9 @@ export default function WardWiseEducationalLevelCharts({
           </div>
 
           {/* Ward pie charts (client component) */}
-          <h4 className="text-lg font-medium mt-8 mb-4">वडागत शैक्षिक स्तर वितरण</h4>
+          <h4 className="text-lg font-medium mt-8 mb-4">
+            वडागत शैक्षिक स्तर वितरण
+          </h4>
           <WardEducationalLevelPieCharts
             wardWiseData={wardWiseData}
             EDUCATIONAL_LEVEL_GROUPS={EDUCATIONAL_LEVEL_GROUPS}

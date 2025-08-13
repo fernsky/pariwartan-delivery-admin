@@ -48,18 +48,18 @@ export default function FarmersGroupSEO({
     // Convert business stats to structured data format
     const businessTypeStats = businessSummary.map((item) => ({
       "@type": "Dataset",
-      name: `${BUSINESS_TYPES_EN[item.type] || item.type} Groups in Khajura Rural Municipality`,
-      description: `There are ${item.count} ${BUSINESS_TYPES_EN[item.type] || item.type} groups operating in Khajura Rural Municipality, representing ${item.percentage.toFixed(2)}% of total agricultural groups.`,
+      name: `${BUSINESS_TYPES_EN[item.type] || item.type} Groups in Paribartan Rural Municipality`,
+      description: `There are ${item.count} ${BUSINESS_TYPES_EN[item.type] || item.type} groups operating in Paribartan Rural Municipality, representing ${item.percentage.toFixed(2)}% of total agricultural groups.`,
       keywords: [
         item.type,
         BUSINESS_TYPES_EN[item.type],
         "agriculture",
         "farming",
-        "Khajura",
+        "Paribartan",
       ],
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
       },
       variableMeasured: [
         {
@@ -87,7 +87,7 @@ export default function FarmersGroupSEO({
         .join(", ")}${ward.farms.length > 3 ? " and others" : ""}.`,
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
       },
       variableMeasured: {
         "@type": "PropertyValue",
@@ -105,10 +105,10 @@ export default function FarmersGroupSEO({
     return {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Commercial Agricultural and Animal Husbandry Farmers Groups in Khajura Rural Municipality",
-      description: `Comprehensive analysis of ${totalGroups} commercial agricultural and animal husbandry farmers groups in Khajura Rural Municipality. The most common type is ${mostCommonBusinessTypeEN} (${statistics.mostPopularBusinessTypePercentage.toFixed(1)}%), and Ward ${statistics.wardWithMostGroups} has the highest concentration with ${statistics.maximumGroupsInAWard} groups. This dataset covers all 9 wards of the municipality.`,
+      name: "Commercial Agricultural and Animal Husbandry Farmers Groups in Paribartan Rural Municipality",
+      description: `Comprehensive analysis of ${totalGroups} commercial agricultural and animal husbandry farmers groups in Paribartan Rural Municipality. The most common type is ${mostCommonBusinessTypeEN} (${statistics.mostPopularBusinessTypePercentage.toFixed(1)}%), and Ward ${statistics.wardWithMostGroups} has the highest concentration with ${statistics.maximumGroupsInAWard} groups. This dataset covers all 9 wards of the municipality.`,
       keywords: [
-        "Khajura Rural Municipality",
+        "Paribartan Rural Municipality",
         "परिवर्तन गाउँपालिका",
         "Commercial Agriculture",
         "Animal Husbandry",
@@ -124,13 +124,13 @@ export default function FarmersGroupSEO({
       url: "https://paribartan.digprofile.com/profile/economics/commercial-agricultural-animal-husbandry-farmers-group",
       creator: {
         "@type": "Organization",
-        name: "Khajura Rural Municipality",
+        name: "Paribartan Rural Municipality",
         url: "https://paribartan.digprofile.com",
       },
       temporalCoverage: "2023",
       spatialCoverage: {
         "@type": "Place",
-        name: "Khajura Rural Municipality, Banke, Nepal",
+        name: "Paribartan Rural Municipality, Banke, Nepal",
         geo: {
           "@type": "GeoCoordinates",
           latitude: "28.1356",
@@ -185,7 +185,7 @@ export default function FarmersGroupSEO({
       ],
       isPartOf: {
         "@type": "Dataset",
-        name: "Khajura Rural Municipality Digital Profile",
+        name: "Paribartan Rural Municipality Digital Profile",
         url: "https://paribartan.digprofile.com",
       },
     };

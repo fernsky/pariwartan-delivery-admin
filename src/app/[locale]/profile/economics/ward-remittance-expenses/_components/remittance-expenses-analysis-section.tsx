@@ -87,7 +87,7 @@ export default function RemittanceExpensesAnalysisSection({
     if (document && document.body) {
       document.body.setAttribute(
         "data-municipality",
-        "Khajura Rural Municipality / परिवर्तन गाउँपालिका",
+        "Paribartan Rural Municipality / परिवर्तन गाउँपालिका",
       );
       document.body.setAttribute(
         "data-total-remittance-households",
@@ -195,7 +195,7 @@ export default function RemittanceExpensesAnalysisSection({
         <h3 className="text-xl font-medium mb-4">
           विप्रेषण खर्च विश्लेषण
           <span className="sr-only">
-            Remittance Expense Analysis of Khajura
+            Remittance Expense Analysis of Paribartan
           </span>
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -212,7 +212,7 @@ export default function RemittanceExpensesAnalysisSection({
             <h4 className="font-medium mb-2">
               प्रमुख खर्च प्रकार
               <span className="sr-only">
-                Main Expense Type in Khajura Rural Municipality
+                Main Expense Type in Paribartan Rural Municipality
               </span>
             </h4>
             <p className="text-3xl font-bold">
@@ -224,7 +224,7 @@ export default function RemittanceExpensesAnalysisSection({
                 : ""}
               <span className="sr-only">
                 {topExpense
-                  ? `${((topExpense.households / totalHouseholds) * 100).toFixed(2)}% of households receiving remittances in Khajura Rural Municipality`
+                  ? `${((topExpense.households / totalHouseholds) * 100).toFixed(2)}% of households receiving remittances in Paribartan Rural Municipality`
                   : ""}
               </span>
             </p>
@@ -240,7 +240,7 @@ export default function RemittanceExpensesAnalysisSection({
             <h4 className="font-medium mb-2">
               प्रमुख-दोस्रो खर्च अनुपात
               <span className="sr-only">
-                Primary to Secondary Expense Ratio in Khajura
+                Primary to Secondary Expense Ratio in Paribartan
               </span>
             </h4>
             <p className="text-3xl font-bold">{topTwoExpenseRatio}</p>
@@ -250,7 +250,7 @@ export default function RemittanceExpensesAnalysisSection({
                 : ""}
               <span className="sr-only">
                 {topExpense && secondExpense
-                  ? `For every ${topTwoExpenseRatio} households spending on ${EXPENSE_NAMES_EN[topExpense.expense]}, there is 1 household spending on ${EXPENSE_NAMES_EN[secondExpense.expense]} in Khajura Rural Municipality`
+                  ? `For every ${topTwoExpenseRatio} households spending on ${EXPENSE_NAMES_EN[topExpense.expense]}, there is 1 household spending on ${EXPENSE_NAMES_EN[secondExpense.expense]} in Paribartan Rural Municipality`
                   : ""}
               </span>
             </p>
@@ -324,7 +324,7 @@ export default function RemittanceExpensesAnalysisSection({
         <h3 className="text-xl font-medium mb-2">
           थप जानकारी
           <span className="sr-only">
-            Additional Information about Remittance Expenses in Khajura
+            Additional Information about Remittance Expenses in Paribartan
           </span>
         </h3>
         <p>

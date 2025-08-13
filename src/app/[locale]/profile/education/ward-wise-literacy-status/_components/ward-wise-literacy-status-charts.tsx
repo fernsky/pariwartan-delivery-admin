@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { FileDown } from "lucide-react";
 import { localizeNumber } from "@/lib/utils/localize-number";
@@ -35,11 +34,14 @@ interface WardWiseLiteracyStatusChartsProps {
   }>;
   bestLiteracyWard: any;
   worstLiteracyWard: any;
-  LITERACY_STATUS_TYPES: Record<string, {
-    name: string;
-    nameEn: string;
-    color: string;
-  }>;
+  LITERACY_STATUS_TYPES: Record<
+    string,
+    {
+      name: string;
+      nameEn: string;
+      color: string;
+    }
+  >;
 }
 
 export default function WardWiseLiteracyStatusCharts({
@@ -60,14 +62,14 @@ export default function WardWiseLiteracyStatusCharts({
   return (
     <>
       {/* Overall literacy status distribution */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Literacy Status Distribution in Khajura Rural Municipality"
+          content="Literacy Status Distribution in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
@@ -79,7 +81,8 @@ export default function WardWiseLiteracyStatusCharts({
             साक्षरताको अवस्था अनुसार जनसंख्या वितरण
           </h3>
           <p className="text-sm text-muted-foreground">
-            कुल जनसंख्या: {localizeNumber(totalPopulation.toLocaleString(), "ne")}
+            कुल जनसंख्या:{" "}
+            {localizeNumber(totalPopulation.toLocaleString(), "ne")}
           </p>
         </div>
 
@@ -111,17 +114,28 @@ export default function WardWiseLiteracyStatusCharts({
                 <tbody>
                   <tr className="bg-muted/40">
                     <td className="border p-2">{localizeNumber("1", "ne")}</td>
-                    <td className="border p-2">{LITERACY_STATUS_TYPES.BOTH_READING_AND_WRITING.name}</td>
-                    <td className="border p-2 text-right">
-                      {localizeNumber(bothReadingWritingTotal.toLocaleString(), "ne")}
+                    <td className="border p-2">
+                      {LITERACY_STATUS_TYPES.BOTH_READING_AND_WRITING.name}
                     </td>
                     <td className="border p-2 text-right">
-                      {localizeNumber(bothReadingWritingPercentage.toFixed(2), "ne")}%
+                      {localizeNumber(
+                        bothReadingWritingTotal.toLocaleString(),
+                        "ne",
+                      )}
+                    </td>
+                    <td className="border p-2 text-right">
+                      {localizeNumber(
+                        bothReadingWritingPercentage.toFixed(2),
+                        "ne",
+                      )}
+                      %
                     </td>
                   </tr>
                   <tr>
                     <td className="border p-2">{localizeNumber("2", "ne")}</td>
-                    <td className="border p-2">{LITERACY_STATUS_TYPES.READING_ONLY.name}</td>
+                    <td className="border p-2">
+                      {LITERACY_STATUS_TYPES.READING_ONLY.name}
+                    </td>
                     <td className="border p-2 text-right">
                       {localizeNumber(readingOnlyTotal.toLocaleString(), "ne")}
                     </td>
@@ -131,7 +145,9 @@ export default function WardWiseLiteracyStatusCharts({
                   </tr>
                   <tr className="bg-muted/40">
                     <td className="border p-2">{localizeNumber("3", "ne")}</td>
-                    <td className="border p-2">{LITERACY_STATUS_TYPES.ILLITERATE.name}</td>
+                    <td className="border p-2">
+                      {LITERACY_STATUS_TYPES.ILLITERATE.name}
+                    </td>
                     <td className="border p-2 text-right">
                       {localizeNumber(illiterateTotal.toLocaleString(), "ne")}
                     </td>
@@ -166,13 +182,22 @@ export default function WardWiseLiteracyStatusCharts({
             <div className="flex items-center gap-4">
               <div
                 className="w-3 h-3 rounded-full flex-shrink-0"
-                style={{ backgroundColor: LITERACY_STATUS_TYPES.BOTH_READING_AND_WRITING.color }}
+                style={{
+                  backgroundColor:
+                    LITERACY_STATUS_TYPES.BOTH_READING_AND_WRITING.color,
+                }}
               ></div>
               <div className="flex-grow">
                 <div className="flex justify-between items-center">
-                  <span>{LITERACY_STATUS_TYPES.BOTH_READING_AND_WRITING.name}</span>
+                  <span>
+                    {LITERACY_STATUS_TYPES.BOTH_READING_AND_WRITING.name}
+                  </span>
                   <span className="font-medium">
-                    {localizeNumber(bothReadingWritingPercentage.toFixed(1), "ne")}%
+                    {localizeNumber(
+                      bothReadingWritingPercentage.toFixed(1),
+                      "ne",
+                    )}
+                    %
                   </span>
                 </div>
                 <div className="w-full bg-muted h-2 rounded-full mt-1 overflow-hidden">
@@ -180,7 +205,8 @@ export default function WardWiseLiteracyStatusCharts({
                     className="h-full rounded-full"
                     style={{
                       width: `${bothReadingWritingPercentage}%`,
-                      backgroundColor: LITERACY_STATUS_TYPES.BOTH_READING_AND_WRITING.color,
+                      backgroundColor:
+                        LITERACY_STATUS_TYPES.BOTH_READING_AND_WRITING.color,
                     }}
                   ></div>
                 </div>
@@ -189,7 +215,9 @@ export default function WardWiseLiteracyStatusCharts({
             <div className="flex items-center gap-4">
               <div
                 className="w-3 h-3 rounded-full flex-shrink-0"
-                style={{ backgroundColor: LITERACY_STATUS_TYPES.READING_ONLY.color }}
+                style={{
+                  backgroundColor: LITERACY_STATUS_TYPES.READING_ONLY.color,
+                }}
               ></div>
               <div className="flex-grow">
                 <div className="flex justify-between items-center">
@@ -212,7 +240,9 @@ export default function WardWiseLiteracyStatusCharts({
             <div className="flex items-center gap-4">
               <div
                 className="w-3 h-3 rounded-full flex-shrink-0"
-                style={{ backgroundColor: LITERACY_STATUS_TYPES.ILLITERATE.color }}
+                style={{
+                  backgroundColor: LITERACY_STATUS_TYPES.ILLITERATE.color,
+                }}
               ></div>
               <div className="flex-grow">
                 <div className="flex justify-between items-center">
@@ -237,7 +267,7 @@ export default function WardWiseLiteracyStatusCharts({
       </div>
 
       {/* Ward-wise distribution */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="ward-wise-literacy-status"
         itemScope
@@ -245,11 +275,11 @@ export default function WardWiseLiteracyStatusCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise Literacy Status in Khajura Rural Municipality"
+          content="Ward-wise Literacy Status in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Distribution of literacy status across wards in Khajura"
+          content="Distribution of literacy status across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -272,18 +302,18 @@ export default function WardWiseLiteracyStatusCharts({
       </div>
 
       {/* Ward-wise comparison */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Literacy Rate Comparison Across Wards in Khajura Rural Municipality"
+          content="Literacy Rate Comparison Across Wards in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Comparison of literacy rates across wards in Khajura"
+          content="Comparison of literacy rates across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -306,18 +336,18 @@ export default function WardWiseLiteracyStatusCharts({
       </div>
 
       {/* Ward-wise analysis */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Ward-wise Literacy Status Analysis in Khajura Rural Municipality"
+          content="Ward-wise Literacy Status Analysis in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Detailed analysis of literacy status by ward in Khajura"
+          content="Detailed analysis of literacy status by ward in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -346,26 +376,55 @@ export default function WardWiseLiteracyStatusCharts({
                 {wardWiseAnalysis.map((item, i) => {
                   return (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
-                      <td className="border p-2">वडा {localizeNumber(item.wardNumber, "ne")}</td>
-                      <td className="border p-2 text-right">
-                        {localizeNumber(item.totalPopulation.toLocaleString(), "ne")}
+                      <td className="border p-2">
+                        वडा {localizeNumber(item.wardNumber, "ne")}
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.bothReadingWritingPopulation.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.totalPopulation.toLocaleString(),
+                          "ne",
+                        )}
+                      </td>
+                      <td className="border p-2 text-right">
+                        {localizeNumber(
+                          item.bothReadingWritingPopulation.toLocaleString(),
+                          "ne",
+                        )}
                         <div className="text-xs text-muted-foreground">
-                          ({localizeNumber(item.bothReadingWritingPercent.toFixed(2), "ne")}%)
+                          (
+                          {localizeNumber(
+                            item.bothReadingWritingPercent.toFixed(2),
+                            "ne",
+                          )}
+                          %)
                         </div>
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.readingOnlyPopulation.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.readingOnlyPopulation.toLocaleString(),
+                          "ne",
+                        )}
                         <div className="text-xs text-muted-foreground">
-                          ({localizeNumber(item.readingOnlyPercent.toFixed(2), "ne")}%)
+                          (
+                          {localizeNumber(
+                            item.readingOnlyPercent.toFixed(2),
+                            "ne",
+                          )}
+                          %)
                         </div>
                       </td>
                       <td className="border p-2 text-right">
-                        {localizeNumber(item.illiteratePopulation.toLocaleString(), "ne")}
+                        {localizeNumber(
+                          item.illiteratePopulation.toLocaleString(),
+                          "ne",
+                        )}
                         <div className="text-xs text-muted-foreground">
-                          ({localizeNumber(item.illiteratePercent.toFixed(2), "ne")}%)
+                          (
+                          {localizeNumber(
+                            item.illiteratePercent.toFixed(2),
+                            "ne",
+                          )}
+                          %)
                         </div>
                       </td>
                       <td className="border p-2 text-right">
@@ -382,15 +441,24 @@ export default function WardWiseLiteracyStatusCharts({
                     {localizeNumber(totalPopulation.toLocaleString(), "ne")}
                   </td>
                   <td className="border p-2 text-right">
-                    {localizeNumber(bothReadingWritingTotal.toLocaleString(), "ne")}
+                    {localizeNumber(
+                      bothReadingWritingTotal.toLocaleString(),
+                      "ne",
+                    )}
                     <div className="text-xs">
-                      ({localizeNumber(bothReadingWritingPercentage.toFixed(2), "ne")}%)
+                      (
+                      {localizeNumber(
+                        bothReadingWritingPercentage.toFixed(2),
+                        "ne",
+                      )}
+                      %)
                     </div>
                   </td>
                   <td className="border p-2 text-right">
                     {localizeNumber(readingOnlyTotal.toLocaleString(), "ne")}
                     <div className="text-xs">
-                      ({localizeNumber(readingOnlyPercentage.toFixed(2), "ne")}%)
+                      ({localizeNumber(readingOnlyPercentage.toFixed(2), "ne")}
+                      %)
                     </div>
                   </td>
                   <td className="border p-2 text-right">
@@ -400,7 +468,13 @@ export default function WardWiseLiteracyStatusCharts({
                     </div>
                   </td>
                   <td className="border p-2 text-right">
-                    {localizeNumber((bothReadingWritingPercentage + readingOnlyPercentage).toFixed(2), "ne")}%
+                    {localizeNumber(
+                      (
+                        bothReadingWritingPercentage + readingOnlyPercentage
+                      ).toFixed(2),
+                      "ne",
+                    )}
+                    %
                   </td>
                 </tr>
               </tfoot>
@@ -408,7 +482,9 @@ export default function WardWiseLiteracyStatusCharts({
           </div>
 
           {/* Ward pie charts (client component) */}
-          <h4 className="text-lg font-medium mt-8 mb-4">वडागत साक्षरता वितरण</h4>
+          <h4 className="text-lg font-medium mt-8 mb-4">
+            वडागत साक्षरता वितरण
+          </h4>
           <WardLiteracyStatusPieCharts
             wardWiseData={wardWiseData}
             LITERACY_STATUS_TYPES={LITERACY_STATUS_TYPES}

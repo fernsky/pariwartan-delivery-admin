@@ -2,15 +2,15 @@ import { localizeNumber } from "@/lib/utils/localize-number";
 import type { MunicipalityAspectResponse } from "@/server/api/routers/profile/municipality-introduction/municipality-aspect.schema";
 
 const ASPECT_COLORS = {
-  "flat": "#9CA3AF",
-  "north": "#3B82F6",
-  "northeast": "#06B6D4",
-  "east": "#10B981",
-  "southeast": "#84CC16",
-  "south": "#EAB308",
-  "southwest": "#F59E0B",
-  "west": "#F97316",
-  "northwest": "#EF4444",
+  flat: "#9CA3AF",
+  north: "#3B82F6",
+  northeast: "#06B6D4",
+  east: "#10B981",
+  southeast: "#84CC16",
+  south: "#EAB308",
+  southwest: "#F59E0B",
+  west: "#F97316",
+  northwest: "#EF4444",
 };
 
 interface AspectAnalysisSectionProps {
@@ -19,27 +19,54 @@ interface AspectAnalysisSectionProps {
 
 function getAspectColorKey(direction: string): string {
   if (direction.includes("समथर")) return "flat";
-  if (direction.includes("उत्तरी") && !direction.includes("पूर्वी") && !direction.includes("पश्चिम")) return "north";
+  if (
+    direction.includes("उत्तरी") &&
+    !direction.includes("पूर्वी") &&
+    !direction.includes("पश्चिम")
+  )
+    return "north";
   if (direction.includes("उत्तर-पूर्वी")) return "northeast";
-  if (direction.includes("पूर्वी") && !direction.includes("उत्तर") && !direction.includes("दक्षिण")) return "east";
+  if (
+    direction.includes("पूर्वी") &&
+    !direction.includes("उत्तर") &&
+    !direction.includes("दक्षिण")
+  )
+    return "east";
   if (direction.includes("दक्षिण-पूर्वी")) return "southeast";
-  if (direction.includes("दक्षिणी") && !direction.includes("पूर्वी") && !direction.includes("पश्चिम")) return "south";
+  if (
+    direction.includes("दक्षिणी") &&
+    !direction.includes("पूर्वी") &&
+    !direction.includes("पश्चिम")
+  )
+    return "south";
   if (direction.includes("दक्षिण-पश्चिम")) return "southwest";
-  if (direction.includes("पश्चिमी") && !direction.includes("उत्तर") && !direction.includes("दक्षिण")) return "west";
+  if (
+    direction.includes("पश्चिमी") &&
+    !direction.includes("उत्तर") &&
+    !direction.includes("दक्षिण")
+  )
+    return "west";
   if (direction.includes("उत्तर-पश्चिम")) return "northwest";
   return "flat";
 }
 
-export default function AspectAnalysisSection({ aspectData }: AspectAnalysisSectionProps) {
+export default function AspectAnalysisSection({
+  aspectData,
+}: AspectAnalysisSectionProps) {
   // Sort aspects by area for analysis
-  const sortedAspects = [...aspectData.data].sort((a, b) => b.area_sq_km - a.area_sq_km);
+  const sortedAspects = [...aspectData.data].sort(
+    (a, b) => b.area_sq_km - a.area_sq_km,
+  );
 
   const dominantAspect = sortedAspects[0];
   const secondAspect = sortedAspects[1];
-  const southFacingAspects = aspectData.data.filter(item => 
-    item.direction_english.toLowerCase().includes("south")
+  const southFacingAspects = aspectData.data.filter((item) =>
+    item.direction_english.toLowerCase().includes("south"),
   );
-  const totalSouthFacingArea = southFacingAspects.reduce((sum, item) => sum + item.area_percentage, 0);
+  const totalSouthFacingArea = southFacingAspects.reduce(
+    (sum, item) => sum + item.area_percentage,
+    0,
+  );
 
   return (
     <>
@@ -55,7 +82,9 @@ export default function AspectAnalysisSection({ aspectData }: AspectAnalysisSect
                 className="absolute bottom-0 left-0 right-0"
                 style={{
                   height: `${Math.min((item.area_sq_km / sortedAspects[0].area_sq_km) * 100, 100)}%`,
-                  backgroundColor: ASPECT_COLORS[colorKey as keyof typeof ASPECT_COLORS] || "#888",
+                  backgroundColor:
+                    ASPECT_COLORS[colorKey as keyof typeof ASPECT_COLORS] ||
+                    "#888",
                   opacity: 0.2,
                   zIndex: 0,
                 }}
@@ -81,7 +110,9 @@ export default function AspectAnalysisSection({ aspectData }: AspectAnalysisSect
       <div className="bg-muted/50 p-4 rounded-lg mt-8">
         <h3 className="text-xl font-medium mb-4">
           परिवर्तन गाउँपालिकाको मोहोडा विश्लेषण
-          <span className="sr-only">Aspect Analysis of Khajura Rural Municipality</span>
+          <span className="sr-only">
+            Aspect Analysis of Paribartan Rural Municipality
+          </span>
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="bg-card p-4 rounded border">
@@ -136,10 +167,26 @@ export default function AspectAnalysisSection({ aspectData }: AspectAnalysisSect
         <div className="mt-6 p-4 bg-card rounded border">
           <h4 className="font-medium mb-2">भौगोलिक विशेषताहरू</h4>
           <ul className="space-y-2 text-sm">
-            <li>• सबैभन्दा बढी क्षेत्रफल ({localizeNumber(aspectData.metadata.highest_area.area_percentage.toFixed(1), "ne")}%) {aspectData.metadata.highest_area.direction} मोहोडामा छ</li>
-            <li>• सबैभन्दा कम क्षेत्रफल ({localizeNumber(aspectData.metadata.lowest_area.area_percentage.toFixed(1), "ne")}%) {aspectData.metadata.lowest_area.direction} मोहोडामा छ</li>
+            <li>
+              • सबैभन्दा बढी क्षेत्रफल (
+              {localizeNumber(
+                aspectData.metadata.highest_area.area_percentage.toFixed(1),
+                "ne",
+              )}
+              %) {aspectData.metadata.highest_area.direction} मोहोडामा छ
+            </li>
+            <li>
+              • सबैभन्दा कम क्षेत्रफल (
+              {localizeNumber(
+                aspectData.metadata.lowest_area.area_percentage.toFixed(1),
+                "ne",
+              )}
+              %) {aspectData.metadata.lowest_area.direction} मोहोडामा छ
+            </li>
             <li>• दक्षिणमुखी क्षेत्रले राम्रो सूर्यको प्रकाश पाउँछ</li>
-            <li>• विविध मोहोडाले फरक प्रकारका बालीहरूको उत्पादनमा सहयोग गर्छ</li>
+            <li>
+              • विविध मोहोडाले फरक प्रकारका बालीहरूको उत्पादनमा सहयोग गर्छ
+            </li>
           </ul>
         </div>
       </div>

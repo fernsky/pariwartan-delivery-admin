@@ -29,11 +29,14 @@ interface WardWiseTimeToMarketCenterChartsProps {
     wardNumber: number;
     percentage: number;
   };
-  TIME_CATEGORIES: Record<string, {
-    name: string;
-    nameEn: string;
-    color: string;
-  }>;
+  TIME_CATEGORIES: Record<
+    string,
+    {
+      name: string;
+      nameEn: string;
+      color: string;
+    }
+  >;
   accessibilityIndex: number;
 }
 
@@ -53,14 +56,14 @@ export default function WardWiseTimeToMarketCenterCharts({
   return (
     <>
       {/* Overall time to market center distribution */}
-      <div 
+      <div
         className="mb-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Time to Market Center Distribution in Khajura Rural Municipality"
+          content="Time to Market Center Distribution in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
@@ -96,15 +99,22 @@ export default function WardWiseTimeToMarketCenterCharts({
                 <thead>
                   <tr className="bg-muted sticky top-0">
                     <th className="border p-2 text-left">क्र.सं.</th>
-                    <th className="border p-2 text-left">बजार केन्द्र पुग्न लाग्ने समय</th>
+                    <th className="border p-2 text-left">
+                      बजार केन्द्र पुग्न लाग्ने समय
+                    </th>
                     <th className="border p-2 text-right">घरधुरी</th>
                     <th className="border p-2 text-right">प्रतिशत</th>
                   </tr>
                 </thead>
                 <tbody>
                   {pieChartData.map((item, index) => (
-                    <tr key={index} className={index % 2 === 0 ? "bg-muted/40" : ""}>
-                      <td className="border p-2">{localizeNumber((index + 1).toString(), "ne")}</td>
+                    <tr
+                      key={index}
+                      className={index % 2 === 0 ? "bg-muted/40" : ""}
+                    >
+                      <td className="border p-2">
+                        {localizeNumber((index + 1).toString(), "ne")}
+                      </td>
                       <td className="border p-2">{item.name}</td>
                       <td className="border p-2 text-right">
                         {localizeNumber(item.value.toLocaleString(), "ne")}
@@ -168,7 +178,7 @@ export default function WardWiseTimeToMarketCenterCharts({
       </div>
 
       {/* Ward-wise distribution */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         id="ward-wise-market-center-access"
         itemScope
@@ -176,11 +186,11 @@ export default function WardWiseTimeToMarketCenterCharts({
       >
         <meta
           itemProp="name"
-          content="Ward-wise Time to Market Center in Khajura Rural Municipality"
+          content="Ward-wise Time to Market Center in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Distribution of time to market center across wards in Khajura"
+          content="Distribution of time to market center across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -203,18 +213,18 @@ export default function WardWiseTimeToMarketCenterCharts({
       </div>
 
       {/* Ward-wise comparison */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Quick Access to Market Center Comparison Across Wards in Khajura Rural Municipality"
+          content="Quick Access to Market Center Comparison Across Wards in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Comparison of quick access to market centers across wards in Khajura"
+          content="Comparison of quick access to market centers across wards in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -222,7 +232,8 @@ export default function WardWiseTimeToMarketCenterCharts({
             वडागत बजार केन्द्र छिटो पहुँच
           </h3>
           <p className="text-sm text-muted-foreground">
-            विभिन्न वडाहरूमा ३० मिनेटभित्र बजार केन्द्र पुग्न सक्ने घरधुरीहरूको तुलना
+            विभिन्न वडाहरूमा ३० मिनेटभित्र बजार केन्द्र पुग्न सक्ने घरधुरीहरूको
+            तुलना
           </p>
         </div>
 
@@ -239,18 +250,18 @@ export default function WardWiseTimeToMarketCenterCharts({
       </div>
 
       {/* Ward-wise analysis */}
-      <div 
+      <div
         className="mt-12 border rounded-lg shadow-sm overflow-hidden bg-card"
         itemScope
         itemType="https://schema.org/Dataset"
       >
         <meta
           itemProp="name"
-          content="Ward-wise Market Center Access Analysis in Khajura Rural Municipality"
+          content="Ward-wise Market Center Access Analysis in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Detailed analysis of time to market center by ward in Khajura"
+          content="Detailed analysis of time to market center by ward in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -269,9 +280,12 @@ export default function WardWiseTimeToMarketCenterCharts({
                 <tr className="bg-muted">
                   <th className="border p-2">वडा नं.</th>
                   <th className="border p-2 text-right">जम्मा घरधुरी</th>
-                  {Object.keys(TIME_CATEGORIES).map(key => (
+                  {Object.keys(TIME_CATEGORIES).map((key) => (
                     <th key={key} className="border p-2 text-right">
-                      {TIME_CATEGORIES[key as keyof typeof TIME_CATEGORIES].name}
+                      {
+                        TIME_CATEGORIES[key as keyof typeof TIME_CATEGORIES]
+                          .name
+                      }
                     </th>
                   ))}
                 </tr>
@@ -281,14 +295,21 @@ export default function WardWiseTimeToMarketCenterCharts({
                   const total = item.total;
                   return (
                     <tr key={i} className={i % 2 === 0 ? "bg-muted/50" : ""}>
-                      <td className="border p-2">वडा {localizeNumber(item.wardNumber, "ne")}</td>
+                      <td className="border p-2">
+                        वडा {localizeNumber(item.wardNumber, "ne")}
+                      </td>
                       <td className="border p-2 text-right">
                         {localizeNumber(total.toLocaleString(), "ne")}
                       </td>
-                      {Object.keys(TIME_CATEGORIES).map(key => {
-                        const timeName = TIME_CATEGORIES[key as keyof typeof TIME_CATEGORIES].name;
+                      {Object.keys(TIME_CATEGORIES).map((key) => {
+                        const timeName =
+                          TIME_CATEGORIES[key as keyof typeof TIME_CATEGORIES]
+                            .name;
                         const value = item[timeName] || 0;
-                        const percentage = total > 0 ? ((value / total) * 100).toFixed(2) : "0.00";
+                        const percentage =
+                          total > 0
+                            ? ((value / total) * 100).toFixed(2)
+                            : "0.00";
                         return (
                           <td key={key} className="border p-2 text-right">
                             {localizeNumber(value.toLocaleString(), "ne")}
@@ -308,7 +329,7 @@ export default function WardWiseTimeToMarketCenterCharts({
                   <td className="border p-2 text-right">
                     {localizeNumber(totalHouseholds.toLocaleString(), "ne")}
                   </td>
-                  {Object.keys(TIME_CATEGORIES).map(key => {
+                  {Object.keys(TIME_CATEGORIES).map((key) => {
                     const value = timeCategoryTotals[key];
                     const percentage = timeCategoryPercentages[key].toFixed(2);
                     return (
@@ -326,7 +347,9 @@ export default function WardWiseTimeToMarketCenterCharts({
           </div>
 
           {/* Ward pie charts (client component) */}
-          <h4 className="text-lg font-medium mt-8 mb-4">वडागत बजार केन्द्र पहुँचको वितरण</h4>
+          <h4 className="text-lg font-medium mt-8 mb-4">
+            वडागत बजार केन्द्र पहुँचको वितरण
+          </h4>
           <WardTimeToMarketCenterPieCharts
             wardWiseData={wardWiseData}
             TIME_CATEGORIES={TIME_CATEGORIES}

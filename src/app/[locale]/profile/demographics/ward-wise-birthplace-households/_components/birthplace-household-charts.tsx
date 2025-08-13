@@ -76,11 +76,11 @@ export default function BirthplaceHouseholdCharts({
       >
         <meta
           itemProp="name"
-          content="Household Birthplaces in Khajura Rural Municipality"
+          content="Household Birthplaces in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content={`Household birthplace distribution of Khajura with a total of ${totalHouseholds} households`}
+          content={`Household birthplace distribution of Paribartan with a total of ${totalHouseholds} households`}
         />
 
         <div className="border-b px-4 py-3">
@@ -214,11 +214,11 @@ export default function BirthplaceHouseholdCharts({
       >
         <meta
           itemProp="name"
-          content="Age-group-wise Birthplaces in Khajura Rural Municipality"
+          content="Age-group-wise Birthplaces in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Birthplace distribution across age groups in Khajura"
+          content="Birthplace distribution across age groups in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
@@ -249,11 +249,11 @@ export default function BirthplaceHouseholdCharts({
       >
         <meta
           itemProp="name"
-          content="Age-group-wise Birthplace Analysis in Khajura Rural Municipality"
+          content="Age-group-wise Birthplace Analysis in Paribartan Rural Municipality"
         />
         <meta
           itemProp="description"
-          content="Most common birthplaces by age group in Khajura"
+          content="Most common birthplaces by age group in Paribartan"
         />
 
         <div className="border-b px-4 py-3">
